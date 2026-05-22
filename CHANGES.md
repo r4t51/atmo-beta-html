@@ -6,6 +6,20 @@
 
 ---
 
+## 2026-05-22 — Access expiry semantics (adapter MVP)
+
+- **Scope:** docs-only product decision; no WP/PHP/DB/LD/lite settings changes
+- **Decision:** finite paid access (e.g. **«60 дней»**) → **`expires_at = starts_at + access_duration_days`**; **`starts_at` from LearnDash access start**, not order completed date
+- **`starts_at` priority:** (1) `course_{course_id}_access_from` usermeta → (2) `learndash_course_{course_id}_enrolled_at` → (3) Woo **`order_completed_at`** from granting completed order
+- **Duration source:** order line **`тип-доступа`** first → fallback variation **`attribute_тип-доступа`** → parse **`access_duration_days`** (e.g. «60 дней» → `60`); **«Бессрочно»** → `access_duration_days = null`, **`expires_at = null`**
+- **Order gating:** pending / failed / cancelled orders do **not** grant active access
+- **LD course #3616:** `expire_access` **off** on Local — adapter computes MVP display/status **independently**; **must not mutate** LD course settings or user meta
+- **Multi-order (MVP rule):** same LD course from multiple completed orders → **lifetime beats finite**; else active window with **latest `expires_at`**
+- **ViewModels:** `EnrollmentState` + `OrderAccessContext` expose `starts_at`, `order_completed_at`, `access_type_label`, `access_duration_days`, `expires_at`
+- **Docs:** `LMS_ADAPTER_SPEC.md` §5 · `BACKLOG.md` §2 decision #5
+
+---
+
 ## 2026-05-22 — Woo product ↔ LearnDash course mapping discovery
 
 - **Scope:** read-only audit via Local MariaDB (`127.0.0.1:10022`, DB `local`); docs only; no code/DB/snippet/Woo/LD/lite settings changes
@@ -15,7 +29,7 @@
 - **Fixture #3801:** order → variation **3628** → course **3616** → user **679** (`r4t5` / `atmo-admin`) enrolled; line meta **`тип-доступа` = 60 дней** (display / `OrderAccessContext`, not enrollment SoT)
 - **r4t5 (679):** enrolled in course **3616** only; no LD progress usermeta found
 - **`atmo-lms-lite`:** `wp_atmo_lms_access_rules` / enrollments **empty** on Local — not SoT today
-- **Open:** **access expiry semantics** — LD course 3616 `expire_access` off; no `course_*_access_expires` for user 679; how **«60 дней»** becomes `expires_at` needs product decision — see `LMS_ADAPTER_SPEC.md` §5 · `BACKLOG.md` §2
+- **Open (superseded):** ~~access expiry semantics~~ — decided same day; see entry above
 - **Docs:** `LMS_ADAPTER_SPEC.md` §5 · `WP_DEPENDENCY_MAP.md` LMS Map
 
 ---
@@ -27,7 +41,7 @@
 - **Rejected:** standalone `/my-courses/`; public `/courses/` as enrolled view; LD shortcode page; wait-for-lite-only
 - **Why:** `courses.html` uses **account shell** (same sidebar IA as `account.html`); enrolled state = user account data; reuses `atmo-account.css` + existing endpoint audit pattern; no LD slug collision
 - **Unchanged:** `/courses/` stays public LearnDash archive — nav **«Программы»** (header, footer, account menu)
-- **Still blocked:** adapter sign-off (`LMS_ADAPTER_SPEC.md` §10); `my-courses` endpoint registration audit; Code Snippets export; access expiry semantics (mapping discovery done — `CHANGES.md` mapping entry)
+- **Still blocked:** adapter sign-off (`LMS_ADAPTER_SPEC.md` §10); `my-courses` endpoint registration audit; Code Snippets export
 - **Docs:** `LMS_ADAPTER_SPEC.md` §2 · `BACKLOG.md` §2 decision #2
 
 ---

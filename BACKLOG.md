@@ -80,9 +80,9 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | 2 | **Target enrolled route** — where real **«Мои курсы»** lives | **Done (2026-05-22):** **`/my-account/my-courses/`** Woo endpoint — see `LMS_ADAPTER_SPEC.md` §2, `CHANGES.md` |
 | 3 | **Adapter interface sign-off** — PHP adapter + ViewModel before enrolled UI | **Open** — draft spec: **`LMS_ADAPTER_SPEC.md` v0** |
 | 4 | **Product ↔ course mapping** — Woo sell-side → LD course ID | **Done (2026-05-22):** `_related_course` + variation-first resolver — `CHANGES.md` mapping discovery · `LMS_ADAPTER_SPEC.md` §5 |
-| 5 | **Access expiry semantics** — «60 дней» / `expires_at` when LD `expire_access` off | **Open** — product decision; do not fabricate expiry in adapter MVP |
+| 5 | **Access expiry semantics** — «60 дней» / `expires_at` when LD `expire_access` off | **Done (2026-05-22):** `starts_at` from LD access meta + duration from `тип-доступа` — `LMS_ADAPTER_SPEC.md` §5 · `CHANGES.md` |
 
-**Recommendation:** keep `/courses/` public **«Программы»**; build enrolled MVP at **`/my-account/my-courses/`** after adapter sign-off (#3) + endpoint audit + expiry decision (#5).
+**Recommendation:** keep `/courses/` public **«Программы»**; build enrolled MVP at **`/my-account/my-courses/`** after adapter sign-off (#3) + endpoint audit.
 
 ### Route options (reference)
 
@@ -108,8 +108,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 | Item | Blocker |
 |------|---------|
-| Real LMS/enrolled dashboard widgets | Adapter sign-off (#3) + expiry semantics (#5) |
-| «Мои курсы» enrolled view | Adapter sign-off (#3) + `my-courses` endpoint audit + expiry (#5) — route decided: **`/my-account/my-courses/`** |
+| Real LMS/enrolled dashboard widgets | Adapter sign-off (#3) |
+| «Мои курсы» enrolled view | Adapter sign-off (#3) + `my-courses` endpoint audit — route decided: **`/my-account/my-courses/`** |
 | LearnDash templates | Do not touch until adapter decided |
 | `atmo-lms-lite` critical UI | Dev-only; no front-end without explicit decision |
 | Course progress / next lesson / enrolled cards | Prototype in `courses.html` (demo off); `account.html` MVP-safe shell only |

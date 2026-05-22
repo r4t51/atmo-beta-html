@@ -151,7 +151,9 @@ LearnDash CPTs:
 
 Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not order line items alone). Snippet **#5** Thank You Redirect is **inactive** (`active = 0`); do not re-enable without safe thank-you spec — see Code Snippets registry.
 
-**Product ↔ course mapping (2026-05-22 discovery):** redesign catalog **18 Woo → 18 LD** via bridge meta **`_related_course`**. Adapter resolver: **variation `_related_course` first**, else product; use **course ID** not slug. Variable **#3614**: parent unmapped; variations **#3628** / **#3629** → LD **#3616**. Fixture **#3801** → **3628** → **3616** → user **679** enrolled. **`тип-доступа`** = order display only. **`atmo-lms-lite`** access tables empty on Local. Expiry semantics **open** — `LMS_ADAPTER_SPEC.md` §5.
+**Product ↔ course mapping (2026-05-22 discovery):** redesign catalog **18 Woo → 18 LD** via bridge meta **`_related_course`**. Adapter resolver: **variation `_related_course` first**, else product; use **course ID** not slug. Variable **#3614**: parent unmapped; variations **#3628** / **#3629** → LD **#3616**. Fixture **#3801** → **3628** → **3616** → user **679** enrolled. **`тип-доступа`** supplies duration label; enrollment SoT = LD + bridge.
+
+**Access expiry (2026-05-22 decision):** MVP **`expires_at = starts_at + access_duration_days`**; **`starts_at`** from `course_{id}_access_from` → `learndash_course_{id}_enrolled_at` → order completed; **«Бессрочно»** → null; adapter read-only (no LD meta mutation) — `LMS_ADAPTER_SPEC.md` §5.
 
 ### LMS Architecture Rule
 
@@ -162,11 +164,11 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 | ViewModel | Минимальные данные |
 |---|---|
 | `CourseCard` | id, title, slug, permalink, thumbnail_url, excerpt, price_html?, categories[], goal_slug? |
-| `EnrollmentState` | course_id, is_enrolled, status (`none`\|`active`\|`expired`\|`completed`), progress_percent, completed_steps, total_steps, expires_at?, source (`learndash`\|`atmo-lms`) |
+| `EnrollmentState` | course_id, is_enrolled, status, progress_*, **starts_at**, **order_completed_at**, **access_type_label**, **access_duration_days**, **expires_at**, source |
 | `EnrolledCourse` | CourseCard + EnrollmentState + last_lesson?, next_lesson?, cta_label, cta_url |
 | `LessonRef` / `LessonProgress` | id, title, permalink, course_id, order_index, is_complete, is_accessible, prev?, next?, content_html? (deferred) |
-| `AccessData` | has_access, reason (`enrolled`\|`purchase_pending`\|`expired`\|`guest`\|`none`), expiry?, product_id?, order_id? |
-| `OrderAccessContext` | order_id, order_status, product_id, product_name, access_type_label?, quiz_meta?, purchased_at? — display only, not enrollment SoT |
+| `AccessData` | has_access, reason, expiry?, product_id?, order_id? |
+| `OrderAccessContext` | order_id, order_status, product_id, product_name, **order_completed_at**, **access_type_label**, **access_duration_days**, **starts_at**, **expires_at**, quiz_meta?, variation_id? — pairing/display; enrollment SoT = LD |
 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
