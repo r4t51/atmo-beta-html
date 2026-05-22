@@ -6,6 +6,25 @@
 
 ---
 
+## 2026-05-22 — Cart + checkout with cart fixture QA (follow-up)
+
+- **Scope:** read-only browser QA; no code/DB/snippets/Woo/Stripe settings changes; no checkout submit; **`#place_order` not clicked**; no order created
+- **Cart fixture (session only):** started empty · added **1×** «Живот и Тазовое дно - 60 дней» (variation **3628**, parent **3614**) · **399zł**
+- **Add method:** direct URL `?add-to-cart=3628&quantity=1` — automation click on «60 дней» + «В корзину» did not persist `variation_id` (hidden `<select>` / WC variations form)
+- **Pages:** `/cart-2/` · `/checkout/` · sanity `/payment-failed/` · `/checkout/order-received/999/`
+- **Viewports:** desktop **1440×900** + mobile **390×844**
+- **Result:** **PASS** — cart + checkout visibility; no horizontal overflow/clipping
+- **`/cart-2/`:** item row · access label in title · subtotal/total · **«Оформить заказ»** → `/checkout/` · cross-sells visible · no overflow
+- **`/checkout/`:** `form.checkout` · billing fields · order review item/total · `#payment` · `.wc_payment_methods` · `#place_order` visible; theme does **not** hide payment UI (computed styles `display:block`, `visibility:visible`)
+- **Gateways (Local):** **BLIK** visible + default (`stripe_blik`) · **Klarna** visible (`stripe_klarna`) · **Stripe card not present** (env/config, not theme CSS)
+- **`/payment-failed/`:** **404** by design
+- **`/checkout/order-received/999/`:** **200** generic Woo thank-you only — partial sanity; no order details for fake `#999`
+- **No CSS/PHP follow-up** for cart/checkout/payment visibility
+- **Session cleanup:** fixture item may still be in browser cart — remove via cart UI or clear session cookies (optional)
+- **Docs:** `BACKLOG.md` · `WP_DEPENDENCY_MAP.md`
+
+---
+
 ## 2026-05-22 — Account LMS copy polish
 
 - **Scope:** child theme only — `inc/atmo-account.php`; customer-facing copy only; no CSS, adapter logic, routes, DB, snippets, or settings
@@ -315,6 +334,7 @@
 - **Order-received sanity:** `/checkout/order-received/999/` → **200**, generic thank-you; `atmo-confirmation.css` only; no ATMO success hero; no redirect to `/courses`
 - **Asset scope:** cart → `atmo-cart.css` + `atmo-catalog.css` (cross-sells); checkout → `atmo-checkout.css`; order-received → `atmo-confirmation.css`; payment-failed → no ATMO cart/checkout CSS
 - **Not re-tested:** empty-cart checkout redirect (prior docs: Woo may redirect to cart when empty)
+- **Follow-up:** explicit cart-fixture QA same date — see cart-fixture QA entry (`variation 3628` add via URL)
 - **Docs fixed:** `WP_DEPENDENCY_MAP.md` stale claim that `/checkout/` is globally 302
 - **No CSS/PHP follow-up** for current wiring
 - **Open items:** see `BACKLOG.md` (payment-token guardrails unchanged)

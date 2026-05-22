@@ -69,7 +69,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - Hidden from nav, direct URL only: `downloads`, `edit-address` (+ billing/shipping), `payment-methods`
   - Styled passes: auth (`353346c`), shell (`3122f4f`), dashboard static shell (`534b241`), dashboard CTA wiring (`648e562`), orders (`3704226`), view-order access-type meta (`2da518f`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
   - Account shell/wiring done; **`/my-account/my-courses/`** adapter MVP live (`a352081`); dashboard CTAs wired to adapter (`648e562`); completed #3801 view-order QA; access-type meta pill on view-order (`2da518f`); saved payment-methods table not live-QA'd
-  - Audited 2026-05-22 (read-only PASS): `/my-account/add-payment-method/` (shell/wiring OK; Stripe card/BLIK absent on Local — Woo/Stripe env, not theme CSS); dashboard (`534b241` + `648e562`, desktop/mobile PASS; Woo default dashboard copy hidden by CSS when `.atmo-dash` present)
+  - Audited 2026-05-22 (read-only PASS): `/my-account/add-payment-method/` (shell/wiring OK; Stripe card absent on Local — Woo/Stripe env, not theme CSS; **BLIK/Klarna visible on checkout** — cart-fixture QA same date); dashboard (`534b241` + `648e562`, desktop/mobile PASS; Woo default dashboard copy hidden by CSS when `.atmo-dash` present)
   - **Open tasks:** `BACKLOG.md`
   - Do not redirect Woo account endpoints without audit.
 
@@ -111,8 +111,8 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 
 | Зона | Факт / риск |
 |---|---|
-| Cart URL | `/cart-2/`, нестандартный slug; shell `atmo-cart.css` + `atmo-catalog.css` (cross-sells); re-QA PASS 2026-05-22 |
-| Checkout | `/checkout/` — **200** + full form when cart has items; empty cart may redirect to `/cart-2/` (Woo default; not re-tested 2026-05-22). Shell `atmo-checkout.css` (excludes order-received). Re-QA PASS 2026-05-22 with session item |
+| Cart URL | `/cart-2/`, нестандартный slug; shell `atmo-cart.css` + `atmo-catalog.css` (cross-sells); cart-fixture QA PASS 2026-05-22 (1× variation **3628**) |
+| Checkout | `/checkout/` — **200** + full form when cart has items; empty cart may redirect to `/cart-2/` (Woo default; not re-tested 2026-05-22). Shell `atmo-checkout.css` (excludes order-received). Cart-fixture QA PASS 2026-05-22 — `#payment` / gateways visible; theme does not hide payment UI |
 | Payment failed | `/payment-failed/` → **404** by design (no static page yet); standard 404 shell |
 | Order received | `/checkout/order-received/` → `atmo-confirmation.css` only; excludes `atmo-checkout.css` |
 | HPOS | таблицы созданы, custom order storage отключён |

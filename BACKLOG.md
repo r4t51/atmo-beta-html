@@ -16,7 +16,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Catalog + goal chips | ✅ MVP + server-side `filter_goal` |
 | PDP | ✅ simple + variable #3614 |
 | Cart | ✅ `atmo-cart.css` + cross-sells |
-| Checkout | ✅ `atmo-checkout.css`; gateways visible on Local (BLIK/Klarna) |
+| Checkout | ✅ `atmo-checkout.css`; gateways visible on Local (**BLIK** default, **Klarna**); cart-fixture QA PASS 2026-05-22 |
 | Order received | ✅ `atmo-confirmation.css` |
 | Account | ✅ passes 1–5 + dashboard + view-order meta (detail below) |
 | Preview mu-plugin | ✅ **keep for now** — opt-in only (`?atmo_preview_shell=1`) |
@@ -38,6 +38,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Dashboard CTA wiring for my-courses (`648e562`, 2026-05-22): stale LMS copy removed; «Следующий шаг» + courses panel wired to adapter / my-courses — see `CHANGES.md`; my-courses page unchanged
 - Zero-enrollment empty-state QA (`691` / `atmo-qa-empty`, 2026-05-22): dashboard + my-courses empty paths PASS desktop/mobile — see `CHANGES.md`
 - Account LMS copy polish (`4e180b9`, 2026-05-22): removed LearnDash + raw endpoint paths from user copy; CTAs/adapter unchanged — atmo-qa-empty QA PASS; r4t5 not re-QA (no password) — see `CHANGES.md`
+- Cart + checkout with cart fixture QA (2026-05-22): session **1× #3628**; checkout payment UI PASS desktop/mobile; BLIK/Klarna visible — see `CHANGES.md`
 
 ---
 
