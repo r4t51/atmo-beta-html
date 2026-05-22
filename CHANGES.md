@@ -6,6 +6,19 @@
 
 ---
 
+## 2026-05-22 — Woo `my-courses` endpoint audit + plan
+
+- **Scope:** read-only audit of `kadence-child/inc/atmo-account.php` + docs; no PHP/rewrite/DB changes
+- **Current fake menu:** slug **`atmo-courses`** (label **«Программы»**) — menu-only + `woocommerce_get_endpoint_url` → `/courses/`; **not** a registered rewrite endpoint
+- **Target slug:** **`my-courses`** → `/my-account/my-courses/`; menu label **«Мои курсы»**; drop **`atmo-courses`** from account sidebar
+- **Hooks (future):** `init` + `add_rewrite_endpoint`, `woocommerce_account_menu_items`, `woocommerce_account_my-courses_endpoint`
+- **Flush:** one-time permalink save/flush after registration — not on every `init`
+- **IA:** **«Программы»** stays header/footer → `/courses/`; account nav = Обзор · Мои курсы · Заказы · Настройки · Выйти
+- **Strategy:** **A — endpoint shell first** (empty state + CSS), then adapter PHP; reject adapter-first (B) and defer combined MVP (C)
+- **Docs:** `LMS_ADAPTER_SPEC.md` §11 · `BACKLOG.md` §2 decision #6 · `WP_DEPENDENCY_MAP.md` Woo row
+
+---
+
 ## 2026-05-22 — Code Snippets export to docs repo
 
 - **Scope:** read-only MariaDB export → `docs/snippets/`; no DB/WP/snippet setting changes
@@ -27,7 +40,7 @@
 - **Traceability:** optional **`source_order_id`**, **`source_order_item_id`** on `EnrollmentState`; **`order_item_id`** on `OrderAccessContext`
 - **Renewal CTA:** optional **`product_permalink`** on `EnrolledCourse` for expired / no-access rows
 - **LD coupling:** confirmed — ATMO UI consumes ViewModels only; no LearnDash HTML/classes in theme chrome
-- **Still blocked:** `my-courses` Woo endpoint audit + registration; Code Snippets export before adapter PHP
+- **Still blocked:** ~~Code Snippets export~~ — done; **`my-courses`** endpoint **implementation** (plan done 2026-05-22 §11)
 - **Docs:** `LMS_ADAPTER_SPEC.md` §4.7 · `BACKLOG.md` §2 decision #3
 
 ---

@@ -1,7 +1,7 @@
 # LMS Adapter Spec v0
 
-> **Status:** route decided · **ViewModel sign-off done** · endpoint audit pending · **2026-05-22**  
-> **Scope:** ViewModel contract + adapter boundaries only — no PHP implementation, no route registration, no WP changes.  
+> **Status:** route decided · **ViewModel sign-off done** · **endpoint audit done** · implementation gated on shell-first sequence · **2026-05-22**  
+> **Scope:** ViewModel contract + adapter boundaries + endpoint plan — no PHP implementation in this audit commit.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
 ---
@@ -10,7 +10,7 @@
 
 Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo backends so enrolled courses, progress, and access can ship without LearnDash HTML coupling or premature `atmo-lms-lite` dependency.
 
-**Gate:** no enrolled UI, dashboard LMS widgets, or deep port of `lesson.html` / `product-enrolled.html` until ViewModel contract is signed off (**done 2026-05-22**) and **`my-courses`** endpoint audit is complete (`BACKLOG.md` §2).
+**Gate:** no adapter-backed enrolled UI or deep port of `lesson.html` / `product-enrolled.html` until ViewModel contract is signed off (**done 2026-05-22**) and endpoint plan is accepted (**done 2026-05-22**, §11). **First implementation ship:** endpoint shell + menu IA only; adapter PHP follows in a separate commit.
 
 ---
 
@@ -41,7 +41,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 - **Technical:** no LearnDash CPT slug collision; `is_account_page()` CSS scope already defined; hidden-endpoint audit precedent (`downloads`, `edit-address`, `payment-methods`).
 - **Adapter / lite:** route choice does not bind backend — LearnDash today, `atmo-lms-lite` later via same ViewModels.
 
-**Implementation still blocked by:** `my-courses` endpoint registration audit, Code Snippets export — see §10. ViewModel contract signed off 2026-05-22 (§4.7).
+**Implementation sequence (§11):** (1) register **`my-courses`** endpoint + menu IA + static empty shell; (2) adapter PHP + wire `get_enrolled_courses()`; (3) optional dashboard «Следующий шаг» wiring. ViewModel contract signed off 2026-05-22 (§4.7). Code Snippets export done (`docs/snippets/`).
 
 **Reserved naming:** **«Мои курсы»** = `/my-account/my-courses/`. **«Программы»** = public `/courses/` only.
 
@@ -364,8 +364,10 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 | Topic | Risk / question | Mitigation |
 |-------|-----------------|------------|
 | **Enrollment SoT** | LD bridge today vs future `atmo-lms-lite` | Adapter interface stable; swap driver behind `source` field |
-| **Route location** | ~~B vs C~~ | **Decided:** `/my-account/my-courses/` — endpoint audit still required before register |
-| **Code Snippets** | Logic in DB, not VCS | Export/version before adapter impl — `WP_DEPENDENCY_MAP.md` registry |
+| **Route location** | ~~B vs C~~ | **Decided:** `/my-account/my-courses/` — endpoint plan §11 |
+| **Rewrite flush** | New endpoint 404 until permalinks flushed | One-time flush after registration commit; do not flush on every `init` |
+| **Fake `atmo-courses` menu** | Label collision with future **«Мои курсы»** | Remove fake slug when **`my-courses`** ships; keep **«Программы»** in header/footer only |
+| **Code Snippets** | Logic in DB, not VCS | **Done:** `docs/snippets/` export — re-export when DB changes |
 | **Thank-you redirect** | Snippet #5 broken URL, inactive | Separate thank-you spec before any post-checkout redirect |
 | **Product ↔ course map** | ~~Woo ID ≠ LD ID~~ | **Discovered:** `_related_course` + variation-first resolver — `CHANGES.md` 2026-05-22 |
 | **Access expiry** | ~~LD `expire_access` off~~ | **Decided:** adapter computes from LD `starts_at` + Woo duration label — `CHANGES.md` 2026-05-22 |
@@ -380,15 +382,141 @@ Before any enrolled UI or route implementation:
 
 - [x] Product approves ViewModel field list — **2026-05-22** (§4.7).
 - [x] Enrolled route chosen: **`/my-account/my-courses/`** (`BACKLOG.md` #2 — 2026-05-22).
-- [ ] Woo **`my-courses`** endpoint audit + registration plan (no implementation in spec commit).
+- [x] Woo **`my-courses`** endpoint audit + registration plan — **2026-05-22** (§11).
 - [x] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver §5).
 - [x] Code Snippets export/backup completed — `docs/snippets/` (`CHANGES.md` 2026-05-22).
 - [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
 - [x] **Access expiry semantics** — LD access start + Woo duration label (`CHANGES.md` 2026-05-22).
 - [x] **No LearnDash HTML in ATMO UI** — ViewModels only (§3, §4.7 #8).
 
-**After sign-off:** implement adapter behind this contract only; theme work references this file, not LD internals. **Remaining gate:** `my-courses` endpoint audit before PHP/route work.
+**After sign-off:** ship **endpoint shell first** (§11), then adapter PHP; theme work references this file, not LD internals.
 
 ---
 
-*Spec v0 — 2026-05-22. Route, mapping, expiry, and ViewModel contract signed off; endpoint audit pending.*
+## 11. Woo `my-courses` endpoint plan (audit 2026-05-22)
+
+Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-account.css`. **No PHP shipped in audit commit.**
+
+### 11.1 Current account menu mechanism
+
+| Piece | Today | File |
+|-------|-------|------|
+| Menu rebuild | `woocommerce_account_menu_items` @ priority 20 → 5 slugs | `atmo-account.php` |
+| Fake slug **`atmo-courses`** | Label **«Программы»** — **not** a Woo rewrite endpoint | same |
+| External URL | `woocommerce_get_endpoint_url` filter: `atmo-courses` → `home_url( '/courses/' )` | same |
+| Direct `/my-account/atmo-courses/` | **No** `add_rewrite_endpoint` — URL is not a real account route; nav link works via filter only | — |
+| Site chrome | Header + footer **«Программы»** → `/courses/` (`atmo-header.php`, `atmo-footer.php`) | separate from account menu |
+
+**When real `/my-account/my-courses/` ships:**
+
+1. Replace menu slug **`atmo-courses`** → **`my-courses`** with label **«Мои курсы»** (prototype IA: no **«Программы»** in account sidebar).
+2. **Remove** `atmo_filter_account_endpoint_url` branch for `atmo-courses` (real endpoint generates URL).
+3. **Register** rewrite endpoint **`my-courses`** (below).
+4. Leave header/footer **«Программы»** → `/courses/` unchanged.
+5. Follow-up: point dashboard CTAs from generic `/courses/` copy to **`my-courses`** where enrolled UX fits (optional polish after adapter).
+
+### 11.2 Endpoint mechanics
+
+**Proposed slug:** `my-courses` → URL **`/my-account/my-courses/`** (Woo account page + endpoint).
+
+**Required hooks (child theme, `inc/atmo-account.php` or dedicated include):**
+
+| Hook | Purpose |
+|------|---------|
+| `init` | `add_rewrite_endpoint( 'my-courses', EP_ROOT \| EP_PAGES );` — match Woo account endpoint pattern |
+| `woocommerce_account_menu_items` | Insert **`my-courses`** after `dashboard`, before `orders`; drop **`atmo-courses`** |
+| `woocommerce_account_my-courses_endpoint` | Render enrolled page content (shell first, adapter later) |
+
+**Not needed for MVP:** `woocommerce_get_endpoint_url` override (standard slug), `template_redirect`, custom query vars beyond endpoint.
+
+**Rewrite flush — when and how:**
+
+- **Required once** after first deploy of endpoint registration; until flush, direct URL may 404 or fall back to account root.
+- **Safe:** theme switch hook, manual **Settings → Permalinks → Save**, or one-off `wp rewrite flush` on Local.
+- **Avoid:** `flush_rewrite_rules()` on every `init` — performance + race risk.
+- **Rollback:** revert registration commit, then flush/save permalinks again.
+
+**Collision / redirect avoidance:**
+
+| Risk | Mitigation |
+|------|------------|
+| Slug **`my-courses`** vs LD CSS class names | No conflict — Woo query var only |
+| Public **`/courses/`** CPT archive | Different path; no rewrite overlap |
+| Retired **`atmo-courses`** fake slug | Remove from menu + URL filter in same commit as registration |
+| LearnDash / plugins | No active plugin registers Woo endpoint **`my-courses`** on Local (grep 2026-05-22) |
+| Logged-out access | Woo **`is_account_page()`** behavior unchanged — expect login prompt / redirect to auth shell (same as `/orders/`) |
+
+### 11.3 Target account menu IA
+
+| Label | Slug | URL |
+|-------|------|-----|
+| Обзор | `dashboard` | `/my-account/` |
+| **Мои курсы** | **`my-courses`** | **`/my-account/my-courses/`** |
+| Заказы | `orders` | `/my-account/orders/` |
+| Настройки | `edit-account` | `/my-account/edit-account/` |
+| Выйти | `customer-logout` | logout |
+
+**«Программы» after endpoint ships:**
+
+| Location | Keep? | Target |
+|----------|-------|--------|
+| Account sidebar | **No** (drop fake `atmo-courses`) | — |
+| Site header | **Yes** | `/courses/` |
+| Site footer | **Yes** | `/courses/` |
+| Dashboard shell CTAs | **Yes** for catalog discovery; add **«Мои курсы»** link when shell exists | `/courses/`, `/каталог/`, later `/my-account/my-courses/` |
+
+### 11.4 Rendering phases
+
+| Phase | Content | Adapter |
+|-------|---------|---------|
+| **1 — Shell (recommended first ship)** | ATMO empty state: honest copy + CTAs to **«Программы»** / catalog; wrapper e.g. `.atmo-my-courses` | **None** — no `get_enrolled_courses()` yet |
+| **2 — Adapter** | List rows from **`EnrolledCourse[]`** per §4.3 / §7 | **`get_enrolled_courses( user_id )`** required; optional **`get_next_lesson()`** for row CTAs |
+| **3 — Dashboard** | «Следующий шаг» hero uses adapter when non-null `next_lesson` | Same adapter; separate template hook |
+
+**Shell rules:** no LearnDash HTML/classes; no fake progress rows; match MVP empty state in §7.
+
+### 11.5 CSS scope
+
+- **Reuse** `atmo-account.css` — already enqueued on `is_account_page()` in `functions.php`.
+- **Scope new rules** under `.atmo-my-courses` (or `.atmo-enrolled-list`) inside existing `body.woocommerce-account.logged-in .woocommerce-MyAccount-content` patterns.
+- **Do not** broaden selectors that hit orders, edit-account, edit-address, payment-methods, add-payment-method passes.
+- Nav active state: Woo adds `is-active` on `li.woocommerce-MyAccount-navigation-link--my-courses` when endpoint matches — existing nav CSS applies.
+
+### 11.6 QA plan (post-implementation)
+
+| Check | Expected |
+|-------|----------|
+| `/my-account/my-courses/` logged in | 200, ATMO shell, empty state (phase 1) or enrolled list (phase 2) |
+| Same URL logged out | Auth shell / login gating — consistent with other account endpoints |
+| Nav | **«Мои курсы»** active on endpoint; **«Программы»** absent from sidebar; 5 items, no overflow (390×844) |
+| Hidden endpoints | `/downloads/`, `/edit-address/`, `/payment-methods/` — still styled, unchanged |
+| Public archive | `/courses/` — still LD archive, 18 cards, **not** enrolled-only |
+| Dashboard | Still on `dashboard` only; no regression on orders/settings QA passes |
+| Permalinks | Direct URL works after one flush |
+
+### 11.7 Rollback
+
+1. Revert child-theme commit(s): endpoint registration, menu filter, render callback, CSS.
+2. **Flush permalinks** (save or CLI) so retired slug stops resolving.
+3. Restore interim **`atmo-courses`** + **«Программы»** menu if rolling back before IA cutover.
+4. Revert docs if needed (`CHANGES.md`, this file §11).
+
+### 11.8 Implementation strategy decision
+
+| Option | Verdict |
+|--------|---------|
+| **A — Endpoint shell first** (empty/static state, menu IA, rewrite) | **Recommended** — validates route, nav, CSS blast radius, and logged-out behavior before adapter complexity |
+| B — Adapter first, endpoint second | **Rejected** — no safe place to QA adapter output; higher integration risk |
+| C — Combined endpoint + adapter in one MVP | **Defer** — acceptable only if team accepts larger single PR; not safest |
+
+**Safest sequence:**
+
+1. **Docs** — endpoint plan (this section) ✓  
+2. **Child theme commit A** — `add_rewrite_endpoint`, menu IA (**«Мои курсы»**), remove **`atmo-courses`**, static empty shell, scoped CSS, **one-time permalink flush** documented in `CHANGES.md`  
+3. **QA** — §11.6  
+4. **Child theme commit B** — LMS adapter PHP + wire `woocommerce_account_my-courses_endpoint` to **`get_enrolled_courses()`**  
+5. **Optional commit C** — dashboard «Следующий шаг» + panel links to **`my-courses`**
+
+---
+
+*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, and endpoint plan signed off; implementation follows §11 sequence.*
