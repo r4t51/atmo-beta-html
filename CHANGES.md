@@ -1,7 +1,8 @@
 # ATMO.BY — ручной журнал изменений
 
 > Git в `kadence-child`: repo active (baseline `d61ca38`). Этот файл — source of truth для **DB** + cross-repo rollback notes.  
-> Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`
+> Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
+> **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
 ---
 
@@ -15,6 +16,7 @@
 - **Partial:** access type «60 дней» visible in product title/URL; no structured item meta row/pill (`wc-item-meta` / `variation` empty)
 - **Still open (optional):** structured variation/meta pill rendering; saved payment-methods table with stored cards
 - **Rollback fixture:** delete order #3801 in WP Admin if no longer needed
+- **Open items:** see `BACKLOG.md`
 
 ---
 

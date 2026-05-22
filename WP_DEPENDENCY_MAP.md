@@ -64,7 +64,9 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - Menu filter (`d4ee689`): Обзор → `dashboard` · Мои курсы → `/courses/` (external link, not Woo rewrite) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout`
   - Hidden from nav, direct URL only: `downloads`, `edit-address` (+ billing/shipping), `payment-methods`
   - Styled passes: auth (`353346c`), shell (`3122f4f`), dashboard static shell (`534b241`), orders (`3704226`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
-  - Audited 2026-05-22 (read-only PASS): `/my-account/add-payment-method/` (shell/wiring OK; Stripe card/BLIK absent on Local — Woo/Stripe env, not theme CSS); dashboard static shell (`534b241`, desktop/mobile PASS; Woo default dashboard copy hidden by CSS when `.atmo-dash` present); saved payment-methods table not live-QA'd; order line items/meta pills and order-again not live-QA'd; real LMS/enrolled widgets deferred until adapter decision
+  - Account shell/wiring done; completed #3801 view-order QA (line item shell, qty/total, customer details, order-again visibility — not clicked); structured meta pill optional/open; saved payment-methods table not live-QA'd; real LMS/enrolled widgets deferred until adapter decision
+  - Audited 2026-05-22 (read-only PASS): `/my-account/add-payment-method/` (shell/wiring OK; Stripe card/BLIK absent on Local — Woo/Stripe env, not theme CSS); dashboard static shell (`534b241`, desktop/mobile PASS; Woo default dashboard copy hidden by CSS when `.atmo-dash` present)
+  - **Open tasks:** `BACKLOG.md`
   - Do not redirect Woo account endpoints without audit.
 
 Не трогали:
@@ -252,14 +254,10 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-Header, footer, MVP каталог/PDP и Woo My Account CSS passes перенесены. Возможные следующие шаги:
+Header, footer, MVP каталог/PDP и Woo My Account shell/wiring перенесены. **Open tasks:** see `BACKLOG.md`.
 
-- Real LMS/enrolled widgets на `/my-account/` и `/courses/` — deferred until adapter decision (static dashboard shell shipped in `534b241`).
-- Решить судьбу preview mu-plugin (когда убирать временный integration layer).
+**Architectural blockers (do not bypass):**
 
-Не делать до решения adapter interface:
-
-- LearnDash templates;
-- lesson/course dashboard;
-- перенос Code Snippets;
-- критичный UI на `atmo-lms-lite` без явного решения (plugin active, in development).
+- LMS adapter / ViewModel decision — before real LMS/enrolled widgets on `/my-account/` or `/courses/`
+- Do not touch LearnDash templates or build critical UI on `atmo-lms-lite` without explicit decision
+- Saved-card / payment-token scope — requires explicit approval before live-QA or UI work

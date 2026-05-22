@@ -181,7 +181,9 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - **Скрыты из меню, доступны по прямому URL:** `/my-account/downloads/`, `/my-account/edit-address/` (+ `billing`/`shipping`), `/my-account/payment-methods/`
   - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell
   - **Dashboard (`534b241`):** static ATMO cards on logged-in `/my-account/` only; last order read-only Woo summary; no LMS progress / fake enrolled data; `/courses/` stays public LD archive
-  - **Caveats:** не редиректить Woo endpoints без аудита; `/my-account/add-payment-method/` audited 2026-05-22 (read-only PASS, shell/wiring OK; Stripe card/BLIK absent on Local — env, not theme); Woo default dashboard copy hidden by CSS when `.atmo-dash` present; таблица saved payment cards не live-QA; line items/meta pills и order-again не live-QA; real LMS/enrolled widgets отложены до adapter decision
+  - **Account status:** shell/wiring done (passes 1–5, dashboard `534b241`, add-payment audit); completed #3801 view-order QA — line item shell, qty/total, customer details, order-again visibility verified (not clicked); structured variation/meta pill rendering optional/open; saved payment cards table not live-QA; real LMS/enrolled widgets deferred until adapter decision
+  - **Caveats:** не редиректить Woo endpoints без аудита; `/my-account/add-payment-method/` audited 2026-05-22 (read-only PASS; Stripe card/BLIK absent on Local — env, not theme); Woo default dashboard copy hidden by CSS when `.atmo-dash` present
+  - **Open tasks:** `BACKLOG.md`
   - Rollback: см. `CHANGES.md` по commit; menu PHP: `git revert d4ee689`
 - LearnDash templates не тронуты.
 
@@ -199,9 +201,13 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 ## Следующий безопасный шаг
 
-Header, footer, MVP каталог/PDP и Woo My Account CSS passes 1–5 (+ mobile orders fix) перенесены. Следующие возможные шаги:
-- Решить судьбу preview mu-plugin (временный слой — когда выводить из эксплуатации).
-- Не начинать LearnDash templates или LMS dashboard до фиксации adapter interface; `atmo-lms-lite` active but in dev — no critical UI on it without explicit decision.
+Header, footer, MVP каталог/PDP и Woo My Account shell/wiring перенесены. **Open tasks:** см. `BACKLOG.md`.
+
+**Architectural blockers (do not bypass):**
+
+- LMS adapter / ViewModel decision — before real LMS/enrolled widgets on `/my-account/` or `/courses/`
+- Do not touch LearnDash templates or build critical UI on `atmo-lms-lite` without explicit decision
+- Saved-card / payment-token scope — requires explicit approval before live-QA or UI work
 
 ## Голос
 
