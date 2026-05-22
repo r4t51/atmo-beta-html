@@ -6,6 +6,26 @@
 
 ---
 
+## 2026-05-22 — LMS adapter / «Мои курсы» route discovery
+
+- **Scope:** read-only discovery + docs decision record; no code/DB/plugin settings/LearnDash template/atmo-lms-lite UI changes; no commit in this step
+- **Pages (logged in as r4t5):** `/courses/`, `/courses/testmyself/`, `/my-account/` (nav href check only)
+- **Result:** `/courses/` is LearnDash **public CPT archive**, not enrolled «Мои курсы»
+  - `body.post-type-archive-sfwd-courses`, `learndash-template-ld30`, h1 **«Курсы»**
+  - **18** public course cards (`.sfwd-courses`); **0** `.ld-progress` / `.ld-status` — no enrolled-only filter even when logged in
+  - `atmo-account.css` **not** loaded on `/courses/`
+- **Course detail:** `/courses/testmyself/` — `single-sfwd-courses`, `.learndash-wrapper`, h2 **«Курс Содержимое»**, lesson links; no progress UI
+- **Nav mismatch (confirmed, intentional pending decision):** header, footer, and account menu label **«Мои курсы»** → `/courses/` (fake Woo endpoint `atmo-courses` URL filter in `inc/atmo-account.php`)
+- **Runtime:** LearnDash `sfwd-lms` 5.0.5 primary; LearnDash WooCommerce bridge for purchase → enrollment; `atmo-lms-lite` 0.2.0 active on Local (dev-only) — **no front-end assets observed**
+- **Prototypes:** `courses.html` = future enrolled view (demo disabled); `account.html` = MVP-safe shell; `product-enrolled.html` / `lesson.html` blocked until adapter
+- **Decision (docs only):** no implementation yet; `/courses/` stays public LD archive until product picks interim nav label + target enrolled route
+- **Adapter gate:** ViewModels `CourseCard`, `EnrollmentState`, `EnrolledCourse`, `LessonProgress`/`LessonData`, `AccessData` — see `WP_DEPENDENCY_MAP.md`; route options A–E in `BACKLOG.md` §2
+- **Leaning guidance (not final):** enrolled UI inside account shell → Woo endpoint `/my-account/my-courses/` after explicit rewrite audit; broader course hub → standalone `/my-courses/`
+- **Do not do yet:** LearnDash template overrides; filter `/courses/` to enrolled-only; wire prototype demo data; atmo-lms-lite critical UI; new Woo endpoints without audit
+- **Open product decisions:** see `BACKLOG.md` §2
+
+---
+
 ## 2026-05-22 — Preview mu-plugin discovery / retirement criteria
 
 - **Scope:** read-only discovery; docs update only; no mu-plugin / kadence-child code changes

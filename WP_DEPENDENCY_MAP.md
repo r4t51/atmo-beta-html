@@ -119,7 +119,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 | My Account page | `/my-account/` + Woo endpoints; menu IA in `inc/atmo-account.php` |
 | Account menu | 5 items — see Theme Layer Woo My Account block |
 | Hidden account URLs | `/my-account/downloads/`, `/edit-address/`, `/payment-methods/` (reachable, not in nav) |
-| `/courses/` from account nav | External LearnDash route, **not** a Woo endpoint rewrite |
+| `/courses/` from account nav | External LearnDash **public archive**, **not** a Woo endpoint rewrite; label «Мои курсы» pending product decision — see LMS Map |
 
 Активные WC-расширения, которые важно учитывать:
 
@@ -134,7 +134,9 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 ## LMS Map
 
 Текущий runtime для course/lesson UI: LearnDash.  
-`atmo-lms-lite` **active** on Local, in development — candidate future runtime; не строить критичный UI на нём без явного решения.
+`atmo-lms-lite` **active** on Local, in development — candidate future runtime; не строить критичный UI на нём без явного решения; **no front-end assets observed** on course routes (2026-05-22 QA).
+
+**Route reality (2026-05-22):** `/courses/` = LearnDash **public CPT archive** (`post-type-archive-sfwd-courses`, 18 cards, no enrolled filter). Header/footer/account nav label **«Мои курсы»** → `/courses/` — UX mismatch confirmed; product decision pending. **`/courses/` stays public** until enrolled route is chosen. Active route options A–E: **`BACKLOG.md` §2** (do not implement without adapter + product sign-off).
 
 LearnDash CPTs:
 
@@ -146,19 +148,24 @@ LearnDash CPTs:
 
 `atmo-lms-lite` active on Local, in development: modules include courses, lessons, mapping, migration, access-gate, access-rules, enrollment-hook, guest-orders, reconciler, refunds, run-log, status, woocommerce, work-queue, diagnostics. LearnDash templates/caution still applies for production UI until adapter decision.
 
+Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not order line items alone). Code Snippet **thank-you redirect** may affect post-purchase routing — audit before enrolled route goes live.
+
 ### LMS Architecture Rule
 
-Не копировать LearnDash HTML как финальный UI. Все course/lesson компоненты должны получать нормализованные данные:
+Не копировать LearnDash HTML как финальный UI. Все course/lesson компоненты должны получать нормализованные данные через **adapter interface** (PHP), not LD DOM/classes:
 
 | ViewModel | Минимальные данные |
 |---|---|
-| `CourseCard` | id, title, thumbnail, excerpt, permalink, price, enrolled state |
-| `CourseDetail` | CourseCard + description, lessons list, instructor |
-| `EnrolledCourse` | CourseDetail + progress %, last lesson, expiry |
-| `LessonData` | id, title, content, course_id, prev/next lesson, completion state |
-| `AccessData` | has_access, reason, expiry |
+| `CourseCard` | id, title, slug, permalink, thumbnail_url, excerpt, price_html?, categories[], goal_slug? |
+| `EnrollmentState` | course_id, is_enrolled, status (`none`\|`active`\|`expired`\|`completed`), progress_percent, completed_steps, total_steps, expires_at?, source (`learndash`\|`atmo-lms`) |
+| `EnrolledCourse` | CourseCard + EnrollmentState + last_lesson?, next_lesson?, cta_label, cta_url |
+| `LessonProgress` / `LessonData` | id, title, permalink, course_id, order_index, is_complete, is_accessible, prev?, next?, content_html? |
+| `AccessData` | has_access, reason (`enrolled`\|`purchase_pending`\|`expired`\|`guest`), expiry?, product_id?, order_id? |
 
-До фиксации этого interface не начинать глубокий перенос `lesson.html`, course dashboard и access UI.
+**Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
+**Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
+
+До фиксации adapter interface не начинать глубокий перенос `lesson.html`, `product-enrolled.html`, enrolled course dashboard, или access UI. **Do not touch LearnDash templates.**
 
 ## Custom ATMO Plugins
 
