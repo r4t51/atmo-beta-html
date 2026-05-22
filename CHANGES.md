@@ -6,6 +6,23 @@
 
 ---
 
+## 2026-05-22 — Preview mu-plugin discovery / retirement criteria
+
+- **Scope:** read-only discovery; docs update only; no mu-plugin / kadence-child code changes
+- **Files (Local-only, unversioned):**
+  - `wp-content/mu-plugins/atmo-redesign-preview.php`
+  - `wp-content/mu-plugins/atmo-redesign/assets/css/atmo-preview.css`
+- **Runtime:**
+  - Without `?atmo_preview_shell=1`: full no-op for assets/DOM; normal pages use child header/footer
+  - With query param: preview CSS/fonts, body classes `atmo-preview-layer` + `atmo-preview-shell-enabled`, legacy preview header/footer render; child header/footer hidden via child CSS; Kadence `#masthead` / `#colophon` hidden via mu-plugin CSS
+- **Decision:** keep for now as low-risk legacy comparison tool; remove later after explicit sign-off that child header/footer are canonical and preview compare is no longer needed
+- **Risks:** unversioned Local code; stale/dead child CSS rules (`body.atmo-preview-shell-enabled` in `atmo-header.css`, `atmo-footer.css`) and preview-font comment in `functions.php` after removal
+- **Removal (later, not now):** backup/delete 2 mu-plugin files; optional kadence-child cleanup of preview-mode CSS/comments; `?atmo_preview_shell=1` will then behave like normal site (child chrome)
+- **Docs fixed:** `WP_DEPENDENCY_MAP.md` stale claim that preview layer loads on every page
+- **Open checklist:** see `BACKLOG.md` → Preview mu-plugin — remove later
+
+---
+
 ## 2026-05-22 — Woo My Account address endpoints read-only QA
 
 - **Scope:** read-only QA; no code/DB/Snippets/Woo settings changes; no form save/submit

@@ -124,8 +124,8 @@ npx http-server . -p 3333 --cors -c-1
 | Parent theme | Kadence 1.4.5 |
 | Child theme | `wp-content/themes/kadence-child/` |
 | Base CSS | `wp-content/themes/kadence-child/assets/css/atmo-base.css` |
-| Preview mu-plugin | `wp-content/mu-plugins/atmo-redesign-preview.php` |
-| Preview CSS | `wp-content/mu-plugins/atmo-redesign/assets/css/atmo-preview.css` |
+| Preview mu-plugin | `wp-content/mu-plugins/atmo-redesign-preview.php` (Local-only, **not in git**) |
+| Preview CSS | `wp-content/mu-plugins/atmo-redesign/assets/css/atmo-preview.css` (Local-only, **not in git**) |
 | Cart URL | `/cart-2/` |
 
 Preview shell включается только через:
@@ -159,7 +159,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - Правовые ссылки: `/terms/`, `/privacy/`. Год динамический через `date('Y')`.
   - Kadence `#colophon` скрыт CSS: `body.atmo-footer-active #colophon { display: none !important }`.
   - В preview-режиме child footer скрыт CSS: `body.atmo-preview-shell-enabled .atmo-site-footer { display: none !important }`.
-- Preview mu-plugin оставлен как временный integration layer.
+- Preview mu-plugin: **keep for now** as low-risk legacy comparison tool (`?atmo_preview_shell=1` only); remove later per `BACKLOG.md` / `CHANGES.md`.
 - ✅ Каталог — MVP карточки: `woocommerce/content-product.php` override + `inc/atmo-catalog.php` + `assets/css/atmo-catalog.css`.
   - `atmo_build_course_card()` ViewModel: id, title, permalink, thumbnail, price_html, excerpt, on_sale, categories, `goal_slug`/`goal_label` from `pa_goal`.
   - Карточки `.atmo-product-card` внутри стандартной WC-разметки `ul.products li.product`.

@@ -99,6 +99,10 @@ body.atmo-preview-shell-enabled #colophon {
 
 Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-preview-layer` CSS грузятся только при `?atmo_preview_shell=1`. `atmo-preview-layer` body class тоже только в preview mode. Дубля шрифтов на обычных страницах больше нет.
 
+**VCS / deployment:** файлы только на Local; **не в git** (`kadence-child` или docs repo). Риск потери при rebuild/clone без backup.
+
+**Decision (2026-05-22):** keep for now as low-risk legacy comparison tool; remove later after explicit sign-off that child header/footer are canonical. Checklist + removal steps: `BACKLOG.md`, `CHANGES.md` → 2026-05-22 preview mu-plugin discovery.
+
 ## WooCommerce Map
 
 | Зона | Факт / риск |
@@ -179,7 +183,7 @@ LearnDash CPTs:
 
 ## Frontend Assets Risks
 
-На типовой странице грузятся Kadence, WooCommerce, LearnDash, `atmo-reflection-forms`, preview layer и child base CSS. LearnDash и reflection forms сейчас добавляют CSS/JS шире, чем нужно.
+На типовой странице грузятся Kadence, WooCommerce, LearnDash, `atmo-reflection-forms` и child theme CSS (base, header, footer, page-specific). Preview mu-plugin **не** грузится без `?atmo_preview_shell=1` (opt-in only). LearnDash и reflection forms сейчас добавляют CSS/JS шире, чем нужно.
 
 Основные риски:
 
@@ -192,6 +196,7 @@ LearnDash CPTs:
 | R5 | checkout 302 требует понимания причины | Средний |
 | R6 | LearnDash -> atmo-lms-lite migration | Средний/высокий |
 | R7 | HPOS таблицы есть, но storage отключён | Средний |
+| R8 | Preview mu-plugin unversioned (Local-only) | Низкий/средний |
 
 ## Architecture Decision
 
