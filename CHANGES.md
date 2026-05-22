@@ -5,6 +5,19 @@
 
 ---
 
+## 2026-05-22 — Woo My Account completed view-order fixture QA
+
+- **Scope:** read-only QA; no code/DB/Snippets/Woo settings changes; fixture order #3801 (manual WP Admin)
+- **Pages:** `/my-account/orders/`, `/my-account/view-order/3801/`
+- **Fixture:** #3801 completed, r4t5 / user 679, 1 item «Живот и Тазовое дно - 60 дней», qty 1, 399 PLN; #3800 unchanged (pending, 0 items)
+- **Viewports:** desktop 1440×900, mobile 390×844
+- **Result:** PASS — completed order row; line item shell; qty/total; customer details; order-again visible (not clicked); no pay/cancel on completed view; no page overflow; no `.atmo-dash` leak on view-order
+- **Partial:** access type «60 дней» visible in product title/URL; no structured item meta row/pill (`wc-item-meta` / `variation` empty)
+- **Still open (optional):** structured variation/meta pill rendering; saved payment-methods table with stored cards
+- **Rollback fixture:** delete order #3801 in WP Admin if no longer needed
+
+---
+
 ## 2026-05-22 — Woo My Account static dashboard shell
 
 - **Commit:** `534b241` — Add static ATMO account dashboard shell
