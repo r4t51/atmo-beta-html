@@ -6,6 +6,20 @@
 
 ---
 
+## 2026-05-22 — Woo My Account address endpoints read-only QA
+
+- **Scope:** read-only QA; no code/DB/Snippets/Woo settings changes; no form save/submit
+- **Pages:** `/my-account/edit-address/`, `/edit-address/billing/`, `/edit-address/shipping/`; sanity `/view-order/3801/`
+- **Viewports:** desktop 1440×900, mobile 390×844
+- **Result:** PASS — address index (billing + shipping empty cards, add CTAs); billing form (7 rows, save visible); shipping form (8 rows, save visible); no overflow/overlap; 5-item nav; no `.atmo-dash` leak
+- **Profile state (r4t5):** billing unconfigured — email only on form; shipping unconfigured — all fields empty; index shows «Добавить …» for both types
+- **Order #3801 sanity:** order-level billing block has name/street/city/postcode/email; shipping customer block absent
+- **No CSS follow-up** for current empty/partial states
+- **Still open (data/fixture):** saved profile address cards with edit links; filled address forms; view-order shipping block; save/validation flow (out of scope unless explicit)
+- **Open items:** see `BACKLOG.md`
+
+---
+
 ## 2026-05-22 — Woo My Account view-order access-type meta display
 
 - **Commit:** `2da518f` — Add account order access-type meta display
@@ -91,7 +105,7 @@
 - **Behavior:** CSS-only — address index cards, billing/shipping form fields, downloads empty/list, payment-methods empty/table/add CTA
 - **Scope:** menu-hidden endpoints still reachable by direct URL; no PHP/DB changes
 - **QA:** 6/6 PASS — desktop 1440×900 (`/edit-address/`, `/edit-address/billing/`, `/downloads/`, `/payment-methods/`); mobile 390×844 (`/edit-address/`, `/downloads/`); no overflow/overlap; notices/empty states/forms visible; no save/add-payment/logout clicks
-- **Not fully QA'd:** `/edit-address/shipping/` form, downloads list with files, payment-methods table with saved cards
+- **Not fully QA'd:** downloads list with files, payment-methods table with saved cards; `/edit-address/shipping/` form — **read-only QA 2026-05-22 PASS** (see CHANGES entry)
 - **Rollback:** `git revert 3135ddb`
 
 ---

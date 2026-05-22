@@ -15,6 +15,7 @@
 - add-payment-method read-only audit (2026-05-22)
 - Completed view-order fixture QA — #3801 (2026-05-22): line item shell, qty/total, customer details, order-again **visibility** verified (not clicked)
 - View-order access-type meta pill — `тип-доступа` (`2da518f`, 2026-05-22): structured **Тип доступа: 60 дней** on #3801; Woo-skipped meta only; duplicate guard
+- Address endpoints read-only QA (2026-05-22): `/edit-address/` index + billing/shipping forms PASS; empty r4t5 profile verified; #3801 order-level billing block sanity
 
 ---
 
@@ -24,8 +25,10 @@
 |------|--------|
 | Saved payment-methods table with stored cards | **Avoid unless explicit** — needs payment token / saved-card scope |
 | Downloads list with real files | Pass 5 styled empty state only |
-| `/edit-address/shipping/` form | Pass 5 not fully QA'd |
-| Full billing/shipping address block | #3800/#3801 show partial billing (email + «Н/Д») |
+| Saved billing/shipping profile cards + edit links | r4t5 profile unconfigured; index shows add CTAs only — needs saved-address fixture |
+| Filled address forms (all fields populated) | Billing/shipping shell QA done empty; populated layout unverified |
+| View-order shipping customer block | Absent on #3801; billing order-level block verified on #3801 |
+| Address save/validation flow | Out of scope unless explicit |
 | Woo default dashboard `<p>` in DOM | Hidden by CSS when `.atmo-dash` present; template override optional later |
 
 **Local fixtures**
