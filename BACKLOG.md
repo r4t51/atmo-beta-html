@@ -33,6 +33,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Completed view-order fixture QA — #3801 (2026-05-22): line item shell, qty/total, customer details, order-again **visibility** verified (not clicked)
 - View-order access-type meta pill — `тип-доступа` (`2da518f`, 2026-05-22): structured **Тип доступа: 60 дней** on #3801; Woo-skipped meta only; duplicate guard
 - Address endpoints read-only QA (2026-05-22): `/edit-address/` index + billing/shipping forms PASS; empty r4t5 profile verified; #3801 order-level billing block sanity
+- Account regression QA after adapter MVP (`a352081`, 2026-05-22): 8 routes × desktop/mobile PASS — see `CHANGES.md`; no functional regressions; view-order #3801 pill intact; `/courses/` public archive unchanged
 
 ---
 
@@ -85,6 +86,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | 6 | **`my-courses` endpoint plan** — Woo rewrite + menu IA + shell-first sequence | **Done (2026-05-22):** audit + plan — `LMS_ADAPTER_SPEC.md` §11 · `CHANGES.md` |
 | 7 | **`my-courses` endpoint shell (phase 1)** — register endpoint + empty UI | **Done (2026-05-22):** `ecfd8f5` — real endpoint, menu IA, `.atmo-my-courses` shell; Local QA PASS post-flush — `CHANGES.md` |
 | 8 | **LMS adapter MVP (phase 2)** — wire `get_enrolled_courses()` + enrolled list UI | **Done (2026-05-22):** `a352081` — read-only Woo+LD adapter; fixture #3801 QA PASS — `CHANGES.md` |
+| 9 | **Account regression QA after adapter MVP** — full account sweep post-`a352081` | **Done (2026-05-22):** 8 routes × desktop/mobile PASS; no blockers — `CHANGES.md` |
 
 **Recommendation:** keep `/courses/` public **«Программы»** (header/footer); **next optional:** dashboard «Следующий шаг» wiring (phase 3) → post-MVP lesson/course hub port.
 
@@ -159,6 +161,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Adapter / ViewModel interface | **Signed off 2026-05-22** — `LMS_ADAPTER_SPEC.md` §4.7 · summary in `WP_DEPENDENCY_MAP.md` |
 | **`my-courses` endpoint shell** | **Done (2026-05-22):** `ecfd8f5` — see `CHANGES.md`; one-time permalink flush on deploy |
 | **LMS adapter MVP (phase 2)** | **Done (2026-05-22):** `a352081` — see `CHANGES.md` |
+| **Account regression QA after adapter MVP** | **Done (2026-05-22):** post-`a352081` sweep PASS — `CHANGES.md` |
 | **Dashboard adapter wiring (phase 3)** | Optional next — `LMS_ADAPTER_SPEC.md` §11 commit C |
 | Code Snippets — export/version | **Done (2026-05-22):** `docs/snippets/` — see README; re-export when DB snippets change |
 | Cross-repo rollback notes | Keep `CHANGES.md` as source of truth for DB + kadence-child commits |

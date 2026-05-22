@@ -6,6 +6,24 @@
 
 ---
 
+## 2026-05-22 — Account regression QA after LMS adapter MVP
+
+- **Scope:** read-only QA; no code/DB/snippets/settings changes; repos clean before/after (`beta html`, `kadence-child`)
+- **Baseline:** child commit **`a352081`** (adapter MVP)
+- **User/fixture:** r4t5 · completed order **#3801** (variation 3628 → LD course 3616, 60 days)
+- **Viewports:** desktop **1440×900** + mobile **390×844**
+- **Pages:** `/my-account/` · `/my-account/my-courses/` · `/my-account/orders/` · `/my-account/view-order/3801/` · `/my-account/edit-account/` · `/my-account/edit-address/` · `/my-account/payment-methods/` · `/courses/`
+- **Result:** **PASS** — no functional regressions or blockers
+- **`/my-account/my-courses/`:** one card **«Живот и Тазовое дно»** · **Доступ активен** · **60 дней** · **2 мая 2026 → 1 июля 2026** · **Продолжить** → real LD lesson URL · **К программе** → LD course URL · no progress bar / no 0% · no order/payment links in card
+- **`/view-order/3801/`:** access-type pill **«Тип доступа: 60 дней»** still visible; order-again visible (not clicked); no `.atmo-my-courses` leak
+- **`/courses/`:** public LearnDash archive; no account shell
+- **Scope checks:** `.atmo-dash` only on dashboard · `.atmo-my-courses` only on my-courses · 5-item nav on account pages · no horizontal overflow
+- **Known optional (not blockers):** dashboard stale copy/CTA still references LMS future and links to `/courses/` — phase 3 optional; hidden endpoints (`edit-address`, `payment-methods`) nav active state unchanged/pre-existing
+- **CSS/PHP follow-up:** none for regression
+- **Docs:** `BACKLOG.md` · `LMS_ADAPTER_SPEC.md` §11
+
+---
+
 ## 2026-05-22 — LMS adapter MVP for account `my-courses` (phase 2)
 
 - **Scope:** child theme only — `inc/atmo-account.php`, `assets/css/atmo-account.css`; read-only Woo + LearnDash; no DB, snippets, settings, LD template overrides, or `atmo-lms-lite`

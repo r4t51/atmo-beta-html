@@ -384,6 +384,7 @@ Before any enrolled UI or route implementation:
 - [x] Enrolled route chosen: **`/my-account/my-courses/`** (`BACKLOG.md` #2 — 2026-05-22).
 - [x] Woo **`my-courses`** endpoint shell (phase 1) — **`ecfd8f5` 2026-05-22** (§11 commit A).
 - [x] LMS adapter PHP + wire endpoint to **`get_enrolled_courses()`** (§11 commit B) — **`a352081` 2026-05-22**.
+- [x] Account regression QA after adapter MVP — **2026-05-22** (§11.0a · `CHANGES.md`).
 - [x] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver §5).
 - [x] Code Snippets export/backup completed — `docs/snippets/` (`CHANGES.md` 2026-05-22).
 - [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
@@ -419,6 +420,7 @@ Before any enrolled UI or route implementation:
 | «Продолжить» / `next_lesson` | **Live** when LD returns safe incomplete lesson |
 | Enrolled list UI (`.atmo-my-courses__list`) | **Live** — empty state when `[]` |
 | Local QA (#3801 / r4t5) | **PASS** — `CHANGES.md` |
+| Account regression QA (post-`a352081`) | **PASS** — 8 routes × desktop/mobile; no blockers — `CHANGES.md` |
 
 **Rollback:** `git revert a352081` — **no permalink flush** (phase 1 endpoint remains).
 
@@ -535,6 +537,8 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 | Dashboard | Still on `dashboard` only; no regression on orders/settings QA passes |
 | Permalinks | Direct URL works after one flush |
 
+**Account regression sweep (post-`a352081`, 2026-05-22):** **PASS** — `/my-account/` · `/my-account/my-courses/` · `/my-account/orders/` · `/view-order/3801/` · `/edit-account/` · `/edit-address/` · `/payment-methods/` · `/courses/` on desktop **1440×900** + mobile **390×844**; scope checks OK; dashboard stale copy/CTA remains optional phase 3 — `CHANGES.md`.
+
 ### 11.7 Rollback
 
 1. Revert child-theme commit(s): endpoint registration, menu filter, render callback, CSS.
@@ -556,6 +560,7 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 2. **Child theme commit A** — `add_rewrite_endpoint`, menu IA (**«Мои курсы»**), remove **`atmo-courses`**, static empty shell, scoped CSS — **done `ecfd8f5`** · one-time permalink flush documented in `CHANGES.md`  
 3. **QA** — §11.6 — **PASS on Local 2026-05-22**  
 4. **Child theme commit B** — LMS adapter PHP + wire `woocommerce_account_my-courses_endpoint` to **`get_enrolled_courses()`** — **done `a352081`** · QA PASS — `CHANGES.md`  
+4a. **Account regression QA** (post-`a352081`) — **PASS 2026-05-22** — `CHANGES.md`  
 5. **Optional commit C** — dashboard «Следующий шаг» + panel links to **`my-courses`** — **next optional**
 
 ---
