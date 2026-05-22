@@ -1,0 +1,390 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Анастасия Видрук — ATMO Studio</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  /* Hero split */
+  .trainer-hero {
+    display: grid;
+    gap: 48px;
+    grid-template-columns: 1fr;
+    padding: 48px 0 64px;
+    align-items: flex-start;
+  }
+  @media (min-width: 860px) {
+    .trainer-hero { grid-template-columns: 0.85fr 1fr; gap: 72px; align-items: start; padding: 64px 0 80px; }
+  }
+
+  .trainer-photo {
+    position: relative;
+  }
+  .trainer-photo-main {
+    aspect-ratio: 3 / 4;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lift);
+  }
+  .trainer-badge {
+    position: absolute;
+    right: -12px; bottom: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 18px;
+    box-shadow: var(--shadow-soft);
+    display: flex; align-items: center; gap: 12px;
+    max-width: 210px;
+  }
+  .trainer-badge-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: color-mix(in srgb, var(--primary) 14%, var(--bg-warm));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex: 0 0 36px;
+  }
+  .trainer-badge-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px; line-height: 1; letter-spacing: -0.02em;
+  }
+  .trainer-badge-lbl {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 10px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px;
+  }
+
+  /* Copy */
+  .trainer-copy { padding-top: 8px; }
+  .trainer-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.02; letter-spacing: -0.02em;
+    margin: 16px 0 6px;
+  }
+  .trainer-role {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 12px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.12em;
+  }
+  .trainer-lead {
+    font-size: clamp(17px, 1.8vw, 20px);
+    line-height: 1.55; color: var(--ink-soft);
+    margin: 28px 0 0; max-width: 520px;
+  }
+
+  /* Credentials grid */
+  .cred-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 36px;
+  }
+  @media (max-width: 480px) {
+    .cred-grid { grid-template-columns: 1fr; }
+  }
+  .cred-item {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 16px 18px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .cred-dot {
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--primary); flex: 0 0 8px; margin-top: 6px;
+  }
+  .cred-text { font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
+  .cred-text b { color: var(--ink); display: block; font-weight: 600; margin-bottom: 2px; }
+
+  /* Method section */
+  .method-section {
+    background: var(--bg-card);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 72px 0;
+  }
+  .method-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+    margin-top: 56px;
+  }
+  @media (min-width: 640px) { .method-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .method-card {
+    padding: 28px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+  }
+  .method-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 48px; line-height: 1; letter-spacing: -0.02em;
+    color: var(--ink-mute); margin-bottom: 20px;
+  }
+  .method-title {
+    font-size: 18px; font-weight: 600; margin-bottom: 10px;
+  }
+  .method-body { font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+
+  /* Bio section */
+  .bio-section { padding: 72px 0; }
+  .bio-grid {
+    display: grid; gap: 48px;
+    grid-template-columns: 1fr;
+    margin-top: 48px;
+  }
+  @media (min-width: 760px) { .bio-grid { grid-template-columns: 1fr 1.6fr; gap: 64px; } }
+
+  .bio-timeline { display: flex; flex-direction: column; gap: 0; }
+  .bio-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0 24px;
+    padding-bottom: 28px;
+    position: relative;
+  }
+  .bio-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 40px; top: 24px; bottom: 0;
+    width: 1px; background: var(--line);
+  }
+  .bio-year {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    padding-top: 4px; text-align: right;
+    position: relative;
+  }
+  .bio-year::after {
+    content: "";
+    position: absolute; right: -30px; top: 8px;
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--bg-card); border: 1px solid var(--line-strong);
+  }
+  .bio-item:first-child .bio-year::after { background: var(--primary); border-color: var(--primary); }
+  .bio-content { padding-left: 6px; }
+  .bio-content b { font-weight: 600; font-size: 15px; display: block; margin-bottom: 4px; }
+  .bio-content p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+
+  .bio-prose { font-size: 16px; line-height: 1.7; color: var(--ink-soft); }
+  .bio-prose p { margin: 0 0 20px; }
+  .bio-prose p:last-child { margin: 0; }
+
+  /* CTA strip */
+  .trainer-cta {
+    padding: 72px 0;
+  }
+  .cta-strip {
+    padding: clamp(32px, 5vw, 56px);
+    border-radius: 24px;
+    background: var(--ink);
+    color: var(--bg);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 24;
+    justify-content: space-between;
+  }
+  .cta-strip h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(28px, 3.5vw, 40px);
+    line-height: 1.1; margin: 0; letter-spacing: -0.01em;
+    text-wrap: balance; max-width: 500px;
+  }
+  .cta-strip .cta-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 640px) {
+    .trainer-badge { right: 8px; bottom: 16px; }
+    .trainer-hero { padding: 32px 0 48px; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main>
+    <!-- Hero -->
+    <section class="container">
+      <div class="trainer-hero">
+        <!-- Photo -->
+        <div class="trainer-photo">
+          <div class="trainer-photo-main ph tint-teal">
+            <span class="ph-label">фото · портрет тренера, 3:4</span>
+          </div>
+          <div class="trainer-badge">
+            <div class="trainer-badge-icon">⏱</div>
+            <div>
+              <div class="trainer-badge-num">130k+</div>
+              <div class="trainer-badge-lbl">YouTube-аудитория</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Copy -->
+        <div class="trainer-copy">
+          <nav class="breadcrumb" style="margin-bottom: 16px">
+            <a href="index.html">Главная</a>
+            <span class="sep">/</span>
+            <span class="current">Тренер</span>
+          </nav>
+          <span class="eyebrow with-tick">Основатель ATMO Studio</span>
+          <h1 class="trainer-name">Анастасия<br />Видрук</h1>
+          <div class="trainer-role">Тренер · С 2015 года</div>
+          <p class="trainer-lead">
+            Специализируюсь на женщинах, которые хотят двигаться без боли, возвращать энергию и наладить связь с телом — без марафонов, дедлайнов и чувства вины.
+          </p>
+
+          <div class="cred-grid">
+            <div class="cred-item">
+              <div class="cred-dot"></div>
+              <div class="cred-text">
+                <b>Тазовое дно и корсет</b>
+                Реабилитационный подход к глубоким мышцам
+              </div>
+            </div>
+            <div class="cred-item">
+              <div class="cred-dot"></div>
+              <div class="cred-text">
+                <b>Пилатес и мобильность</b>
+                Сертифицированный инструктор пилатеса
+              </div>
+            </div>
+            <div class="cred-item">
+              <div class="cred-dot"></div>
+              <div class="cred-text">
+                <b>Функциональный тренинг</b>
+                Программы для повседневной силы и выносливости
+              </div>
+            </div>
+            <div class="cred-item">
+              <div class="cred-dot"></div>
+              <div class="cred-text">
+                <b>Женское здоровье 35+</b>
+                Особенности тела в период гормональных изменений
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Method -->
+    <section class="method-section">
+      <div class="container">
+        <div style="max-width: 640px">
+          <span class="eyebrow">Метод</span>
+          <h2 class="serif" style="font-size: clamp(36px, 5vw, 52px); line-height: 1.05; margin: 20px 0 0; letter-spacing: -0.02em; text-wrap: balance;">
+            Почему программы работают,<br />когда другое не работало.
+          </h2>
+        </div>
+        <div class="method-grid">
+          <div class="method-card">
+            <div class="method-num">01</div>
+            <div class="method-title">Короткие — значит реальные</div>
+            <p class="method-body">15–40 минут в день — это не компромисс. Это расчёт: тело реагирует на регулярность, а не на объём. Лучше каждый день понемногу, чем раз в неделю много.</p>
+          </div>
+          <div class="method-card">
+            <div class="method-num">02</div>
+            <div class="method-title">От корня, не от симптома</div>
+            <p class="method-body">Боль в пояснице — это часто слабость глубоких мышц или бёдер. Усталость — это иногда дыхание. Работаем с причиной, а не с тем, что заметно снаружи.</p>
+          </div>
+          <div class="method-card">
+            <div class="method-num">03</div>
+            <div class="method-title">Без надрыва</div>
+            <p class="method-body">Тело в стрессе не меняется — оно сжимается. Поэтому программы построены на спокойном накоплении: без боли, без «через не могу», без ощущения, что вы делаете недостаточно.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bio -->
+    <section class="bio-section">
+      <div class="container">
+        <span class="eyebrow">Путь</span>
+        <div class="bio-grid">
+          <!-- Timeline -->
+          <div class="bio-timeline">
+            <div class="bio-item">
+              <div class="bio-year">Сейчас</div>
+              <div class="bio-content">
+                <b>ATMO Studio — 19 программ</b>
+                <p>Онлайн-платформа с курсами по тазовому дну, мобильности, кардио и силовому тренингу. YouTube-аудитория 130 000+.</p>
+              </div>
+            </div>
+            <div class="bio-item">
+              <div class="bio-year">2019</div>
+              <div class="bio-content">
+                <b>Первые структурированные курсы</b>
+                <p>Переход от разовых тренировок к системным программам с дневником и обратной связью.</p>
+              </div>
+            </div>
+            <div class="bio-item">
+              <div class="bio-year">2017</div>
+              <div class="bio-content">
+                <b>YouTube и онлайн</b>
+                <p>Начало работы в онлайн-формате. Фокус сместился на женщин 35+: тазовое дно, осанка, восстановление после нагрузок.</p>
+              </div>
+            </div>
+            <div class="bio-item">
+              <div class="bio-year">2015</div>
+              <div class="bio-content">
+                <b>Основание ATMO</b>
+                <p>Старт студии с живыми группами и персональными тренировками. Пилатес, функциональный тренинг, работа с болью в спине.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prose -->
+          <div>
+            <div class="bio-prose">
+              <p>
+                Я начала заниматься фитнесом не для формы — для того, чтобы спина перестала болеть. В 23 года хронический спазм в пояснице, и никакой тренажёрный зал это не лечил. Меня спасли пилатес, дыхание и понимание того, как работают глубокие мышцы.
+              </p>
+              <p>
+                Это и стало основой метода. Большинство женщин, которые приходят ко мне, уже что-то пробовали: зал, йогу, марафоны, диеты. И что-то шло не так — либо не держалось, либо было слишком тяжело, либо боль возвращалась. Проблема почти всегда не в мотивации, а в подходе.
+              </p>
+              <p>
+                Тело меняется медленно и честно. Быстрых результатов не бывает — бывают стабильные. Программы ATMO построены именно на этом: небольшие, выполнимые шаги, которые накапливаются в реальный эффект.
+              </p>
+              <p>
+                Если вы хотите понять, с чего начать — пройдите каталог или напишите в любом уроке. Я читаю каждое сообщение.
+              </p>
+            </div>
+
+            <div style="margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="catalog.html" class="btn btn-primary btn-arrow">Смотреть программы</a>
+              <a href="https://www.instagram.com/atmo.by/" target="_blank" rel="noopener" class="btn btn-ghost">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.7"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+                Instagram
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="trainer-cta container">
+      <div class="cta-strip">
+        <h3>Есть вопрос — напишите прямо в уроке. <span style="color: var(--primary)">Отвечаю лично.</span></h3>
+        <div class="cta-actions">
+          <a href="catalog.html" class="btn btn-primary btn-arrow">Начать здесь</a>
+          <a href="auth.html" class="btn btn-ghost" style="border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7)">Войти</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'trainer' });
+  </script>
+</body>
+</html>

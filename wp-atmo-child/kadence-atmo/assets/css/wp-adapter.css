@@ -1,0 +1,96 @@
+/*
+ * WordPress adapter for the static ATMO prototype design system.
+ * Keep this thin: broad visual language lives in atmo-design.css.
+ */
+
+.atmo-wp {
+  background: var(--bg);
+}
+
+.atmo-site {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.atmo-main {
+  flex: 1 0 auto;
+}
+
+.atmo-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.atmo-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: end;
+}
+
+.atmo-mark-svg {
+  flex-shrink: 0;
+  display: block;
+}
+
+.atmo-footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.atmo-footer-brand .serif {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.atmo-footer-copy {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  max-width: 280px;
+}
+
+.atmo-footer-legal {
+  font-size: 11px;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.atmo-footer-links {
+  display: flex;
+  gap: 18px;
+}
+
+.atmo-footer-links a {
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.footer-col span {
+  color: var(--ink-soft);
+}
+
+.atmo-drawer-cart-count {
+  background: rgba(0,0,0,0.15);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 12px;
+}
+
+body.admin-bar .atmo-header {
+  top: 32px;
+}
+
+@media (max-width: 782px) {
+  body.admin-bar .atmo-header {
+    top: 46px;
+  }
+}
+

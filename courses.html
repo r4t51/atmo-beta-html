@@ -1,0 +1,422 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Мои курсы — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .account-wrap {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: 1fr;
+    padding: 32px 0 80px;
+    align-items: flex-start;
+  }
+  @media (min-width: 860px) {
+    .account-wrap { grid-template-columns: 220px 1fr; gap: 40px; }
+  }
+
+  .account-nav { display: flex; flex-direction: column; gap: 2px; }
+  .account-nav-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 14px; margin-bottom: 6px;
+  }
+  .account-avatar {
+    width: 40px; height: 40px; border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 22%, var(--bg-warm));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 18px; color: var(--primary-deep);
+    flex: 0 0 40px;
+  }
+  .account-nav-name { font-weight: 600; font-size: 14px; line-height: 1.2; }
+  .account-nav-email { font-size: 12px; color: var(--ink-mute); margin-top: 1px; }
+  .account-nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: var(--r-md);
+    font-size: 14px; font-weight: 500; color: var(--ink-soft);
+    text-decoration: none;
+    transition: background .12s, color .12s;
+  }
+  .account-nav a:hover { background: var(--bg-warm); color: var(--ink); }
+  .account-nav a.active {
+    background: var(--bg-card); color: var(--ink);
+    border: 1px solid var(--line); border-left: 2px solid var(--ink);
+  }
+  .account-nav .nav-icon { width: 16px; height: 16px; opacity: 0.5; flex: 0 0 16px; }
+  .account-nav .nav-sep { height: 1px; background: var(--line); margin: 6px 14px; }
+  .account-nav a.danger { color: var(--ink-mute); }
+  .account-nav a.danger:hover { color: #c25a4a; background: color-mix(in srgb, #c25a4a 6%, transparent); }
+
+  .courses-list {
+    border-top: none;
+    padding-top: 0;
+    margin-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .course-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto auto auto;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 24px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg-card);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow .2s ease, transform .2s ease;
+  }
+  .course-row:hover {
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-2px);
+  }
+  .course-row .num {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-mute);
+    letter-spacing: 0.1em; font-variant-numeric: tabular-nums;
+  }
+  .course-row .name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(22px, 2.4vw, 28px); line-height: 1.1;
+    margin: 0; letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .course-row .summary {
+    color: var(--ink-soft); font-size: 14px; line-height: 1.5;
+    margin-top: 4px; max-width: 540px;
+  }
+  .course-row .goal {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    display: inline-flex; align-items: center; gap: 8px;
+    white-space: nowrap;
+  }
+  .course-row .goal .dot { width: 6px; height: 6px; border-radius: 999px; }
+  .course-row .duration {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .course-row .price {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px; letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .course-row:hover .name { color: var(--primary-deep); }
+  @media (max-width: 760px) {
+    .course-row { grid-template-columns: 40px 1fr auto; gap: 14px; align-items: start; }
+    .course-row .goal, .course-row .duration { display: none; }
+    .course-row .price { font-size: 17px; align-self: center; }
+  }
+
+  .group-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px; margin: 56px 0 16px;
+    padding-bottom: 14px; border-bottom: 1px solid var(--ink);
+  }
+  .group-head:first-of-type { margin-top: 24px; }
+  .group-head h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(28px, 3.5vw, 40px); margin: 0; letter-spacing: -0.02em;
+  }
+  .group-head .count {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  .toggle-view {
+    display: inline-flex; gap: 4px; padding: 4px;
+    background: var(--bg-warm); border-radius: 999px;
+  }
+  .toggle-view button {
+    padding: 6px 14px; border-radius: 999px;
+    background: transparent; border: none; cursor: pointer;
+    font-family: inherit; font-size: 13px; color: var(--ink-soft);
+  }
+  .toggle-view button.active { background: var(--bg); color: var(--ink); }
+
+  /* Grid view */
+  #view-grid { display: none; }
+  #view-grid.visible { display: block; }
+  #view-list.hidden { display: none; }
+
+  .courses-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    padding-bottom: 64px;
+  }
+  .enrolled-card {
+    display: flex; flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    text-decoration: none; color: inherit;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .enrolled-card:hover { box-shadow: var(--shadow-lift); transform: translateY(-2px); }
+  .enrolled-card .ph { aspect-ratio: 4/3; position: relative; }
+  .enrolled-card .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .enrolled-card .card-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .enrolled-card .card-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px; letter-spacing: -0.01em; line-height: 1.15;
+    margin: 0;
+  }
+  .enrolled-card .progress-wrap { margin-top: auto; padding-top: 12px; }
+  .enrolled-card .progress-bar {
+    height: 4px; border-radius: 999px;
+    background: var(--bg-warm); overflow: hidden; margin-bottom: 6px;
+  }
+  .enrolled-card .progress-bar span {
+    display: block; height: 100%; background: var(--ink); border-radius: 999px;
+  }
+  .enrolled-card .progress-bar span.done { background: var(--positive, #4a9a6a); }
+  .enrolled-card .progress-text {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--ink-mute);
+  }
+
+  /* Empty state */
+  .courses-empty {
+    padding: 72px 24px 80px; text-align: center;
+    border: 1px dashed var(--line-strong); border-radius: var(--r-lg);
+    background: var(--bg-card);
+  }
+  .courses-empty .empty-icon {
+    width: 72px; height: 72px; border-radius: 999px;
+    background: color-mix(in srgb, var(--secondary) 12%, var(--bg-warm));
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px; font-size: 26px;
+  }
+  .courses-empty h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(24px, 4vw, 32px); letter-spacing: -0.01em; margin: 0 0 10px;
+  }
+  .courses-empty p {
+    font-size: 15px; color: var(--ink-soft); line-height: 1.6;
+    margin: 0 auto 28px; max-width: 360px;
+  }
+  .courses-empty .empty-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── Mobile ─────────────────────────────────────────────── */
+  @media (max-width: 859px) {
+    .account-wrap { padding: 16px 0 64px; gap: 16px; }
+    .account-nav { flex-direction: row; overflow-x: auto; overflow-y: hidden; gap: 4px; padding-bottom: 4px; scrollbar-width: none; }
+    .account-nav::-webkit-scrollbar { display: none; }
+    .account-nav-head { display: none; }
+    .account-nav .nav-sep { display: none; }
+    .account-nav a { flex-direction: column; align-items: center; gap: 4px; padding: 8px 12px; white-space: nowrap; font-size: 13px; border-radius: 999px !important; border-left-width: 1px !important; }
+    .account-nav a.active { border-color: var(--ink) !important; }
+    .account-nav .nav-icon { width: 18px; height: 18px; }
+    .account-nav a.danger { display: none; }
+    .courses-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 540px) {
+    .group-head { flex-wrap: wrap; gap: 8px; margin: 36px 0 12px; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="container">
+    <div class="account-wrap">
+
+      <nav class="account-nav">
+        <div class="account-nav-head">
+          <div class="account-avatar">А</div>
+          <div>
+            <div class="account-nav-name">Аня</div>
+            <div class="account-nav-email">ann@example.com</div>
+          </div>
+        </div>
+        <a href="account.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+          Обзор
+        </a>
+        <a href="courses.html" class="active">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4.5h12M2 8h8M2 11.5h10"/></svg>
+          Мои курсы
+        </a>
+        <a href="orders.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7"/><path d="M1 12h14"/><path d="M6.5 9h3"/></svg>
+          Заказы
+        </a>
+        <a href="profile.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5.5" r="2.5"/><path d="M2.5 13.5c0-3 2.46-5 5.5-5s5.5 2 5.5 5"/></svg>
+          Настройки
+        </a>
+        <div class="nav-sep"></div>
+        <a href="auth.html" class="danger">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 8h7M11 6l2 2-2 2"/><path d="M10 4V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1"/></svg>
+          Выйти
+        </a>
+      </nav>
+
+      <div>
+        <header class="page-head" style="padding-top:0">
+          <div style="display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap">
+            <div>
+              <span class="eyebrow with-tick">Куплены · 3 из 19</span>
+              <h1>Мои курсы</h1>
+              <p>Программы, к которым у вас открыт доступ. Сгруппировано по цели.</p>
+            </div>
+            <div class="toggle-view" role="tablist">
+              <button id="btn-list">Списком</button>
+              <button id="btn-grid" class="active">Сеткой</button>
+            </div>
+          </div>
+        </header>
+
+        <div id="view-list" class="hidden"><div id="groups"></div></div>
+        <div id="view-grid" class="visible"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'courses' });
+
+    // Simulate owned courses — in production comes from user's purchases
+    const OWNED_IDS = ['belly-floor', 'levelup-neuro', 'cardio-zero'];
+    const PROGRESS  = { 'belly-floor': 28, 'levelup-neuro': 32, 'cardio-zero': 100 };
+
+    const owned = ATMO.PRODUCTS.filter(p => OWNED_IDS.includes(p.id));
+
+    // Update eyebrow count dynamically
+    document.querySelector('.eyebrow.with-tick').textContent =
+      `Куплены · ${owned.length} из ${ATMO.PRODUCTS.length}`;
+
+    if (owned.length === 0) {
+      document.querySelector('.toggle-view').style.display = 'none';
+      document.querySelector('header.page-head p').textContent =
+        'Здесь появятся программы, к которым у вас открыт доступ.';
+      const emptyHTML = `
+        <div class="courses-empty">
+          <div class="empty-icon">🎓</div>
+          <h2>Курсов пока нет</h2>
+          <p>Выберите программу из каталога — доступ откроется сразу после оплаты.</p>
+          <div class="empty-actions">
+            <a class="btn btn-primary btn-lg" href="catalog.html">Посмотреть программы</a>
+          </div>
+        </div>`;
+      document.getElementById('view-list').innerHTML = emptyHTML;
+      document.getElementById('view-grid').innerHTML = '';
+    } else {
+
+    const groups = ['energy', 'mobility', 'strength'];
+    const groupTitles = {
+      energy:   ['Энергия',     'Возвращают силы и нормальный сон'],
+      mobility: ['Мобильность', 'Снимают зажатость, работают с подвижностью'],
+      strength: ['Сила',        'Прогрессивная нагрузка, форма, рельеф'],
+    };
+
+    // ── List view ──────────────────────────────────────────────────────────
+    const listHTML = groups.map(g => {
+      const items = owned.filter(p => p.goal === g);
+      if (!items.length) return '';
+      const goal = ATMO.GOALS[g];
+      return `
+        <section>
+          <div class="group-head">
+            <div>
+              <h2>${groupTitles[g][0]}</h2>
+              <div class="muted" style="font-size:14px;margin-top:4px">${groupTitles[g][1]}</div>
+            </div>
+            <span class="count">${items.length} прог.</span>
+          </div>
+          <div class="courses-list">
+            ${items.map((p, i) => {
+              const pct = PROGRESS[p.id] || 0;
+              return `
+              <a class="course-row" href="product-enrolled.html?id=${p.id}">
+                <span class="num">${String(i+1).padStart(2,'0')}</span>
+                <div>
+                  <h3 class="name">${p.title}</h3>
+                  <div class="summary">${p.summary}</div>
+                </div>
+                <span class="goal"><span class="dot" style="background:${goal.accent}"></span>${goal.label}</span>
+                <span class="duration">${p.duration} · ${p.sessionLen}</span>
+                <span class="price">${pct === 100 ? '✓ Пройдена' : pct + '%'}</span>
+              </a>`;
+            }).join('')}
+          </div>
+        </section>`;
+    }).join('');
+    document.getElementById('groups').innerHTML = listHTML;
+
+    // ── Grid view ──────────────────────────────────────────────────────────
+    const gridHTML = `<div class="courses-grid">` +
+      owned.map(p => {
+        const pct  = PROGRESS[p.id] || 0;
+        const done = pct === 100;
+        const goal = ATMO.GOALS[p.goal];
+        return `
+          <a class="enrolled-card" href="product-enrolled.html?id=${p.id}">
+            <div class="ph ${p.tint}">
+              ${ATMO.goalIcon(p.goal)}
+              <span class="ph-label">${p.title.toLowerCase()}</span>
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span style="width:6px;height:6px;border-radius:999px;background:${goal.accent}"></span>
+                ${goal.label} · ${p.duration}
+              </div>
+              <h3 class="card-title">${p.title}</h3>
+              <div class="progress-wrap">
+                <div class="progress-bar">
+                  <span style="width:${pct}%" class="${done ? 'done' : ''}"></span>
+                </div>
+                <div class="progress-text">
+                  <span>${done ? 'Пройдена' : 'Прогресс'}</span>
+                  <span>${pct}%</span>
+                </div>
+              </div>
+            </div>
+          </a>`;
+      }).join('') +
+    `</div>`;
+    document.getElementById('view-grid').innerHTML = gridHTML;
+
+    // ── Toggle ─────────────────────────────────────────────────────────────
+    const btnList = document.getElementById('btn-list');
+    const btnGrid = document.getElementById('btn-grid');
+    const viewList = document.getElementById('view-list');
+    const viewGrid = document.getElementById('view-grid');
+
+    btnList.addEventListener('click', () => {
+      btnList.classList.add('active'); btnGrid.classList.remove('active');
+      viewList.classList.remove('hidden'); viewGrid.classList.remove('visible');
+    });
+    btnGrid.addEventListener('click', () => {
+      btnGrid.classList.add('active'); btnList.classList.remove('active');
+      viewGrid.classList.add('visible'); viewList.classList.add('hidden');
+    });
+
+    } // end else (owned.length > 0)
+  </script>
+</body>
+</html>

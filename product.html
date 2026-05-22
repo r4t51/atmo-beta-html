@@ -1,0 +1,323 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Программа — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .pdp-hero {
+    display: grid; gap: 32px;
+    grid-template-columns: 1fr; padding: 24px 0 48px;
+  }
+  @media (min-width: 920px) {
+    .pdp-hero { grid-template-columns: 1.15fr 1fr; gap: 56px; padding: 40px 0 72px; }
+  }
+  .pdp-cover { aspect-ratio: 4/5; border-radius: var(--r-xl); position: relative; }
+  .pdp-cover .pill { position: absolute; top: 16px; left: 16px; }
+  .pdp-side h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(40px, 5.4vw, 64px);
+    line-height: 1.02; margin: 16px 0 0; letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .pdp-meta {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+  }
+  .pdp-summary { color: var(--ink-soft); font-size: 17px; line-height: 1.6; margin: 22px 0 0; max-width: 480px; }
+  .pdp-buy {
+    margin-top: 28px; padding: 24px; border-radius: var(--r-lg);
+    background: var(--bg-card); border: 1px solid var(--line);
+  }
+  .pdp-buy .price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .pdp-buy .price {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 44px; line-height: 1; letter-spacing: -0.02em;
+  }
+  .pdp-buy .price-old { color: var(--ink-mute); text-decoration: line-through; }
+  .pdp-buy .price-note { color: var(--ink-soft); font-size: 13px; margin-bottom: 18px; }
+  .pdp-access {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0;
+  }
+  .access-opt {
+    border: 1px solid var(--line-strong); border-radius: var(--r-md);
+    padding: 14px; cursor: pointer; background: transparent;
+    text-align: left; font-family: inherit; transition: all .15s ease;
+  }
+  .access-opt:hover { border-color: var(--ink); }
+  .access-opt.active { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+  .access-opt .lbl { font-size: 13px; opacity: 0.7; }
+  .access-opt .val { font-size: 18px; font-weight: 500; margin-top: 2px; }
+  .pdp-actions { display: flex; gap: 10px; margin-top: 6px; }
+
+  .section-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(28px, 3.5vw, 40px); line-height: 1.1;
+    margin: 0 0 24px; letter-spacing: -0.02em;
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden;
+  }
+  .stat { background: var(--bg-card); padding: 22px 24px; }
+  .stat .num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 38px; line-height: 1; letter-spacing: -0.02em;
+  }
+  .stat .lbl {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-top: 8px;
+  }
+
+  .who-grid {
+    display: grid; gap: 16px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) { .who-grid { grid-template-columns: 1fr 1fr; } }
+  .who-block {
+    padding: 24px; border-radius: var(--r-lg);
+    background: var(--bg-card); border: 1px solid var(--line);
+  }
+  .who-block h4 {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--ink-mute); margin: 0 0 14px;
+  }
+  .who-block ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .who-block li {
+    display: flex; gap: 10px; line-height: 1.5;
+  }
+  .who-block li::before {
+    content: ""; flex: 0 0 18px; height: 18px;
+    margin-top: 2px;
+    background: var(--primary-soft);
+    border-radius: 999px;
+    background-image: radial-gradient(circle, var(--primary) 30%, transparent 32%);
+  }
+  .who-block.not li::before {
+    background-image: radial-gradient(circle, var(--ink-mute) 30%, transparent 32%);
+    background-color: var(--bg-soft);
+  }
+
+  /* FAQ */
+  details {
+    border-top: 1px solid var(--line); padding: 18px 0;
+    cursor: pointer;
+  }
+  details summary {
+    list-style: none; display: flex; align-items: center; justify-content: space-between;
+    font-size: 17px; font-weight: 500;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::after { content: "+"; font-size: 24px; color: var(--ink-mute); transition: transform .2s ease; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { margin: 12px 0 0; color: var(--ink-soft); line-height: 1.6; max-width: 720px; }
+
+
+  /* ── Mobile overrides ─────────────────────────────────────── */
+  @media (max-width: 640px) {
+    /* Shorter cover on small screens — portrait takes too much vertical space */
+    .pdp-cover { aspect-ratio: 3 / 2 !important; }
+
+    /* Buy box adjustments */
+    .pdp-buy { padding: 18px; }
+    .pdp-buy .price { font-size: 36px; }
+    .pdp-access { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .pdp-actions { flex-wrap: wrap; }
+    .pdp-actions .btn-block { min-width: 0; }
+
+    /* Stats — 2 columns instead of auto-fit */
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .stat .num { font-size: 28px; }
+
+    /* Related grid */
+    .grid { grid-template-columns: 1fr !important; }
+
+    /* Section titles */
+    .section { padding: 40px 0; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="container">
+    <nav class="breadcrumb" style="margin: 18px 0 0">
+      <a href="index.html">Главная</a>
+      <span class="sep">/</span>
+      <a href="catalog.html">Каталог</a>
+      <span class="sep">/</span>
+      <span class="current" id="bc-current">Программа</span>
+    </nav>
+
+    <section class="pdp-hero">
+      <div class="ph pdp-cover tint-teal" id="pdp-cover">
+        <span class="pill pill-ink" id="pdp-badge">Bestseller</span>
+        <span class="ph-label" id="pdp-cover-label">обложка курса</span>
+      </div>
+      <div class="pdp-side">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <span class="eyebrow with-tick" id="pdp-goal">Энергия</span>
+        </div>
+        <h1 id="pdp-title">Основа</h1>
+        <div class="pdp-meta" id="pdp-meta"></div>
+        <p class="pdp-summary" id="pdp-summary">Программа, с которой стоит начать. Возвращает связь с телом, снимает накопленную усталость и формирует устойчивый ритм.</p>
+
+        <div class="pdp-buy">
+          <div class="price-row">
+            <span class="price" id="pdp-price">389 zł</span>
+            <span class="price-old" id="pdp-price-old"></span>
+          </div>
+          <div class="price-note">Оплата картой или <span style="color:var(--ink);font-weight:500">Klarna</span> — через Stripe.</div>
+
+          <div id="access-section" style="display:none">
+            <div style="font-family:'Space Mono',ui-monospace,monospace;font-size:11px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">Тип доступа</div>
+            <div class="pdp-access">
+              <button class="access-opt active" data-access="60">
+                <div class="lbl">Стандарт</div>
+                <div class="val">60 дней</div>
+              </button>
+              <button class="access-opt" data-access="forever">
+                <div class="lbl">Без ограничений</div>
+                <div class="val">Бессрочно</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="pdp-actions">
+            <a class="btn btn-primary btn-lg btn-block btn-arrow" href="cart.html" style="flex:1">В корзину</a>
+            <button class="btn btn-ghost btn-lg" id="btn-gift" title="Подарить курс">🎁</button>
+          </div>
+          <div id="gift-note" style="display:none;margin-top:12px;padding:14px 16px;border-radius:var(--r-md);background:color-mix(in srgb,var(--secondary) 8%,var(--bg-card));border:1px solid color-mix(in srgb,var(--secondary) 20%,transparent);font-size:14px;line-height:1.55;color:var(--ink-soft)">
+            🎁 Хотите подарить курс? Оформите заказ и напишите в примечании имя получателя и его e-mail — мы отправим доступ напрямую.
+          </div>
+          <div style="margin-top:14px;font-size:12px;color:var(--ink-mute);display:flex;gap:14px;flex-wrap:wrap">
+            <span>✓ Доступ сразу после оплаты</span>
+            <span>✓ Доступ на выбранный срок</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="stat-grid" id="pdp-stats"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Что это даёт</h2>
+      <div class="who-grid">
+        <div class="who-block">
+          <h4>Подходит, если</h4>
+          <ul>
+            <li>Хочется вернуть энергию и нормальный сон</li>
+            <li>Тело отказывается от резких нагрузок</li>
+            <li>Нужен спокойный, понятный план — без угадываний</li>
+            <li>Раньше не получалось закрепить регулярность</li>
+          </ul>
+        </div>
+        <div class="who-block not">
+          <h4>Не подходит, если</h4>
+          <ul>
+            <li>Ищете максимально быстрый сброс веса</li>
+            <li>Нужна работа с травмой — обратитесь к специалисту</li>
+            <li>Ожидаете высокоинтенсивные кардио-сессии</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section">
+      <h2 class="section-title">Частые вопросы</h2>
+      <div>
+        <details open><summary>Что нужно из инвентаря?</summary><p>Коврик и пара лёгких эластичных лент. Всё. Никаких тренажёров и отягощений.</p></details>
+        <details><summary>Сколько времени занимает в день?</summary><p>15–25 минут. Программа спроектирована так, чтобы помещаться в обычное утро или вечер.</p></details>
+        <details><summary>Можно ли заниматься во время цикла?</summary><p>Да. В программе есть мягкие альтернативы для дней, когда не до интенсива.</p></details>
+        <details><summary>Пропустила неделю — что делать?</summary><p>Ничего страшного. Доступ сохраняется, темп подбирается под жизнь, а не наоборот.</p></details>
+        <details><summary>Подходит после родов?</summary><p>Курс «Живот и Тазовое дно» — да, через 8–10 недель после естественных родов и согласование с врачом. Если нужно мягкое возвращение в форму без работы с тазовым дном, посмотрите «Фитнес Сезон 1 — Забота о Себе».</p></details>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <h2 class="section-title">Если эта не подходит</h2>
+      <div class="grid" style="display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))" id="related"></div>
+    </section>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'catalog' });
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id') || 'belly-floor';
+    const p = ATMO.PRODUCTS.find(x => x.id === id) || ATMO.PRODUCTS[0];
+    const goal = ATMO.GOALS[p.goal];
+
+    document.getElementById('bc-current').textContent = p.title;
+    document.getElementById('pdp-title').textContent = p.title;
+    document.getElementById('pdp-summary').textContent = p.summary;
+    document.getElementById('pdp-goal').textContent = goal.label;
+    document.getElementById('pdp-cover').className = `ph pdp-cover ${p.tint}`;
+    document.getElementById('pdp-cover-label').textContent = p.title.toLowerCase();
+    document.getElementById('pdp-price').textContent = ATMO.formatPrice(p.price);
+    if (p.oldPrice) document.getElementById('pdp-price-old').textContent = ATMO.formatPrice(p.oldPrice);
+    if (p.subtitle) document.getElementById('pdp-badge').textContent = p.subtitle;
+    else document.getElementById('pdp-badge').remove();
+    document.title = `${p.title} — ATMO`;
+
+    document.getElementById('pdp-meta').innerHTML = [
+      `<span class="pill"><span style="width:6px;height:6px;border-radius:999px;background:${goal.accent}"></span>${goal.label}</span>`,
+      `<span class="pill">⏱ ${p.duration}</span>`,
+      `<span class="pill">${p.sessionsPerWeek}× в неделю</span>`,
+      `<span class="pill">${p.sessionLen}</span>`,
+    ].join('');
+
+    document.getElementById('pdp-stats').innerHTML = [
+      ['Длительность', p.duration],
+      ['Тренировок в неделю', p.sessionsPerWeek],
+      ['Длина сессии', p.sessionLen],
+      ['Уровень', 'Любой'],
+    ].map(([lbl,val]) => `<div class="stat"><div class="num">${val}</div><div class="lbl">${lbl}</div></div>`).join('');
+
+
+    // Access toggle — only for courses that support dual access
+    const DUAL_ACCESS_IDS = ['belly-floor'];
+    const basePrice = p.price;
+    const accessPrices = { '60': basePrice, 'forever': Math.round(basePrice * 1.5) };
+    if (DUAL_ACCESS_IDS.includes(p.id)) {
+      document.getElementById('access-section').style.display = '';
+      document.querySelectorAll('.access-opt').forEach(b => {
+        b.addEventListener('click', () => {
+          document.querySelectorAll('.access-opt').forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          const k = b.dataset.access;
+          document.getElementById('pdp-price').textContent = ATMO.formatPrice(accessPrices[k]);
+        });
+      });
+    }
+
+    // Gift button
+    document.getElementById('btn-gift').addEventListener('click', () => {
+      const note = document.getElementById('gift-note');
+      const btn  = document.getElementById('btn-gift');
+      const open = note.style.display !== 'none';
+      note.style.display = open ? 'none' : '';
+      btn.style.background = open ? '' : 'color-mix(in srgb,var(--secondary) 12%,var(--bg-warm))';
+    });
+
+    // Related
+    const related = ATMO.PRODUCTS.filter(x => x.id !== p.id && x.goal !== p.goal).slice(0, 3);
+    document.getElementById('related').innerHTML = related.map(ATMO.productCardHTML).join('');
+  </script>
+</body>
+</html>

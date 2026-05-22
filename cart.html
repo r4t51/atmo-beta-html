@@ -1,0 +1,287 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Корзина — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .cart-grid {
+    display: grid; gap: 24px;
+    grid-template-columns: 1fr;
+    padding: 24px 0 64px;
+  }
+  @media (min-width: 920px) {
+    .cart-grid { grid-template-columns: 1.4fr 1fr; gap: 40px; }
+  }
+
+  .cart-line {
+    display: grid; gap: 16px;
+    grid-template-columns: 96px 1fr;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 600px) { .cart-line { grid-template-columns: 120px 1fr auto; } }
+  .cart-line .ph { aspect-ratio: 1; border-radius: var(--r-md); }
+  .cart-line .body h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px; line-height: 1.1; margin: 4px 0 0; letter-spacing: -0.01em;
+  }
+  .cart-line .meta {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .cart-line .config {
+    margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .cart-line .config-pill {
+    padding: 5px 10px; border-radius: 999px;
+    font-size: 12px; background: var(--bg-warm); color: var(--ink-soft);
+    border: 1px solid var(--line);
+  }
+  .cart-line .config-pill.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .cart-line .config-pill { cursor: pointer; }
+  .cart-line .row-bot {
+    margin-top: 14px; display: flex; align-items: center; gap: 16px; justify-content: space-between;
+  }
+  .cart-line .qty {
+    display: inline-flex; align-items: center; gap: 0;
+    border: 1px solid var(--line-strong); border-radius: 999px; overflow: hidden;
+  }
+  .cart-line .qty button {
+    background: transparent; border: none; padding: 6px 12px; font-size: 14px; cursor: pointer; color: var(--ink); font-family: inherit;
+  }
+  .cart-line .qty span { padding: 0 4px; min-width: 18px; text-align: center; font-variant-numeric: tabular-nums; }
+  .cart-line .price {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px; letter-spacing: -0.01em;
+    text-align: right;
+    white-space: nowrap;
+    min-width: 80px;
+  }
+  .cart-line .remove {
+    color: var(--ink-mute); font-size: 12px; background: none; border: none;
+    cursor: pointer; font-family: inherit; padding: 0;
+  }
+  .cart-line .remove:hover { color: var(--ink); text-decoration: underline; }
+
+  .summary {
+    position: sticky; top: 100px;
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 28px;
+    align-self: start;
+  }
+  .summary h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 28px; margin: 0 0 18px; letter-spacing: -0.01em;
+  }
+  .sum-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 10px 0; font-size: 15px;
+  }
+  .sum-row.total {
+    border-top: 1px solid var(--line); margin-top: 8px; padding-top: 16px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 28px; line-height: 1;
+  }
+  .promo {
+    display: flex; gap: 8px; margin: 14px 0 4px;
+  }
+  .promo input {
+    flex: 1; padding: 12px 14px; border-radius: 10px;
+    border: 1px solid var(--line-strong); background: transparent;
+    font-family: inherit; font-size: 14px; color: var(--ink);
+  }
+  .promo input:focus { outline: none; border-color: var(--ink); }
+  .trust {
+    display: grid; gap: 10px; margin-top: 22px; padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 13px; color: var(--ink-soft);
+  }
+  .trust div { display: flex; gap: 10px; align-items: flex-start; }
+  .trust .check {
+    flex: 0 0 16px; height: 16px; margin-top: 3px;
+    background: var(--primary-soft); border-radius: 999px; position: relative;
+  }
+  .trust .check::after {
+    content: "✓"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: var(--primary-deep); font-size: 10px; font-weight: 600;
+  }
+
+  .empty-state {
+    grid-column: 1/-1;
+    padding: 72px 24px 80px; text-align: center;
+    border: 1px dashed var(--line-strong); border-radius: var(--r-lg);
+    background: var(--bg-card);
+  }
+  .empty-icon {
+    width: 72px; height: 72px; border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 12%, var(--bg-warm));
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px; font-size: 26px;
+  }
+  .empty-state h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(24px, 4vw, 32px); letter-spacing: -0.01em; margin: 0 0 10px;
+  }
+  .empty-state p {
+    font-size: 15px; color: var(--ink-soft); line-height: 1.6;
+    margin: 0 auto 28px; max-width: 360px;
+  }
+  .empty-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── Mobile overrides ─────────────────────────────────────── */
+  @media (max-width: 640px) {
+    /* Cart line — thumbnail smaller, no separate price column */
+    .cart-line { grid-template-columns: 80px 1fr; gap: 12px; padding: 16px 0; }
+    .cart-line .body h3 { font-size: 18px; }
+    .cart-line .row-bot { flex-wrap: wrap; gap: 10px; }
+
+    /* Summary — not sticky on mobile, sits naturally after items */
+    .summary { position: static; margin-top: 4px; padding: 20px; }
+    .summary h2 { font-size: 22px; }
+    .sum-row.total { font-size: 22px; }
+
+    /* Cart grid — already 1-col, just tighten padding */
+    .cart-grid { padding: 16px 0 48px; gap: 0; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="container">
+    <header class="page-head" style="padding-bottom: 8px">
+      <nav class="breadcrumb" style="margin-bottom: 14px">
+        <a href="index.html">Главная</a>
+        <span class="sep">/</span>
+        <span class="current">Корзина</span>
+      </nav>
+      <span class="eyebrow with-tick" id="cart-count-eyebrow">2 программы</span>
+      <h1>Корзина</h1>
+    </header>
+
+    <section class="cart-grid">
+      <div id="cart-lines"></div>
+
+      <aside class="summary">
+        <h2>К оплате</h2>
+        <div class="sum-row"><span class="muted">Программы</span><span id="sum-subtotal">—</span></div>
+        <div class="sum-row"><span class="muted">Скидка</span><span id="sum-discount">—</span></div>
+        <div class="promo">
+          <input type="text" placeholder="Промокод" id="promo" />
+          <button class="btn btn-soft btn-sm" id="promo-apply">Применить</button>
+        </div>
+        <div class="sum-row total"><span>Итого</span><span id="sum-total">—</span></div>
+        <div class="muted" style="font-size:12px;margin-top:4px">≈ <span id="sum-eur">—</span> · оплата в zł</div>
+
+        <a href="checkout.html" class="btn btn-primary btn-lg btn-block btn-arrow" style="margin-top:20px">Оформить</a>
+
+        <div class="trust">
+          <div><span class="check"></span><span>Доступ к программам открывается сразу после оплаты</span></div>
+          <div><span class="check"></span><span>Доступ навсегда или на 60 дней — на ваш выбор</span></div>
+          <div><span class="check"></span><span>Оплата картой, BLIK, Apple/Google Pay</span></div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'catalog' });
+    document.getElementById('nav-cart-count').textContent = '2';
+
+    const cart = [
+      { id: 'belly-floor', access: '60', qty: 1 },
+      { id: 'levelup-neuro', access: 'forever', qty: 1 },
+    ];
+
+    function priceFor(p, access) {
+      return access === 'forever' ? Math.round(p.price * 1.5) : p.price;
+    }
+    function accessLabel(a) { return a === 'forever' ? 'Бессрочно' : '60 дней'; }
+
+    function render() {
+      const lines = document.getElementById('cart-lines');
+      if (cart.length === 0) {
+        lines.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🛍</div>
+            <h2>Корзина пуста</h2>
+            <p>Добавьте программу — доступ открывается сразу после оплаты, без ожидания.</p>
+            <div class="empty-actions">
+              <a class="btn btn-primary btn-lg" href="catalog.html">Посмотреть программы</a>
+              <a class="btn btn-soft btn-lg" href="account.html">В кабинет</a>
+            </div>
+          </div>`;
+        document.querySelector('.summary').style.display = 'none';
+        document.getElementById('cart-count-eyebrow').textContent = '0 программ';
+        document.title = 'Корзина — ATMO';
+        return;
+      }
+      document.querySelector('.summary').style.display = '';
+      lines.innerHTML = cart.map((c, idx) => {
+        const p = ATMO.PRODUCTS.find(x => x.id === c.id);
+        const goal = ATMO.GOALS[p.goal];
+        const price = priceFor(p, c.access) * c.qty;
+        return `
+        <div class="cart-line">
+          <div class="ph ${p.tint}" style="border-radius:var(--r-md)"><span class="ph-label">${p.title.toLowerCase()}</span></div>
+          <div class="body">
+            <div class="meta">${goal.label} · ${p.duration}</div>
+            <h3>${p.title}</h3>
+            <div class="config">
+              <button class="config-pill ${c.access==='60'?'active':''}" data-idx="${idx}" data-access="60">60 дней · ${ATMO.formatPrice(p.price)}</button>
+              <button class="config-pill ${c.access==='forever'?'active':''}" data-idx="${idx}" data-access="forever">Бессрочно · ${ATMO.formatPrice(Math.round(p.price*1.5))}</button>
+            </div>
+            <div class="row-bot">
+              <button class="remove" data-remove="${idx}">Убрать из корзины</button>
+              <div class="qty">
+                <button data-qty="-1" data-idx="${idx}">−</button><span>${c.qty}</span><button data-qty="1" data-idx="${idx}">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="price hide-sm">${ATMO.formatPrice(price)}</div>
+        </div>`;
+      }).join('');
+
+      const subtotal = cart.reduce((s, c) => s + priceFor(ATMO.PRODUCTS.find(x=>x.id===c.id), c.access) * c.qty, 0);
+      const discount = cart.length >= 2 ? Math.round(subtotal * 0.1) : 0;
+      const total = subtotal - discount;
+      document.getElementById('sum-subtotal').textContent = ATMO.formatPrice(subtotal);
+      document.getElementById('sum-discount').textContent = discount > 0 ? `− ${ATMO.formatPrice(discount)} (комплект)` : '—';
+      document.getElementById('sum-total').textContent = ATMO.formatPrice(total);
+      document.getElementById('sum-eur').textContent = `${Math.round(total * 0.235)} €`;
+      const n = cart.length;
+      const prog = n % 10 === 1 && n % 100 !== 11 ? 'программа'
+        : [2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100) ? 'программы'
+        : 'программ';
+      document.getElementById('cart-count-eyebrow').textContent = `${n} ${prog}`;
+      document.getElementById('nav-cart-count').textContent = cart.length;
+    }
+
+    document.addEventListener('click', e => {
+      const t = e.target;
+      if (t.matches('[data-remove]')) {
+        cart.splice(+t.dataset.remove, 1); render();
+      } else if (t.matches('[data-qty]')) {
+        const i = +t.dataset.idx; cart[i].qty = Math.max(1, cart[i].qty + (+t.dataset.qty)); render();
+      } else if (t.matches('.config-pill')) {
+        const i = +t.dataset.idx; cart[i].access = t.dataset.access; render();
+      } else if (t.id === 'promo-apply') {
+        t.textContent = 'Применён'; t.classList.add('btn-primary'); t.classList.remove('btn-soft');
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ATMO — Фитнес комьюнити с 2015 года</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  :root {
+    --bg: #f4f5f6;
+    --bg-warm: #eaebec;
+    --bg-card: #ffffff;
+    --ink: #1a1a1f;
+    --ink-soft: #4a4a55;
+    --ink-mute: #8a8a94;
+    --line: rgba(26,26,31,0.09);
+    --line-strong: rgba(26,26,31,0.16);
+    --primary: #20bec4;
+    --primary-deep: #169097;
+    --rose: #e04f6b;
+    --rose-deep: #c03558;
+    --secondary: #7377e3;
+    --secondary-deep: #5a5fc7;
+    --shadow-soft: 0 1px 2px rgba(26,26,31,0.06), 0 8px 24px rgba(26,26,31,0.08);
+    --shadow-lift: 0 2px 4px rgba(26,26,31,0.08), 0 24px 48px rgba(26,26,31,0.13);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  .serif { font-family: 'Fraunces', Georgia, serif; font-weight: 400; letter-spacing: -0.01em; }
+  .mono  { font-family: 'Space Mono', ui-monospace, monospace; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  @media (min-width: 768px) { .container { padding: 0 32px; } }
+
+  /* Striped placeholder */
+  .ph {
+    position: relative;
+    background:
+      repeating-linear-gradient(135deg,
+        rgba(26,26,31,0.04) 0 1px,
+        transparent 1px 14px),
+      var(--bg-warm);
+    color: var(--ink-mute);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .ph .ph-label {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(246,243,238,0.92);
+    padding: 6px 10px;
+    border-radius: 4px;
+    color: var(--ink-soft);
+  }
+  .ph.tint-teal {
+    background:
+      repeating-linear-gradient(135deg,
+        rgba(32,190,196,0.10) 0 1px,
+        transparent 1px 14px),
+      color-mix(in srgb, var(--primary) 8%, var(--bg-warm));
+  }
+  .ph.tint-purple {
+    background:
+      repeating-linear-gradient(135deg,
+        rgba(115,119,227,0.10) 0 1px,
+        transparent 1px 14px),
+      color-mix(in srgb, var(--secondary) 8%, var(--bg-warm));
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 28px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: transform .15s ease, background .15s ease, color .15s ease, box-shadow .15s ease;
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--primary); color: #06262a; }
+  .btn-primary:hover { background: var(--primary-deep); color: #fff; transform: translateY(-1px); }
+  .btn-ink { background: var(--ink); color: var(--bg); }
+  .btn-ink:hover { background: #000; transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line-strong); }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn-arrow::after { content: "→"; font-size: 17px; transition: transform .2s ease; }
+  .btn:hover .btn-arrow::after, .btn-arrow:hover::after { transform: translateX(3px); }
+
+  /* Section */
+  section { padding: 72px 0; }
+  @media (min-width: 768px) { section { padding: 112px 0; } }
+
+  .eyebrow {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 24px; height: 1px; background: var(--primary);
+  }
+
+  /* Tweaks */
+  body[data-edit-active] .tweak-toggle { display: none; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="parts/nav.jsx"></script>
+  <script type="text/babel" src="parts/hero.jsx"></script>
+  <script type="text/babel" src="parts/featured.jsx"></script>
+  <script type="text/babel" src="parts/paths.jsx"></script>
+  <script type="text/babel" src="parts/social.jsx"></script>
+  <script type="text/babel" src="parts/footer.jsx"></script>
+  <script type="text/babel" src="parts/app.jsx"></script>
+</body>
+</html>

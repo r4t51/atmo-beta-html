@@ -1,0 +1,580 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Оформление заказа — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .co-wrap {
+    padding: 32px 0 80px;
+  }
+  .co-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(28px, 3vw, 38px);
+    letter-spacing: -0.02em;
+    margin: 0 0 32px;
+  }
+
+  .co-grid {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+  @media (min-width: 920px) {
+    .co-grid { grid-template-columns: 1.35fr 1fr; gap: 40px; }
+  }
+
+  /* Left form */
+  .co-left h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(18px, 2vw, 22px);
+    letter-spacing: -0.01em;
+    margin: 0 0 18px;
+  }
+
+  .field-group {
+    margin-bottom: 28px;
+  }
+  .field-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 560px) {
+    .field-grid.two { grid-template-columns: 1fr 1fr; }
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 13px; color: var(--ink-soft); font-weight: 500;
+  }
+  .field label .opt {
+    font-weight: 400; color: var(--ink-mute);
+    font-size: 11px; margin-left: 4px;
+  }
+  .field input, .field select, .field textarea {
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg);
+    font-family: inherit; font-size: 15px;
+    color: var(--ink);
+    transition: border-color .15s, box-shadow .15s;
+    width: 100%; box-sizing: border-box;
+  }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+    background: var(--bg-card);
+  }
+  .field input::placeholder, .field textarea::placeholder { color: var(--ink-mute); }
+
+  .section-divider {
+    border: none; border-top: 1px solid var(--line);
+    margin: 28px 0;
+  }
+
+  /* Coupon banner */
+  .coupon-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 14px 20px;
+    margin-bottom: 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+    font-size: 14px; color: var(--ink-soft);
+  }
+  .coupon-bar a {
+    color: var(--primary-deep);
+    font-weight: 500; text-decoration: none;
+    white-space: nowrap;
+  }
+  .coupon-bar a:hover { text-decoration: underline; }
+
+  /* Right: order summary */
+  .co-right {
+    position: sticky; top: 100px;
+  }
+
+  .order-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+
+  .order-head {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .order-head h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px; letter-spacing: -0.01em; margin: 0;
+  }
+
+  .order-table {
+    width: 100%; border-collapse: collapse;
+  }
+  .order-table th {
+    padding: 10px 24px;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-mute); text-align: left;
+    border-bottom: 1px solid var(--line);
+    font-family: 'Space Mono', monospace;
+  }
+  .order-table th:last-child { text-align: right; }
+
+  .order-table td {
+    padding: 14px 24px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  .order-table td:last-child {
+    text-align: right;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 17px;
+    white-space: nowrap;
+  }
+  .item-name { font-weight: 500; line-height: 1.3; }
+  .item-qty {
+    font-size: 12px; color: var(--ink-mute); margin-top: 2px;
+  }
+
+  .order-totals { padding: 0 24px; }
+  .order-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0;
+    font-size: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .order-row:last-child { border-bottom: none; }
+  .order-row .lbl { color: var(--ink-soft); }
+  .order-row.total {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px; letter-spacing: -0.01em;
+    padding: 16px 0;
+    border-top: 2px solid var(--line); border-bottom: none;
+    margin-top: 4px;
+  }
+
+  /* Payment methods */
+  .pay-section {
+    border-top: 1px solid var(--line);
+    padding: 20px 24px;
+  }
+
+  .pay-opts { display: flex; flex-direction: column; gap: 0; }
+  .pay-opt-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .pay-opt-row:last-child { border-bottom: none; }
+
+  .pay-radio {
+    width: 18px; height: 18px; border-radius: 999px;
+    border: 2px solid var(--line-strong);
+    flex: 0 0 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .15s;
+  }
+  .pay-radio::after {
+    content: ''; width: 8px; height: 8px;
+    border-radius: 999px; background: var(--ink);
+    opacity: 0; transition: opacity .15s;
+  }
+  .pay-opt-row.active .pay-radio { border-color: var(--ink); }
+  .pay-opt-row.active .pay-radio::after { opacity: 1; }
+
+  .pay-label {
+    font-size: 14px; font-weight: 500; color: var(--ink);
+    flex: 1;
+  }
+
+  .pay-badge {
+    height: 24px; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+  }
+  .pay-badge.card-badge {
+    background: var(--bg-warm); border: 1px solid var(--line);
+    gap: 4px;
+  }
+  .pay-badge.visa { background: #1a1f71; color: #fff; font-family: serif; font-style: italic; }
+  .pay-badge.mc { background: none; }
+  .pay-badge.blik-b { background: #ff5959; color: #fff; }
+  .pay-badge.klarna-b { background: #ffb3c7; color: #17120e; }
+
+  .card-icons { display: flex; gap: 5px; align-items: center; }
+  .card-icon {
+    height: 22px; border-radius: 3px; border: 1px solid var(--line);
+    padding: 0 5px; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.04em;
+    background: var(--bg);
+  }
+  .card-icon.visa-ico { color: #1a1f71; font-family: serif; font-style: italic; font-size: 11px; }
+  .card-icon.mc-ico { font-size: 16px; }
+  .card-icon.disc-ico { color: #f76b1c; }
+
+  /* Card form */
+  .card-form-wrap {
+    background: var(--bg-warm);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 16px;
+    margin-top: 4px;
+    display: grid; gap: 12px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .card-form-wrap .full { grid-column: 1 / -1; }
+  .card-form-wrap .field label { font-size: 12px; }
+  .card-form-wrap .field input {
+    font-size: 14px; padding: 10px 12px;
+    background: var(--bg); border-radius: 8px;
+  }
+
+  /* Bottom of order card */
+  .order-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .privacy-note {
+    font-size: 13px; color: var(--ink-soft);
+    line-height: 1.55; margin-bottom: 16px;
+  }
+  .privacy-note a { color: var(--ink-soft); }
+
+  .terms-check {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 13px; color: var(--ink-soft); line-height: 1.5;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+  .terms-check input[type="checkbox"] {
+    width: 16px; height: 16px; flex: 0 0 16px;
+    margin-top: 2px; accent-color: var(--ink);
+    cursor: pointer;
+  }
+  .terms-check a { color: var(--ink); }
+
+  .confirm-btn {
+    width: 100%;
+    background: var(--secondary);
+    color: #fff;
+    padding: 17px 28px;
+    border: none; border-radius: 999px;
+    font-family: inherit; font-weight: 600; font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: opacity .15s, transform .15s;
+  }
+  .confirm-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .confirm-btn[disabled] { background: var(--line-strong); color: var(--bg-warm); cursor: not-allowed; transform: none; }
+  .confirm-btn.loading::after {
+    content: ''; width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+    border-radius: 999px; animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .secure-note {
+    text-align: center; font-size: 12px; color: var(--ink-mute);
+    margin-top: 10px; line-height: 1.5;
+  }
+
+  /* ── Mobile overrides ─────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .co-wrap { padding: 20px 0 56px; }
+    .co-title { font-size: 26px; margin-bottom: 20px; }
+    .coupon-bar { flex-wrap: wrap; gap: 6px; }
+    /* Card form — stack on narrow */
+    .card-form-wrap { grid-template-columns: 1fr; }
+    .card-form-wrap .full { grid-column: 1; }
+    /* Summary order card — not sticky on mobile */
+    .co-right { position: static; }
+    .order-table th, .order-table td { padding: 12px 16px; }
+    .order-totals, .pay-section, .order-footer { padding-left: 16px; padding-right: 16px; }
+    .order-head { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="container co-wrap">
+    <h1 class="co-title">Оформление заказа</h1>
+
+    <div class="coupon-bar">
+      <span>Есть купон?</span>
+      <a href="#coupon" id="coupon-toggle">Нажмите, чтобы ввести код</a>
+    </div>
+
+    <div class="co-grid">
+      <!-- LEFT: billing form -->
+      <form id="checkout-form" class="co-left">
+        <div class="field-group">
+          <h2>Платёжные реквизиты</h2>
+          <div class="field-grid" style="gap: 16px">
+            <div class="field">
+              <label for="email">Email <span style="color:var(--accent, #e05)">*</span></label>
+              <input id="email" type="email" required placeholder="mail@atmo.by" autocomplete="email" />
+            </div>
+            <div class="field-grid two">
+              <div class="field">
+                <label for="fname">Имя <span style="color:var(--accent, #e05)">*</span></label>
+                <input id="fname" type="text" required autocomplete="given-name" />
+              </div>
+              <div class="field">
+                <label for="lname">Фамилия <span style="color:var(--accent, #e05)">*</span></label>
+                <input id="lname" type="text" required autocomplete="family-name" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="instagram">Instagram <span class="opt">(необязательно)</span></label>
+              <input id="instagram" type="text" placeholder="@" />
+            </div>
+            <div class="field">
+              <label for="country">Страна/регион <span style="color:var(--accent, #e05)">*</span></label>
+              <select id="country" required autocomplete="country">
+                <option>Польша</option>
+                <option>Беларусь</option>
+                <option>Литва</option>
+                <option>Латвия</option>
+                <option>Германия</option>
+                <option>Чехия</option>
+                <option>Другая</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="city">Город <span style="color:var(--accent, #e05)">*</span></label>
+              <input id="city" type="text" required autocomplete="address-level2" />
+            </div>
+            <div class="field">
+              <label for="zip">Почтовый индекс <span style="color:var(--accent, #e05)">*</span></label>
+              <input id="zip" type="text" required placeholder="00-001" autocomplete="postal-code" />
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="field-group">
+          <h2>Детали</h2>
+          <div class="field">
+            <label for="note">Примечание к заказу <span class="opt">(необязательно)</span></label>
+            <textarea id="note" placeholder="Например, если это подарок — напишите имя получателя."></textarea>
+          </div>
+        </div>
+      </form>
+
+      <!-- RIGHT: order summary + payment -->
+      <aside class="co-right">
+        <div class="order-card">
+          <div class="order-head">
+            <h2>Ваш заказ</h2>
+          </div>
+
+          <table class="order-table">
+            <thead>
+              <tr>
+                <th>Товар</th>
+                <th>Подытог</th>
+              </tr>
+            </thead>
+            <tbody id="order-items"></tbody>
+          </table>
+
+          <div class="order-totals">
+            <div class="order-row">
+              <span class="lbl">Подытог</span>
+              <span id="sum-subtotal">—</span>
+            </div>
+            <div class="order-row total">
+              <span>Итого</span>
+              <span id="sum-total">—</span>
+            </div>
+          </div>
+
+          <!-- Payment methods -->
+          <div class="pay-section">
+            <div class="pay-opts" id="pay-opts">
+              <div class="pay-opt-row active" data-method="card">
+                <span class="pay-radio"></span>
+                <span class="pay-label">Кредитная/дебетовая карта</span>
+                <span class="card-icons">
+                  <span class="card-icon visa-ico">VISA</span>
+                  <span class="card-icon mc-ico">🔴🟡</span>
+                  <span class="card-icon disc-ico">DISC</span>
+                </span>
+              </div>
+
+              <!-- Card form (shown when card selected) -->
+              <div class="card-form-wrap" id="card-form">
+                <div class="field full">
+                  <label for="cc-num">Номер карты</label>
+                  <input id="cc-num" type="text" inputmode="numeric"
+                    placeholder="1234 1234 1234 1234" autocomplete="cc-number" />
+                </div>
+                <div class="field">
+                  <label for="cc-exp">Окончание срока действия</label>
+                  <input id="cc-exp" type="text" inputmode="numeric"
+                    placeholder="ММ / ГГ" autocomplete="cc-exp" />
+                </div>
+                <div class="field">
+                  <label for="cc-cvc">Код безопасности</label>
+                  <input id="cc-cvc" type="text" inputmode="numeric"
+                    placeholder="CVC" autocomplete="cc-csc" />
+                </div>
+              </div>
+
+              <div class="pay-opt-row" data-method="blik">
+                <span class="pay-radio"></span>
+                <span class="pay-label">BLIK</span>
+                <span class="pay-badge blik-b">blik</span>
+              </div>
+
+              <div class="pay-opt-row" data-method="klarna">
+                <span class="pay-radio"></span>
+                <span class="pay-label">Klarna</span>
+                <span class="pay-badge klarna-b" style="font-size:14px; padding:0 8px; border-radius:6px; font-weight:700">K</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer: privacy + button -->
+          <div class="order-footer">
+            <p class="privacy-note">
+              Ваши личные данные будут использоваться для обработки ваших заказов, упрощения вашей работы с сайтом и для других целей, описанных в нашей <a href="privacy.html">политике конфиденциальности</a>.
+            </p>
+
+            <label class="terms-check">
+              <input type="checkbox" id="agree" required />
+              <span>Я прочитал(а) и принимаю <a href="terms.html">правила и условия</a> сайта&nbsp;*</span>
+            </label>
+
+            <button type="button" class="confirm-btn" id="confirm-btn">
+              Подтвердить заказ
+            </button>
+
+            <p class="secure-note">🔒 Платёж защищён · мы не храним данные карты</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'catalog' });
+
+    const cart = [
+      { id: 'belly-floor', access: '60', qty: 1 },
+    ];
+
+    function priceFor(p, access) {
+      return access === 'forever' ? Math.round(p.price * 1.5) : p.price;
+    }
+
+    let subtotal = 0;
+    const tbody = document.getElementById('order-items');
+    tbody.innerHTML = cart.map(c => {
+      const p = ATMO.PRODUCTS.find(x => x.id === c.id);
+      const price = priceFor(p, c.access) * c.qty;
+      subtotal += price;
+      const qtyLabel = c.qty > 1 ? ` × ${c.qty}` : ' × 1';
+      const access = c.access === 'forever' ? 'Бессрочно' : '60 дней';
+      return `
+        <tr>
+          <td>
+            <div class="item-name">${p.title} — ${access}${qtyLabel}</div>
+          </td>
+          <td>${ATMO.formatPrice(price)}</td>
+        </tr>`;
+    }).join('');
+
+    document.getElementById('sum-subtotal').textContent = ATMO.formatPrice(subtotal);
+    document.getElementById('sum-total').textContent = ATMO.formatPrice(subtotal);
+    try { document.getElementById('nav-cart-count').textContent = cart.length; } catch {}
+
+    // Payment method toggle
+    const payRows = document.querySelectorAll('.pay-opt-row');
+    const cardForm = document.getElementById('card-form');
+    payRows.forEach(row => {
+      row.addEventListener('click', () => {
+        payRows.forEach(r => r.classList.remove('active'));
+        row.classList.add('active');
+        const m = row.dataset.method;
+        cardForm.style.display = m === 'card' ? '' : 'none';
+      });
+    });
+
+    // Card input formatting
+    document.getElementById('cc-num').addEventListener('input', e => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 16);
+      e.target.value = v.replace(/(\d{4})/g, '$1 ').trim();
+    });
+    document.getElementById('cc-exp').addEventListener('input', e => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 4);
+      if (v.length >= 3) v = v.slice(0, 2) + ' / ' + v.slice(2);
+      e.target.value = v;
+    });
+    document.getElementById('cc-cvc').addEventListener('input', e => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    // Coupon toggle
+    document.getElementById('coupon-toggle').addEventListener('click', e => {
+      e.preventDefault();
+      // Placeholder — real implementation would show an input field
+    });
+
+    // Submit
+    const btn = document.getElementById('confirm-btn');
+    btn.addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const fname = document.getElementById('fname').value.trim();
+      const agree = document.getElementById('agree').checked;
+      if (!email || !fname) { alert('Заполните e-mail и имя.'); return; }
+      if (!agree) { alert('Примите правила и условия.'); return; }
+
+      btn.classList.add('loading');
+      btn.disabled = true;
+      btn.textContent = 'Обработка…';
+
+      const orderId = 'ATMO-2026-' + String(Math.floor(1000 + Math.random() * 9000));
+      const order = {
+        id: orderId, ts: Date.now(),
+        email, name: fname,
+        items: cart, subtotal, discount: 0, total: subtotal,
+        method: document.querySelector('.pay-opt-row.active').dataset.method,
+      };
+      try { localStorage.setItem('atmo:lastOrder', JSON.stringify(order)); } catch {}
+
+      // Demo: 10% chance of payment failure for realistic prototype
+      const fail = Math.random() < 0.1;
+      setTimeout(() => {
+        location.href = fail
+          ? 'payment-failed.html'
+          : `order-confirmation.html?id=${encodeURIComponent(orderId)}`;
+      }, 1100);
+    });
+  </script>
+</body>
+</html>

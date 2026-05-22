@@ -1,0 +1,574 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Настройки профиля — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .account-wrap {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: 1fr;
+    padding: 40px 0 80px;
+    align-items: flex-start;
+  }
+  @media (min-width: 860px) {
+    .account-wrap { grid-template-columns: 220px 1fr; gap: 40px; }
+  }
+
+  /* Sidebar */
+  .account-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .account-nav-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 14px;
+    margin-bottom: 6px;
+  }
+  .account-avatar {
+    width: 40px; height: 40px; border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 22%, var(--bg-warm));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 18px; color: var(--primary-deep);
+    flex: 0 0 40px;
+  }
+  .account-nav-name {
+    font-weight: 600; font-size: 14px; line-height: 1.2;
+  }
+  .account-nav-email {
+    font-size: 12px; color: var(--ink-mute); margin-top: 1px;
+  }
+  .account-nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    border-radius: var(--r-md);
+    font-size: 14px; font-weight: 500;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: background .12s, color .12s;
+    border-left: 2px solid transparent;
+  }
+  .account-nav a:hover {
+    background: var(--bg-warm);
+    color: var(--ink);
+  }
+  .account-nav a.active {
+    background: var(--bg-card);
+    color: var(--ink);
+    border-left-color: var(--ink);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--ink);
+  }
+  .account-nav .nav-icon {
+    width: 16px; height: 16px; opacity: 0.5;
+    flex: 0 0 16px;
+  }
+  .account-nav .sep {
+    height: 1px; background: var(--line);
+    margin: 6px 14px;
+  }
+  .account-nav a.danger { color: var(--ink-mute); }
+  .account-nav a.danger:hover { color: #c25a4a; background: color-mix(in srgb, #c25a4a 6%, transparent); }
+
+  /* Main content */
+  .account-main {}
+
+  .page-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(28px, 3.5vw, 38px);
+    letter-spacing: -0.02em;
+    margin: 0 0 32px;
+  }
+
+  /* Form sections */
+  .settings-section {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .settings-section-head {
+    padding: 20px 24px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .settings-section-head h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px; letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .settings-section-head .section-hint {
+    font-size: 13px; color: var(--ink-mute);
+  }
+  .settings-section-body {
+    padding: 24px;
+  }
+
+  .field-grid {
+    display: grid; gap: 16px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 560px) {
+    .field-grid.two { grid-template-columns: 1fr 1fr; }
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 13px; color: var(--ink-soft); font-weight: 500;
+  }
+  .field input, .field select {
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg);
+    font-family: inherit; font-size: 15px;
+    color: var(--ink);
+    transition: border-color .15s, box-shadow .15s;
+    width: 100%; box-sizing: border-box;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+    background: var(--bg-card);
+  }
+  .field input[readonly] {
+    color: var(--ink-mute);
+    background: var(--bg-warm);
+    cursor: default;
+  }
+  .field-hint {
+    font-size: 12px; color: var(--ink-mute); margin-top: 2px;
+  }
+
+  .pw-wrap { position: relative; }
+  .pw-wrap input { padding-right: 56px; }
+  .pw-toggle {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: transparent; border: none; cursor: pointer;
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 6px 10px; border-radius: 6px;
+  }
+  .pw-toggle:hover { color: var(--ink); background: var(--bg-warm); }
+
+  .strength-bar {
+    height: 3px; border-radius: 999px;
+    background: var(--bg-warm); margin-top: 8px; overflow: hidden;
+  }
+  .strength-bar > span {
+    display: block; height: 100%; width: 0;
+    transition: width .25s ease, background .25s ease;
+  }
+  .strength-bar span.weak   { background: #c25a4a; width: 33%; }
+  .strength-bar span.medium { background: #cdb38a; width: 66%; }
+  .strength-bar span.strong { background: var(--positive, #4a9a6a); width: 100%; }
+  .strength-lbl { font-size: 11px; color: var(--ink-mute); margin-top: 5px; font-family: 'Space Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .section-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap;
+  }
+  .section-footer .status {
+    font-size: 13px; color: var(--ink-mute);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-footer .status.ok { color: var(--positive, #4a9a6a); }
+  .section-footer .status.ok::before { content: "✓"; font-weight: 700; }
+
+  .btn-save {
+    background: var(--ink); color: var(--bg);
+    padding: 10px 22px;
+    border: none; border-radius: 999px;
+    font-family: inherit; font-weight: 600; font-size: 14px;
+    cursor: pointer;
+    transition: background .15s, transform .15s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-save:hover { background: #000; transform: translateY(-1px); }
+  .btn-save.loading::after {
+    content: ''; width: 12px; height: 12px;
+    border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+    border-radius: 999px; animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Toggle switch */
+  .toggle-row {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 20px; padding: 4px 0;
+  }
+  .toggle-row + .toggle-row {
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .toggle-info {}
+  .toggle-label {
+    font-size: 15px; font-weight: 500; margin-bottom: 4px;
+  }
+  .toggle-desc {
+    font-size: 13px; color: var(--ink-soft); line-height: 1.5;
+  }
+  .toggle-switch {
+    position: relative; flex: 0 0 44px;
+    width: 44px; height: 26px;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-switch .track {
+    position: absolute; inset: 0;
+    background: var(--line-strong);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .toggle-switch .track::before {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px; border-radius: 999px;
+    background: #fff;
+    top: 3px; left: 3px;
+    transition: transform .2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle-switch input:checked + .track { background: var(--ink); }
+  .toggle-switch input:checked + .track::before { transform: translateX(18px); }
+
+  /* Danger zone */
+  .danger-zone {
+    background: var(--bg-card);
+    border: 1px solid color-mix(in srgb, #c25a4a 30%, var(--line));
+    border-radius: var(--r-lg);
+    padding: 20px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    flex-wrap: wrap;
+  }
+  .danger-zone .dz-info {}
+  .danger-zone .dz-title { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+  .danger-zone .dz-desc { font-size: 13px; color: var(--ink-soft); }
+  .btn-danger {
+    background: transparent;
+    border: 1px solid color-mix(in srgb, #c25a4a 50%, var(--line));
+    color: #c25a4a;
+    padding: 9px 18px; border-radius: 999px;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    cursor: pointer; white-space: nowrap;
+    transition: background .15s, border-color .15s;
+  }
+  .btn-danger:hover { background: color-mix(in srgb, #c25a4a 8%, transparent); border-color: #c25a4a; }
+
+  /* ── Mobile account nav ──────────────────────────────────── */
+  @media (max-width: 859px) {
+    .account-wrap { padding: 16px 0 64px; gap: 16px; }
+    .account-nav { flex-direction: row; overflow-x: auto; overflow-y: hidden; gap: 4px; padding-bottom: 4px; scrollbar-width: none; }
+    .account-nav::-webkit-scrollbar { display: none; }
+    .account-nav-head { display: none; }
+    .account-nav .sep { display: none; }
+    .account-nav a { flex-direction: column; align-items: center; gap: 4px; padding: 8px 12px; white-space: nowrap; font-size: 13px; border-radius: 999px !important; border-left-width: 1px !important; }
+    .account-nav a.active { border-color: var(--ink) !important; }
+    .account-nav .nav-icon { width: 18px; height: 18px; }
+    .account-nav a.danger { display: none; }
+    .settings-section-body { padding: 16px; }
+    .danger-zone { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="container">
+    <div class="account-wrap">
+
+      <!-- Sidebar nav -->
+      <nav class="account-nav">
+        <div class="account-nav-head">
+          <div class="account-avatar">А</div>
+          <div>
+            <div class="account-nav-name">Аня</div>
+            <div class="account-nav-email">ann@example.com</div>
+          </div>
+        </div>
+
+        <a href="account.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+          Обзор
+        </a>
+        <a href="courses.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4.5h12M2 8h8M2 11.5h10"/></svg>
+          Мои курсы
+        </a>
+        <a href="orders.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7"/><path d="M1 12h14"/><path d="M6.5 9h3"/></svg>
+          Заказы
+        </a>
+        <a href="profile.html" class="active">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5.5" r="2.5"/><path d="M2.5 13.5c0-3 2.46-5 5.5-5s5.5 2 5.5 5"/></svg>
+          Настройки
+        </a>
+
+        <div class="sep"></div>
+
+        <a href="auth.html" class="danger">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 8h7M11 6l2 2-2 2"/><path d="M10 4V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1"/></svg>
+          Выйти
+        </a>
+      </nav>
+
+      <!-- Main content -->
+      <div class="account-main">
+        <h1 class="page-title">Настройки профиля</h1>
+
+        <!-- Personal info -->
+        <section class="settings-section" id="section-info">
+          <div class="settings-section-head">
+            <h2>Личные данные</h2>
+          </div>
+          <div class="settings-section-body">
+            <div class="field-grid two">
+              <div class="field">
+                <label for="p-fname">Имя</label>
+                <input id="p-fname" type="text" value="Аня" autocomplete="given-name" />
+              </div>
+              <div class="field">
+                <label for="p-lname">Фамилия</label>
+                <input id="p-lname" type="text" value="" placeholder="Необязательно" autocomplete="family-name" />
+              </div>
+            </div>
+            <div class="field-grid" style="margin-top:16px">
+              <div class="field">
+                <label for="p-display">Отображаемое имя</label>
+                <input id="p-display" type="text" value="Аня" />
+                <span class="field-hint">Так вас будут видеть в комментариях и письмах.</span>
+              </div>
+            </div>
+          </div>
+          <div class="section-footer">
+            <span class="status" id="info-status"></span>
+            <button class="btn-save" id="btn-info">Сохранить</button>
+          </div>
+        </section>
+
+        <!-- Email -->
+        <section class="settings-section" id="section-email">
+          <div class="settings-section-head">
+            <h2>E-mail</h2>
+          </div>
+          <div class="settings-section-body">
+            <div class="field-grid">
+              <div class="field">
+                <label for="p-email">Адрес электронной почты</label>
+                <input id="p-email" type="email" value="ann@example.com" autocomplete="email" />
+                <span class="field-hint">На этот адрес приходят чеки, доступ к курсам и письма от тренера.</span>
+              </div>
+            </div>
+          </div>
+          <div class="section-footer">
+            <span class="status" id="email-status"></span>
+            <button class="btn-save" id="btn-email">Сохранить</button>
+          </div>
+        </section>
+
+        <!-- Password -->
+        <section class="settings-section" id="section-pw">
+          <div class="settings-section-head">
+            <h2>Смена пароля</h2>
+            <span class="section-hint">Оставьте пустым, чтобы не менять</span>
+          </div>
+          <div class="settings-section-body">
+            <div class="field-grid">
+              <div class="field">
+                <label for="p-pw-cur">Текущий пароль</label>
+                <div class="pw-wrap">
+                  <input id="p-pw-cur" type="password" placeholder="••••••••" autocomplete="current-password" />
+                  <button type="button" class="pw-toggle" data-pw="p-pw-cur">показать</button>
+                </div>
+              </div>
+              <div class="field">
+                <label for="p-pw-new">Новый пароль</label>
+                <div class="pw-wrap">
+                  <input id="p-pw-new" type="password" placeholder="Минимум 8 символов" autocomplete="new-password" />
+                  <button type="button" class="pw-toggle" data-pw="p-pw-new">показать</button>
+                </div>
+                <div class="strength-bar"><span id="pw-strength-bar"></span></div>
+                <div class="strength-lbl" id="pw-strength-lbl"></div>
+              </div>
+              <div class="field">
+                <label for="p-pw-rep">Повторите новый пароль</label>
+                <div class="pw-wrap">
+                  <input id="p-pw-rep" type="password" placeholder="••••••••" autocomplete="new-password" />
+                  <button type="button" class="pw-toggle" data-pw="p-pw-rep">показать</button>
+                </div>
+                <div class="field-hint" id="pw-match-hint"></div>
+              </div>
+            </div>
+          </div>
+          <div class="section-footer">
+            <span class="status" id="pw-status"></span>
+            <button class="btn-save" id="btn-pw">Сохранить пароль</button>
+          </div>
+        </section>
+
+        <!-- Notifications -->
+        <section class="settings-section" id="section-notif">
+          <div class="settings-section-head">
+            <h2>Уведомления</h2>
+          </div>
+          <div class="settings-section-body">
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Письма о новых программах</div>
+                <div class="toggle-desc">Рассказываем о новых курсах, сезонных подборках и акциях. Не чаще раза в 2 недели.</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notif-promo" checked />
+                <span class="track"></span>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Напоминания о тренировках</div>
+                <div class="toggle-desc">Короткое письмо, если вы не заходили в курс больше трёх дней.</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notif-remind" checked />
+                <span class="track"></span>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Ответы тренера</div>
+                <div class="toggle-desc">Уведомление, когда тренер ответил на ваш вопрос в дневнике урока.</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notif-trainer" checked />
+                <span class="track"></span>
+              </label>
+            </div>
+          </div>
+          <div class="section-footer">
+            <span class="status" id="notif-status"></span>
+            <button class="btn-save" id="btn-notif">Сохранить</button>
+          </div>
+        </section>
+
+        <!-- Danger zone -->
+        <div class="danger-zone">
+          <div class="dz-info">
+            <div class="dz-title">Удалить аккаунт</div>
+            <div class="dz-desc">Все данные, прогресс и доступ к курсам будут удалены безвозвратно.</div>
+          </div>
+          <button class="btn-danger" id="btn-delete">Удалить аккаунт</button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'account' });
+
+    // Password toggles
+    document.querySelectorAll('.pw-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const inp = document.getElementById(btn.dataset.pw);
+        const показатьn = inp.type === 'text';
+        inp.type = показатьn ? 'password' : 'text';
+        btn.textContent = показатьn ? 'показать' : 'скрыть';
+      });
+    });
+
+    // Password strength
+    const pwNew = document.getElementById('p-pw-new');
+    const pwRep = document.getElementById('p-pw-rep');
+    const strengthBar = document.getElementById('pw-strength-bar');
+    const strengthLbl = document.getElementById('pw-strength-lbl');
+    const matchHint   = document.getElementById('pw-match-hint');
+
+    pwNew.addEventListener('input', () => {
+      const v = pwNew.value;
+      strengthBar.className = '';
+      if (!v) { strengthBar.style.width = '0'; strengthLbl.textContent = ''; return; }
+      let score = 0;
+      if (v.length >= 8) score++;
+      if (/[A-Z]/.test(v) && /[a-z]/.test(v)) score++;
+      if (/\d/.test(v)) score++;
+      if (/[^A-Za-z0-9]/.test(v) && v.length >= 10) score++;
+      if (score <= 1)   { strengthBar.classList.add('weak');   strengthLbl.textContent = 'Слабый'; }
+      else if (score === 2) { strengthBar.classList.add('medium'); strengthLbl.textContent = 'Средний'; }
+      else              { strengthBar.classList.add('strong'); strengthLbl.textContent = 'Сильный'; }
+      checkMatch();
+    });
+
+    pwRep.addEventListener('input', checkMatch);
+
+    function checkMatch() {
+      if (!pwRep.value) { matchHint.textContent = ''; matchHint.style.color = ''; return; }
+      if (pwNew.value === pwRep.value) {
+        matchHint.textContent = 'Пароли совпадают';
+        matchHint.style.color = 'var(--positive, #4a9a6a)';
+      } else {
+        matchHint.textContent = 'Пароли не совпадают';
+        matchHint.style.color = '#c25a4a';
+      }
+    }
+
+    // Generic save with fake async
+    function bindSave(btnId, statusId, validate) {
+      const btn    = document.getElementById(btnId);
+      const status = document.getElementById(statusId);
+      btn.addEventListener('click', () => {
+        if (validate && !validate()) return;
+        btn.classList.add('loading');
+        btn.disabled = true;
+        status.textContent = '';
+        status.className = 'status';
+        setTimeout(() => {
+          btn.classList.remove('loading');
+          btn.disabled = false;
+          status.textContent = 'Сохранено';
+          status.className = 'status ok';
+          setTimeout(() => { status.textContent = ''; status.className = 'status'; }, 3000);
+        }, 800);
+      });
+    }
+
+    bindSave('btn-info', 'info-status');
+    bindSave('btn-email', 'email-status', () => {
+      const v = document.getElementById('p-email').value.trim();
+      if (!v || !v.includes('@')) { alert('Введите корректный e-mail.'); return false; }
+      return true;
+    });
+    bindSave('btn-pw', 'pw-status', () => {
+      const cur = document.getElementById('p-pw-cur').value;
+      const nw  = document.getElementById('p-pw-new').value;
+      const rep = document.getElementById('p-pw-rep').value;
+      if (!cur) { alert('Введите текущий пароль.'); return false; }
+      if (nw.length < 8) { alert('Новый пароль — минимум 8 символов.'); return false; }
+      if (nw !== rep) { alert('Пароли не совпадают.'); return false; }
+      return true;
+    });
+    bindSave('btn-notif', 'notif-status');
+
+    // Delete account — confirmation
+    document.getElementById('btn-delete').addEventListener('click', () => {
+      const ok = confirm('Вы уверены? Все данные, прогресс и доступ к курсам будут удалены безвозвратно. Это действие нельзя отменить.');
+      if (ok) alert('Запрос на удаление отправлен. Аккаунт будет удалён в течение 24 часов.');
+    });
+  </script>
+</body>
+</html>

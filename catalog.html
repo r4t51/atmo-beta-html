@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Каталог — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .filter-bar {
+    position: sticky; top: 60px; z-index: 30;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 0;
+    margin-bottom: 32px;
+  }
+  .filter-row { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; }
+  .filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .filter-group-label {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-right: 4px;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 999px;
+    font-size: 13px; font-weight: 500;
+    background: transparent; border: 1px solid var(--line-strong);
+    cursor: pointer;
+    color: var(--ink-soft);
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .chip:hover { color: var(--ink); border-color: var(--ink); }
+  .chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .filter-count { margin-left: auto; font-size: 13px; color: var(--ink-mute); white-space: nowrap; }
+  .grid {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .empty {
+    grid-column: 1 / -1; padding: 64px 24px; text-align: center;
+    border: 1px dashed var(--line-strong); border-radius: var(--r-lg);
+    color: var(--ink-soft);
+  }
+  /* Goal chip active colours */
+  .chip.active[data-value="all"]        { background: var(--primary-soft); color: var(--primary-deep); border-color: var(--primary); }
+  .chip.active[data-value="energy"]     { background: var(--lime-soft); color: var(--lime-deep); border-color: var(--lime); }
+  .chip.active[data-value="mobility"]   { background: color-mix(in srgb, var(--warm-accent) 20%, var(--bg-card)); color: var(--warm-accent-deep); border-color: var(--warm-accent); }
+  .chip.active[data-value="strength"]   { background: var(--secondary-soft); color: var(--secondary-deep); border-color: var(--secondary); }
+  .chip.active[data-value="recovery"]   { background: color-mix(in srgb, var(--rose) 14%, var(--bg-card)); color: var(--rose-deep); border-color: var(--rose); }
+
+  @media (max-width: 640px) {
+    .filter-bar { padding: 10px 0; margin-bottom: 20px; }
+    .filter-row {
+      flex-wrap: nowrap; overflow-x: auto; gap: 8px;
+      padding: 2px 0; scrollbar-width: none;
+    }
+    .filter-row::-webkit-scrollbar { display: none; }
+    .filter-group { flex-wrap: nowrap; gap: 6px; }
+    .filter-group-label { display: none; }
+    .filter-count { display: none; }
+    .chip { padding: 6px 12px; font-size: 12px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <header class="page-head">
+    <div class="container">
+      <nav class="breadcrumb" style="margin-bottom: 14px">
+        <a href="index.html">Главная</a>
+        <span class="sep">/</span>
+        <span class="current">Каталог</span>
+      </nav>
+      <span class="eyebrow with-tick" id="catalog-count">18 программ</span>
+      <h1>Каталог</h1>
+      <p>Подберите программу под свою цель и темп. Все курсы — пожизненный доступ, можно возвращаться сколько нужно.</p>
+    </div>
+  </header>
+
+  <div class="filter-bar">
+    <div class="container filter-row">
+      <div class="filter-group">
+        <button class="chip active" data-filter="goal" data-value="all">Все</button>
+        <button class="chip" data-filter="goal" data-value="energy">Энергия</button>
+        <button class="chip" data-filter="goal" data-value="mobility">Мобильность</button>
+        <button class="chip" data-filter="goal" data-value="strength">Сила</button>
+        <button class="chip" data-filter="goal" data-value="recovery">Восстановление</button>
+      </div>
+
+      <span class="filter-count" id="filter-count"></span>
+    </div>
+  </div>
+
+  <main class="container" style="padding-bottom: 64px">
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'catalog' });
+    document.getElementById('catalog-count').textContent = ATMO.PRODUCTS.length + ' программ';
+
+    const state = { goal: 'all' };
+
+    function render() {
+      const filtered = ATMO.PRODUCTS.filter(p =>
+        (state.goal === 'all' || p.goal === state.goal)
+      );
+      const grid = document.getElementById('grid');
+      grid.innerHTML = filtered.length
+        ? filtered.map(ATMO.productCardHTML).join('')
+        : `<div class="empty">Под эти фильтры пока ничего нет — попробуй ослабить условия.</div>`;
+      document.getElementById('filter-count').textContent =
+        filtered.length === ATMO.PRODUCTS.length
+          ? `${filtered.length} программ`
+          : `${filtered.length} из ${ATMO.PRODUCTS.length}`;
+    }
+
+    document.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        state[f] = btn.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${f}"]`).forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render();
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>

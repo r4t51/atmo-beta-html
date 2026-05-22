@@ -1,0 +1,958 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Урок — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  body { background: var(--bg-warm); }
+
+  .lesson-wrap {
+    max-width: 820px; margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+
+  .lesson-head h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 44px);
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+    line-height: 1.05;
+  }
+  .lesson-head h1 .lesson-num {
+    color: var(--ink-mute);
+    font-weight: 400;
+  }
+  .lesson-crumb {
+    font-size: 14px; color: var(--primary-deep);
+    margin: 0 0 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .lesson-crumb a { color: var(--primary-deep); text-decoration: none; }
+  .lesson-crumb a:hover { text-decoration: underline; }
+  .lesson-crumb .sep { color: var(--ink-mute); margin: 0 8px; }
+  .lesson-crumb .current { color: var(--ink-mute); }
+
+  /* Lesson body card */
+  .lesson-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: clamp(28px, 5vw, 48px);
+    margin-bottom: 22px;
+  }
+  .lesson-card h2 {
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(24px, 2.8vw, 30px);
+    letter-spacing: -0.01em;
+    margin: 0 0 28px;
+  }
+  .lesson-card p {
+    font-size: 16px; line-height: 1.65; margin: 0 0 16px;
+    color: var(--ink);
+  }
+  .lesson-card .closing {
+    text-align: center; font-weight: 500;
+    margin: 28px 0 32px;
+  }
+  .lesson-card hr {
+    border: none; border-top: 1px solid var(--line); margin: 32px 0;
+  }
+
+  /* Notice (teal accent — brand) */
+  .notice {
+    border-left: 3px solid var(--primary);
+    background: color-mix(in srgb, var(--primary) 5%, var(--bg-card));
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin: 0 0 24px;
+  }
+  .notice b.title { display: block; margin-bottom: 6px; font-weight: 600; }
+  .notice p { margin: 0; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
+
+  .tick-list {
+    list-style: none; padding: 0; margin: 0 0 18px;
+    display: grid; gap: 14px;
+  }
+  .tick-list li {
+    display: grid; grid-template-columns: 22px 1fr; gap: 12px;
+    line-height: 1.6; font-size: 16px;
+  }
+  .tick-list li::before {
+    content: "✓"; color: var(--primary); font-weight: 600;
+    line-height: 1.6;
+  }
+
+  /* Video player mock */
+  .video {
+    position: relative; aspect-ratio: 16/9;
+    border-radius: var(--r-md); overflow: hidden;
+    background: #2a2a32;
+    margin: 12px 0 4px;
+  }
+  .video .poster {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.35) 100%),
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 18px),
+      linear-gradient(135deg, #d4a39b 0%, #c98979 30%, #a85d4f 70%, #7d3e34 100%);
+  }
+  .video .chip {
+    position: absolute; top: 14px; left: 14px;
+    display: flex; flex-direction: column; gap: 6px;
+    align-items: flex-start;
+  }
+  .video .chip span {
+    background: rgba(0,0,0,0.78); color: #fff;
+    padding: 4px 10px; border-radius: 3px;
+    font-size: 12px; font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+  }
+  .video .ctrls {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 14px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+    color: #fff;
+  }
+  .video .play-btn {
+    width: 36px; height: 36px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    border: none; color: #fff;
+  }
+  .video .play-btn::after {
+    content: ""; width: 0; height: 0; border-style: solid;
+    border-width: 8px 0 8px 13px; border-color: transparent transparent transparent #fff;
+    margin-left: 3px;
+  }
+  .video .scrub {
+    flex: 1; height: 3px; background: rgba(255,255,255,0.3); border-radius: 999px;
+    position: relative;
+  }
+  .video .scrub::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 30%;
+    background: #fff; border-radius: 999px;
+  }
+  .video .time {
+    font-family: 'Space Mono', monospace; font-size: 12px;
+    background: rgba(0,0,0,0.6); padding: 3px 6px; border-radius: 3px;
+  }
+  .video .right-ctrls { display: flex; gap: 12px; align-items: center; }
+  .video .ico {
+    width: 20px; height: 20px; opacity: 0.9;
+    background-repeat: no-repeat; background-position: center;
+    background-size: contain;
+  }
+  .video .ico-vol { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z'/%3E%3C/svg%3E"); }
+  .video .ico-cc { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M19 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM11 11H9.5v-.5h-2v3h2V13H11v1c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1zm7 0h-1.5v-.5h-2v3h2V13H18v1c0 .55-.45 1-1 1h-3c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1z'/%3E%3C/svg%3E"); }
+  .video .ico-gear { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M19.14 12.94c.04-.31.06-.62.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94 0 .31.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z'/%3E%3C/svg%3E"); }
+
+  /* Diary card */
+  .diary {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: 28px clamp(20px, 4vw, 36px) 32px;
+  }
+  .diary h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700; font-size: 20px;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .diary-tabs {
+    display: inline-flex; gap: 4px;
+    background: var(--bg-warm); border-radius: 999px;
+    padding: 4px; margin-bottom: 22px;
+  }
+  .diary-tabs button {
+    padding: 8px 18px; border-radius: 999px;
+    border: none; background: transparent;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    cursor: pointer; color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .diary-tabs button.active {
+    background: var(--primary); color: #06262a;
+  }
+  .diary hr {
+    border: none; border-top: 1px solid var(--line); margin: 4px 0 22px;
+  }
+
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block; font-weight: 600; font-size: 15px;
+    margin-bottom: 8px;
+  }
+  .field input, .field textarea {
+    width: 100%; box-sizing: border-box;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-sm);
+    font-family: inherit; font-size: 15px;
+    color: var(--ink);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .field input::placeholder, .field textarea::placeholder { color: var(--ink-mute); }
+  .field input:focus, .field textarea:focus {
+    outline: none; border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+  }
+  .field textarea { resize: vertical; min-height: 110px; }
+
+  .btn-save {
+    background: var(--primary); color: #06262a;
+    padding: 12px 26px; border-radius: 999px;
+    border: none; font-family: inherit; font-weight: 600; font-size: 15px;
+    cursor: pointer;
+  }
+  .btn-save:hover { background: var(--primary-deep); color: #fff; }
+
+  .records {
+    margin-top: 32px; padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .records-title {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute); margin-bottom: 14px;
+  }
+  .records-empty {
+    color: var(--ink-soft); font-size: 14px;
+  }
+  .record {
+    background: var(--bg-warm);
+    border-radius: var(--r-sm);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    font-size: 14px; line-height: 1.55;
+  }
+  .record .when {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-mute); margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .record .when .del {
+    background: transparent; border: none; color: var(--ink-mute);
+    cursor: pointer; font-size: 13px;
+  }
+  .record .when .del:hover { color: var(--ink); }
+  .record dt { font-weight: 600; margin-top: 6px; font-size: 13px; }
+  .record dt:first-child { margin-top: 0; }
+  .record dd { margin: 4px 0 0; color: var(--ink-soft); }
+
+  /* Bottom nav */
+  .lesson-nav {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 16px; align-items: center;
+    margin: 36px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .nav-prev, .nav-next {
+    text-decoration: none; color: var(--ink); font-weight: 500;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 15px;
+  }
+  .nav-prev:hover, .nav-next:hover { color: var(--primary-deep); }
+  .nav-next { justify-self: end; }
+  .nav-prev.disabled, .nav-next.disabled { opacity: 0.35; pointer-events: none; }
+
+  .btn-complete {
+    background: var(--secondary); color: #fff;
+    border: none; padding: 14px 30px; border-radius: 999px;
+    font-family: inherit; font-weight: 600; font-size: 15px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 10px;
+    white-space: nowrap;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .btn-complete:hover { background: var(--secondary-deep); transform: translateY(-1px); }
+  .btn-complete.done {
+    background: var(--positive); color: #fff;
+  }
+
+  .back-to-course {
+    text-align: center; margin-top: 8px;
+  }
+  .back-to-course a {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--ink); text-decoration: none; font-size: 14px;
+  }
+  .back-to-course a:hover { color: var(--primary-deep); }
+
+  @media (max-width: 640px) {
+    .lesson-nav { grid-template-columns: 1fr; gap: 14px; justify-items: center; }
+    .nav-next { justify-self: center; }
+  }
+
+  /* ── Reflection questionnaire ─────────────────────────────── */
+  .q-group {
+    margin-bottom: 24px; padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .q-group:last-of-type { border-bottom: none; margin-bottom: 0; }
+  .q-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--primary-deep); margin-bottom: 6px;
+  }
+  .q-label { font-weight: 600; font-size: 16px; margin-bottom: 14px; line-height: 1.4; }
+  .q-option {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 15px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-sm);
+    cursor: pointer; margin-bottom: 8px;
+    font-size: 15px; color: var(--ink);
+    transition: border-color .15s, background .15s;
+    user-select: none;
+  }
+  .q-option:last-child { margin-bottom: 0; }
+  .q-option:hover { border-color: var(--primary); }
+  .q-option input[type=radio] {
+    accent-color: var(--primary); width: 17px; height: 17px;
+    flex-shrink: 0; cursor: pointer;
+  }
+  .q-option.selected {
+    border-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 8%, var(--bg-card));
+  }
+  .reflect-actions { margin-top: 28px; display: flex; align-items: center; gap: 16px; }
+  .reflect-saved { font-size: 14px; color: var(--positive); font-weight: 500; display: none; }
+  .reflect-saved.show { display: block; }
+
+  /* ── Photo upload ─────────────────────────────────────────── */
+  .photo-zones {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin: 24px 0;
+  }
+  .photo-zone {
+    border: 2px dashed var(--line-strong);
+    border-radius: var(--r-md); padding: 36px 20px;
+    text-align: center; cursor: pointer;
+    transition: border-color .15s, background .15s;
+    position: relative; overflow: hidden;
+  }
+  .photo-zone:hover { border-color: var(--primary); }
+  .photo-zone.has-file { border-color: var(--primary); border-style: solid; padding: 0; }
+  .photo-zone input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .photo-zone .z-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+  .photo-zone .z-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .photo-zone .z-hint { font-size: 12px; color: var(--ink-mute); }
+  .photo-zone img.preview {
+    width: 100%; aspect-ratio: 3/4; object-fit: cover;
+    border-radius: calc(var(--r-md) - 2px); display: none;
+  }
+  .photo-zone.has-file .z-icon,
+  .photo-zone.has-file .z-name,
+  .photo-zone.has-file .z-hint { display: none; }
+  .photo-zone.has-file img.preview { display: block; }
+  .consent-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin: 18px 0 8px; cursor: pointer;
+  }
+  .consent-row input { accent-color: var(--primary); width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; }
+  .consent-row span { font-size: 15px; font-weight: 500; line-height: 1.4; }
+  .privacy-note { font-size: 13px; color: var(--ink-mute); margin-bottom: 22px; line-height: 1.5; }
+
+  /* ── Compare (before / after) ─────────────────────────────── */
+  .section-mono {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute); margin: 0 0 16px;
+  }
+  .compare-photos {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px;
+  }
+  .compare-thumb-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute); margin-bottom: 8px; text-align: center;
+  }
+  .compare-thumb {
+    aspect-ratio: 3/4; border-radius: var(--r-md);
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-mute); font-size: 13px; text-align: center;
+    background: var(--bg-warm); padding: 16px; box-sizing: border-box;
+  }
+  .compare-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-md); }
+
+  .compare-qa { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+  .compare-qa:last-child { border-bottom: none; }
+  .compare-q { font-weight: 600; font-size: 14px; margin-bottom: 10px; }
+  .a-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .a-chip { padding: 10px 12px; border-radius: var(--r-sm); font-size: 13px; line-height: 1.45; }
+  .a-chip .chip-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-mute); margin-bottom: 4px; display: block;
+  }
+  .a-chip.before { background: var(--bg-warm); }
+  .a-chip.after { background: color-mix(in srgb, var(--primary) 9%, var(--bg-card)); }
+
+  @media (max-width: 540px) {
+    .photo-zones { grid-template-columns: 1fr; }
+    .compare-photos { grid-template-columns: 1fr; }
+    .a-pair { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="lesson-wrap">
+    <div class="lesson-head">
+      <h1 id="lesson-title">01. Подробная техника</h1>
+      <nav class="lesson-crumb">
+        <a id="bc-course" href="product-enrolled.html?id=belly-floor">Живот и Тазовое дно</a>
+        <span class="sep">/</span>
+        <span class="current" id="bc-step">01. Подробная техника</span>
+      </nav>
+    </div>
+
+    <article class="lesson-card" id="lesson-card">
+      <h2 id="lesson-h2">Подробная техника</h2>
+
+      <div id="lesson-content">
+      <div class="notice">
+        <b class="title">Фокус на ощущение</b>
+        <p>В этом уроке важно не усилие, а <b>отклик тела</b>. Постарайтесь расслабиться и наблюдать за движением дыхания и мышц без напряжения.</p>
+      </div>
+
+      <p>Друзья, поздравляю вас с началом программы «Живот и Тазовое дно». Сегодня у нас очень важный урок.</p>
+      <p>Мы немного растянем мышцы тазового дна, чтобы они стали более эластичными, и научимся мягко подтягивать их внутрь.</p>
+
+      <ul class="tick-list">
+        <li><span><b>Первое упражнение:</b> на вдохе мягко расширяется низ живота и раскрывается промежность.</span></li>
+        <li><span><b>Важно:</b> в этот момент ничего не напрягать и не натуживаться.</span></li>
+        <li><span><b>Второе упражнение:</b> ощущаем внутренний «лифт» от мышц тазового дна к глубоким мышцам живота.</span></li>
+        <li><span><b>Рекомендация:</b> можно повторять эту практику несколько дней, чтобы лучше прочувствовать ощущения.</span></li>
+      </ul>
+
+      <p>Когда это станет понятнее, вы сможете легче перенести этот навык в тренировки.</p>
+
+      <p class="closing">Мягкой практики!</p>
+
+      <div class="video" role="region" aria-label="Видео-урок">
+        <div class="poster"></div>
+        <div class="chip">
+          <span>1. Подробная техника</span>
+          <span>Anastasiya Vidruk</span>
+        </div>
+        <div class="ctrls">
+          <button class="play-btn" aria-label="Воспроизвести"></button>
+          <span class="time">07:15</span>
+          <div class="scrub"></div>
+          <div class="right-ctrls">
+            <span class="ico ico-vol" aria-hidden="true"></span>
+            <span class="ico ico-cc" aria-hidden="true"></span>
+            <span class="ico ico-gear" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+      </div><!-- #lesson-content -->
+    </article>
+
+    <!-- Diary -->
+    <section class="diary" id="diary">
+      <h3>Дневник: <span id="diary-step">Урок 1</span></h3>
+
+      <div class="diary-tabs" role="tablist">
+        <button class="active" data-tab="diary">Дневник</button>
+        <button data-tab="feedback">Вопрос тренеру</button>
+      </div>
+      <hr/>
+
+      <!-- Diary tab -->
+      <form id="diary-form">
+        <div class="field">
+          <label for="f-hard">Что далось тяжелее</label>
+          <input id="f-hard" type="text" placeholder="Упражнение, которое пока не идёт" />
+        </div>
+        <div class="field">
+          <label for="f-doubt">Вопросы</label>
+          <input id="f-doubt" type="text" placeholder="Что было непонятно или вызвало вопросы?" />
+        </div>
+        <div class="field">
+          <label for="f-progress">Ощущения</label>
+          <textarea id="f-progress" placeholder="Что изменилось в ощущениях, технике или самочувствии?"></textarea>
+        </div>
+        <button class="btn-save" type="submit">Сохранить</button>
+      </form>
+
+      <!-- Feedback tab (hidden by default) -->
+      <form id="feedback-form" style="display:none">
+        <div class="field">
+          <label for="f-feedback">Сообщение тренеру</label>
+          <textarea id="f-feedback" placeholder="Поделитесь, как прошёл урок. Я читаю каждое сообщение."></textarea>
+        </div>
+        <button class="btn-save" type="submit">Отправить</button>
+      </form>
+
+      <div class="records">
+        <div class="records-title" id="records-title">Мои записи</div>
+        <div id="records-list">
+          <div class="records-empty">Пока нет записей — напишите первую после урока.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom nav -->
+    <nav class="lesson-nav">
+      <a class="nav-prev" id="nav-prev" href="#">← Предыдущий урок</a>
+      <button class="btn-complete" id="btn-complete">✓ Урок пройден</button>
+      <a class="nav-next" id="nav-next" href="#">Следующий урок →</a>
+    </nav>
+    <div class="back-to-course">
+      <a id="back-course" href="product-enrolled.html?id=belly-floor">📖 Вернуться к курсу</a>
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'courses' });
+
+    // ── Lesson definitions for the active course ───────────────────────────
+    // (Eventually this lives next to each course; today we ship the
+    //  belly-floor curriculum and fall back gracefully for others.)
+    const LESSONS = {
+      'belly-floor': [
+        { id: 1,  group: 'Теория',  title: 'План программы',                 h2: 'План программы' },
+        { id: 2,  group: 'Теория',  title: 'Чек-лист: Первичная диагностика тела', h2: 'Первичная диагностика тела', type: 'reflection' },
+        { id: 3,  group: 'Теория',  title: 'Визуальная оценка ДО',           h2: 'Визуальная оценка ДО',           type: 'photos' },
+        { id: 4,  group: 'Практика', title: 'Подробная техника',              h2: 'Подробная техника' },
+        { id: 5,  group: 'Практика', title: 'Ежедневная рутина',              h2: 'Ежедневная рутина' },
+        { id: 6,  group: 'Практика', title: 'Первая тренировка',              h2: 'Практика на мягкое включение тазового дна' },
+        { id: 7,  group: 'Практика', title: 'Вторая тренировка',              h2: 'Вторая тренировка' },
+        { id: 8,  group: 'Практика', title: 'Третья тренировка',              h2: 'Третья тренировка' },
+        { id: 9,  group: 'Практика', title: 'Четвёртая тренировка',           h2: 'Четвёртая тренировка' },
+        { id: 10, group: 'Практика', title: 'Пятая тренировка',               h2: 'Пятая тренировка' },
+        { id: 11, group: 'Практика', title: 'Шестая тренировка',              h2: 'Шестая тренировка' },
+        { id: 12, group: 'Практика', title: 'Седьмая тренировка',             h2: 'Седьмая тренировка' },
+        { id: 13, group: 'Практика', title: 'Визуальная оценка ПОСЛЕ',        h2: 'Визуальная оценка ПОСЛЕ' },
+        { id: 14, group: 'Практика', title: 'Чек-лист + Фото: Сравниваем результаты', h2: 'Сравниваем результаты', type: 'compare' },
+      ],
+    };
+
+    const params = new URLSearchParams(location.search);
+    const courseId = params.get('course') || params.get('id') || 'belly-floor';
+    const stepId   = parseInt(params.get('step') || '4', 10);
+
+    const lessons = LESSONS[courseId] || LESSONS['belly-floor'];
+    const lesson  = lessons.find(l => l.id === stepId) || lessons[0];
+    const course  = ATMO.PRODUCTS.find(p => p.id === courseId) || ATMO.PRODUCTS.find(p => p.id === 'belly-floor');
+
+    // ── Questionnaire definitions (belly + pelvic floor) ──────────────────
+    const REFLECTION_QS = [
+      { id: 'q_belly',    text: 'Как выглядит ваш живот в спокойном состоянии?',
+        options: ['Плоский, мышцы в тонусе', 'Небольшой выступ ниже пупка', 'Живот сильно выступает вперёд'] },
+      { id: 'q_diastasis', text: 'Есть ли у вас диастаз (расхождение белой линии живота)?',
+        options: ['Нет / не проверяла', 'Небольшое (1–2 пальца)', 'Значительное (более 2 пальцев)'] },
+      { id: 'q_pelvic',   text: 'Как вы ощущаете своё тазовое дно?',
+        options: ['Хорошо ощущаю и контролирую', 'Слабо ощущаю, контроль частичный', 'Совсем не ощущаю'] },
+      { id: 'q_symptoms', text: 'Есть ли симптомы слабости тазового дна?',
+        options: ['Нет', 'Иногда (при кашле, чихании, прыжках)', 'Регулярно беспокоит'] },
+      { id: 'q_activity', text: 'Насколько вы физически активны?',
+        options: ['Занимаюсь регулярно (3+ раза в неделю)', 'Несколько раз в месяц', 'Почти не двигаюсь'] },
+    ];
+
+    // ── Build reflection form HTML ─────────────────────────────────────────
+    function buildReflectionForm(savedAnswers = {}) {
+      return REFLECTION_QS.map((q, i) => {
+        const opts = q.options.map((opt, j) => {
+          const val = String.fromCharCode(97 + j);
+          const checked = savedAnswers[q.id] === val ? 'checked' : '';
+          const sel = checked ? ' selected' : '';
+          return `<label class="q-option${sel}">
+            <input type="radio" name="${q.id}" value="${val}" ${checked}> ${opt}
+          </label>`;
+        }).join('');
+        return `<div class="q-group">
+          <div class="q-num">Вопрос ${i + 1}</div>
+          <div class="q-label">${q.text}</div>
+          ${opts}
+        </div>`;
+      }).join('');
+    }
+
+    function wireReflectionForm(formEl, storageKey, onSave) {
+      formEl.querySelectorAll('.q-option input').forEach(inp => {
+        inp.addEventListener('change', () => {
+          formEl.querySelectorAll(`[name="${inp.name}"]`)
+            .forEach(r => r.closest('.q-option').classList.remove('selected'));
+          inp.closest('.q-option').classList.add('selected');
+        });
+      });
+      formEl.addEventListener('submit', e => {
+        e.preventDefault();
+        const answers = {};
+        REFLECTION_QS.forEach(q => {
+          const checked = formEl.querySelector(`[name="${q.id}"]:checked`);
+          if (checked) answers[q.id] = checked.value;
+        });
+        localStorage.setItem(storageKey, JSON.stringify(answers));
+        const saved = formEl.querySelector('.reflect-saved');
+        if (saved) { saved.classList.add('show'); setTimeout(() => saved.classList.remove('show'), 3000); }
+        if (onSave) onSave(answers);
+      });
+    }
+
+    // ── Render: reflection questionnaire ──────────────────────────────────
+    function renderReflection() {
+      const key = `atmo:reflection:${course.id}:before`;
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch {}
+
+      document.getElementById('lesson-content').innerHTML = `
+        <p style="margin-bottom:28px;line-height:1.65">Прежде чем начать, проведём первичную диагностику. Ваши ответы помогут отследить изменения к концу курса.</p>
+        <form id="reflect-form">
+          ${buildReflectionForm(saved)}
+          <div class="reflect-actions">
+            <button type="submit" class="btn-save">Сохранить ответы</button>
+            <span class="reflect-saved">Ответы сохранены ✓</span>
+          </div>
+        </form>`;
+
+      document.getElementById('diary').style.display = 'none';
+      wireReflectionForm(document.getElementById('reflect-form'), key);
+    }
+
+    // ── Render: photo upload ───────────────────────────────────────────────
+    function renderPhotos() {
+      const key = `atmo:photos:${course.id}:before`;
+      document.getElementById('lesson-content').innerHTML = `
+        <p style="margin-bottom:8px;line-height:1.65">Сделайте два фото в нижнем белье или купальнике — при хорошем освещении, на нейтральном фоне.</p>
+        <div class="notice" style="margin-bottom:24px">
+          <b class="title">Как сделать фото</b>
+          <p>Встаньте прямо, руки вдоль тела, в полный рост. Два снимка: анфас и строго в профиль.</p>
+        </div>
+        <div class="photo-zones">
+          <div class="photo-zone" id="zone-front">
+            <input type="file" accept="image/*" id="file-front" aria-label="Фото спереди">
+            <span class="z-icon">📷</span>
+            <div class="z-name">Фото спереди</div>
+            <div class="z-hint">Анфас, в полный рост</div>
+            <img class="preview" alt="Фото спереди">
+          </div>
+          <div class="photo-zone" id="zone-side">
+            <input type="file" accept="image/*" id="file-side" aria-label="Фото сбоку">
+            <span class="z-icon">📷</span>
+            <div class="z-name">Фото сбоку</div>
+            <div class="z-hint">Профиль, в полный рост</div>
+            <img class="preview" alt="Фото сбоку">
+          </div>
+        </div>
+        <label class="consent-row">
+          <input type="checkbox" id="photo-consent">
+          <span>Разрешаю тренеру видеть мои фото</span>
+        </label>
+        <p class="privacy-note">Фотографии хранятся только в вашем аккаунте и не публикуются без вашего согласия.</p>
+        <div class="reflect-actions">
+          <button class="btn-save" id="btn-save-photos">Сохранить фото</button>
+          <span class="reflect-saved" id="photos-saved">Фото сохранены ✓</span>
+        </div>`;
+
+      document.getElementById('diary').style.display = 'none';
+
+      function applyPreview(zoneId, src) {
+        const zone = document.getElementById(zoneId);
+        const img  = zone.querySelector('img.preview');
+        img.src = src; zone.classList.add('has-file');
+      }
+
+      try {
+        const p = JSON.parse(localStorage.getItem(key) || '{}');
+        if (p.front) applyPreview('zone-front', p.front);
+        if (p.side)  applyPreview('zone-side',  p.side);
+      } catch {}
+
+      ['front', 'side'].forEach(side => {
+        document.getElementById(`file-${side}`).addEventListener('change', function() {
+          const file = this.files[0]; if (!file) return;
+          const reader = new FileReader();
+          reader.onload = e => applyPreview(`zone-${side}`, e.target.result);
+          reader.readAsDataURL(file);
+        });
+      });
+
+      document.getElementById('btn-save-photos').addEventListener('click', () => {
+        const data = {};
+        const frontSrc = document.querySelector('#zone-front img.preview').src;
+        const sideSrc  = document.querySelector('#zone-side  img.preview').src;
+        if (frontSrc && !frontSrc.endsWith(location.href)) data.front = frontSrc;
+        if (sideSrc  && !sideSrc.endsWith(location.href))  data.side  = sideSrc;
+        try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+        const s = document.getElementById('photos-saved');
+        s.classList.add('show'); setTimeout(() => s.classList.remove('show'), 3000);
+      });
+    }
+
+    // ── Render: compare (before / after) ──────────────────────────────────
+    function renderCompare() {
+      const photoKey   = `atmo:photos:${course.id}:before`;
+      const beforeKey  = `atmo:reflection:${course.id}:before`;
+      const afterKey   = `atmo:reflection:${course.id}:after`;
+      let beforePhotos = {}, beforeAnswers = {}, afterAnswers = {};
+      try { beforePhotos  = JSON.parse(localStorage.getItem(photoKey)  || '{}'); } catch {}
+      try { beforeAnswers = JSON.parse(localStorage.getItem(beforeKey) || '{}'); } catch {}
+      try { afterAnswers  = JSON.parse(localStorage.getItem(afterKey)  || '{}'); } catch {}
+
+      function thumbHTML(src) {
+        return src
+          ? `<img src="${src}" alt="" style="width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:var(--r-md)">`
+          : `<div class="compare-thumb">Фото не добавлено</div>`;
+      }
+
+      function getLabel(qId, val) {
+        if (!val) return '<em style="color:var(--ink-mute)">не заполнено</em>';
+        const q = REFLECTION_QS.find(x => x.id === qId);
+        return q ? (q.options[val.charCodeAt(0) - 97] || val) : val;
+      }
+
+      const qaRows = REFLECTION_QS.map((q, i) => `
+        <div class="compare-qa">
+          <div class="compare-q">${i + 1}. ${q.text}</div>
+          <div class="a-pair">
+            <div class="a-chip before"><span class="chip-label">До</span>${getLabel(q.id, beforeAnswers[q.id])}</div>
+            <div class="a-chip after"><span class="chip-label">После</span><span class="after-val" data-qid="${q.id}">${getLabel(q.id, afterAnswers[q.id])}</span></div>
+          </div>
+        </div>`).join('');
+
+      document.getElementById('lesson-content').innerHTML = `
+        <div class="section-mono">Фотографии</div>
+        <div class="compare-photos">
+          <div>
+            <div class="compare-thumb-label">До</div>
+            ${thumbHTML(beforePhotos.front)}
+          </div>
+          <div>
+            <div class="compare-thumb-label">После</div>
+            <div class="compare-thumb" style="aspect-ratio:3/4">Фото после курса появятся здесь</div>
+          </div>
+        </div>
+        <hr>
+        <div class="section-mono" style="margin-top:28px">Изменения в ощущениях</div>
+        <div id="compare-qa-list">${qaRows}</div>
+        <hr>
+        <div style="margin-top:28px">
+          <h3 style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:20px;margin:0 0 8px">Чек-лист: ощущения ПОСЛЕ</h3>
+          <p style="margin-bottom:24px;color:var(--ink-soft);font-size:15px">Ответьте на те же вопросы — увидим, что изменилось.</p>
+          <form id="reflect-form">
+            ${buildReflectionForm(afterAnswers)}
+            <div class="reflect-actions">
+              <button type="submit" class="btn-save">Сохранить ответы</button>
+              <span class="reflect-saved">Ответы сохранены ✓</span>
+            </div>
+          </form>
+        </div>`;
+
+      document.getElementById('diary').style.display = 'none';
+
+      wireReflectionForm(document.getElementById('reflect-form'), afterKey, updatedAnswers => {
+        REFLECTION_QS.forEach(q => {
+          const el = document.querySelector(`.after-val[data-qid="${q.id}"]`);
+          if (el) el.innerHTML = getLabel(q.id, updatedAnswers[q.id]);
+        });
+      });
+    }
+
+    // ── Dispatch by lesson type ────────────────────────────────────────────
+    function renderLessonContent() {
+      switch (lesson.type) {
+        case 'reflection': renderReflection(); break;
+        case 'photos':     renderPhotos();     break;
+        case 'compare':    renderCompare();    break;
+      }
+    }
+
+    // Header
+    const num = String(lesson.id).padStart(2, '0');
+    document.getElementById('lesson-title').innerHTML =
+      `<span class="lesson-num">Урок ${lesson.id}</span> · ${lesson.title}`;
+    document.getElementById('bc-step').textContent       = lesson.title;
+    document.getElementById('lesson-h2').textContent     = lesson.h2 || lesson.title;
+    document.getElementById('bc-course').textContent     = course.title;
+    document.getElementById('bc-course').href            = `product-enrolled.html?id=${course.id}`;
+    document.getElementById('back-course').href          = `product-enrolled.html?id=${course.id}`;
+    document.getElementById('diary-step').textContent    = `Урок ${lesson.id}`;
+    document.title = `Урок ${lesson.id} · ${lesson.title} — ATMO`;
+
+    // Update video chip title to match current lesson
+    const chipTitle = document.querySelector('.video .chip span:first-child');
+    if (chipTitle) chipTitle.textContent = `${num}. ${lesson.title}`;
+
+    renderLessonContent();
+
+    // Prev / Next — use same path form as current URL to avoid clean-URL redirect stripping params
+    const lessonPath = location.pathname.endsWith('.html') ? 'lesson.html' : 'lesson';
+    const prev = lessons.find(l => l.id === lesson.id - 1);
+    const next = lessons.find(l => l.id === lesson.id + 1);
+    const prevEl = document.getElementById('nav-prev');
+    const nextEl = document.getElementById('nav-next');
+    if (prev) prevEl.href = `${lessonPath}?course=${course.id}&step=${prev.id}`;
+    else      prevEl.classList.add('disabled');
+    if (next) nextEl.href = `${lessonPath}?course=${course.id}&step=${next.id}`;
+    else      nextEl.classList.add('disabled');
+
+    // ── Diary tabs ─────────────────────────────────────────────────────────
+    const tabs = document.querySelectorAll('.diary-tabs button');
+    const diaryForm    = document.getElementById('diary-form');
+    const feedbackForm = document.getElementById('feedback-form');
+    const recordsTitle = document.getElementById('records-title');
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const tab = t.dataset.tab;
+      diaryForm.style.display    = tab === 'diary'    ? '' : 'none';
+      feedbackForm.style.display = tab === 'feedback' ? '' : 'none';
+      recordsTitle.textContent   = tab === 'diary' ? 'Мои записи' : 'Вопросы тренеру';
+      renderRecords();
+    }));
+
+    // ── Local-storage diary entries ────────────────────────────────────────
+    const STORAGE_KEY = `atmo:diary:${course.id}:${lesson.id}`;
+    function loadAll() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"diary":[],"feedback":[]}'); }
+      catch { return { diary: [], feedback: [] }; }
+    }
+    function saveAll(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+    function currentTab() {
+      return document.querySelector('.diary-tabs button.active').dataset.tab;
+    }
+    function fmtDate(ts) {
+      const d = new Date(ts);
+      return d.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long' }) +
+        ', ' + d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    }
+    function renderRecords() {
+      const data = loadAll();
+      const list = data[currentTab()] || [];
+      const el = document.getElementById('records-list');
+      if (!list.length) {
+        const emptyText = currentTab() === 'diary'
+          ? 'Здесь появятся ваши записи после сохранения.'
+          : 'Здесь появятся ваши сообщения тренеру.';
+        el.innerHTML = `<div class="records-empty">${emptyText}</div>`;
+        return;
+      }
+      el.innerHTML = list.slice().reverse().map((r, i) => {
+        const realIdx = list.length - 1 - i;
+        if (currentTab() === 'diary') {
+          return `
+            <div class="record">
+              <div class="when"><span>${fmtDate(r.ts)}</span><button class="del" data-idx="${realIdx}">Удалить</button></div>
+              ${r.hard     ? `<dt>Сложное упражнение</dt><dd>${escapeHtml(r.hard)}</dd>` : ''}
+              ${r.doubt    ? `<dt>Сомнения</dt><dd>${escapeHtml(r.doubt)}</dd>` : ''}
+              ${r.progress ? `<dt>Прогресс</dt><dd>${escapeHtml(r.progress)}</dd>` : ''}
+            </div>`;
+        }
+        return `
+          <div class="record">
+            <div class="when"><span>${fmtDate(r.ts)}</span><button class="del" data-idx="${realIdx}">Удалить</button></div>
+            <dd>${escapeHtml(r.message)}</dd>
+          </div>`;
+      }).join('');
+      el.querySelectorAll('.del').forEach(b => b.addEventListener('click', () => {
+        const data = loadAll();
+        data[currentTab()].splice(+b.dataset.idx, 1);
+        saveAll(data);
+        renderRecords();
+      }));
+    }
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+    }
+
+    diaryForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const hard     = document.getElementById('f-hard').value.trim();
+      const doubt    = document.getElementById('f-doubt').value.trim();
+      const progress = document.getElementById('f-progress').value.trim();
+      if (!hard && !doubt && !progress) return;
+      const data = loadAll();
+      data.diary.push({ ts: Date.now(), hard, doubt, progress });
+      saveAll(data);
+      diaryForm.reset();
+      renderRecords();
+    });
+    feedbackForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const message = document.getElementById('f-feedback').value.trim();
+      if (!message) return;
+      const data = loadAll();
+      data.feedback.push({ ts: Date.now(), message });
+      saveAll(data);
+      feedbackForm.reset();
+      renderRecords();
+    });
+
+    renderRecords();
+
+    // ── Mark complete ──────────────────────────────────────────────────────
+    const DONE_KEY = `atmo:done:${course.id}`;
+    function loadDone() {
+      try { return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]')); }
+      catch { return new Set(); }
+    }
+    function saveDone(set) { localStorage.setItem(DONE_KEY, JSON.stringify([...set])); }
+    const completeBtn = document.getElementById('btn-complete');
+    function paintComplete() {
+      const done = loadDone();
+      if (done.has(lesson.id)) {
+        completeBtn.classList.add('done');
+        completeBtn.textContent = '✓ Урок пройден';
+      } else {
+        completeBtn.classList.remove('done');
+        completeBtn.textContent = 'Отметить как пройденный';
+      }
+    }
+    completeBtn.addEventListener('click', () => {
+      const done = loadDone();
+      if (done.has(lesson.id)) done.delete(lesson.id);
+      else done.add(lesson.id);
+      saveDone(done);
+      paintComplete();
+
+      // Last lesson just completed → offer course completion screen
+      const isLastLesson = !lessons.find(l => l.id === lesson.id + 1);
+      const allDone = isLastLesson && lessons.every(l => loadDone().has(l.id));
+      if (allDone) {
+        setTimeout(() => {
+          location.href = `course-complete.html?course=${course.id}`;
+        }, 600);
+      }
+    });
+    paintComplete();
+
+    // Video play button — toggles state visually only
+    const playBtn = document.querySelector('.video .play-btn');
+    if (playBtn) playBtn.addEventListener('click', () => {
+      playBtn.style.opacity = playBtn.style.opacity === '0' ? '1' : '0';
+    });
+  </script>
+</body>
+</html>

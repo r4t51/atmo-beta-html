@@ -1,0 +1,162 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ошибка оплаты — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .pf-wrap {
+    max-width: 640px; margin: 0 auto;
+    padding: 56px 20px 80px;
+    text-align: center;
+  }
+
+  /* Steps */
+  .steps {
+    display: flex; gap: 0; margin: 0 0 48px;
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto; justify-content: center;
+    padding: 0 4px;
+  }
+  @media (max-width: 480px) {
+    .steps { justify-content: flex-start; padding: 0 16px; }
+  }
+  .step {
+    padding: 16px 22px;
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute);
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .step .n {
+    width: 22px; height: 22px; border-radius: 999px;
+    background: var(--bg-warm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+  }
+  .step.done { color: var(--ink-soft); }
+  .step.done .n { background: var(--ink); color: var(--bg); }
+  .step.done .n::after { content: "✓"; }
+  .step.error { color: #c25a4a; border-bottom-color: #c25a4a; }
+  .step.error .n { background: #c25a4a; color: #fff; }
+  .step.error .n::after { content: "✕"; }
+
+  /* Hero */
+  .pf-icon {
+    width: 88px; height: 88px; border-radius: 999px;
+    background: color-mix(in srgb, #c25a4a 14%, transparent);
+    color: #c25a4a;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 36px; margin-bottom: 24px;
+    animation: pop .5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes pop {
+    0%   { transform: scale(0.4); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.05; letter-spacing: -0.02em;
+    margin: 0 0 14px;
+  }
+  h1 em { font-style: italic; color: #c25a4a; }
+
+  .sub {
+    color: var(--ink-soft); font-size: 17px; line-height: 1.55;
+    max-width: 480px; margin: 0 auto 36px;
+  }
+
+  /* Reason card */
+  .reason-card {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 24px 28px;
+    text-align: left; margin-bottom: 28px;
+  }
+  .reason-card h3 {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--ink-mute); margin: 0 0 14px;
+  }
+  .reasons { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .reasons li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 15px; line-height: 1.5; color: var(--ink-soft);
+  }
+  .reasons li::before {
+    content: "·"; font-size: 20px; color: var(--ink-mute);
+    line-height: 1.2; flex-shrink: 0;
+  }
+
+  /* Actions */
+  .pf-actions {
+    display: flex; flex-direction: column; gap: 10px;
+    align-items: center;
+  }
+  .pf-actions .btn { min-width: 260px; }
+
+  .help-note {
+    margin-top: 24px;
+    font-size: 13px; color: var(--ink-mute); line-height: 1.55;
+  }
+  .help-note a { color: var(--ink-soft); }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="pf-wrap">
+    <nav class="steps">
+      <div class="step done"><span class="n"></span><span>Корзина</span></div>
+      <div class="step done"><span class="n"></span><span>Оформление</span></div>
+      <div class="step error"><span class="n"></span><span>Оплата</span></div>
+    </nav>
+
+    <div class="pf-icon">✕</div>
+
+    <h1>Не удалось <em>провести</em> платёж.</h1>
+    <p class="sub">Деньги не списаны. Заказ сохранён — попробуйте снова или выберите другой способ оплаты.</p>
+
+    <div class="reason-card">
+      <h3>Возможные причины</h3>
+      <ul class="reasons">
+        <li>Недостаточно средств на карте</li>
+        <li>Банк заблокировал онлайн-транзакцию — проверьте настройки или свяжитесь с банком</li>
+        <li>Данные карты введены с ошибкой</li>
+        <li>Временные технические неполадки на стороне платёжного шлюза</li>
+      </ul>
+    </div>
+
+    <div class="pf-actions">
+      <a class="btn btn-primary btn-lg btn-arrow btn-block" href="checkout.html">
+        Попробовать снова
+      </a>
+      <a class="btn btn-soft btn-lg btn-block" href="cart.html">
+        Вернуться в корзину
+      </a>
+    </div>
+
+    <p class="help-note">
+      Если проблема повторяется — напишите нам на
+      <a href="mailto:mail@atmo.by">mail@atmo.by</a>
+      и мы поможем оформить заказ вручную.
+    </p>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'catalog' });
+  </script>
+</body>
+</html>

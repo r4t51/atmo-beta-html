@@ -1,0 +1,725 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Кабинет — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  /* Account shell */
+  .account-wrap {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: 1fr;
+    padding: 32px 0 80px;
+    align-items: flex-start;
+  }
+  @media (min-width: 860px) {
+    .account-wrap { grid-template-columns: 220px 1fr; gap: 40px; }
+  }
+
+  .account-nav { display: flex; flex-direction: column; gap: 2px; }
+  .account-nav-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 14px; margin-bottom: 6px;
+  }
+  .account-avatar {
+    width: 40px; height: 40px; border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 22%, var(--bg-warm));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 18px; color: var(--primary-deep);
+    flex: 0 0 40px;
+  }
+  .account-nav-name { font-weight: 600; font-size: 14px; line-height: 1.2; }
+  .account-nav-email { font-size: 12px; color: var(--ink-mute); margin-top: 1px; }
+  .account-nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: var(--r-md);
+    font-size: 14px; font-weight: 500; color: var(--ink-soft);
+    text-decoration: none;
+    transition: background .12s, color .12s;
+  }
+  .account-nav a:hover { background: var(--bg-warm); color: var(--ink); }
+  .account-nav a.active {
+    background: var(--bg-card); color: var(--ink);
+    border: 1px solid var(--line); border-left: 2px solid var(--ink);
+  }
+  .account-nav .nav-icon { width: 16px; height: 16px; opacity: 0.5; flex: 0 0 16px; }
+  .account-nav .nav-sep { height: 1px; background: var(--line); margin: 6px 14px; }
+  .account-nav a.danger { color: var(--ink-mute); }
+  .account-nav a.danger:hover { color: #c25a4a; background: color-mix(in srgb, #c25a4a 6%, transparent); }
+
+  /* Dashboard layout */
+  .dash-head {
+    padding: 0 0 24px;
+  }
+  .dash-greet {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(36px, 5vw, 56px); line-height: 1.05;
+    letter-spacing: -0.02em; margin: 8px 0 0; text-wrap: balance;
+  }
+  .dash-greet .accent { font-style: italic; color: var(--ink-soft); }
+
+  .dash-grid {
+    display: grid; gap: 20px;
+    grid-template-columns: 1fr;
+    padding-bottom: 64px;
+  }
+  @media (min-width: 920px) { .dash-grid { grid-template-columns: 1.7fr 1fr; gap: 24px; } }
+
+  /* Today card (hero) */
+  .today {
+    position: relative; overflow: hidden;
+    border-radius: var(--r-xl);
+    background: linear-gradient(135deg,
+      color-mix(in srgb, var(--primary) 18%, var(--bg-card)) 0%,
+      var(--bg-card) 60%);
+    border: 1px solid var(--line);
+    padding: 28px 28px 28px;
+    display: grid; gap: 22px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 600px) { .today { grid-template-columns: 1fr 200px; align-items: center; } }
+  .today .today-eyebrow {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .today .today-eyebrow::before {
+    content: ""; width: 8px; height: 8px; border-radius: 999px;
+    background: var(--primary);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 22%, transparent);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { transform: scale(1.15); } }
+  .today h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(28px, 4vw, 40px); line-height: 1.05;
+    margin: 12px 0 6px; letter-spacing: -0.02em;
+  }
+  .today p { color: var(--ink-soft); margin: 0 0 18px; max-width: 460px; }
+  .today-meta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
+  .today-meta .pill { background: rgba(255,255,255,0.6); border-color: transparent; }
+  .today-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .today-circle {
+    aspect-ratio: 1; border-radius: 50%;
+    background: var(--bg-warm);
+    background-image:
+      repeating-linear-gradient(135deg, rgba(26,26,31,0.04) 0 1px, transparent 1px 14px);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    max-width: 200px; margin: 0 auto;
+  }
+  .today-circle::before {
+    content: ""; position: absolute; inset: 12px;
+    border-radius: 50%;
+    background: var(--bg-card);
+  }
+  .today-circle .label {
+    position: relative; text-align: center;
+  }
+  .today-circle .label .num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 56px; line-height: 1; letter-spacing: -0.02em;
+    display: block;
+  }
+  .today-circle .label .lbl {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 10px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.12em; margin-top: 6px;
+    display: block;
+  }
+
+  .panel {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 24px;
+  }
+  .panel h3 {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--ink-mute); margin: 0 0 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .panel h3 a { color: var(--ink-mute); text-decoration: none; }
+  .panel h3 a:hover { color: var(--ink); }
+
+  .progress-bar {
+    height: 6px; border-radius: 999px; background: var(--bg-warm);
+    overflow: hidden; margin: 6px 0;
+  }
+  .progress-bar > span { display: block; height: 100%; background: var(--primary); border-radius: 999px; }
+  .progress-text {
+    display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-soft);
+  }
+
+  /* Programs list */
+  .program-row {
+    display: grid; gap: 16px;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none; color: inherit;
+  }
+  .program-row:last-child { border: none; }
+  .program-row .ph {
+    aspect-ratio: 1; border-radius: 12px;
+  }
+  .program-row .name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px; line-height: 1.1; letter-spacing: -0.01em;
+    margin: 0 0 4px;
+  }
+  .program-row .sub {
+    font-size: 13px; color: var(--ink-soft);
+  }
+  .program-row .progress-mini {
+    display: flex; flex-direction: column; gap: 4px; align-items: end;
+  }
+  .program-row .progress-mini .bar {
+    width: 80px; height: 4px; background: var(--bg-warm); border-radius: 999px; overflow: hidden;
+  }
+  .program-row .progress-mini .bar > span { display: block; height: 100%; background: var(--ink); }
+  .program-row .progress-mini .pct { font-size: 11px; color: var(--ink-mute); font-family: 'Space Mono', ui-monospace, monospace; }
+
+  /* Stats */
+  .stat-row {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--line); border-radius: var(--r-md);
+    border: 1px solid var(--line); overflow: hidden;
+  }
+  .stat-row > div { background: var(--bg-card); padding: 18px; }
+  .stat-row .num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 32px; line-height: 1; letter-spacing: -0.02em;
+  }
+  .stat-row .lbl {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 10px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px;
+  }
+
+  /* Streak ring */
+  .streak {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 18px; border-radius: var(--r-md);
+    background: var(--bg-warm);
+  }
+  .streak .ring {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--bg-warm);
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 56px;
+    position: relative;
+  }
+  .streak .ring::before {
+    content: ""; width: 44px; height: 44px; background: var(--bg-card); border-radius: 50%;
+  }
+  .streak .ring span {
+    position: absolute; font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 12px; font-weight: 600; letter-spacing: -0.01em;
+  }
+  .streak .info { line-height: 1.35; }
+  .streak .info b { font-weight: 600; }
+  /* Progress / trainer reply panels */
+  .quote-panel { display: grid; gap: 14px; }
+  .quote-panel .quote-body {
+    font-size: 15px; line-height: 1.55; color: var(--ink);
+    margin: 0;
+  }
+  .quote-panel .quote-meta {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--ink-mute);
+  }
+  .quote-panel .quote-meta a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-strong); padding-bottom: 1px; }
+  .quote-panel .quote-meta a:hover { color: var(--primary-deep); border-color: var(--primary-deep); }
+  .quote-panel .quote-empty { color: var(--ink-soft); font-size: 14px; line-height: 1.5; }
+  .trainer-reply {
+    display: grid; grid-template-columns: 40px 1fr; gap: 12px;
+    padding: 14px; background: var(--bg-warm);
+    border-radius: var(--r-sm);
+  }
+  .trainer-reply .avatar {
+    width: 40px; height: 40px; border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 30%, var(--bg-warm));
+    color: var(--primary-deep); display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif; font-size: 18px;
+  }
+  .trainer-reply .who {
+    font-size: 13px; font-weight: 600; margin-bottom: 4px;
+  }
+  .trainer-reply .msg { font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+  .my-msg {
+    font-size: 13px; color: var(--ink-soft); line-height: 1.5;
+    padding: 12px 14px; border-radius: var(--r-sm);
+    border: 1px dashed var(--line-strong);
+    background: var(--bg-card);
+  }
+  .my-msg::before { content: "Вы: "; font-weight: 600; color: var(--ink); }
+
+  /* ── Mobile overrides ─────────────────────────────────────── */
+  @media (max-width: 859px) {
+    .account-wrap { padding: 16px 0 64px; gap: 16px; }
+
+    /* Today card — single column, hide circle on very small screens */
+    .today { padding: 20px; }
+  }
+  @media (max-width: 480px) {
+    .today-circle { display: none; }
+    .today { grid-template-columns: 1fr !important; }
+    .dash-greet { font-size: 28px; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .program-row { grid-template-columns: 44px 1fr; }
+  }
+
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="container">
+    <div class="account-wrap">
+
+      <nav class="account-nav">
+        <div class="account-nav-head">
+          <div class="account-avatar">А</div>
+          <div>
+            <div class="account-nav-name">Аня</div>
+            <div class="account-nav-email">ann@example.com</div>
+          </div>
+        </div>
+        <a href="account.html" class="active">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+          Обзор
+        </a>
+        <a href="courses.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4.5h12M2 8h8M2 11.5h10"/></svg>
+          Мои курсы
+        </a>
+        <a href="orders.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7"/><path d="M1 12h14"/><path d="M6.5 9h3"/></svg>
+          Заказы
+        </a>
+        <a href="profile.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5.5" r="2.5"/><path d="M2.5 13.5c0-3 2.46-5 5.5-5s5.5 2 5.5 5"/></svg>
+          Настройки
+        </a>
+        <div class="nav-sep"></div>
+        <a href="auth.html" class="danger">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 8h7M11 6l2 2-2 2"/><path d="M10 4V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1"/></svg>
+          Выйти
+        </a>
+      </nav>
+
+      <div>
+    <header class="dash-head">
+      <span class="eyebrow with-tick" id="dash-date"></span>
+      <h1 class="dash-greet"><span id="dash-greet-word">Доброе утро</span>, <span class="accent">Аня</span>.<br/>Сегодня хороший день для движения.</h1>
+    </header>
+
+    <section class="dash-grid">
+      <div class="flex-col gap-md" style="display:flex;flex-direction:column;gap:20px">
+        <!-- Today — rendered by JS -->
+        <article class="today" id="today-card">
+          <div id="today-content"></div>
+          <div class="today-circle">
+            <div class="label" id="today-circle-label">
+              <span class="num" id="today-step-num">—</span>
+              <span class="lbl">шагов курса</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Active program with weekly progress -->
+        <article class="panel">
+          <h3>Активная программа · «Живот и Тазовое дно» <a href="product-enrolled.html?id=belly-floor">подробнее →</a></h3>
+          <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap">
+            <div class="ph tint-warm" style="width:80px;aspect-ratio:1;border-radius:14px;flex:0 0 80px"><span class="ph-label">живот</span></div>
+            <div style="flex:1;min-width:200px">
+              <div class="serif" style="font-size:24px;letter-spacing:-0.01em">Живот и Тазовое дно</div>
+              <div class="muted" style="font-size:13px;margin:2px 0 10px">Шаг 4 из 14</div>
+              <div class="progress-bar"><span style="width: 28%"></span></div>
+              <div class="progress-text">
+                <span>28% пройдено</span>
+                <span>10 шагов осталось</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- All programs -->
+        <article class="panel">
+          <h3>Мои программы <a href="catalog.html">Добавить →</a></h3>
+
+          <a class="program-row" href="product-enrolled.html?id=belly-floor">
+            <div class="ph tint-warm"><span class="ph-label" style="font-size:8px">жив</span></div>
+            <div>
+              <div class="name">Живот и Тазовое дно</div>
+              <div class="sub" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span class="state-badge active">Активна</span>
+                <span>Шаг 4 · 4/14</span>
+              </div>
+            </div>
+            <div class="progress-mini hide-sm">
+              <div class="pct">28%</div>
+              <div class="bar"><span style="width:28%"></span></div>
+            </div>
+          </a>
+
+          <a class="program-row" href="product-enrolled.html?id=marathon">
+            <div class="ph tint-purple"><span class="ph-label" style="font-size:8px">мар</span></div>
+            <div>
+              <div class="name">Марафон Ежедневных Тренировок</div>
+              <div class="sub" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span class="state-badge in-progress">На паузе</span>
+                <span>Шаг 9 · 9/28</span>
+              </div>
+            </div>
+            <div class="progress-mini hide-sm">
+              <div class="pct">32%</div>
+              <div class="bar"><span style="width:32%"></span></div>
+            </div>
+          </a>
+
+          <a class="program-row" href="product-enrolled.html?id=cardio-zero">
+            <div class="ph tint-teal"><span class="ph-label" style="font-size:8px">кар</span></div>
+            <div>
+              <div class="name">Кардио с Нуля</div>
+              <div class="sub" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span class="state-badge completed">Пройдена</span>
+                <span>Завершена 12 марта</span>
+              </div>
+            </div>
+            <div class="progress-mini hide-sm">
+              <div class="pct">100%</div>
+              <div class="bar"><span style="width:100%;background:var(--positive)"></span></div>
+            </div>
+          </a>
+
+          <a class="program-row" href="product.html?id=levelup-neuro" style="opacity:0.7">
+            <div class="ph tint-purple" style="filter:grayscale(0.3)"><span class="ph-label" style="font-size:8px">lvl</span></div>
+            <div>
+              <div class="name">LevelUp: Нейросила</div>
+              <div class="sub" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span class="state-badge locked">🔒 Заблокирована</span>
+                <span>Откроется после «Живота и Тазового дна»</span>
+              </div>
+            </div>
+            <div class="progress-mini hide-sm">
+              <div class="pct">—</div>
+              <div class="bar"></div>
+            </div>
+          </a>
+        </article>
+      </div>
+
+      <!-- Right column -->
+      <aside class="flex-col gap-md" style="display:flex;flex-direction:column;gap:20px">
+        <article class="panel">
+          <h3>Статистика</h3>
+          <div class="streak" style="margin-bottom:12px">
+            <div class="ring" id="progress-ring"><span id="progress-pct">53%</span></div>
+            <div class="info">
+              <b>Прогресс по курсам</b>
+              <div id="progress-sub">в среднем по 3 купленным</div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <div><div class="num">23</div><div class="lbl">шагов пройдено</div></div>
+            <div><div class="num">1</div><div class="lbl">пройдена</div></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h3>Следующие уроки</h3>
+          <div id="next-lessons" style="display:grid;gap:0"></div>
+        </article>
+
+        <article class="panel">
+          <h3>Последняя запись · Прогресс <a href="#" id="progress-link">в уроке →</a></h3>
+          <div class="quote-panel">
+            <p class="quote-body" id="progress-body">Здесь появится ваша последняя запись о прогрессе из дневника тренировки.</p>
+            <div class="quote-meta" id="progress-meta"><span id="progress-when">·</span></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h3>Ответ тренера <a href="#" id="reply-link">к сообщению →</a></h3>
+          <div class="quote-panel">
+            <div class="my-msg" id="my-msg">Задайте вопрос во вкладке «Вопрос тренеру» любого урока — ответ придёт в течение 24 часов.</div>
+            <div class="trainer-reply" id="trainer-reply" hidden>
+              <div class="avatar">A</div>
+              <div>
+                <div class="who">Anastasiya Vidruk <span style="color:var(--ink-mute);font-weight:400">· тренер</span></div>
+                <div class="msg" id="reply-msg"></div>
+              </div>
+            </div>
+            <div class="quote-meta" id="reply-meta"></div>
+          </div>
+        </article>
+      </aside>
+    </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'account' });
+
+    // ── Прогресс-кольцо: считается из реальных данных ──────────────────────
+    const OWNED_PROGRESS = [
+      { id: 'belly-floor', pct: 28 },
+      { id: 'marathon',    pct: 32 },
+      { id: 'cardio-zero', pct: 100 },
+    ];
+    (function updateProgressRing() {
+      const total = OWNED_PROGRESS.length;
+      const avg   = Math.round(OWNED_PROGRESS.reduce((s, c) => s + c.pct, 0) / total);
+      const forms = total % 10 === 1 && total % 100 !== 11 ? 'купленному'
+                  : [2,3,4].includes(total % 10) && ![12,13,14].includes(total % 100) ? 'купленным'
+                  : 'купленным';
+      document.getElementById('progress-pct').textContent  = avg + '%';
+      document.getElementById('progress-sub').textContent  = `в среднем по ${total} ${forms}`;
+      document.getElementById('progress-ring').style.background =
+        `conic-gradient(var(--primary) 0 ${avg}%, var(--bg-card) ${avg}%)`;
+    })();
+
+    // Dynamic date and greeting
+    (function() {
+      const now = new Date();
+      const days   = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+      const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+      document.getElementById('dash-date').textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
+      const h = now.getHours();
+      document.getElementById('dash-greet-word').textContent =
+        h < 6 ? 'Доброй ночи' : h < 12 ? 'Доброе утро' : h < 18 ? 'Добрый день' : 'Добрый вечер';
+    })();
+
+    // Pull latest diary progress entry + latest trainer reply from localStorage.
+    // Format of diary keys: atmo:diary:<courseId>:<lessonId>
+    // Format of value:      { diary: [{ts, hard, doubt, progress}], feedback: [{ts, message, reply?}] }
+    const LESSON_NAMES = {
+      'belly-floor': {
+        1: 'План программы', 2: 'Чек-лист диагностики', 3: 'Визуальная оценка ДО',
+        4: 'Подробная техника', 5: 'Ежедневная рутина',
+        6: 'Первая тренировка', 7: 'Вторая тренировка', 8: 'Третья тренировка',
+        9: 'Четвёртая тренировка', 10: 'Пятая тренировка',
+        11: 'Шестая тренировка', 12: 'Седьмая тренировка',
+        13: 'Визуальная оценка ПОСЛЕ', 14: 'Сравниваем результаты',
+      }
+    };
+
+    // ── Следующие уроки ───────────────────────────────────────────────────
+    // Один следующий урок на каждый активный курс.
+    // В продакшне: список курсов + текущий шаг берутся из API плагина.
+    // ── Описания уроков ────────────────────────────────────────────────────
+    // В продакшне берётся из плагина (первый параграф описания урока в WP).
+    const LESSON_DATA = {
+      'belly-floor': {
+        1:  { duration: '10 мин', equipment: '',              desc: 'Обзор всей программы: структура, ритм и что нас ждёт. Читать можно в удобном темпе.' },
+        2:  { duration: '12 мин', equipment: 'Коврик',        desc: 'Самодиагностика: проверяем дыхание, осанку и базовое ощущение корсета.' },
+        3:  { duration: '15 мин', equipment: 'Коврик',        desc: 'Фотофиксация и первичная оценка — точка отсчёта для финального сравнения.' },
+        4:  { duration: '20 мин', equipment: 'Коврик + мяч',  desc: 'Разбираем технику активации тазового дна. Темп спокойный, без задержки воздуха.' },
+        5:  { duration: '10 мин', equipment: 'Коврик',        desc: 'Короткая ежедневная рутина, которую можно делать прямо с утра.' },
+        6:  { duration: '18 мин', equipment: 'Коврик + мяч',  desc: 'Первая полноценная тренировка. Работаем с поперечной мышцей живота и дыханием.' },
+        7:  { duration: '20 мин', equipment: 'Коврик',        desc: 'Продолжаем строить связь: внутренняя поверхность бедра и глубокий корсет.' },
+        8:  { duration: '22 мин', equipment: 'Коврик + мяч',  desc: 'Добавляем нагрузку аккуратно — без компенсаций в пояснице.' },
+        9:  { duration: '18 мин', equipment: 'Коврик',        desc: 'Работа с дыханием и тазовым дном в разных положениях.' },
+        10: { duration: '20 мин', equipment: 'Коврик + мяч',  desc: 'Интеграция: соединяем корсет, дно и дыхание в единую цепочку.' },
+        11: { duration: '22 мин', equipment: 'Коврик',        desc: 'Укрепляем привычные паттерны движения — уже без напоминаний.' },
+        12: { duration: '20 мин', equipment: 'Коврик + мяч',  desc: 'Финальная тренировочная сессия перед проверкой результата.' },
+        13: { duration: '15 мин', equipment: '',              desc: 'Повторяем тест из урока 3 — смотрим, что изменилось за два месяца.' },
+        14: { duration: '10 мин', equipment: '',              desc: 'Сравниваем точку ДО и ПОСЛЕ, обсуждаем дальнейший путь.' },
+      },
+    };
+
+    // ── Today card ─────────────────────────────────────────────────────────
+    // Данные текущего урока — в продакшне приходят из плагина.
+    const TODAY = {
+      courseId:   'belly-floor',
+      step:       4,
+      totalSteps: 14,
+    };
+
+    // Берём название и описание из данных урока
+    const _todayLesson = (LESSON_DATA[TODAY.courseId] || {})[TODAY.step] || {};
+    TODAY.lessonTitle = (LESSON_NAMES[TODAY.courseId] || {})[TODAY.step] || `Урок ${TODAY.step}`;
+    TODAY.duration    = _todayLesson.duration  || '';
+    TODAY.equipment   = _todayLesson.equipment || '';
+    TODAY.description = _todayLesson.desc      || '';
+
+    (function renderToday() {
+      const product = ATMO.PRODUCTS.find(p => p.id === TODAY.courseId);
+      const goal    = product ? ATMO.GOALS[product.goal] : null;
+
+      document.getElementById('today-content').innerHTML = `
+        <div class="today-eyebrow">Сегодня · шаг ${TODAY.step} из ${TODAY.totalSteps}</div>
+        <h2>${TODAY.lessonTitle}</h2>
+        <div class="today-meta">
+          <span class="pill">⏱ ${TODAY.duration}</span>
+          ${TODAY.equipment ? `<span class="pill">${TODAY.equipment}</span>` : ''}
+          ${product ? `<span class="pill">${product.title}</span>` : ''}
+        </div>
+        <p>${TODAY.description}</p>
+        <div class="today-actions">
+          <a class="btn btn-primary btn-arrow"
+             href="lesson.html?course=${TODAY.courseId}&step=${TODAY.step}">
+            Продолжить курс
+          </a>
+          <a class="btn btn-ghost"
+             href="product-enrolled.html?id=${TODAY.courseId}">
+            Все уроки
+          </a>
+        </div>
+      `;
+
+      document.getElementById('today-step-num').textContent =
+        `${TODAY.step}/${TODAY.totalSteps}`;
+    })();
+
+    const ACTIVE_COURSES = [
+      { id: 'belly-floor',    currentStep: 4,  totalSteps: 14 },
+      { id: 'levelup-neuro',  currentStep: 9,  totalSteps: 28 },
+    ];
+
+    const LESSON_DURATIONS = {
+      'belly-floor':   { 5:'10 мин', 6:'18 мин', 7:'20 мин', 8:'22 мин', 9:'18 мин', 10:'20 мин' },
+      'levelup-neuro': { 10:'15 мин', 11:'18 мин', 12:'20 мин' },
+    };
+
+    const nextLessonsEl = document.getElementById('next-lessons');
+    nextLessonsEl.innerHTML = ACTIVE_COURSES
+      .filter(c => c.currentStep < c.totalSteps)
+      .map(c => {
+        const nextStep = c.currentStep + 1;
+        const product  = ATMO.PRODUCTS.find(p => p.id === c.id);
+        const name     = (LESSON_NAMES[c.id] || {})[nextStep] || `Урок ${nextStep}`;
+        const dur      = (LESSON_DURATIONS[c.id] || {})[nextStep] || '';
+        const tint     = product ? product.tint : 'tint-warm';
+        const title    = product ? product.title : c.id;
+        return `
+          <a href="lesson.html?course=${c.id}&step=${nextStep}"
+             style="display:flex;align-items:center;gap:14px;padding:14px 0;
+                    border-bottom:1px solid var(--line);text-decoration:none;color:inherit;">
+            <div class="ph ${tint}"
+                 style="width:36px;height:36px;border-radius:10px;flex:0 0 36px">
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:11px;color:var(--ink-mute);font-family:'Space Mono',monospace;
+                          text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px">
+                ${title} · шаг ${nextStep}
+              </div>
+              <div style="font-size:14px;font-weight:500;white-space:nowrap;
+                          overflow:hidden;text-overflow:ellipsis">${name}</div>
+              ${dur ? `<div style="font-size:12px;color:var(--ink-mute);margin-top:2px">${dur}</div>` : ''}
+            </div>
+            <span style="font-size:13px;color:var(--primary-deep);font-weight:500;white-space:nowrap">→</span>
+          </a>`;
+      }).join('');
+
+    // Seed demo content on first visit so the dashboard isn't empty.
+    const SEED_KEY = 'atmo:seed:v1';
+    if (!localStorage.getItem(SEED_KEY)) {
+      const seedLessonKey = 'atmo:diary:belly-floor:3';
+      if (!localStorage.getItem(seedLessonKey)) {
+        const dayAgo = Date.now() - 23 * 60 * 60 * 1000;
+        const twoDays = Date.now() - 47 * 60 * 60 * 1000;
+        localStorage.setItem(seedLessonKey, JSON.stringify({
+          diary: [{
+            ts: dayAgo,
+            hard: '',
+            doubt: '',
+            progress: 'Начала лучше чувствовать внутренний «лифт» без натуживания. Дыхание стало спокойнее, поясница меньше включается.',
+          }],
+          feedback: [{
+            ts: twoDays,
+            message: 'Если во время выдоха я ощущаю лёгкое напряжение в животе — это нормально?',
+            reply: 'Да, это ок. Напряжение должно быть мягким — без «выжимания». На следующем уроке попробуй выдох чуть длиннее вдоха — живот сам «сядет» правильно.',
+            replyAt: dayAgo - 6 * 60 * 60 * 1000,
+          }],
+        }));
+      }
+      localStorage.setItem(SEED_KEY, '1');
+    }
+
+    function fmtAgo(ts) {
+      const diff = Date.now() - ts;
+      const h = Math.round(diff / (60 * 60 * 1000));
+      if (h < 1)  return 'только что';
+      if (h < 24) return `${h} ч назад`;
+      const d = Math.round(h / 24);
+      if (d < 7)  return `${d} дн. назад`;
+      return new Date(ts).toLocaleDateString('ru-RU', { day: '2-digit', month: 'long' });
+    }
+
+    function scanDiary() {
+      const out = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        const m = k && k.match(/^atmo:diary:([^:]+):(\d+)$/);
+        if (!m) continue;
+        let v;
+        try { v = JSON.parse(localStorage.getItem(k) || '{}'); } catch { continue; }
+        out.push({ courseId: m[1], lessonId: +m[2], ...v });
+      }
+      return out;
+    }
+
+    const all = scanDiary();
+
+    // Latest progress entry
+    let latestProgress = null;
+    for (const e of all) {
+      for (const d of (e.diary || [])) {
+        if (d.progress && (!latestProgress || d.ts > latestProgress.ts)) {
+          latestProgress = { ...d, courseId: e.courseId, lessonId: e.lessonId };
+        }
+      }
+    }
+    if (latestProgress) {
+      document.getElementById('progress-body').textContent = '«' + latestProgress.progress + '»';
+      const lessonName = (LESSON_NAMES[latestProgress.courseId] || {})[latestProgress.lessonId] || `Урок ${latestProgress.lessonId}`;
+      document.getElementById('progress-when').textContent =
+        `${fmtAgo(latestProgress.ts)} · ${lessonName}`;
+      document.getElementById('progress-link').href =
+        `lesson.html?course=${latestProgress.courseId}&step=${latestProgress.lessonId}`;
+    } else {
+      document.getElementById('progress-link').remove();
+    }
+
+    // Latest trainer reply
+    let latestReply = null;
+    for (const e of all) {
+      for (const f of (e.feedback || [])) {
+        if (f.reply && (!latestReply || (f.replyAt || f.ts) > (latestReply.replyAt || latestReply.ts))) {
+          latestReply = { ...f, courseId: e.courseId, lessonId: e.lessonId };
+        }
+      }
+    }
+    if (latestReply) {
+      document.getElementById('my-msg').textContent = latestReply.message;
+      document.getElementById('reply-msg').textContent = latestReply.reply;
+      document.getElementById('trainer-reply').hidden = false;
+      const lessonName = (LESSON_NAMES[latestReply.courseId] || {})[latestReply.lessonId] || `Урок ${latestReply.lessonId}`;
+      document.getElementById('reply-meta').innerHTML =
+        `<span>${fmtAgo(latestReply.replyAt || latestReply.ts)} · ${lessonName}</span>`;
+      document.getElementById('reply-link').href =
+        `lesson.html?course=${latestReply.courseId}&step=${latestReply.lessonId}`;
+    } else {
+      document.getElementById('reply-link').remove();
+    }
+  </script>
+</body>
+</html>

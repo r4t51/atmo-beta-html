@@ -1,0 +1,267 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Условия использования — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  body { background: var(--bg); }
+
+  .legal-wrap {
+    max-width: 720px; margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  .legal-head {
+    text-align: center;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+  }
+  .legal-head .date {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute); margin-bottom: 16px; display: block;
+  }
+  .legal-head h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(32px, 5vw, 48px);
+    letter-spacing: -0.02em; line-height: 1.05; margin: 0;
+  }
+
+  .legal-body h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700; font-size: 18px;
+    margin: 44px 0 14px; letter-spacing: -0.01em;
+    padding-top: 4px;
+    border-top: 2px solid var(--primary);
+    display: inline-block;
+  }
+  .legal-body p {
+    font-size: 15px; line-height: 1.75; margin: 0 0 14px;
+    color: var(--ink);
+  }
+  .legal-body ol {
+    padding-left: 0; margin: 0 0 14px;
+    list-style: none; counter-reset: item;
+  }
+  .legal-body ol li {
+    counter-increment: item;
+    font-size: 15px; line-height: 1.7;
+    margin-bottom: 10px; color: var(--ink);
+    display: grid; grid-template-columns: 2em 1fr; gap: 4px;
+  }
+  .legal-body ol li::before {
+    content: counter(item) ".";
+    color: var(--ink-mute); font-variant-numeric: tabular-nums;
+    font-size: 13px; padding-top: 2px;
+  }
+  .legal-body ol ol {
+    margin-top: 8px; margin-left: 0;
+    counter-reset: subitem;
+  }
+  .legal-body ol ol li {
+    counter-increment: subitem;
+    grid-template-columns: 3em 1fr;
+  }
+  .legal-body ol ol li::before {
+    content: counter(item) "." counter(subitem) ".";
+  }
+  .legal-body b { font-weight: 600; }
+  .legal-body .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--primary-deep); display: block; margin-bottom: 4px;
+  }
+
+  .legal-toc {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 24px 28px; margin-bottom: 40px;
+  }
+  .legal-toc p {
+    font-weight: 600; font-size: 14px; margin: 0 0 12px;
+    color: var(--ink-soft); text-transform: uppercase;
+    letter-spacing: 0.06em; font-family: 'Space Mono', monospace; font-size: 11px;
+  }
+  .legal-toc ol {
+    padding: 0; margin: 0; list-style: none; counter-reset: toc;
+    display: grid; gap: 6px;
+  }
+  .legal-toc ol li {
+    counter-increment: toc; display: flex; gap: 10px;
+    font-size: 14px; line-height: 1.4;
+  }
+  .legal-toc ol li::before {
+    content: "§" counter(toc);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--ink-mute); padding-top: 2px;
+    min-width: 28px; flex-shrink: 0;
+  }
+  .legal-toc a {
+    color: var(--ink); text-decoration: none;
+  }
+  .legal-toc a:hover { color: var(--primary-deep); text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="legal-wrap">
+    <div class="legal-head">
+      <span class="date">Дата: 01.05.2025</span>
+      <h1>Условия использования</h1>
+    </div>
+
+    <div class="legal-toc">
+      <p>Содержание</p>
+      <ol>
+        <li><a href="#s1">Вводные положения</a></li>
+        <li><a href="#s2">Определения</a></li>
+        <li><a href="#s3">Контакты Продавца</a></li>
+        <li><a href="#s4">Технические требования</a></li>
+        <li><a href="#s5">Общие положения</a></li>
+        <li><a href="#s6">Создание аккаунта</a></li>
+        <li><a href="#s7">Правила изменения цены</a></li>
+        <li><a href="#s8">Способы оплаты</a></li>
+        <li><a href="#s9">Способы доставки и оплаты заказов</a></li>
+        <li><a href="#s10">Исполнение договора</a></li>
+        <li><a href="#s11">Право на отказ от договора</a></li>
+        <li><a href="#s12">Рекламации и жалобы</a></li>
+        <li><a href="#s13">Внесудебное урегулирование споров</a></li>
+      </ol>
+    </div>
+
+    <div class="legal-body">
+
+      <h2 id="s1"><span class="section-num">§ 1</span>Вводные положения</h2>
+      <ol>
+        <li><span>Интернет-магазин ATMO, работающий по адресу <b>https://atmo.by</b>, ведётся Продавцом и предоставляет Покупателям доступ к цифровым образовательным продуктам в сфере фитнеса и здоровья.</span></li>
+        <li><span>Настоящий Регламент определяет правила заключения и исполнения договоров купли-продажи, заключаемых дистанционно через Магазин. Продавцом является ATMO Studio.</span></li>
+        <li><span>Настоящий Регламент является неотъемлемой частью договора купли-продажи, заключаемого с Покупателем. Условием заключения договора является принятие Регламента Покупателем.</span></li>
+        <li><span>Цены, указанные в Магазине, являются ценами <b>брутто</b> (включают все применимые налоги и сборы).</span></li>
+      </ol>
+
+      <h2 id="s2"><span class="section-num">§ 2</span>Определения</h2>
+      <ol>
+        <li><span><b>Покупатель</b> — физическое лицо, заключающее или намеревающееся заключить договор с Продавцом посредством Магазина.</span></li>
+        <li><span><b>Потребитель</b> — Покупатель, являющийся физическим лицом, совершающим с Продавцом правовую сделку, не связанную непосредственно с его профессиональной или предпринимательской деятельностью.</span></li>
+        <li><span><b>Предприниматель</b> — Покупатель, осуществляющий хозяйственную деятельность от собственного имени.</span></li>
+        <li><span><b>Магазин</b> — интернет-магазин, управляемый Продавцом по адресу atmo.by.</span></li>
+        <li><span><b>Продавец</b> — ATMO Studio.</span></li>
+        <li><span><b>Договор</b> — договор купли-продажи, заключаемый дистанционно в соответствии с условиями Регламента между Покупателем и Продавцом.</span></li>
+        <li><span><b>Регламент</b> — настоящий документ.</span></li>
+        <li><span><b>Товар</b> — цифровой контент или услуга (онлайн-программа, курс), доступные в Магазине, являющиеся предметом договора между Покупателем и Продавцом.</span></li>
+        <li><span><b>Заказ</b> — волеизъявление Покупателя, сделанное с использованием формы заказа, направленное непосредственно на заключение договора купли-продажи Товара с Продавцом.</span></li>
+      </ol>
+
+      <h2 id="s3"><span class="section-num">§ 3</span>Контакты Продавца</h2>
+      <ol>
+        <li><span>Адрес: ATMO Studio</span></li>
+        <li><span>Адрес электронной почты: <b>mail@atmo.by</b></span></li>
+        <li><span>Покупатель может связаться с Продавцом через электронную почту или форму обратной связи, доступную на сайте.</span></li>
+        <li><span>Покупатель может также связаться с Продавцом, воспользовавшись данными, указанными в предыдущих пунктах настоящего параграфа.</span></li>
+      </ol>
+
+      <h2 id="s4"><span class="section-num">§ 4</span>Технические требования</h2>
+      <p>Для использования Магазина, в том числе для просмотра ассортимента и оформления заказов, необходимо следующее:</p>
+      <ol>
+        <li><span>Устройство с выходом в интернет.</span></li>
+        <li><span>Актуальная версия браузера: Chrome не ниже версии 90, Firefox, Safari, Edge с поддержкой JavaScript.</span></li>
+        <li><span>Минимальное разрешение экрана 375 × 667 пикселей.</span></li>
+        <li><span>Доступ к электронной почте. Указанный при регистрации адрес используется для входа в систему и получения уведомлений.</span></li>
+        <li><span>Разрешение на сохранение файлов cookie в браузере. Подробности — в Политике конфиденциальности.</span></li>
+      </ol>
+
+      <h2 id="s5"><span class="section-num">§ 5</span>Общие положения</h2>
+      <ol>
+        <li><span>Продавец в максимальной степени, допускаемой законодательством, не несёт ответственности за нарушения со стороны Покупателей в процессе использования Магазина, в частности, за нарушения прав третьих лиц, а также за ненадлежащее использование информации, передаваемой посредством Магазина.</span></li>
+        <li><span>Продавец оставляет за собой право вносить изменения в Магазин, публикуя уведомления об этом заранее на сайте Магазина.</span></li>
+        <li><span>Стоимость доступа в Магазин включена в цену Товара.</span></li>
+        <li><span>Цены в Магазине указаны в польских злотых (PLN) и включают налог НДС.</span></li>
+      </ol>
+
+      <h2 id="s6"><span class="section-num">§ 6</span>Создание аккаунта</h2>
+      <ol>
+        <li><span>Для создания аккаунта в Магазине необходимо пройти регистрацию. Регистрация аккаунта необязательна — Покупатель может оформить заказ без регистрации.</span></li>
+        <li><span>Для регистрации аккаунта необходимо заполнить регистрационную форму, указав: адрес электронной почты и пароль.</span></li>
+        <li><span>Покупатель имеет право удалить аккаунт в любой момент, сообщив об этом Продавцу по электронной почте.</span></li>
+      </ol>
+
+      <h2 id="s7"><span class="section-num">§ 7</span>Правила изменения цены</h2>
+      <p>Мы оставляем за собой следующие права на изменение цены:</p>
+      <ol>
+        <li><span>Изменять цену Товара путём проведения промоакций «Демо» (ознакомительный доступ), «Скидка» (скидка на программу) или «Пакет» (скидка при покупке нескольких программ одновременно).</span></li>
+        <li><span>Изменять цену Товара путём проведения промоакций для подписчиков.</span></li>
+        <li><span>Изменять цену Товара в период специальных акций (например, Чёрная пятница и т. п.).</span></li>
+        <li><span>Внедрять промокоды, действительные только в период проведения акции.</span></li>
+        <li><span>Проводить акции «Flash» — кратковременные скидки сроком от 1 до 48 часов.</span></li>
+      </ol>
+
+      <h2 id="s8"><span class="section-num">§ 8</span>Способы оплаты</h2>
+      <ol>
+        <li><span>Доступные способы оплаты:
+          <ol>
+            <li><span>Платёжные карты Visa и Mastercard.</span></li>
+            <li><span>BLIK.</span></li>
+            <li><span>Klarna — оплата частями.</span></li>
+          </ol>
+        </span></li>
+        <li><span>Расчёт производится через внешних платёжных провайдеров. Продавец не хранит данные банковских карт.</span></li>
+        <li><span>Транзакции защищены протоколом SSL.</span></li>
+      </ol>
+
+      <h2 id="s9"><span class="section-num">§ 9</span>Способы исполнения заказов</h2>
+      <ol>
+        <li><span>Товары Магазина являются исключительно <b>цифровым контентом</b>. Физическая доставка не предусмотрена.</span></li>
+        <li><span>Доступ к купленному Товару открывается немедленно после подтверждения платежа в личном кабинете Покупателя.</span></li>
+        <li><span>Ссылка для доступа к Товару направляется на адрес электронной почты, указанный при оформлении заказа.</span></li>
+      </ol>
+
+      <h2 id="s10"><span class="section-num">§ 10</span>Исполнение договора</h2>
+      <ol>
+        <li><span>Договор купли-продажи через Магазин заключается на русском и польском языках.</span></li>
+        <li><span>Продавец обязан поставить Покупателю товар без дефектов.</span></li>
+        <li><span>Заказ считается оформленным с момента подтверждения принятия к исполнению, направленного Продавцом на электронный адрес, указанный Покупателем при оформлении заказа.</span></li>
+        <li><span>После оформления заказа Покупатель получает подтверждение заказа на указанный адрес электронной почты.</span></li>
+      </ol>
+
+      <h2 id="s11"><span class="section-num">§ 11</span>Возврат средств</h2>
+      <ol>
+        <li><span>Все товары в Магазине являются цифровым контентом (онлайн-программы, видеоуроки), доступ к которому предоставляется немедленно после оплаты.</span></li>
+        <li><span>Оформляя заказ, Покупатель явно соглашается на немедленное исполнение договора и подтверждает осведомлённость о том, что после открытия доступа к цифровому контенту право на отказ от договора утрачивается.</span></li>
+        <li><span>В связи с вышеизложенным возврат средств за приобретённые программы не производится.</span></li>
+        <li><span>Если у вас возникли технические проблемы с доступом к приобретённому курсу, пожалуйста, свяжитесь с нами по адресу: <b>mail@atmo.by</b> — мы оперативно решим вопрос.</span></li>
+      </ol>
+
+      <h2 id="s12"><span class="section-num">§ 12</span>Рекламации и жалобы</h2>
+      <ol>
+        <li><span>Претензии в связи с ненадлежащим качеством Товара или нарушениями при его исполнении Покупатель вправе направить в письменном виде на адрес электронной почты: <b>mail@atmo.by</b>.</span></li>
+        <li><span>Продавец рассматривает претензию в течение 14 дней с момента её получения и направляет ответ на указанный Покупателем адрес электронной почты.</span></li>
+        <li><span>В случае, если претензия не содержит сведений, необходимых для её рассмотрения, Продавец вправе запросить дополнительную информацию у Покупателя.</span></li>
+      </ol>
+
+      <h2 id="s13"><span class="section-num">§ 13</span>Внесудебное урегулирование споров</h2>
+      <ol>
+        <li><span>Покупатель вправе воспользоваться внесудебными способами урегулирования споров и предъявления претензий.</span></li>
+        <li><span>Покупатель вправе обратиться к районному (городскому) уполномоченному по защите прав потребителей.</span></li>
+        <li><span>Покупатель вправе воспользоваться платформой интернет-урегулирования споров (ODR), доступной по адресу: <b>http://ec.europa.eu/consumers/odr/</b></span></li>
+        <li><span>Продавец выражает готовность к внесудебному урегулированию споров с потребителями.</span></li>
+      </ol>
+
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: '' });
+  </script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Политика конфиденциальности — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  body { background: var(--bg); }
+
+  .legal-wrap {
+    max-width: 720px; margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  .legal-head {
+    text-align: center;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+  }
+  .legal-head .date {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute); margin-bottom: 16px; display: block;
+  }
+  .legal-head h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(32px, 5vw, 48px);
+    letter-spacing: -0.02em; line-height: 1.05; margin: 0;
+  }
+
+  .legal-body h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700; font-size: 18px;
+    margin: 44px 0 14px; letter-spacing: -0.01em;
+    padding-top: 4px;
+    border-top: 2px solid var(--primary);
+    display: inline-block;
+  }
+  .legal-body p {
+    font-size: 15px; line-height: 1.75; margin: 0 0 14px; color: var(--ink);
+  }
+  .legal-body ol {
+    padding-left: 0; margin: 0 0 14px;
+    list-style: none; counter-reset: item;
+  }
+  .legal-body ol li {
+    counter-increment: item;
+    font-size: 15px; line-height: 1.7; margin-bottom: 10px; color: var(--ink);
+    display: grid; grid-template-columns: 2em 1fr; gap: 4px;
+  }
+  .legal-body ol li::before {
+    content: counter(item) ".";
+    color: var(--ink-mute); font-variant-numeric: tabular-nums;
+    font-size: 13px; padding-top: 2px;
+  }
+  .legal-body ol ol {
+    margin-top: 8px; counter-reset: subitem;
+  }
+  .legal-body ol ol li {
+    counter-increment: subitem; grid-template-columns: 3em 1fr;
+  }
+  .legal-body ol ol li::before { content: counter(item) "." counter(subitem) "."; }
+  .legal-body ul {
+    padding-left: 0; margin: 8px 0 14px; list-style: none;
+  }
+  .legal-body ul li {
+    font-size: 15px; line-height: 1.7; margin-bottom: 8px; color: var(--ink);
+    display: grid; grid-template-columns: 1.5em 1fr;
+  }
+  .legal-body ul li::before { content: "—"; color: var(--ink-mute); }
+  .legal-body b { font-weight: 600; }
+  .legal-body a { color: var(--primary-deep); }
+  .legal-body .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--primary-deep); display: block; margin-bottom: 4px;
+  }
+
+  .notice-box {
+    background: color-mix(in srgb, var(--primary) 7%, var(--bg-card));
+    border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--line));
+    border-radius: var(--r-md); padding: 16px 20px; margin-bottom: 28px;
+    font-size: 15px; line-height: 1.65; color: var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="legal-wrap">
+    <div class="legal-head">
+      <span class="date">Дата: 01.05.2025</span>
+      <h1>Политика конфиденциальности</h1>
+    </div>
+
+    <div class="notice-box">
+      Настоящая политика распространяется на сервис, работающий по адресу <b>atmo.by</b>. Пользуясь сервисом, вы соглашаетесь с условиями обработки данных, описанными ниже.
+    </div>
+
+    <div class="legal-body">
+
+      <h2 id="s1"><span class="section-num">1.</span>Общая информация</h2>
+      <ol>
+        <li><span>Настоящая политика распространяется на Сервис <b>atmo.by</b>.</span></li>
+        <li><span>Оператором сервиса и администратором персональных данных является ATMO Studio. Контакт: <b>mail@atmo.by</b>.</span></li>
+        <li><span>Адрес электронной почты оператора: <b>mail@atmo.by</b>.</span></li>
+        <li><span>Пользователь предоставляет данные добровольно, в объёме, необходимом для использования выбранных услуг Сервиса.</span></li>
+        <li><span>Сервис использует данные пользователей следующим образом:
+          <ol>
+            <li><span>Данные, добровольно введённые в формах, сохраняются в системах Оператора.</span></li>
+            <li><span>Данные о сессиях сохраняются в файлах cookie на устройстве пользователя.</span></li>
+          </ol>
+        </span></li>
+      </ol>
+
+      <h2 id="s2"><span class="section-num">2.</span>Методы защиты данных</h2>
+      <ol>
+        <li><span>Места входа и ввода персональных данных защищены в уровне передачи с помощью сертификата SSL. Благодаря этому данные для входа и другие данные, введённые на сайте, зашифрованы и не могут быть прочитаны посторонними.</span></li>
+        <li><span>Пароли пользователей хранятся в хешированном виде. Функция хеширования работает односторонне — отменить хешированние и восстановить исходный пароль невозможно.</span></li>
+        <li><span>Оператор периодически проверяет безопасность хранилища данных.</span></li>
+        <li><span>Важным элементом защиты данных является регулярное обновление всего программного обеспечения, используемого Оператором для обработки персональных данных, в том числе регулярное обновление программных компонентов.</span></li>
+      </ol>
+
+      <h2 id="s3"><span class="section-num">3.</span>Хостинг</h2>
+      <ol>
+        <li><span>Сервис размещён на серверах оператора OVHcloud.com.</span></li>
+      </ol>
+
+      <h2 id="s4"><span class="section-num">4.</span>Ваши права и дополнительная информация</h2>
+      <ol>
+        <li><span>В некоторых ситуациях Администратор вправе передавать ваши персональные данные третьим лицам, если это необходимо для исполнения заключённого с вами договора или выполнения обязательств, возложенных на Администратора. Это касается следующих групп получателей: платёжные операторы.</span></li>
+        <li><span>Ваши персональные данные, обрабатываемые Администратором, не будут храниться дольше, чем это необходимо для выполнения связанных с ними действий, определённых отдельными нормативными актами. В отношении маркетинговых данных — не дольше 3 лет.</span></li>
+        <li><span>Вы вправе запросить у Администратора:
+          <ul>
+            <li>доступ к своим персональным данным;</li>
+            <li>их исправление;</li>
+            <li>удаление;</li>
+            <li>ограничение обработки;</li>
+            <li>а также перенос данных.</li>
+          </ul>
+        </span></li>
+        <li><span>Вы вправе подать жалобу в надзорный орган по защите персональных данных.</span></li>
+        <li><span>Предоставление персональных данных является добровольным, однако без их предоставления пользование некоторыми услугами Сервиса невозможно.</span></li>
+        <li><span>В отношении вас могут приниматься решения в автоматическом режиме (профилирование) в целях предоставления услуг в рамках заключённого договора, а также в маркетинговых целях Оператора.</span></li>
+        <li><span>Персональные данные не передаются в третьи страны в понимании положений о защите персональных данных, то есть за пределы Европейского союза.</span></li>
+      </ol>
+
+      <h2 id="s5"><span class="section-num">5.</span>Данные в формах</h2>
+      <ol>
+        <li><span>Сервис собирает данные, добровольно предоставленные пользователем, в том числе персональные данные, если они были введены.</span></li>
+        <li><span>Сервис может сохранять данные о параметрах соединения (отметка времени, IP-адрес).</span></li>
+        <li><span>Данные из форм обрабатываются в целях, вытекающих из функции конкретной формы: для обработки запроса на обслуживание, регистрации в коммерческих услугах и т. д. Каждый раз контекст и описание формы в доступной для пользователя форме сообщают, для чего предназначены собираемые данные.</span></li>
+      </ol>
+
+      <h2 id="s6"><span class="section-num">6.</span>Журналы администратора</h2>
+      <ol>
+        <li><span>Информация о поведении пользователей в сервисе может подлежать журналированию. Эти данные используются в целях администрирования сервиса.</span></li>
+      </ol>
+
+      <h2 id="s7"><span class="section-num">7.</span>Маркетинговые технологии</h2>
+      <ol>
+        <li><span>Оператор использует статистический анализ трафика на сайте через Google Analytics (Google Inc. с офисом в США). Оператор не передаёт оператору этого инструмента персональные данные, только анонимизированную информацию. Сервис функционирует на основе файлов cookie конечного пользователя.</span></li>
+        <li><span>Оператор использует ремаркетинговые технологии для отображения рекламы на внешних ресурсах. Это не позволяет идентифицировать личность пользователя и не является персональными данными.</span></li>
+      </ol>
+
+      <h2 id="s8"><span class="section-num">8.</span>Информация о cookies</h2>
+      <ol>
+        <li><span>Сервис использует файлы cookie.</span></li>
+        <li><span>Файлы cookie (так называемые «куки») — текстовые файлы, сохраняемые на устройстве пользователя и предназначенные для использования на страницах Сервиса. Как правило, они содержат название сайта, время хранения на устройстве и уникальный номер.</span></li>
+        <li><span>Файлы cookie используются в следующих целях:
+          <ol>
+            <li><span>Поддержание сессии пользователя Сервиса (после входа в систему), благодаря чему пользователю не нужно повторно вводить логин и пароль на каждой странице.</span></li>
+            <li><span>Реализация целей, описанных в разделе «Маркетинговые технологии».</span></li>
+          </ol>
+        </span></li>
+        <li><span>В рамках Сервиса используются два основных вида файлов cookie: <b>сессионные</b> (session cookies) и <b>постоянные</b> (persistent cookies). Сессионные файлы cookie временные и хранятся на устройстве до выхода из браузера или закрытия веб-страницы. Постоянные файлы cookie хранятся на устройстве в течение времени, указанного в параметрах, или до их удаления пользователем.</span></li>
+        <li><span>Программное обеспечение для просмотра веб-страниц (браузер) по умолчанию разрешает хранение файлов cookie на устройстве пользователя. Пользователи Сервиса могут изменить эти настройки. Браузер позволяет автоматически блокировать файлы cookie.</span></li>
+        <li><span>Ограничение использования файлов cookie может повлиять на некоторые функции сайтов Сервиса.</span></li>
+        <li><span>Файлы cookie, хранимые на устройстве пользователя, также могут использоваться третьими лицами, сотрудничающими с Оператором сервиса, в частности компаниями: Google (Google Inc. с офисом в США), Facebook (Facebook Inc. с офисом в США).</span></li>
+      </ol>
+
+      <h2 id="s9"><span class="section-num">9.</span>Управление файлами cookies</h2>
+      <ol>
+        <li><span>Если пользователь не хочет получать файлы cookie, он может изменить настройки браузера. Следует учитывать, что отключение файлов cookie, необходимых для аутентификации, безопасности и поддержания настроек пользователя, может затруднить, а в отдельных случаях сделать невозможным использование веб-сайтов.</span></li>
+        <li><span>Для управления настройками cookie выберите из списка ниже браузер, которым вы пользуетесь, и следуйте инструкциям:
+          <ul>
+            <li><a href="https://support.microsoft.com/ru-ru/microsoft-edge" target="_blank" rel="noopener">Edge</a></li>
+            <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Chrome</a></li>
+            <li><a href="https://support.mozilla.org/ru/kb/uluchshennaya-zashchita-ot-otslezhivaniya" target="_blank" rel="noopener">Firefox</a></li>
+            <li><a href="https://support.apple.com/ru-ru/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari (macOS)</a></li>
+            <li><a href="https://support.apple.com/ru-ru/HT201265" target="_blank" rel="noopener">Safari (iOS)</a></li>
+          </ul>
+        </span></li>
+      </ol>
+
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: '' });
+  </script>
+</body>
+</html>

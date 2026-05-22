@@ -1,0 +1,519 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Заказы — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .account-wrap {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: 1fr;
+    padding: 40px 0 80px;
+    align-items: flex-start;
+  }
+  @media (min-width: 860px) {
+    .account-wrap { grid-template-columns: 220px 1fr; gap: 40px; }
+  }
+
+  /* Sidebar — same as profile.html */
+  .account-nav { display: flex; flex-direction: column; gap: 2px; }
+  .account-nav-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 14px; margin-bottom: 6px;
+  }
+  .account-avatar {
+    width: 40px; height: 40px; border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 22%, var(--bg-warm));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 18px; color: var(--primary-deep);
+    flex: 0 0 40px;
+  }
+  .account-nav-name { font-weight: 600; font-size: 14px; line-height: 1.2; }
+  .account-nav-email { font-size: 12px; color: var(--ink-mute); margin-top: 1px; }
+  .account-nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: var(--r-md);
+    font-size: 14px; font-weight: 500; color: var(--ink-soft);
+    text-decoration: none;
+    transition: background .12s, color .12s;
+  }
+  .account-nav a:hover { background: var(--bg-warm); color: var(--ink); }
+  .account-nav a.active {
+    background: var(--bg-card); color: var(--ink);
+    border: 1px solid var(--line); border-left: 2px solid var(--ink);
+  }
+  .account-nav .nav-icon { width: 16px; height: 16px; opacity: 0.5; flex: 0 0 16px; }
+  .account-nav .sep { height: 1px; background: var(--line); margin: 6px 14px; }
+  .account-nav a.danger { color: var(--ink-mute); }
+  .account-nav a.danger:hover { color: #c25a4a; background: color-mix(in srgb, #c25a4a 6%, transparent); }
+
+  /* Page */
+  .page-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(28px, 3.5vw, 38px);
+    letter-spacing: -0.02em;
+    margin: 0 0 24px;
+  }
+
+  /* Orders table */
+  .orders-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+
+  .orders-table {
+    width: 100%; border-collapse: collapse;
+  }
+  .orders-table th {
+    padding: 12px 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-mute); text-align: left;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .orders-table td {
+    padding: 16px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  .orders-table tr:last-child td { border-bottom: none; }
+  .orders-table tr:hover td { background: var(--bg-warm); }
+
+  .order-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px; font-weight: 500;
+    color: var(--ink);
+  }
+  .order-date { color: var(--ink-soft); white-space: nowrap; }
+
+  .order-items { line-height: 1.4; }
+  .order-items .item-name { font-weight: 500; }
+  .order-items .item-meta { font-size: 12px; color: var(--ink-mute); margin-top: 1px; }
+  .order-items .item-meta + .item-name { margin-top: 10px; }
+
+  .order-amount {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px; letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  /* Status badges */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+  }
+  .status-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 999px;
+    flex: 0 0 6px;
+  }
+  .status-badge.paid {
+    background: color-mix(in srgb, #4a9a6a 12%, var(--bg));
+    color: #2d7a50;
+  }
+  .status-badge.paid::before { background: #4a9a6a; }
+  .status-badge.pending {
+    background: color-mix(in srgb, #cdb38a 18%, var(--bg));
+    color: #8a6830;
+  }
+  .status-badge.pending::before { background: #cdb38a; }
+  .status-badge.refunded {
+    background: var(--bg-warm);
+    color: var(--ink-mute);
+  }
+  .status-badge.refunded::before { background: var(--ink-mute); }
+
+  .btn-order {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    color: var(--ink-soft); text-decoration: none;
+    transition: border-color .12s, color .12s;
+    white-space: nowrap;
+  }
+  .btn-order:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* Empty state */
+  .orders-empty {
+    padding: 64px 24px;
+    text-align: center;
+  }
+  .orders-empty .empty-icon {
+    width: 56px; height: 56px; border-radius: 999px;
+    background: var(--bg-warm);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 24px;
+  }
+  .orders-empty h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px; letter-spacing: -0.01em; margin: 0 0 8px;
+  }
+  .orders-empty p { color: var(--ink-soft); font-size: 14px; margin: 0 0 24px; }
+
+  /* Order detail modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(26,26,31,0.45);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-xl);
+    width: 100%; max-width: 540px;
+    max-height: 90vh; overflow-y: auto;
+    transform: translateY(12px);
+    transition: transform .2s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-head {
+    padding: 24px 24px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    position: sticky; top: 0; background: var(--bg-card); z-index: 1;
+  }
+  .modal-head h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px; letter-spacing: -0.01em; margin: 0 0 4px;
+  }
+  .modal-head .modal-sub {
+    font-size: 13px; color: var(--ink-mute);
+    font-family: 'Space Mono', monospace; letter-spacing: 0.06em;
+  }
+  .modal-close {
+    width: 32px; height: 32px; border-radius: 999px;
+    background: var(--bg-warm); border: none; cursor: pointer;
+    font-size: 16px; color: var(--ink-soft);
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 32px;
+    transition: background .12s;
+  }
+  .modal-close:hover { background: var(--line-strong); color: var(--ink); }
+
+  .modal-body { padding: 24px; }
+
+  .modal-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid var(--line);
+    gap: 16px; font-size: 14px;
+  }
+  .modal-row:last-child { border-bottom: none; }
+  .modal-row .lbl { color: var(--ink-soft); }
+  .modal-row.total {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px; letter-spacing: -0.01em;
+    padding-top: 16px; border-top: 2px solid var(--line); border-bottom: none;
+    margin-top: 4px;
+  }
+
+  .modal-items { margin-bottom: 20px; }
+  .modal-item {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line);
+  }
+  .modal-item:last-child { border-bottom: none; }
+  .modal-item-name { font-weight: 500; font-size: 14px; line-height: 1.3; }
+  .modal-item-meta { font-size: 12px; color: var(--ink-mute); margin-top: 2px; }
+  .modal-item-price {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 16px; white-space: nowrap;
+  }
+
+  .modal-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--line);
+    display: flex; gap: 10px; justify-content: flex-end;
+  }
+  .btn-ghost-sm {
+    padding: 9px 18px; border-radius: 999px;
+    border: 1px solid var(--line-strong); background: transparent;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    color: var(--ink-soft); cursor: pointer;
+    transition: border-color .12s, color .12s;
+  }
+  .btn-ghost-sm:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-primary-sm {
+    padding: 9px 18px; border-radius: 999px;
+    border: none; background: var(--ink);
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    color: var(--bg); cursor: pointer;
+    transition: background .12s;
+  }
+  .btn-primary-sm:hover { background: #000; }
+
+  /* Responsive: hide columns on small screens */
+  @media (max-width: 640px) {
+    .col-items  { display: none; }
+    .orders-table td, .orders-table th { padding: 12px 14px; }
+    .modal { border-radius: var(--r-lg); }
+    .modal-body, .modal-footer, .modal-head { padding-left: 16px; padding-right: 16px; }
+  }
+
+  /* ── Mobile account nav ──────────────────────────────────── */
+  @media (max-width: 859px) {
+    .account-wrap { padding: 16px 0 64px; gap: 16px; }
+    .account-nav { flex-direction: row; overflow-x: auto; overflow-y: hidden; gap: 4px; padding-bottom: 4px; scrollbar-width: none; }
+    .account-nav::-webkit-scrollbar { display: none; }
+    .account-nav-head { display: none; }
+    .account-nav .sep { display: none; }
+    .account-nav a { flex-direction: column; align-items: center; gap: 4px; padding: 8px 12px; white-space: nowrap; font-size: 13px; border-radius: 999px !important; border-left-width: 1px !important; }
+    .account-nav a.active { border-color: var(--ink) !important; }
+    .account-nav .nav-icon { width: 18px; height: 18px; }
+    .account-nav a.danger { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="container">
+    <div class="account-wrap">
+
+      <!-- Sidebar -->
+      <nav class="account-nav">
+        <div class="account-nav-head">
+          <div class="account-avatar">А</div>
+          <div>
+            <div class="account-nav-name">Аня</div>
+            <div class="account-nav-email">ann@example.com</div>
+          </div>
+        </div>
+        <a href="account.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+          Обзор
+        </a>
+        <a href="courses.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4.5h12M2 8h8M2 11.5h10"/></svg>
+          Мои курсы
+        </a>
+        <a href="orders.html" class="active">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7"/><path d="M1 12h14"/><path d="M6.5 9h3"/></svg>
+          Заказы
+        </a>
+        <a href="profile.html">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5.5" r="2.5"/><path d="M2.5 13.5c0-3 2.46-5 5.5-5s5.5 2 5.5 5"/></svg>
+          Настройки
+        </a>
+        <div class="sep"></div>
+        <a href="auth.html" class="danger">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 8h7M11 6l2 2-2 2"/><path d="M10 4V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1"/></svg>
+          Выйти
+        </a>
+      </nav>
+
+      <!-- Main -->
+      <div>
+        <h1 class="page-title">Заказы</h1>
+
+        <div class="orders-card">
+          <div style="overflow-x:auto">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Заказ</th>
+                <th>Дата</th>
+                <th class="col-items">Состав</th>
+                <th>Сумма</th>
+                <th>Статус</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+          </div>
+          <div class="orders-empty" id="orders-empty" style="display:none">
+            <div class="empty-icon">🧾</div>
+            <h2>Заказов пока нет</h2>
+            <p>После покупки курса здесь появится история заказов и чеки.</p>
+            <a class="btn btn-primary btn-arrow" href="catalog.html">Смотреть программы</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Order detail modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div>
+          <h2 id="modal-title">Заказ</h2>
+          <div class="modal-sub" id="modal-sub"></div>
+        </div>
+        <button class="modal-close" id="modal-close" aria-label="Закрыть">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-items" id="modal-items"></div>
+        <div id="modal-totals"></div>
+        <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--line)">
+          <div class="modal-row">
+            <span class="lbl">Способ оплаты</span>
+            <span id="modal-method"></span>
+          </div>
+          <div class="modal-row">
+            <span class="lbl">E-mail для чека</span>
+            <span id="modal-email"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary-sm" id="modal-close2">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'account' });
+
+    const METHOD_LABELS = { card: 'Банковская карта', blik: 'BLIK', klarna: 'Klarna' };
+    const STATUS_LABELS = { paid: 'Оплачен', pending: 'В обработке', refunded: 'Возврат' };
+
+    // Demo orders — in production pulled from WooCommerce REST API
+    const DEMO_ORDERS = [
+      {
+        id: 'ATMO-2026-4821',
+        date: '2026-04-18',
+        items: [
+          { name: 'Живот и Тазовое дно', meta: '60 дней доступа', price: 399 },
+        ],
+        subtotal: 399, discount: 0, total: 399,
+        status: 'paid',
+        method: 'card',
+        email: 'ann@example.com',
+      },
+      {
+        id: 'ATMO-2026-3107',
+        date: '2026-02-03',
+        items: [
+          { name: 'LevelUp: Нейросила', meta: '60 дней доступа', price: 349 },
+          { name: 'Кардио с Нуля', meta: '60 дней доступа', price: 299 },
+        ],
+        subtotal: 648, discount: 65, total: 583,
+        status: 'paid',
+        method: 'blik',
+        email: 'ann@example.com',
+      },
+      {
+        id: 'ATMO-2025-8844',
+        date: '2025-11-20',
+        items: [
+          { name: 'Быстрая Форма 2.0', meta: '60 дней доступа', price: 329 },
+        ],
+        subtotal: 329, discount: 0, total: 329,
+        status: 'refunded',
+        method: 'card',
+        email: 'ann@example.com',
+      },
+    ];
+
+    function fmt(n) { return ATMO.formatPrice(n); }
+    function fmtDate(s) {
+      return new Date(s).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    const tbody = document.getElementById('orders-tbody');
+
+    if (!DEMO_ORDERS.length) {
+      document.getElementById('orders-empty').style.display = '';
+    } else {
+      DEMO_ORDERS.forEach(o => {
+        const itemsText = o.items.map(i => i.name).join(', ');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="order-num">#${o.id}</span></td>
+          <td><span class="order-date">${fmtDate(o.date)}</span></td>
+          <td class="col-items">
+            <div class="order-items">
+              ${o.items.map(i => `
+                <div class="item-name">${i.name}</div>
+                <div class="item-meta">${i.meta}</div>
+              `).join('')}
+            </div>
+          </td>
+          <td><span class="order-amount">${fmt(o.total)}</span></td>
+          <td><span class="status-badge ${o.status}">${STATUS_LABELS[o.status]}</span></td>
+          <td><button class="btn-order" data-id="${o.id}">Подробнее →</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Modal
+    const overlay = document.getElementById('modal-overlay');
+    function openModal(orderId) {
+      const o = DEMO_ORDERS.find(x => x.id === orderId);
+      if (!o) return;
+
+      document.getElementById('modal-title').textContent = `Заказ #${o.id}`;
+      document.getElementById('modal-sub').textContent =
+        `${fmtDate(o.date)} · ${STATUS_LABELS[o.status]}`;
+
+      document.getElementById('modal-items').innerHTML = o.items.map(i => `
+        <div class="modal-item">
+          <div>
+            <div class="modal-item-name">${i.name}</div>
+            <div class="modal-item-meta">${i.meta}</div>
+          </div>
+          <div class="modal-item-price">${fmt(i.price)}</div>
+        </div>
+      `).join('');
+
+      const discountRow = o.discount > 0
+        ? `<div class="modal-row"><span class="lbl">Скидка</span><span>− ${fmt(o.discount)}</span></div>`
+        : '';
+      document.getElementById('modal-totals').innerHTML = `
+        <div class="modal-row"><span class="lbl">Подытог</span><span>${fmt(o.subtotal)}</span></div>
+        ${discountRow}
+        <div class="modal-row total"><span>Итого</span><span>${fmt(o.total)}</span></div>
+      `;
+
+      document.getElementById('modal-method').textContent = METHOD_LABELS[o.method] || o.method;
+      document.getElementById('modal-email').textContent = o.email;
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    tbody.addEventListener('click', e => {
+      const btn = e.target.closest('.btn-order');
+      if (btn) openModal(btn.dataset.id);
+    });
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('modal-close2').addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  </script>
+</body>
+</html>

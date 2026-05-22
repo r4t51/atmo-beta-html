@@ -1,0 +1,523 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Курс — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  /* Enrolled course view — sober dashboard, not a marketing PDP */
+
+  body { background: var(--bg-warm); }
+
+  .course-hero {
+    background: var(--coral, #e85a32);
+    color: #fff;
+    padding: 88px 0 96px;
+    text-align: center;
+    margin-bottom: 0;
+  }
+  .course-hero h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(36px, 5vw, 56px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0;
+    color: #fff;
+  }
+  .course-hero .crumb {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7); margin-bottom: 18px;
+  }
+  .course-hero .crumb a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 1px; }
+
+  /* Progress bar */
+  .progress-strip {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 0;
+    position: sticky;
+    top: 60px; z-index: 25;
+  }
+  .progress-strip .container {
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  }
+  .progress-strip .lbl {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute);
+    white-space: nowrap;
+  }
+  .progress-strip .bar {
+    flex: 1; min-width: 160px; max-width: 360px;
+    height: 6px; background: var(--bg-warm); border-radius: 999px; overflow: hidden;
+  }
+  .progress-strip .bar > span { display: block; height: 100%; background: var(--coral, #e85a32); border-radius: 999px; transition: width .3s ease; }
+  .progress-strip .pct {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 13px; font-weight: 500; min-width: 36px;
+  }
+  .progress-strip .steps {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-left: auto;
+  }
+
+  /* Main content card */
+  .course-body {
+    padding: 56px 0 80px;
+  }
+  .course-card {
+    max-width: 760px; margin: 0 auto;
+    background: var(--bg-card);
+    border-radius: var(--r-lg);
+    border: 1px solid var(--line);
+    padding: clamp(28px, 5vw, 56px);
+  }
+  .course-card h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    font-size: clamp(26px, 3.2vw, 34px);
+    letter-spacing: -0.01em;
+    margin: 0 0 28px;
+  }
+
+  /* Notice callout (coral border-left) */
+  .notice {
+    border-left: 3px solid var(--coral, #e85a32);
+    background: color-mix(in srgb, var(--coral, #e85a32) 5%, var(--bg-card));
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin: 0 0 28px;
+  }
+  .notice b { display: block; margin-bottom: 6px; }
+  .notice p { margin: 0; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
+
+  .course-card p {
+    color: var(--ink); line-height: 1.65; margin: 0 0 16px; font-size: 16px;
+  }
+  .course-card p.muted-p { color: var(--ink-soft); }
+
+  /* Video block */
+  .video-frame {
+    margin: 32px 0 12px;
+    aspect-ratio: 16/10;
+    border-radius: var(--r-md);
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.0) 30%, rgba(0,0,0,0.55) 100%),
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 14px),
+      linear-gradient(135deg, #a8413a 0%, #c8554a 60%, #d96e57 100%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+  }
+  .video-frame .play {
+    width: 72px; height: 72px; border-radius: 999px;
+    background: rgba(255,255,255,0.18); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: transform .2s ease, background .2s ease;
+  }
+  .video-frame .play:hover { transform: scale(1.08); background: rgba(255,255,255,0.28); }
+  .video-frame .play::after {
+    content: ""; width: 0; height: 0;
+    border-style: solid; border-width: 12px 0 12px 20px;
+    border-color: transparent transparent transparent #fff;
+    margin-left: 5px;
+  }
+  .video-frame .brand {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 38px;
+    letter-spacing: 0.08em; opacity: 0.18; pointer-events: none;
+  }
+  .video-frame .vid-title {
+    position: absolute; bottom: 22px; left: 24px; right: 24px;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; letter-spacing: 0.04em;
+    opacity: 0.92;
+  }
+  .video-caption {
+    text-align: center; font-size: 12px; color: var(--ink-mute);
+    margin: 6px 0 36px;
+    font-family: 'Space Mono', ui-monospace, monospace;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  /* Section heading inside card */
+  .course-card h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 40px 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .course-card hr {
+    border: none; border-top: 1px solid var(--line); margin: 36px 0;
+  }
+
+  /* Tick list */
+  .tick-list { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 14px; }
+  .tick-list li {
+    display: grid; grid-template-columns: 20px 1fr; gap: 12px;
+    line-height: 1.55; font-size: 15px;
+  }
+  .tick-list li::before {
+    content: "✓";
+    color: var(--coral, #e85a32);
+    font-weight: 600;
+    line-height: 1.55;
+  }
+  .tick-list b { font-weight: 600; }
+
+  /* Content outline (Курс Содержимое) */
+  .outline {
+    max-width: 760px; margin: 32px auto 0;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    overflow: hidden;
+  }
+  .outline > h3 {
+    margin: 0; padding: 22px 28px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700; font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+  .outline-group {
+    border-top: 1px solid var(--line);
+    padding: 22px 28px 8px;
+  }
+  .outline-group-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700; font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .outline-step {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 15px;
+  }
+  .outline-step:last-child { border-bottom: none; }
+  .outline-step:hover .step-name { color: var(--coral, #e85a32); }
+  .outline-step .step-icon {
+    width: 28px; height: 28px; border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 28px;
+    font-size: 12px; color: var(--ink-mute);
+    background: var(--bg);
+  }
+  .outline-step.done .step-icon {
+    background: var(--coral, #e85a32); border-color: var(--coral, #e85a32); color: #fff;
+  }
+  .outline-step.done .step-icon::after { content: "✓"; }
+  .outline-step.current .step-icon {
+    border-color: var(--coral, #e85a32);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--coral, #e85a32) 18%, transparent);
+    color: var(--coral, #e85a32);
+    font-weight: 600;
+  }
+  .outline-step.locked { opacity: 0.55; }
+  .outline-step.locked .step-icon::after { content: "🔒"; font-size: 11px; }
+  .outline-step .step-name {
+    flex: 1; line-height: 1.4;
+    transition: color .15s ease;
+  }
+  .outline-step .step-name .num {
+    color: var(--ink-mute);
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 12px; margin-right: 6px;
+  }
+  .outline-step .step-meta {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  /* Continue button (floats inside hero overlay) */
+  .continue-cta {
+    max-width: 760px; margin: -56px auto 36px;
+    position: relative; z-index: 5;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-lift);
+    padding: 22px 28px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .continue-cta .label {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .continue-cta .name {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: 18px;
+    margin-top: 2px;
+  }
+  .continue-cta .actions { margin-left: auto; display: flex; gap: 10px; }
+  .continue-cta .btn-coral {
+    background: var(--coral, #e85a32); color: #fff;
+  }
+  .continue-cta .btn-coral:hover { background: #c84823; transform: translateY(-1px); }
+
+  @media (max-width: 720px) {
+    .course-hero { padding: 56px 0 80px; }
+    .continue-cta { margin: -40px 16px 24px; padding: 18px 20px; }
+    .continue-cta .actions { width: 100%; }
+    .continue-cta .actions .btn { flex: 1; }
+    .outline > h3 { padding: 18px 18px 12px; }
+    .outline-group { padding: 18px 18px 6px; }
+    .outline-step { gap: 10px; }
+  }
+  @media (max-width: 480px) {
+    .course-body { padding: 36px 0 56px; }
+    .progress-strip .steps { display: none; }
+    .outline-step .step-meta { display: none; }
+    .course-card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <header class="course-hero" id="course-hero">
+    <div class="container">
+      <div class="crumb"><a href="account.html">← Кабинет</a> · <a href="courses.html">Мои курсы</a></div>
+      <h1 id="course-title">Живот и Тазовое дно</h1>
+    </div>
+  </header>
+
+  <!-- Continue card overlapping hero -->
+  <div class="container">
+    <div class="continue-cta">
+      <div>
+        <div class="label">Продолжить с</div>
+        <div class="name" id="continue-name">Шаг 4 · Третья тренировка</div>
+      </div>
+      <div class="actions">
+        <a class="btn btn-ghost" href="#outline">К содержанию</a>
+        <a class="btn btn-coral btn-arrow" href="#" id="continue-link">Продолжить</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-strip">
+    <div class="container">
+      <span class="lbl">Курс — прогресс</span>
+      <div class="bar"><span id="pbar"></span></div>
+      <span class="pct" id="ppct">0%</span>
+      <span class="steps" id="psteps">0/14 шаги</span>
+    </div>
+  </div>
+
+  <main class="course-body">
+    <div class="container">
+
+      <article class="course-card">
+        <h2>Живот и Тазовое дно</h2>
+
+        <div class="notice">
+          <b>Бережное восстановление</b>
+          <p>Тазовое дно, кор, внутренняя поверхность бедра и глубокая связь с телом — без классических скручиваний и сокращений Кегеля.</p>
+        </div>
+
+        <p>Двухмесячная программа для работы с глубокими мышцами. Мы работаем через физиологию: сначала снимаем напряжение с зажатых зон, возвращаем мышцам эластичность, а затем учим их включаться синхронно.</p>
+
+        <p>Занятия занимают 15–20 минут в день. Этого времени достаточно, чтобы наладить связь между дыханием, тазовым дном и прессом, подтянуть живот и вернуть телу комфорт в обычных бытовых движениях.</p>
+
+        <div class="video-frame" role="button" aria-label="Воспроизвести трейлер">
+          <span class="brand">ATMO.BY</span>
+          <span class="play" aria-hidden="true"></span>
+          <span class="vid-title">Живот и Тазовое дно</span>
+        </div>
+        <div class="video-caption">Трейлер курса «Живот и Тазовое дно»</div>
+
+        <hr/>
+
+        <h3>Результаты за 2 месяца</h3>
+        <ul class="tick-list">
+          <li><span><b>Плоский и упругий живот:</b> включаем глубокий «корсет» и убираем выпирающийся нижний живот.</span></li>
+          <li><span><b>Уверенность в движении:</b> поддерживаем тазовое дно и работаем с деликатными проявлениями в быту.</span></li>
+          <li><span><b>Подтянутые бёдра:</b> снимаем напряжение с приводящих мышц и улучшаем ощущение лёгкости.</span></li>
+          <li><span><b>Здоровая поясница:</b> возвращаем тазу стабильность, чтобы спина не забирала лишнюю нагрузку.</span></li>
+          <li><span><b>Лёгкая походка:</b> улучшаем подвижность таза и тазобедренных суставов.</span></li>
+        </ul>
+
+        <hr/>
+
+        <h3>Кому подойдёт курс?</h3>
+        <ul class="tick-list">
+          <li><span><b>Мамам:</b> для безопасного восстановления корсета и тазового дна после родов.</span></li>
+          <li><span><b>При сидячем образе жизни:</b> если есть скованность в тазу, дискомфорт в пояснице и тяжесть в ногах.</span></li>
+          <li><span><b>Если классический фитнес не помогает:</b> когда живот и внутренняя часть бедра не меняются от обычных тренировок.</span></li>
+          <li><span><b>Тем, кто выбирает комфорт:</b> для занятий без боли и перегруза.</span></li>
+        </ul>
+
+        <hr/>
+
+        <h3>В основе курса — наука и биомеханика</h3>
+        <p>Программа построена на принципах умного фитнеса: сначала мы возвращаем мышцам длину и эластичность, а затем постепенно учим тело включать их в работу.</p>
+        <p>Важная часть курса — синхронная работа дыхания, внутреннего бедра, живота и тазового дна. Мы начинаем с безопасных положений лёжа и постепенно переходим к более сложным позициям.</p>
+        <p>Так тело учится использовать мышцы корректно не только на коврике, но и в обычной жизни.</p>
+
+        <hr/>
+
+        <h3>Что понадобится для занятий?</h3>
+        <p class="muted-p">Занимайтесь дома в комфортном темпе. Никаких сложных тренажёров не потребуется.</p>
+        <ul class="tick-list">
+          <li><span><b>Гимнастический коврик</b></span></li>
+          <li><span><b>Мягкий мяч для пилатеса</b> диаметром 20–25 см</span></li>
+          <li><span><b>Носочки</b> или полотенце для скольжения</span></li>
+          <li><span><b>Удобная одежда</b></span></li>
+          <li><span><b>15–20 минут</b> времени для себя</span></li>
+        </ul>
+      </article>
+
+      <!-- Course content outline -->
+      <section class="outline" id="outline">
+        <h3>Курс — Содержимое</h3>
+
+        <div class="outline-group">
+          <div class="outline-group-title">Теория</div>
+          <a class="outline-step done" href="lesson.html?course=belly-floor&step=1">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">01</span>План программы</span>
+            <span class="step-meta">5 мин · чтение</span>
+          </a>
+          <a class="outline-step done" href="lesson.html?course=belly-floor&step=2">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">02</span>📄 Чек-лист: Первичная диагностика тела</span>
+            <span class="step-meta">PDF</span>
+          </a>
+          <a class="outline-step done" href="lesson.html?course=belly-floor&step=3">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">03</span>Визуальная оценка ДО</span>
+            <span class="step-meta">3 мин</span>
+          </a>
+        </div>
+
+        <div class="outline-group">
+          <div class="outline-group-title">Практика</div>
+          <a class="outline-step current" href="lesson.html?course=belly-floor&step=4">
+            <span class="step-icon">4</span>
+            <span class="step-name"><span class="num">04</span>Подробная техника</span>
+            <span class="step-meta">12 мин · видео</span>
+          </a>
+          <a class="outline-step" href="lesson.html?course=belly-floor&step=5">
+            <span class="step-icon">5</span>
+            <span class="step-name"><span class="num">05</span>Ежедневная рутина</span>
+            <span class="step-meta">8 мин · видео</span>
+          </a>
+          <a class="outline-step" href="lesson.html?course=belly-floor&step=6">
+            <span class="step-icon">6</span>
+            <span class="step-name"><span class="num">06</span>Первая тренировка</span>
+            <span class="step-meta">18 мин · видео</span>
+          </a>
+          <a class="outline-step" href="lesson.html?course=belly-floor&step=7">
+            <span class="step-icon">7</span>
+            <span class="step-name"><span class="num">07</span>Вторая тренировка</span>
+            <span class="step-meta">18 мин · видео</span>
+          </a>
+          <a class="outline-step locked" href="lesson.html?course=belly-floor&step=8">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">08</span>Третья тренировка</span>
+            <span class="step-meta">20 мин · видео</span>
+          </a>
+          <a class="outline-step locked" href="lesson.html?course=belly-floor&step=9">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">09</span>Четвёртая тренировка</span>
+            <span class="step-meta">20 мин · видео</span>
+          </a>
+          <a class="outline-step locked" href="lesson.html?course=belly-floor&step=10">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">10</span>Пятая тренировка</span>
+            <span class="step-meta">22 мин · видео</span>
+          </a>
+          <a class="outline-step locked" href="lesson.html?course=belly-floor&step=11">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">11</span>Шестая тренировка</span>
+            <span class="step-meta">22 мин · видео</span>
+          </a>
+          <a class="outline-step locked" href="lesson.html?course=belly-floor&step=12">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">12</span>Седьмая тренировка</span>
+            <span class="step-meta">25 мин · видео</span>
+          </a>
+          <a class="outline-step locked" href="lesson.html?course=belly-floor&step=13">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">13</span>Визуальная оценка ПОСЛЕ</span>
+            <span class="step-meta">3 мин</span>
+          </a>
+          <a class="outline-step locked" href="lesson.html?course=belly-floor&step=14">
+            <span class="step-icon"></span>
+            <span class="step-name"><span class="num">14</span>📄 Чек-лист + Фото: Сравниваем результаты</span>
+            <span class="step-meta">PDF</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'courses' });
+
+    // Theme by course
+    const COURSE_THEME = {
+      'belly-floor':  { coral: '#e85a32' },
+      'levelup-neuro':{ coral: '#7377e3' },
+      'levelup-power':{ coral: '#5a5fc7' },
+      'cardio-zero':  { coral: '#20bec4' },
+      'pregnancy':    { coral: '#d97757' },
+      'season-1':     { coral: '#1f8a5b' },
+    };
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id') || 'belly-floor';
+    const p = ATMO.PRODUCTS.find(x => x.id === id) || ATMO.PRODUCTS.find(x => x.id === 'belly-floor');
+    const theme = COURSE_THEME[p.id] || { coral: '#e85a32' };
+    document.documentElement.style.setProperty('--coral', theme.coral);
+    document.getElementById('course-title').textContent = p.title;
+    document.title = `${p.title} — ATMO`;
+
+    // Progress derived from step states in DOM
+    const steps = Array.from(document.querySelectorAll('.outline-step'));
+    const total = steps.length;
+    const done = steps.filter(s => s.classList.contains('done')).length;
+    const pct = Math.round((done / total) * 100);
+    document.getElementById('pbar').style.width = pct + '%';
+    document.getElementById('ppct').textContent = pct + '%';
+    document.getElementById('psteps').textContent = `${done}/${total} шаги`;
+
+    // Continue card → points to current step
+    const current = steps.find(s => s.classList.contains('current'));
+    if (current) {
+      const nameEl = current.querySelector('.step-name').cloneNode(true);
+      const num = nameEl.querySelector('.num');
+      if (num) num.remove();
+      const name = nameEl.textContent.trim();
+      document.getElementById('continue-name').textContent = `Шаг ${done + 1} · ${name}`;
+      document.getElementById('continue-link').href = current.getAttribute('href');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+// Shared product catalog — used across catalog/cart/account pages.
+window.ATMO = window.ATMO || {};
+
+window.ATMO.PRODUCTS = [
+  { id: 'season-1',     title: 'Фитнес Сезон 1 — Забота о Себе', subtitle: 'Хит',         goal: 'energy',      duration: '8 нед',  weeks: 8,  sessionsPerWeek: 4, sessionLen: '25 мин',    equipment: 'none',  price: 389, oldPrice: 499, tint: 'tint-teal',   summary: 'С чего начать. Возвращает связь с телом и закладывает спокойный ритм тренировок.' },
+  { id: 'pregnancy',    title: 'Всё о Беременности',             subtitle: null,           goal: 'recovery',    duration: '9 мес',  weeks: 36, sessionsPerWeek: 3, sessionLen: '20 мин',    equipment: 'none',  price: 499,                 tint: 'tint-warm',   summary: 'Сопровождение по триместрам: дыхание, тазовое дно, безопасное движение.' },
+  { id: 'levelup-neuro', title: 'LevelUp · Нейросила',           subtitle: null,           goal: 'strength',    duration: '6 нед',  weeks: 6,  sessionsPerWeek: 3, sessionLen: '30 мин',    equipment: 'none',  price: 399,                 tint: 'tint-purple', summary: 'Сила через нейромышечный контроль. Без перегрузок.' },
+  { id: 'levelup-power', title: 'LevelUp · Твоя Сила',           subtitle: null,           goal: 'strength',    duration: '8 нед',  weeks: 8,  sessionsPerWeek: 4, sessionLen: '35 мин',    equipment: 'none',  price: 399,                 tint: 'tint-teal',   summary: 'Прогрессивная сила: выносливость, рельеф, контроль.' },
+  { id: 'fast-form',     title: 'Быстрая Форма',                 subtitle: null,           goal: 'strength',    duration: '4 нед',  weeks: 4,  sessionsPerWeek: 5, sessionLen: '20 мин',    equipment: 'dumbbells', price: 389,                 tint: 'tint-warm',   summary: 'Концентрированный курс — собирает форму к событию.' },
+  { id: 'fast-form-2',   title: 'Быстрая Форма 2.0',             subtitle: 'Новинка',      goal: 'strength',    duration: '6 нед',  weeks: 6,  sessionsPerWeek: 5, sessionLen: '25 мин',    equipment: 'dumbbells', price: 389,                 tint: 'tint-purple', summary: 'Продолжение Быстрой Формы — глубже, точнее, аккуратнее.' },
+  { id: 'belly-floor',   title: 'Живот и Тазовое дно',           subtitle: 'Новинка', goal: 'recovery',    duration: '2 мес',  weeks: 8,  sessionsPerWeek: 5, sessionLen: '15–20 мин', equipment: 'none',  price: 399, oldPrice: 799, tint: 'tint-teal',   summary: 'Глубокие мышцы корсета, тазовое дно, осанка. Спокойный подход.', featured: true },
+  { id: 'intensiv',      title: 'Интенсив. Осанка, Шея, Лицо',  subtitle: 'Скидка',   goal: 'mobility',    duration: '3 нед',  weeks: 3,  sessionsPerWeek: 4, sessionLen: '20 мин',    equipment: 'none',  price: 99,  oldPrice: 199, tint: 'tint-warm',   summary: 'Точечная работа с верхней частью тела и лицом.' },
+  { id: 'cardio-zero',   title: 'Кардио с Нуля',                 subtitle: null,           goal: 'energy',      duration: '6 нед',  weeks: 6,  sessionsPerWeek: 4, sessionLen: '20 мин',    equipment: 'none',  price: 389,                 tint: 'tint-teal',   summary: 'Мягкое, спокойное возвращение выносливости.' },
+  { id: 'marathon',      title: 'Марафон Ежедневных Тренировок', subtitle: null,           goal: 'energy',      duration: '4 нед',  weeks: 4,  sessionsPerWeek: 7, sessionLen: '15 мин',    equipment: 'none',  price: 299,                 tint: 'tint-purple', summary: 'Каждый день — короткая тренировка. Привычка важнее интенсивности.' },
+  { id: 'pilates',       title: 'Пилатес Медбол',                subtitle: null,           goal: 'mobility',    duration: '6 нед',  weeks: 6,  sessionsPerWeek: 3, sessionLen: '30 мин',    equipment: 'ball',  price: 299,                 tint: 'tint-teal',   summary: 'Контроль, дыхание, длинная мышца. С мячом и без.' },
+  { id: 'flat-belly',    title: 'Плоский Живот · Ультимейт',     subtitle: null,           goal: 'strength',    duration: '8 нед',  weeks: 8,  sessionsPerWeek: 4, sessionLen: '25 мин',    equipment: 'none',  price: 389,                 tint: 'tint-teal',   summary: 'Корсет, осанка, рельеф живота. Аккуратно и устойчиво.' },
+  { id: 'face',          title: 'Поддержка Лица',                subtitle: null,           goal: 'recovery',    duration: '4 нед',  weeks: 4,  sessionsPerWeek: 5, sessionLen: '15 мин',    equipment: 'none',  price: 389,                 tint: 'tint-warm',   summary: 'Лицо как мышца. Тонус без воздействия извне.' },
+  { id: 'sport-bands',   title: 'Спортивное Тело с Лентами',     subtitle: null,           goal: 'strength',    duration: '6 нед',  weeks: 6,  sessionsPerWeek: 4, sessionLen: '30 мин',    equipment: 'bands', price: 389,                 tint: 'tint-warm',   summary: 'Сила и форма с эластичными лентами. Дома и в дороге.' },
+  { id: 'season-3',      title: 'ФИТНЕС СЕЗОН 3 · Форма и Осанка', subtitle: null,        goal: 'strength',    duration: '8 нед',  weeks: 8,  sessionsPerWeek: 4, sessionLen: '30 мин',    equipment: 'none',  price: 389,                 tint: 'tint-warm',   summary: 'Третий сезон. Форма + работа над осанкой.' },
+  { id: 'medball',       title: 'Функциональный Медбол',         subtitle: null,           goal: 'strength',    duration: '6 нед',  weeks: 6,  sessionsPerWeek: 3, sessionLen: '25 мин',    equipment: 'ball',  price: 389,                 tint: 'tint-warm',   summary: 'Функциональная сила и координация с мячом.' },
+  { id: 'express-bands', title: 'Экспресс Ленты',                subtitle: null,           goal: 'mobility',    duration: '3 нед',  weeks: 3,  sessionsPerWeek: 5, sessionLen: '15 мин',    equipment: 'bands', price: 389,                 tint: 'tint-purple', summary: 'Короткие сессии с лентами. Для занятых недель.' },
+  { id: 'check',         title: 'Проверить себя',                subtitle: null,           goal: 'recovery',    duration: '1 нед',  weeks: 1,  sessionsPerWeek: 3, sessionLen: '10 мин',    equipment: 'none',  price: 18,                  tint: 'tint-teal',   summary: 'Стартовая диагностика — где сейчас ваше тело.' },
+];
+
+window.ATMO.GOALS = {
+  energy:    { label: 'Энергия',          accent: 'var(--lime)',         accentDeep: 'var(--lime-deep)' },
+  mobility:  { label: 'Мобильность',      accent: 'var(--warm-accent)',  accentDeep: 'var(--warm-accent-deep)' },
+  strength:  { label: 'Сила',             accent: 'var(--secondary)',    accentDeep: 'var(--secondary-deep)' },
+  recovery:  { label: 'Восстановление',   accent: 'var(--rose)',         accentDeep: 'var(--rose-deep)' },
+};
+
+window.ATMO.formatPrice = (n) => `${n} zł`;

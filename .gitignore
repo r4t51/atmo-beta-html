@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Temp, cache, logs
+*.log
+.cache/
+tmp/
+temp/
+.tmp/
+_tmp*
+tmp/
+
+# Browser screenshots and reference uploads
+uploads/
+screenshot*.png
+Screenshot*.png
+screenshot*.jpg
+screenshot*.webp
+*.screenshot.*
+pasted-*.png
+
+# IDE / agent local
+.cursor/
+.claude/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Local overrides
+*.local.json

@@ -1,0 +1,309 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Курс завершён — ATMO</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- fonts loaded via shared/styles.css @import -->
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .cc-wrap {
+    max-width: 760px; margin: 0 auto;
+    padding: 56px 20px 96px;
+  }
+
+  /* Hero */
+  .cc-hero {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .cc-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 96px; height: 96px; border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 16%, transparent);
+    font-size: 48px; margin-bottom: 24px;
+    animation: pop .6s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes pop {
+    0%   { transform: scale(0.4); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+  .cc-hero .eyebrow-row {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--ink-mute); margin-bottom: 14px;
+  }
+  .cc-hero h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(38px, 6vw, 64px);
+    line-height: 1.02; letter-spacing: -0.025em;
+    margin: 0 0 16px; text-wrap: balance;
+  }
+  .cc-hero h1 em { font-style: italic; color: var(--primary-deep); }
+  .cc-hero .sub {
+    color: var(--ink-soft); font-size: 18px; line-height: 1.6;
+    max-width: 480px; margin: 0 auto;
+  }
+  .cc-course-name {
+    display: inline-block; margin-top: 18px;
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .cc-course-name b { color: var(--ink); font-weight: 600; }
+
+  /* Stats */
+  .cc-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line); border-radius: var(--r-lg);
+    overflow: hidden; margin-bottom: 32px;
+  }
+  .cc-stat {
+    background: var(--bg-card); padding: 24px;
+    text-align: center;
+  }
+  .cc-stat .num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 40px; line-height: 1; letter-spacing: -0.02em;
+    color: var(--primary-deep);
+  }
+  .cc-stat .lbl {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--ink-mute); margin-top: 8px;
+  }
+
+  /* Review card */
+  .cc-card {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .cc-card h3 {
+    font-family: 'Space Mono', ui-monospace, monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--ink-mute); margin: 0 0 18px;
+  }
+
+  /* Star rating */
+  .stars {
+    display: flex; gap: 8px; margin-bottom: 18px;
+  }
+  .star {
+    font-size: 28px; cursor: pointer; line-height: 1;
+    color: var(--line-strong); transition: color .1s, transform .1s;
+    user-select: none;
+  }
+  .star.active, .star.hover { color: #f0b429; transform: scale(1.15); }
+
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block; font-size: 13px; font-weight: 500;
+    color: var(--ink-soft); margin-bottom: 6px;
+  }
+  .field textarea {
+    width: 100%; box-sizing: border-box;
+    padding: 12px 14px; border-radius: var(--r-sm);
+    border: 1px solid var(--line-strong);
+    background: var(--bg); font-family: inherit; font-size: 15px;
+    color: var(--ink); resize: vertical; min-height: 100px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .field textarea:focus {
+    outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+    background: var(--bg-card);
+  }
+  .field textarea::placeholder { color: var(--ink-mute); }
+
+  .review-actions { display: flex; align-items: center; gap: 16px; }
+  .review-saved { font-size: 14px; color: var(--positive); font-weight: 500; display: none; }
+  .review-saved.show { display: block; }
+
+  /* Next courses */
+  .next-grid {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  .next-card {
+    display: flex; flex-direction: column;
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); overflow: hidden;
+    text-decoration: none; color: inherit;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .next-card:hover { box-shadow: var(--shadow-lift); transform: translateY(-2px); }
+  .next-card .ph { aspect-ratio: 4/3; }
+  .next-card .card-body { padding: 16px; }
+  .next-card .card-meta {
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .next-card .card-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px; letter-spacing: -0.01em; line-height: 1.15;
+    margin: 0 0 6px;
+  }
+  .next-card .card-price {
+    font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ink-mute);
+  }
+
+  /* Main actions */
+  .cc-actions {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 540px) {
+    .cc-stats { grid-template-columns: 1fr 1fr; }
+    .cc-stats .cc-stat:last-child { grid-column: 1 / -1; }
+    .cc-card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <main class="cc-wrap">
+    <section class="cc-hero">
+      <div class="cc-badge">🏅</div>
+      <div class="eyebrow-row">Программа завершена</div>
+      <h1>Вы <em>прошли</em> курс.</h1>
+      <p class="sub">Это не просто галочка — это восемь недель постоянства. Тело запомнило.</p>
+      <div class="cc-course-name">Курс · <b id="course-title">Живот + Тазовое дно</b></div>
+    </section>
+
+    <!-- Stats -->
+    <div class="cc-stats" id="cc-stats">
+      <div class="cc-stat">
+        <div class="num" id="stat-lessons">14</div>
+        <div class="lbl">Уроков пройдено</div>
+      </div>
+      <div class="cc-stat">
+        <div class="num" id="stat-weeks">8</div>
+        <div class="lbl">Недель практики</div>
+      </div>
+      <div class="cc-stat">
+        <div class="num" id="stat-time">3,5 ч</div>
+        <div class="lbl">Времени с собой</div>
+      </div>
+    </div>
+
+    <!-- Review -->
+    <div class="cc-card">
+      <h3>Ваши впечатления</h3>
+      <div class="stars" id="stars" role="group" aria-label="Оценка курса">
+        <span class="star" data-v="1">★</span>
+        <span class="star" data-v="2">★</span>
+        <span class="star" data-v="3">★</span>
+        <span class="star" data-v="4">★</span>
+        <span class="star" data-v="5">★</span>
+      </div>
+      <form id="review-form">
+        <div class="field">
+          <label for="review-text">Что изменилось за курс?</label>
+          <textarea id="review-text" placeholder="Расскажите о своих ощущениях — ваш отзыв поможет другим принять решение."></textarea>
+        </div>
+        <div class="review-actions">
+          <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+          <span class="review-saved" id="review-saved">Спасибо! Отзыв отправлен ✓</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Next courses -->
+    <div class="cc-card">
+      <h3>Что дальше</h3>
+      <div class="next-grid" id="next-grid"></div>
+    </div>
+
+    <div class="cc-actions">
+      <a class="btn btn-primary btn-arrow" href="account.html">В кабинет</a>
+      <a class="btn btn-ghost" href="courses.html">Мои курсы</a>
+    </div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="shared/data.js"></script>
+  <script src="shared/layout.js"></script>
+  <script>
+    ATMO.renderShell({ active: 'account' });
+
+    // Load course from URL param
+    const params   = new URLSearchParams(location.search);
+    const courseId = params.get('course') || params.get('id') || 'belly-floor';
+    const course   = ATMO.PRODUCTS.find(p => p.id === courseId) || ATMO.PRODUCTS.find(p => p.id === 'belly-floor');
+
+    document.getElementById('course-title').textContent = course.title;
+    document.title = `${course.title} — курс завершён · ATMO`;
+
+    // Stats
+    const totalLessons = 14;
+    const totalMins    = Math.round(course.weeks * course.sessionsPerWeek * 17.5);
+    const totalHours   = (totalMins / 60).toFixed(1).replace('.', ',');
+    document.getElementById('stat-lessons').textContent = totalLessons;
+    document.getElementById('stat-weeks').textContent   = course.weeks;
+    document.getElementById('stat-time').textContent    = totalHours + ' ч';
+
+    // Star rating
+    let rating = 0;
+    const stars = document.querySelectorAll('.star');
+    stars.forEach(s => {
+      s.addEventListener('mouseenter', () => {
+        stars.forEach(x => x.classList.toggle('hover', +x.dataset.v <= +s.dataset.v));
+      });
+      s.addEventListener('mouseleave', () => {
+        stars.forEach(x => x.classList.remove('hover'));
+      });
+      s.addEventListener('click', () => {
+        rating = +s.dataset.v;
+        stars.forEach(x => x.classList.toggle('active', +x.dataset.v <= rating));
+      });
+    });
+
+    // Review submit
+    document.getElementById('review-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const text = document.getElementById('review-text').value.trim();
+      if (!rating && !text) {
+        document.getElementById('review-text').focus();
+        document.getElementById('review-text').style.borderColor = '#c25a4a';
+        setTimeout(() => document.getElementById('review-text').style.borderColor = '', 1800);
+        return;
+      }
+      const saved = document.getElementById('review-saved');
+      saved.classList.add('show');
+      e.target.querySelector('button').disabled = true;
+      // In production: POST { rating, text, courseId } to backend
+    });
+
+    // Next courses — same goal or complementary
+    const next = ATMO.PRODUCTS
+      .filter(p => p.id !== course.id)
+      .sort((a, b) => (a.goal === course.goal ? -1 : 1))
+      .slice(0, 3);
+
+    document.getElementById('next-grid').innerHTML = next.map(p => {
+      const goal = ATMO.GOALS[p.goal];
+      return `
+        <a class="next-card" href="product.html?id=${p.id}">
+          <div class="ph ${p.tint}">
+            <span class="ph-label">${p.title.toLowerCase()}</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">${goal.label} · ${p.duration}</div>
+            <div class="card-title">${p.title}</div>
+            <div class="card-price">от ${ATMO.formatPrice(p.price)}</div>
+          </div>
+        </a>`;
+    }).join('');
+  </script>
+</body>
+</html>
