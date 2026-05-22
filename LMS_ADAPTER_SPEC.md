@@ -1,6 +1,6 @@
 # LMS Adapter Spec v0
 
-> **Status:** route live (adapter MVP) · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **next: optional dashboard wiring** · **2026-05-22**  
+> **Status:** route live (adapter MVP) · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **2026-05-22**  
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
@@ -10,7 +10,7 @@
 
 Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo backends so enrolled courses, progress, and access can ship without LearnDash HTML coupling or premature `atmo-lms-lite` dependency.
 
-**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**. Deep port of `lesson.html` / `product-enrolled.html` and dashboard «Следующий шаг» wiring remain **post-MVP / optional phase 3**.
+**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**; dashboard «Следующий шаг» CTA wiring **shipped (`648e562` 2026-05-22)**. Deep port of `lesson.html` / `product-enrolled.html` remains **post-MVP**.
 
 ---
 
@@ -41,7 +41,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 - **Technical:** no LearnDash CPT slug collision; `is_account_page()` CSS scope already defined; hidden-endpoint audit precedent (`downloads`, `edit-address`, `payment-methods`).
 - **Adapter / lite:** route choice does not bind backend — LearnDash today, `atmo-lms-lite` later via same ViewModels.
 
-**Implementation sequence (§11):** (1) register **`my-courses`** endpoint + menu IA + static empty shell — **done `ecfd8f5`**; (2) adapter PHP + wire `get_enrolled_courses()` — **done `a352081`**; (3) optional dashboard «Следующий шаг» wiring — **next optional**.
+**Implementation sequence (§11):** (1) register **`my-courses`** endpoint + menu IA + static empty shell — **done `ecfd8f5`**; (2) adapter PHP + wire `get_enrolled_courses()` — **done `a352081`**; (3) dashboard «Следующий шаг» wiring — **done `648e562`**.
 
 **Reserved naming:** **«Мои курсы»** = `/my-account/my-courses/`. **«Программы»** = public `/courses/` only.
 
@@ -74,7 +74,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 
 All shapes are **normalized display contracts**. Fields marked *(optional)* may be omitted when unknown; UI must degrade gracefully.
 
-**MVP scope:** `/my-account/my-courses/` enrolled list + account dashboard «Следующий шаг» shell. **`LessonProgress[]` outline** and full **`product-enrolled.html`** hub are **post-MVP** — list MVP needs `EnrolledCourse` + optional `LessonRef` on `next_lesson` only.
+**MVP scope:** `/my-account/my-courses/` enrolled list + account dashboard «Следующий шаг» CTAs — **both shipped**. **`LessonProgress[]` outline** and full **`product-enrolled.html`** hub are **post-MVP** — list MVP needs `EnrolledCourse` + optional `LessonRef` on `next_lesson` only.
 
 **Field tiers:** **required** = adapter must return for MVP row/state; **optional** = omit or null when unknown; **deferred** = not used on enrolled list MVP.
 
@@ -385,13 +385,14 @@ Before any enrolled UI or route implementation:
 - [x] Woo **`my-courses`** endpoint shell (phase 1) — **`ecfd8f5` 2026-05-22** (§11 commit A).
 - [x] LMS adapter PHP + wire endpoint to **`get_enrolled_courses()`** (§11 commit B) — **`a352081` 2026-05-22**.
 - [x] Account regression QA after adapter MVP — **2026-05-22** (§11.0a · `CHANGES.md`).
+- [x] Dashboard «Следующий шаг» CTA wiring (phase 3) — **`648e562` 2026-05-22** (§11.0b · `CHANGES.md`).
 - [x] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver §5).
 - [x] Code Snippets export/backup completed — `docs/snippets/` (`CHANGES.md` 2026-05-22).
 - [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
 - [x] **Access expiry semantics** — LD access start + Woo duration label (`CHANGES.md` 2026-05-22).
 - [x] **No LearnDash HTML in ATMO UI** — ViewModels only (§3, §4.7 #8).
 
-**After sign-off:** endpoint shell **shipped** (`ecfd8f5`); adapter MVP **shipped** (`a352081`); optional dashboard wiring next (§11 commit C); theme consumes ViewModels only — not LD internals.
+**After sign-off:** endpoint shell **shipped** (`ecfd8f5`); adapter MVP **shipped** (`a352081`); dashboard CTA wiring **shipped** (`648e562`); theme consumes ViewModels only — not LD internals. **Post-MVP:** lesson/course hub port.
 
 ### 11.0 Phase 1 shipped (`ecfd8f5` 2026-05-22)
 
@@ -422,7 +423,23 @@ Before any enrolled UI or route implementation:
 | Local QA (#3801 / r4t5) | **PASS** — `CHANGES.md` |
 | Account regression QA (post-`a352081`) | **PASS** — 8 routes × desktop/mobile; no blockers — `CHANGES.md` |
 
-**Rollback:** `git revert a352081` — **no permalink flush** (phase 1 endpoint remains).
+**Rollback:** `git revert a352081` — endpoint shell `ecfd8f5` remains.
+
+### 11.0b Phase 3 shipped (`648e562` 2026-05-22)
+
+| Item | Status |
+|------|--------|
+| Stale dashboard LMS-future copy removed | **Done** |
+| «Следующий шаг» wired via `atmo_get_enrolled_courses()` | **Live** — read-only; no dashboard list/progress |
+| Continue-lesson hero CTA | **Live** when adapter returns safe **«Продолжить»** (`next_lesson` + `cta_url`) |
+| Fallback CTAs | **Live** — **`/my-account/my-courses/`** + catalog when no continue lesson |
+| «Курсы» panel IA | **Live** — **Мои курсы** vs **Программы** clarified; dual CTAs |
+| `/my-account/my-courses/` adapter page | **Unchanged** |
+| Local QA (#3801 / r4t5) | **PASS** — dashboard + my-courses + `/courses/` desktop/mobile — `CHANGES.md` |
+
+**Caveats:** dashboard calls adapter on every `/my-account/` load; zero-enrollment state not live-QA'd; multi-course hero = first active continue CTA (adapter sort).
+
+**Rollback:** `git revert 648e562` — adapter `a352081` + endpoint `ecfd8f5` remain.
 
 ---
 
@@ -456,7 +473,7 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 2. **Remove** `atmo_filter_account_endpoint_url` branch for `atmo-courses` (real endpoint generates URL).
 3. **Register** rewrite endpoint **`my-courses`** (below).
 4. Leave header/footer **«Программы»** → `/courses/` unchanged.
-5. Follow-up: point dashboard CTAs from generic `/courses/` copy to **`my-courses`** where enrolled UX fits (optional polish after adapter).
+5. Follow-up: point dashboard CTAs from generic `/courses/` copy to **`my-courses`** where enrolled UX fits — **done `648e562`**.
 
 ### 11.2 Endpoint mechanics
 
@@ -506,7 +523,7 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 | Account sidebar | **No** (drop fake `atmo-courses`) | — |
 | Site header | **Yes** | `/courses/` |
 | Site footer | **Yes** | `/courses/` |
-| Dashboard shell CTAs | **Yes** for catalog discovery; add **«Мои курсы»** link when shell exists | `/courses/`, `/каталог/`, later `/my-account/my-courses/` |
+| Dashboard shell CTAs | **Live** — **«Мои курсы»** → `/my-account/my-courses/`; **«Программы»** → `/courses/`; catalog fallback — **`648e562`**
 
 ### 11.4 Rendering phases
 
@@ -514,7 +531,7 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 |-------|---------|---------|
 | **1 — Shell (recommended first ship)** | ATMO empty state: honest copy + CTAs to **«Программы»** / catalog; wrapper e.g. `.atmo-my-courses` | **Done `ecfd8f5`** |
 | **2 — Adapter** | List rows from **`EnrolledCourse[]`** per §4.3 / §7 | **Done `a352081`** — `get_enrolled_courses()` |
-| **3 — Dashboard** | «Следующий шаг» hero uses adapter when non-null `next_lesson` | **Optional next** — separate template hook |
+| **3 — Dashboard** | «Следующий шаг» hero uses adapter when non-null `next_lesson` | **Done `648e562`** — read-only adapter reuse; no list/progress on dashboard |
 
 **Shell rules:** no LearnDash HTML/classes; no fake progress rows; match MVP empty state in §7.
 
@@ -537,7 +554,9 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 | Dashboard | Still on `dashboard` only; no regression on orders/settings QA passes |
 | Permalinks | Direct URL works after one flush |
 
-**Account regression sweep (post-`a352081`, 2026-05-22):** **PASS** — `/my-account/` · `/my-account/my-courses/` · `/my-account/orders/` · `/view-order/3801/` · `/edit-account/` · `/edit-address/` · `/payment-methods/` · `/courses/` on desktop **1440×900** + mobile **390×844**; scope checks OK; dashboard stale copy/CTA remains optional phase 3 — `CHANGES.md`.
+**Account regression sweep (post-`a352081`, 2026-05-22):** **PASS** — `/my-account/` · `/my-account/my-courses/` · `/my-account/orders/` · `/view-order/3801/` · `/edit-account/` · `/edit-address/` · `/payment-methods/` · `/courses/` on desktop **1440×900** + mobile **390×844**; scope checks OK — `CHANGES.md`. Dashboard stale copy resolved in phase 3 **`648e562`**.
+
+**Dashboard CTA wiring QA (post-`648e562`, 2026-05-22):** **PASS** — `/my-account/` · `/my-account/my-courses/` · `/courses/` desktop + mobile; no overflow — `CHANGES.md`.
 
 ### 11.7 Rollback
 
@@ -561,8 +580,8 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 3. **QA** — §11.6 — **PASS on Local 2026-05-22**  
 4. **Child theme commit B** — LMS adapter PHP + wire `woocommerce_account_my-courses_endpoint` to **`get_enrolled_courses()`** — **done `a352081`** · QA PASS — `CHANGES.md`  
 4a. **Account regression QA** (post-`a352081`) — **PASS 2026-05-22** — `CHANGES.md`  
-5. **Optional commit C** — dashboard «Следующий шаг» + panel links to **`my-courses`** — **next optional**
+5. **Commit C** — dashboard «Следующий шаг» + panel links to **`my-courses`** — **done `648e562`** · QA PASS — `CHANGES.md`
 
 ---
 
-*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, endpoint shell, and adapter MVP shipped; optional dashboard wiring next (§11 commit C).*
+*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, and dashboard CTA wiring shipped; post-MVP: lesson/course hub port.*

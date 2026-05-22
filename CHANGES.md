@@ -6,6 +6,29 @@
 
 ---
 
+## 2026-05-22 — Account dashboard CTA wiring for my-courses (phase 3)
+
+- **Scope:** child theme only — `inc/atmo-account.php`; read-only adapter reuse; no DB, snippets, settings, CSS, LD template overrides, or `atmo-lms-lite`
+- **Commit:** `648e562` — Update account dashboard CTAs for my-courses (`kadence-child`)
+- **Implemented:**
+  - removed stale dashboard LMS-future copy («после подключения LMS», «будущий экран»)
+  - **«Следующий шаг»** card wired via existing `atmo_get_enrolled_courses()` + `atmo_get_dashboard_continue_course()` — no dashboard course list, no progress bars
+  - when active course has safe **«Продолжить»** CTA (`next_lesson` + `cta_url`): primary → real LD lesson URL; secondary → **`/my-account/my-courses/`**
+  - when enrolled without continue lesson: primary → **`/my-account/my-courses/`**; secondary → catalog
+  - when no enrollments: primary → **`/my-account/my-courses/`**; secondary → catalog
+  - **«Курсы»** panel clarifies **Мои курсы** = personal access list **`/my-account/my-courses/`** vs **Программы** = public LD archive **`/courses/`**; dual CTAs added
+  - **`/my-account/my-courses/`** adapter page unchanged
+- **QA (Local, user r4t5, fixture #3801):**
+  - **`/my-account/`** desktop **1440×900** + mobile **390×844** **PASS** — «Продолжите программу» · primary **Продолжить** → LD lesson · secondary **Мои курсы** → `/my-account/my-courses/` · courses panel CTAs correct · no stale copy · no dashboard list/progress · `.atmo-dash` only · no overflow
+  - **`/my-account/my-courses/`** desktop + mobile **PASS** — unchanged: one card, no fake progress
+  - **`/courses/`** desktop + mobile **PASS** — public LD archive unchanged
+- **Caveats:** dashboard calls `atmo_get_enrolled_courses()` on every `/my-account/` load; zero-enrollment dashboard state not live-QA'd; multi-course users — hero picks first active course with safe continue CTA (adapter sort)
+- **Rollback:** `git revert 648e562` in `kadence-child` — **no permalink flush** (endpoint `ecfd8f5` + adapter `a352081` remain)
+- **Still open:** zero-enrollment dashboard QA; post-MVP lesson/course hub port; pending-order rows; `atmo-lms-lite` decision — `BACKLOG.md` §2
+- **Docs:** `BACKLOG.md` · `LMS_ADAPTER_SPEC.md` §11 commit C · `WP_DEPENDENCY_MAP.md` · `ONBOARDING.md`
+
+---
+
 ## 2026-05-22 — Account regression QA after LMS adapter MVP
 
 - **Scope:** read-only QA; no code/DB/snippets/settings changes; repos clean before/after (`beta html`, `kadence-child`)

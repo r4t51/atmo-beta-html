@@ -67,9 +67,9 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - **«Программы»** → `/courses/` in **header/footer only** (removed from account sidebar in `ecfd8f5`)
   - **`/my-account/my-courses/`:** adapter-backed enrolled list **`.atmo-my-courses`** — `get_enrolled_courses()` — **`a352081`**; endpoint shell **`ecfd8f5`**; one-time permalink flush on deploy (`CHANGES.md`)
   - Hidden from nav, direct URL only: `downloads`, `edit-address` (+ billing/shipping), `payment-methods`
-  - Styled passes: auth (`353346c`), shell (`3122f4f`), dashboard static shell (`534b241`), orders (`3704226`), view-order access-type meta (`2da518f`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
-  - Account shell/wiring done; **`/my-account/my-courses/`** adapter MVP live (`a352081`); completed #3801 view-order QA; access-type meta pill on view-order (`2da518f`); saved payment-methods table not live-QA'd; dashboard LMS widgets deferred (optional phase 3)
-  - Audited 2026-05-22 (read-only PASS): `/my-account/add-payment-method/` (shell/wiring OK; Stripe card/BLIK absent on Local — Woo/Stripe env, not theme CSS); dashboard static shell (`534b241`, desktop/mobile PASS; Woo default dashboard copy hidden by CSS when `.atmo-dash` present)
+  - Styled passes: auth (`353346c`), shell (`3122f4f`), dashboard static shell (`534b241`), dashboard CTA wiring (`648e562`), orders (`3704226`), view-order access-type meta (`2da518f`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
+  - Account shell/wiring done; **`/my-account/my-courses/`** adapter MVP live (`a352081`); dashboard CTAs wired to adapter (`648e562`); completed #3801 view-order QA; access-type meta pill on view-order (`2da518f`); saved payment-methods table not live-QA'd
+  - Audited 2026-05-22 (read-only PASS): `/my-account/add-payment-method/` (shell/wiring OK; Stripe card/BLIK absent on Local — Woo/Stripe env, not theme CSS); dashboard (`534b241` + `648e562`, desktop/mobile PASS; Woo default dashboard copy hidden by CSS when `.atmo-dash` present)
   - **Open tasks:** `BACKLOG.md`
   - Do not redirect Woo account endpoints without audit.
 
@@ -175,7 +175,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
 
-Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**. **Next optional:** dashboard wiring to **`get_enrolled_courses()`** / `next_lesson` (`LMS_ADAPTER_SPEC.md` §11 commit C). ViewModel contract **signed off 2026-05-22** (§4.7). **Do not touch LearnDash templates.**
+Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**. **Post-MVP:** lesson/course hub port. ViewModel contract **signed off 2026-05-22** (§4.7). **Do not touch LearnDash templates.**
 
 ## Custom ATMO Plugins
 
@@ -295,6 +295,6 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 **Architectural blockers (do not bypass):**
 
-- ~~LMS adapter PHP~~ — **done `a352081`**; optional dashboard wiring next (`LMS_ADAPTER_SPEC.md` §11 commit C)
+- ~~LMS adapter PHP~~ — **done `a352081`**; ~~dashboard wiring~~ — **done `648e562`**
 - Do not touch LearnDash templates or build critical UI on `atmo-lms-lite` without explicit decision
 - Saved-card / payment-token scope — requires explicit approval before live-QA or UI work
