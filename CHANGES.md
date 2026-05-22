@@ -56,6 +56,25 @@
 
 ---
 
+## 2026-05-22 — Cart + checkout + payment-failed shell read-only QA
+
+- **Scope:** read-only QA; no code/DB/Snippets/Woo/Stripe settings changes; no add/remove cart items; no checkout submit; no billing/payment save; no orders placed
+- **Session cart (pre-existing, untouched):** 1 line — «Живот и Тазовое дно - 60 дней»; total **399zł**
+- **Pages:** `/cart-2/`, `/checkout/`, `/payment-failed/`; sanity `/checkout/order-received/999/`
+- **Viewports:** desktop 1440×900 + mobile 390×844 for cart, checkout, payment-failed
+- **Result:** PASS — cart/checkout shells, asset scope, payment-failed expected 404; no page-level horizontal overflow
+- **Cart:** `.woocommerce-cart-form`, `.cart_totals`, `.wc-proceed-to-checkout`, cross-sells (2) visible; notices wrapper visible
+- **Checkout (with item):** billing / `#order_review` / `#payment` visible; `#place_order` visible (not clicked); gateways **BLIK** + **Klarna** visible; Stripe card absent on Local (HTTP + live Stripe env — not theme CSS hiding payment); coupon info notice visible
+- **Payment-failed:** `/payment-failed/` → **404** by design (standard Kadence 404 shell); no ATMO cart/checkout CSS
+- **Order-received sanity:** `/checkout/order-received/999/` → **200**, generic thank-you; `atmo-confirmation.css` only; no ATMO success hero; no redirect to `/courses`
+- **Asset scope:** cart → `atmo-cart.css` + `atmo-catalog.css` (cross-sells); checkout → `atmo-checkout.css`; order-received → `atmo-confirmation.css`; payment-failed → no ATMO cart/checkout CSS
+- **Not re-tested:** empty-cart checkout redirect (prior docs: Woo may redirect to cart when empty)
+- **Docs fixed:** `WP_DEPENDENCY_MAP.md` stale claim that `/checkout/` is globally 302
+- **No CSS/PHP follow-up** for current wiring
+- **Open items:** see `BACKLOG.md` (payment-token guardrails unchanged)
+
+---
+
 ## 2026-05-22 — Woo My Account address endpoints read-only QA
 
 - **Scope:** read-only QA; no code/DB/Snippets/Woo settings changes; no form save/submit

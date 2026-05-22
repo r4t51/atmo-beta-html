@@ -109,8 +109,10 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 
 | Зона | Факт / риск |
 |---|---|
-| Cart URL | `/cart-2/`, нестандартный slug |
-| Checkout | `/checkout/` сейчас отвечает 302 |
+| Cart URL | `/cart-2/`, нестандартный slug; shell `atmo-cart.css` + `atmo-catalog.css` (cross-sells); re-QA PASS 2026-05-22 |
+| Checkout | `/checkout/` — **200** + full form when cart has items; empty cart may redirect to `/cart-2/` (Woo default; not re-tested 2026-05-22). Shell `atmo-checkout.css` (excludes order-received). Re-QA PASS 2026-05-22 with session item |
+| Payment failed | `/payment-failed/` → **404** by design (no static page yet); standard 404 shell |
+| Order received | `/checkout/order-received/` → `atmo-confirmation.css` only; excludes `atmo-checkout.css` |
 | HPOS | таблицы созданы, custom order storage отключён |
 | Orders storage | legacy `wp_posts` / `wp_postmeta` |
 | Bridge | LearnDash WooCommerce bridge продаёт курсы через WC |
@@ -195,7 +197,7 @@ LearnDash CPTs:
 | R2 | Code Snippets не в VCS | Высокий |
 | R3 | `atmo-reflection-forms` грузит assets без условий | Средний |
 | R4 | нестандартный cart URL `/cart-2/` | Средний |
-| R5 | checkout 302 требует понимания причины | Средний |
+| R5 | checkout empty-cart redirect vs full form — state-dependent (expected Woo); not a global 302 | Низкий |
 | R6 | LearnDash -> atmo-lms-lite migration | Средний/высокий |
 | R7 | HPOS таблицы есть, но storage отключён | Средний |
 | R8 | Preview mu-plugin unversioned (Local-only) | Низкий/средний |
@@ -226,7 +228,7 @@ LearnDash CPTs:
    - 4-колоночный grid: бренд + лид, Программы, Кабинет, Студия; правовые ссылки; год `date('Y')`.
    - Kadence `#colophon` скрыт: `body.atmo-footer-active #colophon { display: none !important }`.
    - Preview mode: `body.atmo-preview-shell-enabled .atmo-site-footer { display: none }`.
-6. Проверено: основные URL отвечают 200; `/checkout/` остаётся 302; preview shell работает; child footer скрыт в preview mode.
+6. Проверено: основные URL отвечают 200; `/checkout/` with cart items → 200 + checkout form (re-QA 2026-05-22); empty cart may redirect to cart; `/payment-failed/` → 404 by design; preview shell работает; child footer скрыт в preview mode.
 7. ✅ Каталог MVP: `woocommerce/content-product.php` + `inc/atmo-catalog.php` + `assets/css/atmo-catalog.css`.
    - ViewModel `atmo_build_course_card()`: id, title, permalink, thumbnail_url, price_html, excerpt, on_sale, categories, `goal_slug`/`goal_label` from `pa_goal`.
    - Карточка `.atmo-product-card` внутри стандартного WC `ul.products li.atmo-card-item`.
