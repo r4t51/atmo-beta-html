@@ -64,7 +64,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - Menu filter (`d4ee689`): Обзор → `dashboard` · Мои курсы → `/courses/` (external link, not Woo rewrite) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout`
   - Hidden from nav, direct URL only: `downloads`, `edit-address` (+ billing/shipping), `payment-methods`
   - Styled passes: auth (`353346c`), shell (`3122f4f`), orders (`3704226`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
-  - Not styled/audited: `/my-account/add-payment-method/`; saved payment-methods table not live-QA'd; order line items/meta pills and order-again not live-QA'd
+  - Audited 2026-05-22 (read-only PASS): `/my-account/add-payment-method/` (shell/wiring OK; Stripe card/BLIK absent on Local — Woo/Stripe env, not theme CSS); saved payment-methods table not live-QA'd; order line items/meta pills and order-again not live-QA'd; dashboard/LMS widgets not live-QA'd
   - Do not redirect Woo account endpoints without audit.
 
 Не трогали:
@@ -255,7 +255,6 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 Header, footer, MVP каталог/PDP и Woo My Account CSS passes перенесены. Возможные следующие шаги:
 
 - Dashboard/LMS widgets на `/my-account/` (LearnDash `/courses/` shared nav context).
-- `/my-account/add-payment-method/` styling после отдельного scope/audit.
 - Решить судьбу preview mu-plugin (когда убирать временный integration layer).
 
 Не делать до решения adapter interface:

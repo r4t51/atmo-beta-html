@@ -5,6 +5,17 @@
 
 ---
 
+## 2026-05-22 — Woo My Account add-payment-method read-only audit
+
+- **Scope:** read-only audit; no code/DB/Snippets/Woo/Stripe settings changes
+- **Page:** `/my-account/add-payment-method/`
+- **Viewports:** desktop 1440×900, mobile 390×844
+- **Result:** PASS — direct URL loads; 5-item account nav; form/container visible; submit visible (not clicked); no overflow/clipping; theme does not hide payment UI (computed styles visible); Klarna visible
+- **Local note:** Stripe card and BLIK not in DOM — Woo/Stripe config/environment, not theme CSS; no CSS follow-up for current shell/wiring
+- **Not fully QA'd:** saved payment-methods table with stored cards; line items/meta pills; completed order/order-again; dashboard/LMS widgets
+
+---
+
 ## 2026-05-22 — Woo My Account logged-out auth shell/wiring QA
 
 - **Scope:** read-only logged-out regression; no code/DB/Snippets/Woo settings changes
@@ -12,7 +23,6 @@
 - **Viewports:** desktop 1440×900, mobile 390×844
 - **Result:** PASS — auth forms visible; register enabled; no logged-in leakage; no overflow/clipping; no blockers
 - **Repos:** beta html + kadence-child clean
-- **Not audited:** `/add-payment-method/` (still pending; see pass 5)
 - **Closes:** logged-out auth re-QA follow-up from pass 2a (`3122f4f`)
 
 ---
@@ -36,7 +46,7 @@
 - **Behavior:** CSS-only — address index cards, billing/shipping form fields, downloads empty/list, payment-methods empty/table/add CTA
 - **Scope:** menu-hidden endpoints still reachable by direct URL; no PHP/DB changes
 - **QA:** 6/6 PASS — desktop 1440×900 (`/edit-address/`, `/edit-address/billing/`, `/downloads/`, `/payment-methods/`); mobile 390×844 (`/edit-address/`, `/downloads/`); no overflow/overlap; notices/empty states/forms visible; no save/add-payment/logout clicks
-- **Not fully QA'd:** `/edit-address/shipping/` form, downloads list with files, payment-methods table with saved cards, `/add-payment-method/`
+- **Not fully QA'd:** `/edit-address/shipping/` form, downloads list with files, payment-methods table with saved cards
 - **Rollback:** `git revert 3135ddb`
 
 ---
@@ -82,7 +92,7 @@
 - **Behavior:** logged-in grid shell (nav left ≥920px), horizontal scroll nav mobile, content card, nav active/logout styling, notices/empty states; auth pass 1 unchanged
 - **Scope not touched:** PHP menu filters, DB, Snippets, form fields, LearnDash pages
 - **Rollback:** `git revert 3122f4f`
-- **Follow-ups (remaining):** dashboard/LMS widgets, `/add-payment-method/` styling
+- **Follow-ups (remaining):** dashboard/LMS widgets
 
 ---
 
