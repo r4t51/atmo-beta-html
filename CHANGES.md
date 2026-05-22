@@ -23,6 +23,23 @@
 
 ---
 
+## 2026-05-22 — Catalog routes + goal chips read-only QA
+
+- **Scope:** read-only QA; no code/DB/Snippets/Woo settings/product edits; no CSS/PHP follow-up for current wiring
+- **Pages:** `/каталог/`, `/каталог/?filter_goal={energy,mobility,strength,recovery,unknown}`, `/каталог/page/2/`, `/product-category/training/`; PDP sanity `/product/levelup_neuropower/`
+- **Viewports:** desktop 1440×900, mobile 390×844 (catalog main + `filter_goal=energy`; PDP desktop + mobile)
+- **Result:** PASS — shop grid, goal chips, server-side `filter_goal`, pagination, category filter bar, PDP price/related cards; no page-level horizontal overflow
+- **Counts (server-side `pa_goal`):** energy **3** · mobility **3** · strength **8** · recovery **4** · total **18** redesign products
+- **Invalid filter:** `?filter_goal=unknown` → full catalog (18), chip «Все» active (known behavior)
+- **Pagination:** `/каталог/page/2/` → 2 cards (17–18 of 18); `/каталог/page/2/?filter_goal=strength` → **404** (strength fits one page — expected)
+- **Category archive:** `/product-category/training/` — filter bar present; chip hrefs intentionally jump to main `/каталог/` base (MVP limitation, not a bug)
+- **PDP:** no goal filter bar; `atmo-catalog.css` on related cards only; Woo price visible
+- **Asset scope:** `atmo-catalog.css` on shop/category/tag/PDP related/cart cross-sells; `atmo-catalog-filters.js` absent / not enqueued
+- **Optional future:** category/tag-aware goal chip URLs — see `BACKLOG.md`
+- **Open items:** see `BACKLOG.md`
+
+---
+
 ## 2026-05-22 — Woo My Account address endpoints read-only QA
 
 - **Scope:** read-only QA; no code/DB/Snippets/Woo settings changes; no form save/submit

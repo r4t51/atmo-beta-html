@@ -165,7 +165,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - Карточки `.atmo-product-card` внутри стандартной WC-разметки `ul.products li.product`.
   - CSS грузится на `is_shop()` / `is_product_category()` / `is_product_tag()` / `is_product()` (для related products на single product).
   - Snippet ID 10 (`.custom-main-price` + `.euro-hint`) учтён в CSS.
-  - Goal chips + server-side `filter_goal` on `/каталог/` (`pa_goal` on Local; 18 redesign products assigned). Details: `CHANGES.md` → `2026-05-20 — pa_goal + goal chips` and `Server-side goal filter`. Chip hrefs always main shop base; category/tag-aware chip URLs not implemented.
+  - Goal chips + server-side `filter_goal` on `/каталог/` (`pa_goal` on Local; 18 redesign products assigned). Details: `CHANGES.md` → `2026-05-20 — pa_goal + goal chips`, `Server-side goal filter`, `2026-05-22 — Catalog routes + goal chips read-only QA`. Chip hrefs always main shop base; category/tag-aware chip URLs not implemented (optional — `BACKLOG.md`).
 - ✅ Страница продукта — MVP: `woocommerce/content-single-product.php` override + `inc/atmo-product.php` + `assets/css/atmo-product.css`.
   - `atmo_build_product_page()` ViewModel: id, title, permalink, thumbnail_url, price_html, is_on_sale, short_description_html, categories.
   - Hero: 2-колоночный grid (изображение + сводка), `h1.atmo-pdp-title`, `.atmo-pdp-desc`, buy box с ценой и WC add-to-cart формой.

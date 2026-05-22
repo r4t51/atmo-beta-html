@@ -62,7 +62,16 @@
 
 ---
 
-## 4. Docs / Process
+## 4. Catalog — optional
+
+| Item | Notes |
+|------|--------|
+| Category/tag-aware goal chip URLs | **Optional** — chips on category/tag archives currently link to main `/каталог/?filter_goal=…` (MVP). Re-QA PASS 2026-05-22 confirms intentional behavior; implement only if product decision. See `CHANGES.md` → 2026-05-22 catalog QA. |
+| `display_title` on catalog cards | Optional — cards still use `post_title`; PDP may use `_atmo_display_title` separately |
+
+---
+
+## 5. Docs / Process
 
 | Item | Notes |
 |------|--------|
