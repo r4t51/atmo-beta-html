@@ -6,6 +6,18 @@
 
 ---
 
+## 2026-05-22 — Enrolled «Мои курсы» route decision
+
+- **Scope:** docs/prototype decision only; no WP/PHP/endpoint/DB changes
+- **Decision:** enrolled MVP lives at **`/my-account/my-courses/`** (Woo account endpoint)
+- **Rejected:** standalone `/my-courses/`; public `/courses/` as enrolled view; LD shortcode page; wait-for-lite-only
+- **Why:** `courses.html` uses **account shell** (same sidebar IA as `account.html`); enrolled state = user account data; reuses `atmo-account.css` + existing endpoint audit pattern; no LD slug collision
+- **Unchanged:** `/courses/` stays public LearnDash archive — nav **«Программы»** (header, footer, account menu)
+- **Still blocked:** adapter sign-off (`LMS_ADAPTER_SPEC.md` §10); `my-courses` endpoint registration audit; Code Snippets export; product↔course mapping
+- **Docs:** `LMS_ADAPTER_SPEC.md` §2 · `BACKLOG.md` §2 decision #2
+
+---
+
 ## 2026-05-22 — Code Snippets / LMS–Woo routing audit
 
 - **Scope:** read-only audit via Local MariaDB `wp_snippets` (`127.0.0.1:10022`, DB `local`); docs only; no code/DB/snippet/Woo/LD settings changes

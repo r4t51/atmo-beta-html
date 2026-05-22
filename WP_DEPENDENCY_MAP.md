@@ -119,7 +119,8 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 | My Account page | `/my-account/` + Woo endpoints; menu IA in `inc/atmo-account.php` |
 | Account menu | 5 items — see Theme Layer Woo My Account block |
 | Hidden account URLs | `/my-account/downloads/`, `/edit-address/`, `/payment-methods/` (reachable, not in nav) |
-| `/courses/` from account nav | External LearnDash **public archive**, **not** a Woo endpoint rewrite; nav label **«Программы»** (interim, 2026-05-22) — real **«Мои курсы»** enrolled route still open |
+| `/courses/` from account nav | External LearnDash **public archive**; label **«Программы»** — not enrolled UI |
+| **`/my-account/my-courses/`** | **Decided** enrolled **«Мои курсы»** MVP route — not registered yet; audit before endpoint — `LMS_ADAPTER_SPEC.md` §2 |
 
 Активные WC-расширения, которые важно учитывать:
 
@@ -136,7 +137,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 Текущий runtime для course/lesson UI: LearnDash.  
 `atmo-lms-lite` **active** on Local, in development — candidate future runtime; не строить критичный UI на нём без явного решения; **no front-end assets observed** on course routes (2026-05-22 QA).
 
-**Route reality (2026-05-22):** `/courses/` = LearnDash **public CPT archive** (`post-type-archive-sfwd-courses`, 18 cards, no enrolled filter). Header/footer/account nav **«Программы»** → `/courses/` (interim relabel done — `CHANGES.md`). Name **«Мои курсы»** reserved for future enrolled route. **`/courses/` stays public.** Active route options B–E: **`BACKLOG.md` §2**.
+**Route reality (2026-05-22):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/` (interim relabel). **«Мои курсы»** enrolled MVP → **`/my-account/my-courses/`** (decided, not built) — `LMS_ADAPTER_SPEC.md` §2. **`/courses/` stays public.**
 
 LearnDash CPTs:
 

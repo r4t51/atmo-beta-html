@@ -77,25 +77,20 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | # | Decision | Status |
 |---|----------|--------|
 | 1 | **Interim nav label** for public `/courses/` archive | **Done (2026-05-22):** **«Программы»** in header, footer, account menu — see `CHANGES.md` |
-| 2 | **Target enrolled route** — where real **«Мои курсы»** lives | **Open** |
+| 2 | **Target enrolled route** — where real **«Мои курсы»** lives | **Done (2026-05-22):** **`/my-account/my-courses/`** Woo endpoint — see `LMS_ADAPTER_SPEC.md` §2, `CHANGES.md` |
 | 3 | **Adapter interface sign-off** — PHP adapter + ViewModel before enrolled UI | **Open** — draft spec: **`LMS_ADAPTER_SPEC.md` v0** |
 
-**Recommendation:** keep `/courses/` public; enrolled UI waits on decisions 2–3 + adapter sign-off per spec checklist.
+**Recommendation:** keep `/courses/` public **«Программы»**; build enrolled MVP at **`/my-account/my-courses/`** after adapter sign-off (#3) + endpoint audit.
 
-**Leaning guidance (not final):**
+### Route options (reference)
 
-- Enrolled UI **inside account shell** → Woo endpoint `/my-account/my-courses/` — only after explicit rewrite/endpoint audit (same caution as hidden endpoints).
-- Enrolled UI as **broader course hub** (closer to `courses.html` prototype) → standalone `/my-courses/` page + child template + adapter.
-
-### Route options (active — pick one before build)
-
-| Opt | Approach | Pros | Cons / risks |
-|-----|----------|------|--------------|
-| **A** | Keep `/courses/` public; relabel nav to «Все курсы» / «Программы» | Zero LD/Woo risk; honest UX; copy-only interim fix | Does not deliver enrolled view — **interim label applied: «Программы»** |
-| **B** | Standalone `/my-courses/` enrolled route | Clean separation; matches `courses.html`; own shell/CSS | Needs adapter + new page; slug collision check |
-| **C** | Woo endpoint `/my-account/my-courses/` | Shared account IA + `atmo-account.css` | Rewrite/endpoint audit; couples to WC routing |
-| **D** | LearnDash shortcode/filtered WP page | Uses LD enrollment APIs | **High LD template coupling** — conflicts with adapter rule |
-| **E** | Wait for `atmo-lms-lite` adapter | Avoids double migration | Nav mismatch persists; blocks dashboard widgets |
+| Opt | Approach | Status |
+|-----|----------|--------|
+| Public archive | `/courses/` + nav **«Программы»** | **Live** — not enrolled UI |
+| **A** | Standalone `/my-courses/` | **Rejected** — see `LMS_ADAPTER_SPEC.md` §2 |
+| **B** | Woo **`/my-account/my-courses/`** | **Selected** for enrolled MVP |
+| LD shortcode page | Filtered WP page | **Rejected** — LD template coupling |
+| Wait for lite only | No route until `atmo-lms-lite` | **Rejected** — blocks MVP; adapter handles backend swap |
 
 ### Do not do yet
 
@@ -103,7 +98,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Filter `/courses/` archive to enrolled-only without adapter + route decision
 - Wire `courses.html` demo data or fake progress into WP
 - Build critical UI on `atmo-lms-lite` without explicit decision
-- Register new Woo endpoints or change rewrites without audit
+- Register new Woo endpoints or change rewrites without audit — **`my-courses` endpoint audit required before register**
 - Deep-port `lesson.html` / `product-enrolled.html` until adapter interface is fixed
 - Treat Woo order line items alone as enrollment UI (bridge + adapter must agree)
 
@@ -111,8 +106,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 | Item | Blocker |
 |------|---------|
-| Real LMS/enrolled dashboard widgets | Adapter + route decision (above) |
-| «Мои курсы» enrolled view | Product decision 2 + adapter sign-off (decision 3) |
+| Real LMS/enrolled dashboard widgets | Adapter sign-off (#3) |
+| «Мои курсы» enrolled view | Adapter sign-off (#3) + `my-courses` endpoint audit — route decided: **`/my-account/my-courses/`** |
 | LearnDash templates | Do not touch until adapter decided |
 | `atmo-lms-lite` critical UI | Dev-only; no front-end without explicit decision |
 | Course progress / next lesson / enrolled cards | Prototype in `courses.html` (demo off); `account.html` MVP-safe shell only |

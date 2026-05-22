@@ -1,6 +1,6 @@
 # LMS Adapter Spec v0
 
-> **Status:** draft for sign-off · **2026-05-22**  
+> **Status:** route decided · adapter sign-off pending · **2026-05-22**  
 > **Scope:** ViewModel contract + adapter boundaries only — no PHP implementation, no route registration, no WP changes.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
@@ -14,23 +14,36 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 
 ---
 
-## 2. Routes (current + candidates)
+## 2. Routes
 
 | Route | Role | Status |
 |-------|------|--------|
-| `/courses/` | LearnDash **public CPT archive** — nav label **«Программы»** | **Live** (interim relabel done 2026-05-22) |
-| **«Мои курсы»** (enrolled) | Personalized enrolled list + progress | **Not built** — route **unresolved** |
+| `/courses/` | LearnDash **public CPT archive** — nav label **«Программы»** | **Live** (interim relabel 2026-05-22) — **not** enrolled UI |
+| **`/my-account/my-courses/`** | **«Мои курсы»** — enrolled list + progress (MVP) | **Decided, not built** — Woo account endpoint |
 
-**Enrolled route candidates (pick one before build):**
+### Decision (2026-05-22): enrolled route = **`/my-account/my-courses/`**
 
-| Option | URL | Shell / CSS | Prototype fit | Notes |
-|--------|-----|-------------|---------------|-------|
-| **B** | `/my-courses/` | Standalone page + own template/CSS | Closest to `courses.html` (account nav + enrolled list) | Slug collision check; new rewrite/page |
-| **C** | `/my-account/my-courses/` | Woo account shell + `atmo-account.css` | Same IA as `courses.html` nav block | Requires Woo endpoint audit (same caution as hidden endpoints) |
+**Chosen:** Woo account endpoint **B** — not standalone `/my-courses/`, not public `/courses/`.
 
-**Unresolved:** product decision #2 — see route table in `BACKLOG.md` §2. Leaning guidance only; not final.
+| Option | URL | Verdict |
+|--------|-----|---------|
+| A | `/my-courses/` standalone hub | **Rejected** — prototype `courses.html` uses **account shell** (same `.account-wrap` / sidebar as `account.html`), not a separate course-hub chrome; would duplicate shell CSS and widen blast radius |
+| **B** | **`/my-account/my-courses/`** | **Selected** — enrolled state belongs in account IA; reuses `atmo-account.css` + existing endpoint pattern |
+| C | Unresolved | **Rejected** — enough evidence to decide; adapter spec + prototype align on account shell |
 
-**Reserved naming:** **«Мои курсы»** = future enrolled experience. **«Программы»** = public `/courses/` archive only.
+**Rationale (summary):**
+
+- **UX:** «Мои курсы» = personalized access/progress — same class as orders and dashboard, not public catalog. Prototype nav block: Обзор · **Мои курсы** · Заказы · Настройки (`courses.html`, `account.html`).
+- **Public archive stays separate:** header/footer/account **«Программы»** → `/courses/` unchanged.
+- **Post-route nav IA (target, not implemented yet):**
+  - Account menu: add real **«Мои курсы»** → `/my-account/my-courses/`; keep **«Программы»** → `/courses/` (external) or drop from account sidebar later — prototype omits «Программы» in account nav.
+  - Site header: **«Программы»** → `/courses/` stays; optional future logged-in **«Мои курсы»** in header is polish, not MVP blocker.
+- **Technical:** no LearnDash CPT slug collision; `is_account_page()` CSS scope already defined; hidden-endpoint audit precedent (`downloads`, `edit-address`, `payment-methods`).
+- **Adapter / lite:** route choice does not bind backend — LearnDash today, `atmo-lms-lite` later via same ViewModels.
+
+**Implementation still blocked by:** adapter sign-off (#3), endpoint registration audit, Code Snippets export, product↔course mapping — see §10.
+
+**Reserved naming:** **«Мои курсы»** = `/my-account/my-courses/`. **«Программы»** = public `/courses/` only.
 
 ---
 
@@ -238,7 +251,7 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 | Topic | Risk / question | Mitigation |
 |-------|-----------------|------------|
 | **Enrollment SoT** | LD bridge today vs future `atmo-lms-lite` | Adapter interface stable; swap driver behind `source` field |
-| **Route location** | B vs C affects CSS shell and rewrite audit | Decide before implementation — `BACKLOG.md` §2 |
+| **Route location** | ~~B vs C~~ | **Decided:** `/my-account/my-courses/` — endpoint audit still required before register |
 | **Code Snippets** | Logic in DB, not VCS | Export/version before adapter impl — `WP_DEPENDENCY_MAP.md` registry |
 | **Thank-you redirect** | Snippet #5 broken URL, inactive | Separate thank-you spec before any post-checkout redirect |
 | **Product ↔ course map** | Woo product ID ≠ LD course ID | Explicit mapping layer in adapter; open question |
@@ -253,7 +266,8 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 Before any enrolled UI or route implementation:
 
 - [ ] Product approves this ViewModel field list (or documents deltas).
-- [ ] Enrolled route **B or C** chosen (`BACKLOG.md` #2).
+- [x] Enrolled route chosen: **`/my-account/my-courses/`** (`BACKLOG.md` #2 — 2026-05-22).
+- [ ] Woo **`my-courses`** endpoint audit + registration plan (no implementation in spec commit).
 - [ ] Enrollment SoT documented for MVP (LD + bridge acceptable for v1).
 - [ ] Code Snippets export/backup completed.
 - [ ] Product ↔ course mapping approach agreed.
@@ -262,4 +276,4 @@ Before any enrolled UI or route implementation:
 
 ---
 
-*Draft v0 — 2026-05-22. No commit until explicit confirmation.*
+*Spec v0 — 2026-05-22. Route decided same day; adapter sign-off pending.*
