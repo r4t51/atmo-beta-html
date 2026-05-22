@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-05-22 — Woo My Account static dashboard shell
+
+- **Commit:** `534b241` — Add static ATMO account dashboard shell
+- **Files:** `inc/atmo-account.php`, `assets/css/atmo-account.css`
+- **Behavior:**
+  - logged-in `/my-account/` dashboard has static ATMO shell cards
+  - next step card, courses CTA, profile/status, recent order summary
+  - last order uses read-only Woo API summary only (number/date/status), no actions
+  - no LMS progress, no fake enrolled course data
+  - `/courses/` remains public LearnDash archive; real LMS widgets deferred until adapter decision
+- **Caveats:** Woo default dashboard paragraphs remain in DOM but hidden by CSS when `.atmo-dash` exists; real LMS/enrolled progress still deferred; saved cards table, line/meta pills, completed order-again still not live-QA'd
+- **QA:** desktop 1440×900 + mobile 390×844; `/my-account/` PASS; sanity `/orders/`, `/edit-account/`, `/payment-methods/` PASS; dashboard shell only on dashboard endpoint; no overflow/overlap; 5-item menu present
+- **Rollback:** `git revert 534b241`
+
+---
+
 ## 2026-05-22 — Woo My Account add-payment-method read-only audit
 
 - **Scope:** read-only audit; no code/DB/Snippets/Woo/Stripe settings changes
@@ -12,7 +28,7 @@
 - **Viewports:** desktop 1440×900, mobile 390×844
 - **Result:** PASS — direct URL loads; 5-item account nav; form/container visible; submit visible (not clicked); no overflow/clipping; theme does not hide payment UI (computed styles visible); Klarna visible
 - **Local note:** Stripe card and BLIK not in DOM — Woo/Stripe config/environment, not theme CSS; no CSS follow-up for current shell/wiring
-- **Not fully QA'd:** saved payment-methods table with stored cards; line items/meta pills; completed order/order-again; dashboard/LMS widgets
+- **Not fully QA'd:** saved payment-methods table with stored cards; line items/meta pills; completed order/order-again; real LMS/enrolled widgets (deferred until adapter decision)
 
 ---
 
@@ -92,7 +108,7 @@
 - **Behavior:** logged-in grid shell (nav left ≥920px), horizontal scroll nav mobile, content card, nav active/logout styling, notices/empty states; auth pass 1 unchanged
 - **Scope not touched:** PHP menu filters, DB, Snippets, form fields, LearnDash pages
 - **Rollback:** `git revert 3122f4f`
-- **Follow-ups (remaining):** dashboard/LMS widgets
+- **Follow-ups (remaining):** real LMS/enrolled widgets deferred until adapter decision (static dashboard shell shipped in `534b241`)
 
 ---
 
