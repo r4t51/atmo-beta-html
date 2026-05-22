@@ -148,7 +148,7 @@ LearnDash CPTs:
 
 `atmo-lms-lite` active on Local, in development: modules include courses, lessons, mapping, migration, access-gate, access-rules, enrollment-hook, guest-orders, reconciler, refunds, run-log, status, woocommerce, work-queue, diagnostics. LearnDash templates/caution still applies for production UI until adapter decision.
 
-Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not order line items alone). Code Snippet **thank-you redirect** may affect post-purchase routing — audit before enrolled route goes live.
+Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not order line items alone). Snippet **#5** Thank You Redirect is **inactive** (`active = 0`); do not re-enable without safe thank-you spec — see Code Snippets registry.
 
 ### LMS Architecture Rule
 
@@ -178,19 +178,29 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 
 ## Code Snippets
 
-Сниппеты живут в таблице `wp_snippets`, не в VCS. Это высокий риск.
+Сниппеты живут в таблице **`wp_snippets`** (Code Snippets plugin), **не в VCS**. Read-only audit **2026-05-22** via Local MariaDB — see `CHANGES.md`. **Export/version before adapter implementation or snippet migration.**
 
-Известная логика:
+**LMS / routing (audit summary):** no **active** snippet controls LearnDash enrollment, `/courses/` route, `/my-account/` dashboard, or enrolled **«Мои курсы»** route. Enrollment SoT = LearnDash + Woo bridge (+ future `atmo-lms-lite` backend), not snippets.
 
-- WooCommerce product page bottom button;
-- Google Search / SEO helper;
-- courses carousel shortcode;
-- ATMO Quiz -> order meta;
-- скрытие meta в WooCommerce emails;
-- thank-you redirect;
-- currency/display overrides.
+### Snippet registry (Local, 2026-05-22)
 
-Перед переносом бизнес-логики нужно сделать отдельный экспорт и аудит сниппетов.
+| ID | Name | Active | Affects | Notes |
+|----|------|--------|---------|-------|
+| 1–4 | WP samples (filenames, admin bar, smilies, year) | No | — | Ignore unless activated |
+| **5** | **Thank You Redirect** | **No** | Post-checkout | `template_redirect` → broken `atmoredesign.local.local/courses`; **do not re-enable** without safe thank-you spec |
+| 7 | Login Log | Yes | Auth | `wp_login` → `uploads/login-log.csv` |
+| 8 | Student's Journal | Yes | Content | `[student_review]` shortcode |
+| **9** | **Course Info Card** | Yes | **PDP** | `[course_info_card]`; inline styles — theme strips leak in `atmo-product.php` |
+| **10** | **Currency** | Yes | **Price HTML** | `woocommerce_get_price_html` → `.custom-main-price` + `.euro-hint`; theme CSS expects markup |
+| 11 | Courses Carousel (old) | No | — | Superseded by **#14**; same `[featured_courses]` shortcode name |
+| **12** | **Bottom Button** | Yes | **PDP** | `the_content` on product → duplicate add-to-cart in description tab |
+| 13 | Google Search | Yes | `wp_head` | Site verification meta |
+| **14** | **Courses Carousel NEW** | Yes | **Homepage** | `[featured_courses]` → **Woo product** PDPs, **not** LD `/courses/` |
+| **15** | **ATMO Quiz → Order Meta** | Yes | **Cart/checkout/order** | `atmo_*` item meta + `_atmo_quiz`; adapter = **order context**, not enrollment SoT |
+| **16** | META hide in E-mail | Yes | Order meta display | Hides `atmo_*` from `woocommerce_order_item_get_formatted_meta_data` |
+| **17** | Before&After 33_Pelvic Floor | No (`-1`) | Checklist AJAX | Course-adjacent only if revived; custom DB table |
+
+**Adapter / route decision:** proceed to LMS adapter spec; snippet fixes (**#5** re-enable, PDP migration) are **parallel**, not blockers. Pair order meta (#15, view-order `тип-доступа`) with LD enrollment in adapter — do not conflate.
 
 ## Frontend Assets Risks
 

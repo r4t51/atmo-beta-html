@@ -6,6 +6,22 @@
 
 ---
 
+## 2026-05-22 — Code Snippets / LMS–Woo routing audit
+
+- **Scope:** read-only audit via Local MariaDB `wp_snippets` (`127.0.0.1:10022`, DB `local`); docs only; no code/DB/snippet/Woo/LD settings changes
+- **Storage:** Code Snippets plugin — table **`wp_snippets`**, **not in VCS** (operational risk)
+- **Inventory:** 16 rows (IDs 1–17, no ID 6); 9 active, 7 inactive — full registry in `WP_DEPENDENCY_MAP.md`
+- **#5 Thank You Redirect** — **`active = 0`** confirmed; `template_redirect` → broken `http://atmoredesign.local.local/courses`; **do not re-enable** without safe thank-you spec (see `CHANGES.md` → 2026-05-21)
+- **LMS / routing:** no **active** snippet controls LearnDash enrollment, `/courses/` route, `/my-account/` dashboard, or **«Мои курсы»** enrolled route
+- **PDP:** **#9** `[course_info_card]`, **#10** Currency (`.custom-main-price` + `.euro-hint`), **#12** Bottom Button (duplicate add-to-cart in description tab) — child theme already accounts for these
+- **Homepage:** **#14** `[featured_courses]` — Woo **product** carousel → PDP URLs, **not** LD `/courses/` archive (**#11** inactive duplicate shortcode)
+- **Orders:** **#15** ATMO Quiz → Order Meta — cart/checkout/order hooks; `atmo_*` line meta + `_atmo_quiz`; adapter should treat as **order context**, not enrollment source of truth
+- **#16** hides `atmo_*` from formatted item meta (emails/display filter)
+- **#17** inactive checklist/AJAX (`active = -1`); course-adjacent only if revived
+- **Recommendation:** proceed to **LMS adapter spec**; snippet fixes are **parallel**, not a blocker; **export/version snippets** before adapter implementation or snippet migration — see `BACKLOG.md` §6
+
+---
+
 ## 2026-05-22 — Interim nav relabel: `/courses/` → «Программы»
 
 - **Scope:** label-only in kadence-child; docs update; no route/endpoint/LD/prototype changes
