@@ -1,6 +1,7 @@
 # ATMO.BY — project backlog
 
 > Short, practical backlog — **source of truth for open tasks**.  
+> **Milestone snapshot (2026-05-22):** `MILESTONE_SHELL_ACCOUNT_LMS.md` — closed shell + account/LMS MVP, fixtures, do-not-touch.  
 > History/rollback: `CHANGES.md` · Child theme: `kadence-child` · Prototypes: this repo.
 
 ---

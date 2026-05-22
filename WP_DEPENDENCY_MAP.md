@@ -3,7 +3,7 @@
 Карта зависимостей для переноса HTML-прототипа на Local WordPress.
 
 Дата: 2026-05-22  
-Статус: child theme active; **shell/wiring phase complete (re-QA 2026-05-22)** — header, footer, catalog, PDP, cart, checkout, order-received, account; preview mu-plugin keep-for-now.
+Статус: child theme active; **shell/wiring + account/LMS MVP complete (2026-05-22)** — see `MILESTONE_SHELL_ACCOUNT_LMS.md`; preview mu-plugin keep-for-now.
 
 ## Executive Summary
 

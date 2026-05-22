@@ -10,14 +10,16 @@
 | WordPress Local | `D:\Local Sites\atmo_redesign\app\public` |
 | Local URL | `http://atmoredesign.local/` |
 | WP architecture map | `WP_DEPENDENCY_MAP.md` |
+| Milestone snapshot | `MILESTONE_SHELL_ACCOUNT_LMS.md` |
 
 ## Перед работой
 
 1. Читать этот файл.
-2. Читать `WP_DEPENDENCY_MAP.md`, если задача касается WordPress, WooCommerce, LMS, темы, плагинов или интеграции.
-3. Работать маленькими обратимыми шагами.
-4. Не удалять чужие изменения.
-5. Проверять через HTTP, не через `file://`.
+2. **Milestone (2026-05-22):** shell + account/LMS MVP complete — см. `MILESTONE_SHELL_ACCOUNT_LMS.md` (fixtures, closed surfaces, do-not-touch).
+3. Читать `WP_DEPENDENCY_MAP.md`, если задача касается WordPress, WooCommerce, LMS, темы, плагинов или интеграции.
+4. Работать маленькими обратимыми шагами.
+5. Не удалять чужие изменения.
+6. Проверять через HTTP, не через `file://`.
 
 ## Прототип
 
