@@ -5,6 +5,18 @@
 
 ---
 
+## 2026-05-22 — Woo My Account logged-out auth shell/wiring QA
+
+- **Scope:** read-only logged-out regression; no code/DB/Snippets/Woo settings changes
+- **Pages:** `/my-account/` (login + register), `/my-account/lost-password/`
+- **Viewports:** desktop 1440×900, mobile 390×844
+- **Result:** PASS — auth forms visible; register enabled; no logged-in leakage; no overflow/clipping; no blockers
+- **Repos:** beta html + kadence-child clean
+- **Not audited:** `/add-payment-method/` (still pending; see pass 5)
+- **Closes:** logged-out auth re-QA follow-up from pass 2a (`3122f4f`)
+
+---
+
 ## 2026-05-22 — Woo My Account mobile orders actions overflow fix
 
 - **Commit:** `fcca2e5` — Fix mobile account order actions overflow
@@ -70,7 +82,7 @@
 - **Behavior:** logged-in grid shell (nav left ≥920px), horizontal scroll nav mobile, content card, nav active/logout styling, notices/empty states; auth pass 1 unchanged
 - **Scope not touched:** PHP menu filters, DB, Snippets, form fields, LearnDash pages
 - **Rollback:** `git revert 3122f4f`
-- **Follow-ups (remaining):** logged-out auth re-QA, dashboard/LMS widgets, `/add-payment-method/` styling
+- **Follow-ups (remaining):** dashboard/LMS widgets, `/add-payment-method/` styling
 
 ---
 
