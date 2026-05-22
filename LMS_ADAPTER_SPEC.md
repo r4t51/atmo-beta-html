@@ -41,7 +41,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 - **Technical:** no LearnDash CPT slug collision; `is_account_page()` CSS scope already defined; hidden-endpoint audit precedent (`downloads`, `edit-address`, `payment-methods`).
 - **Adapter / lite:** route choice does not bind backend — LearnDash today, `atmo-lms-lite` later via same ViewModels.
 
-**Implementation still blocked by:** adapter sign-off (#3), endpoint registration audit, Code Snippets export, product↔course mapping — see §10.
+**Implementation still blocked by:** adapter sign-off (#3), endpoint registration audit, Code Snippets export, **access expiry semantics** (product decision) — see §10.
 
 **Reserved naming:** **«Мои курсы»** = `/my-account/my-courses/`. **«Программы»** = public `/courses/` only.
 
@@ -178,11 +178,12 @@ Read-only Woo context for **display** alongside LMS enrollment — **not** enrol
 | `order_status` | string | Woo status slug |
 | `product_id` | int | |
 | `product_name` | string | |
-| `access_type_label` | string *(optional)* | From item meta `тип-доступа` (e.g. «60 дней», «Бессрочно») |
+| `variation_id` | int *(optional)* | From order line — use for `_related_course` lookup on variable products |
+| `access_type_label` | string *(optional)* | From item meta `тип-доступа` (e.g. «60 дней», «Бессрочно») — **display / pairing only** |
 | `quiz_meta` | object *(optional)* | Snippet #15 `_atmo_quiz` / `atmo_*` keys — display or support only |
 | `purchased_at` | string *(optional)* | Order date |
 
-**Rule:** adapter **pairs** `OrderAccessContext` with `EnrollmentState` for pills and empty/pending copy; must not treat order line alone as enrolled.
+**Rule:** adapter **pairs** `OrderAccessContext` with `EnrollmentState` for pills and empty/pending copy; must not treat order line or **`тип-доступа`** alone as enrolled. **`access_type_label`** is not enrollment SoT (confirmed #3801 fixture — `CHANGES.md` 2026-05-22 mapping discovery).
 
 ---
 
@@ -190,17 +191,33 @@ Read-only Woo context for **display** alongside LMS enrollment — **not** enrol
 
 | ViewModel | Primary source (today) | Secondary / display | Future (`atmo-lms-lite`) |
 |-----------|------------------------|---------------------|---------------------------|
-| `CourseCard` (catalog) | Woo product (`atmo_build_course_card`) | — | Optional product↔course map |
-| `CourseCard` (LMS) | LearnDash `sfwd-courses` | Goal from product attribute map if linked | Lite courses module |
+| `CourseCard` (catalog) | Woo product (`atmo_build_course_card`) | — | Optional lite course link |
+| `CourseCard` (LMS) | LearnDash `sfwd-courses` | Goal from product attribute if linked | Lite courses module |
 | `EnrollmentState` | LearnDash user course access + progress APIs | — | Lite enrollment + access-rules |
 | `EnrolledCourse` | Compose LMS + optional order context | `OrderAccessContext` | Same interface, different driver |
 | `LessonRef` / `LessonProgress` | LearnDash lessons + user progress | — | Lite lessons module |
-| `AccessData` | LD access check + expiry rules | Woo pending/failed order state | Lite access-gate |
+| `AccessData` | LD access check + expiry rules *(expiry computation open)* | Woo pending/failed order state | Lite access-gate |
 | `OrderAccessContext` | WooCommerce order + line item meta (#15, `тип-доступа`) | — | Lite guest-orders / reconciler |
 
-**Enrollment source of truth (today):** LearnDash + LearnDash WooCommerce bridge — confirmed in Code Snippets audit (`CHANGES.md` 2026-05-22). Snippet **#5** Thank You Redirect remains **inactive**; do not re-enable without thank-you spec.
+**Enrollment source of truth (today):** LearnDash + LearnDash WooCommerce bridge — confirmed Code Snippets audit (`CHANGES.md` 2026-05-22). Snippet **#5** inactive. **`atmo-lms-lite`** access tables **empty on Local** — not SoT for MVP.
 
-**Product ↔ course mapping:** unresolved — adapter must expose stable `course_id` even when sell-side is Woo product ID; mapping table TBD (LD bridge meta, lite mapping module, or manual).
+### Product ↔ course mapping (discovered 2026-05-22)
+
+**Mechanism:** LearnDash WooCommerce bridge post meta **`_related_course`** (array of LD course post IDs).
+
+**Redesign catalog:** 18 Woo products → 18 LD courses (17 simple 1:1 + variable **#3614** via variations **#3628** / **#3629** → course **#3616**). Legacy publish products without `_related_course` are out of redesign MVP scope.
+
+**Adapter resolver (MVP):**
+
+1. If order/line has **`variation_id`** → read **`_related_course`** on the **variation**.
+2. Else → read **`_related_course`** on the **parent product**.
+3. Resolve by **course ID** from meta — **not** slug/title matching (e.g. product `abdomen_pelvic` → course `abdominal_pelvicfloormuscles`).
+
+**Verified fixture chain:** order **#3801** → variation **3628** → course **3616** → user **679** enrolled (`r4t5`); no progress usermeta on Local.
+
+### Access expiry (open — product decision)
+
+**«60 дней»** appears in Woo variation attribute + order line meta **`тип-доступа`**. LD course **3616** has **`expire_access` off**; user **679** has no `course_*_access_expires`. Adapter must not invent `expires_at` until product picks: LD course settings vs order-date + label vs future `atmo-lms-lite` rules.
 
 ---
 
@@ -254,8 +271,8 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 | **Route location** | ~~B vs C~~ | **Decided:** `/my-account/my-courses/` — endpoint audit still required before register |
 | **Code Snippets** | Logic in DB, not VCS | Export/version before adapter impl — `WP_DEPENDENCY_MAP.md` registry |
 | **Thank-you redirect** | Snippet #5 broken URL, inactive | Separate thank-you spec before any post-checkout redirect |
-| **Product ↔ course map** | Woo product ID ≠ LD course ID | Explicit mapping layer in adapter; open question |
-| **Access expiry** | «60 дней» vs LD access rules | Pair `OrderAccessContext.access_type_label` with LD expiry; test on #3614 tiers |
+| **Product ↔ course map** | ~~Woo ID ≠ LD ID~~ | **Discovered:** `_related_course` + variation-first resolver — `CHANGES.md` 2026-05-22 |
+| **Access expiry** | «60 дней» vs LD `expire_access` off | **Open product decision** — do not fabricate `expires_at`; pair label for display only until decided |
 | **Lesson URLs** | Deep port blocked until adapter fixed | MVP may link to LD lesson URLs via `permalink` until ATMO lesson template |
 | **Dashboard widgets** | Diary/trainer from other plugins | Out of MVP; do not block enrolled list on diary data |
 
@@ -268,9 +285,10 @@ Before any enrolled UI or route implementation:
 - [ ] Product approves this ViewModel field list (or documents deltas).
 - [x] Enrolled route chosen: **`/my-account/my-courses/`** (`BACKLOG.md` #2 — 2026-05-22).
 - [ ] Woo **`my-courses`** endpoint audit + registration plan (no implementation in spec commit).
-- [ ] Enrollment SoT documented for MVP (LD + bridge acceptable for v1).
+- [ ] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver above).
 - [ ] Code Snippets export/backup completed.
-- [ ] Product ↔ course mapping approach agreed.
+- [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
+- [ ] **Access expiry semantics** agreed (e.g. «60 дней» → `expires_at` when LD `expire_access` off).
 
 **After sign-off:** implement adapter behind this contract only; theme work references this file, not LD internals.
 

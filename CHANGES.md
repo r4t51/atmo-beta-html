@@ -6,6 +6,20 @@
 
 ---
 
+## 2026-05-22 — Woo product ↔ LearnDash course mapping discovery
+
+- **Scope:** read-only audit via Local MariaDB (`127.0.0.1:10022`, DB `local`); docs only; no code/DB/snippet/Woo/LD/lite settings changes
+- **Redesign catalog:** **18** Woo sell-side products → **18** LD courses via LearnDash WooCommerce bridge meta **`_related_course`**
+- **Resolver (adapter MVP):** (1) if line has `variation_id` → variation `_related_course`; (2) else parent product `_related_course`; (3) use **course ID**, not slug/title match
+- **Variable product #3614:** parent has **no** `_related_course`; variations **#3628** / **#3629** both → LD course **#3616** (`abdominal_pelvicfloormuscles`); slugs differ from product `abdomen_pelvic`
+- **Fixture #3801:** order → variation **3628** → course **3616** → user **679** (`r4t5` / `atmo-admin`) enrolled; line meta **`тип-доступа` = 60 дней** (display / `OrderAccessContext`, not enrollment SoT)
+- **r4t5 (679):** enrolled in course **3616** only; no LD progress usermeta found
+- **`atmo-lms-lite`:** `wp_atmo_lms_access_rules` / enrollments **empty** on Local — not SoT today
+- **Open:** **access expiry semantics** — LD course 3616 `expire_access` off; no `course_*_access_expires` for user 679; how **«60 дней»** becomes `expires_at` needs product decision — see `LMS_ADAPTER_SPEC.md` §5 · `BACKLOG.md` §2
+- **Docs:** `LMS_ADAPTER_SPEC.md` §5 · `WP_DEPENDENCY_MAP.md` LMS Map
+
+---
+
 ## 2026-05-22 — Enrolled «Мои курсы» route decision
 
 - **Scope:** docs/prototype decision only; no WP/PHP/endpoint/DB changes
@@ -13,7 +27,7 @@
 - **Rejected:** standalone `/my-courses/`; public `/courses/` as enrolled view; LD shortcode page; wait-for-lite-only
 - **Why:** `courses.html` uses **account shell** (same sidebar IA as `account.html`); enrolled state = user account data; reuses `atmo-account.css` + existing endpoint audit pattern; no LD slug collision
 - **Unchanged:** `/courses/` stays public LearnDash archive — nav **«Программы»** (header, footer, account menu)
-- **Still blocked:** adapter sign-off (`LMS_ADAPTER_SPEC.md` §10); `my-courses` endpoint registration audit; Code Snippets export; product↔course mapping
+- **Still blocked:** adapter sign-off (`LMS_ADAPTER_SPEC.md` §10); `my-courses` endpoint registration audit; Code Snippets export; access expiry semantics (mapping discovery done — `CHANGES.md` mapping entry)
 - **Docs:** `LMS_ADAPTER_SPEC.md` §2 · `BACKLOG.md` §2 decision #2
 
 ---

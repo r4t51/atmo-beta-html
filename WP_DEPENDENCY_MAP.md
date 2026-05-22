@@ -151,6 +151,8 @@ LearnDash CPTs:
 
 Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not order line items alone). Snippet **#5** Thank You Redirect is **inactive** (`active = 0`); do not re-enable without safe thank-you spec — see Code Snippets registry.
 
+**Product ↔ course mapping (2026-05-22 discovery):** redesign catalog **18 Woo → 18 LD** via bridge meta **`_related_course`**. Adapter resolver: **variation `_related_course` first**, else product; use **course ID** not slug. Variable **#3614**: parent unmapped; variations **#3628** / **#3629** → LD **#3616**. Fixture **#3801** → **3628** → **3616** → user **679** enrolled. **`тип-доступа`** = order display only. **`atmo-lms-lite`** access tables empty on Local. Expiry semantics **open** — `LMS_ADAPTER_SPEC.md` §5.
+
 ### LMS Architecture Rule
 
 **Adapter spec (v0):** `LMS_ADAPTER_SPEC.md` — ViewModel contract, MVP enrolled UI, route candidates, sign-off checklist. This section is a short field summary only.
