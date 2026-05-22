@@ -173,8 +173,10 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - Snippet 10 (price wrapping) учтён в CSS через `.custom-main-price` + `.euro-hint`.
   - Snippet 12 (bottom CTA) продолжает работать в description tab через `the_content` filter.
   - Snippet 9 (`[course_info_card]`) рендерится в `.atmo-pdp-desc` через `apply_filters('woocommerce_short_description', ...)`.
+  - Snippet 12 duplicate add-to-cart in description-tab CTA — by design (hero + bottom form).
+  - Variable access-tier (#3614 `abdomen_pelvic`): Woo Variation Swatches for **тип-доступа**; re-QA PASS 2026-05-22 — see `CHANGES.md` → 2026-05-22 PDP QA; optional polish — `BACKLOG.md`.
   - LearnDash / enrolled / access state НЕ включены.
-  - CSS грузится только на `is_product()`.
+  - CSS: `atmo-product.css` on `is_product()`; `atmo-catalog.css` on PDP for related cards only.
 - ✅ Woo My Account — passes 1–5 + mobile orders fix: `assets/css/atmo-account.css`, `inc/atmo-account.php` (menu filter in `functions.php`).
   - CSS только на `is_account_page()`; `/courses/`, `/profile/`, `/reset-password/` (LearnDash) **не** enqueued.
   - **Меню (5 пунктов):** Обзор → `dashboard` · Мои курсы → `/courses/` (внешний LD URL, не Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout`

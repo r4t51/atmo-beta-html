@@ -71,7 +71,15 @@
 
 ---
 
-## 5. Docs / Process
+## 5. PDP — optional
+
+| Item | Notes |
+|------|--------|
+| #3614 access-tier UI polish | **Optional** — variable `abdomen_pelvic` (#3614): Woo Variation Swatches **60 дней** / **Бессрочно** functional; hero may keep price range after tier pick. Re-QA PASS 2026-05-22 confirms wiring OK; polish only if product wants tier-specific hero price. See `CHANGES.md` → 2026-05-22 PDP QA. Pricing unchanged (399–799). |
+
+---
+
+## 6. Docs / Process
 
 | Item | Notes |
 |------|--------|

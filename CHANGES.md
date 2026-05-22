@@ -40,6 +40,22 @@
 
 ---
 
+## 2026-05-22 — PDP product pages + variable access-tier read-only QA
+
+- **Scope:** read-only QA; no code/DB/Snippets/Woo settings/product edits; no cart/add-to-cart clicks
+- **Pages:** `/product/abdomen_pelvic/` (#3614 variable), `/product/levelup_neuropower/` (simple), `/product/facial_support/` (recovery spot-check)
+- **Viewports:** desktop 1440×900; mobile 390×844 for #3614 and levelup_neuropower
+- **Result:** PASS — ATMO PDP hero, Woo/Snippet 10 price, add-to-cart forms visible (not clicked), tabs/description/reviews, related catalog cards, notices wrapper visible; no page-level horizontal overflow
+- **#3614 variable:** Woo Variation Swatches for **тип-доступа** — **60 дней** / **Бессрочно**; native `<select>` hidden (swatch pattern); initial hero price range **399–799** PLN (~ 94 € – 188 €); functional for wiring/shell
+- **Simple PDP (levelup_neuropower):** price **399zł (~ 94 €)**; `_atmo_display_title` in hero; meta pills / lead / eyebrow OK
+- **Recovery spot-check (facial_support):** **389zł (~ 92 €)**; goal eyebrow **Восстановление**
+- **Asset scope:** `atmo-product.css` + `atmo-catalog.css` (related cards) on PDP; `atmo-account` / `atmo-cart` / `atmo-checkout` / `atmo-catalog-filters.js` not loaded
+- **By design:** Snippet 12 second add-to-cart form in description-tab CTA
+- **Optional future:** #3614 access-tier UI polish / tier-specific hero price after selection — see `BACKLOG.md` (polish, not blocker)
+- **Open items:** see `BACKLOG.md`
+
+---
+
 ## 2026-05-22 — Woo My Account address endpoints read-only QA
 
 - **Scope:** read-only QA; no code/DB/Snippets/Woo settings changes; no form save/submit

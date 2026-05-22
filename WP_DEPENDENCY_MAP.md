@@ -57,6 +57,8 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - `assets/css/atmo-product.css`: hero 2-col grid (≥920px), buy box, price (`.custom-main-price`), WC add-to-cart button; грузится только на is_product();
   - WC mechanics сохранены: `woocommerce_before_single_product` (notices), `woocommerce_after_single_product_summary` (tabs + upsells + related), `woocommerce_after_single_product`;
   - Snippet 10 учтён в price CSS; Snippet 12 (bottom CTA) работает в description tab через `the_content`; Snippet 9 (`[course_info_card]`) рендерится в short_description_html;
+  - Re-QA PASS 2026-05-22 (`CHANGES.md`): simple + variable (#3614) + recovery spot-check; asset scope confirmed — `atmo-product.css` + `atmo-catalog.css` (related) only; no account/cart/checkout/filter JS on PDP.
+  - Optional: #3614 access-tier hero polish after tier pick — `BACKLOG.md` (not a wiring blocker).
   - LearnDash / enrolled / access state не включены.
 
 - ✅ Woo My Account (`assets/css/atmo-account.css`, `inc/atmo-account.php`):
@@ -238,6 +240,7 @@ LearnDash CPTs:
    - WC mechanics: `woocommerce_before_single_product` (notices), `woocommerce_after_single_product_summary` (tabs + upsells + related products), `woocommerce_after_single_product`.
    - Snippet 10 учтён в CSS (`.custom-main-price` Fraunces 44px); Snippet 12 продолжает работать в description tab; Snippet 9 рендерится в short_description_html.
    - Related products используют `.atmo-product-card` из atmo-catalog.css.
+   - Re-QA PASS 2026-05-22 — simple, variable #3614 (Woo Variation Swatches), asset scope; optional #3614 polish — `BACKLOG.md`.
    - LearnDash / enrolled / access state не включены.
 9. ✅ Woo My Account: `assets/css/atmo-account.css` + `inc/atmo-account.php`.
    - Passes 1–5 + mobile orders actions fix (`fcca2e5`); details in Theme Layer and `CHANGES.md`.
