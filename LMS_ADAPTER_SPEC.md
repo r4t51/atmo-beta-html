@@ -1,7 +1,7 @@
 # LMS Adapter Spec v0
 
-> **Status:** route decided · **ViewModel sign-off done** · **endpoint audit done** · implementation gated on shell-first sequence · **2026-05-22**  
-> **Scope:** ViewModel contract + adapter boundaries + endpoint plan — no PHP implementation in this audit commit.  
+> **Status:** route live (shell) · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **next: adapter PHP** · **2026-05-22**  
+> **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
 ---
@@ -10,7 +10,7 @@
 
 Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo backends so enrolled courses, progress, and access can ship without LearnDash HTML coupling or premature `atmo-lms-lite` dependency.
 
-**Gate:** no adapter-backed enrolled UI or deep port of `lesson.html` / `product-enrolled.html` until ViewModel contract is signed off (**done 2026-05-22**) and endpoint plan is accepted (**done 2026-05-22**, §11). **First implementation ship:** endpoint shell + menu IA only; adapter PHP follows in a separate commit.
+**Gate:** no adapter-backed enrolled list or deep port of `lesson.html` / `product-enrolled.html` until ViewModel contract is signed off (**done 2026-05-22**) and endpoint shell is live (**done `ecfd8f5` 2026-05-22**). **Next ship:** adapter PHP + wire **`get_enrolled_courses()`** (§11 commit B).
 
 ---
 
@@ -19,7 +19,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 | Route | Role | Status |
 |-------|------|--------|
 | `/courses/` | LearnDash **public CPT archive** — nav label **«Программы»** | **Live** (interim relabel 2026-05-22) — **not** enrolled UI |
-| **`/my-account/my-courses/`** | **«Мои курсы»** — enrolled list + progress (MVP) | **Decided, not built** — Woo account endpoint |
+| **`/my-account/my-courses/`** | **«Мои курсы»** — enrolled list + progress (MVP) | **Live (phase 1 shell)** — empty **`.atmo-my-courses`**; adapter list pending — `ecfd8f5` |
 
 ### Decision (2026-05-22): enrolled route = **`/my-account/my-courses/`**
 
@@ -41,7 +41,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 - **Technical:** no LearnDash CPT slug collision; `is_account_page()` CSS scope already defined; hidden-endpoint audit precedent (`downloads`, `edit-address`, `payment-methods`).
 - **Adapter / lite:** route choice does not bind backend — LearnDash today, `atmo-lms-lite` later via same ViewModels.
 
-**Implementation sequence (§11):** (1) register **`my-courses`** endpoint + menu IA + static empty shell; (2) adapter PHP + wire `get_enrolled_courses()`; (3) optional dashboard «Следующий шаг» wiring. ViewModel contract signed off 2026-05-22 (§4.7). Code Snippets export done (`docs/snippets/`).
+**Implementation sequence (§11):** (1) register **`my-courses`** endpoint + menu IA + static empty shell — **done `ecfd8f5`**; (2) adapter PHP + wire `get_enrolled_courses()` — **next**; (3) optional dashboard «Следующий шаг» wiring.
 
 **Reserved naming:** **«Мои курсы»** = `/my-account/my-courses/`. **«Программы»** = public `/courses/` only.
 
@@ -366,7 +366,7 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 | **Enrollment SoT** | LD bridge today vs future `atmo-lms-lite` | Adapter interface stable; swap driver behind `source` field |
 | **Route location** | ~~B vs C~~ | **Decided:** `/my-account/my-courses/` — endpoint plan §11 |
 | **Rewrite flush** | New endpoint 404 until permalinks flushed | One-time flush after registration commit; do not flush on every `init` |
-| **Fake `atmo-courses` menu** | Label collision with future **«Мои курсы»** | Remove fake slug when **`my-courses`** ships; keep **«Программы»** in header/footer only |
+| **Fake `atmo-courses` menu** | ~~Label collision~~ | **Resolved `ecfd8f5`** — fake slug removed; **«Программы»** header/footer only |
 | **Code Snippets** | Logic in DB, not VCS | **Done:** `docs/snippets/` export — re-export when DB changes |
 | **Thank-you redirect** | Snippet #5 broken URL, inactive | Separate thank-you spec before any post-checkout redirect |
 | **Product ↔ course map** | ~~Woo ID ≠ LD ID~~ | **Discovered:** `_related_course` + variation-first resolver — `CHANGES.md` 2026-05-22 |
@@ -382,14 +382,29 @@ Before any enrolled UI or route implementation:
 
 - [x] Product approves ViewModel field list — **2026-05-22** (§4.7).
 - [x] Enrolled route chosen: **`/my-account/my-courses/`** (`BACKLOG.md` #2 — 2026-05-22).
-- [x] Woo **`my-courses`** endpoint audit + registration plan — **2026-05-22** (§11).
+- [x] Woo **`my-courses`** endpoint shell (phase 1) — **`ecfd8f5` 2026-05-22** (§11 commit A).
+- [ ] LMS adapter PHP + wire endpoint to **`get_enrolled_courses()`** (§11 commit B).
 - [x] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver §5).
 - [x] Code Snippets export/backup completed — `docs/snippets/` (`CHANGES.md` 2026-05-22).
 - [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
 - [x] **Access expiry semantics** — LD access start + Woo duration label (`CHANGES.md` 2026-05-22).
 - [x] **No LearnDash HTML in ATMO UI** — ViewModels only (§3, §4.7 #8).
 
-**After sign-off:** ship **endpoint shell first** (§11), then adapter PHP; theme work references this file, not LD internals.
+**After sign-off:** endpoint shell **shipped** (`ecfd8f5`); implement adapter PHP next (§11 commit B); theme consumes ViewModels only — not LD internals.
+
+### 11.0 Phase 1 shipped (`ecfd8f5` 2026-05-22)
+
+| Item | Status |
+|------|--------|
+| `add_rewrite_endpoint( 'my-courses', EP_ROOT \| EP_PAGES )` | **Live** |
+| Account menu **Обзор · Мои курсы · Заказы · Настройки · Выйти** | **Live** |
+| Fake **`atmo-courses`** + URL override removed | **Done** |
+| Static empty **`.atmo-my-courses`** shell | **Live** — no adapter, no LD API, no fake progress |
+| Header/footer **«Программы»** → `/courses/` | **Unchanged** |
+| Local QA post-flush | **PASS** — see `CHANGES.md` |
+| Permalink flush on deploy | **Manual one-time** — no PHP flush in theme |
+
+**Rollback:** `git revert ecfd8f5` + manual permalink flush.
 
 ---
 
@@ -397,7 +412,17 @@ Before any enrolled UI or route implementation:
 
 Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-account.css`. **No PHP shipped in audit commit.**
 
-### 11.1 Current account menu mechanism
+### 11.1 Account menu mechanism (post-`ecfd8f5`)
+
+| Piece | Current | File |
+|-------|---------|------|
+| Menu rebuild | `woocommerce_account_menu_items` @ priority 20 → 5 slugs | `atmo-account.php` |
+| Endpoint **`my-courses`** | Label **«Мои курсы»** — real Woo rewrite | same |
+| URL | Standard Woo endpoint URL — **no** `woocommerce_get_endpoint_url` override | — |
+| Site chrome | Header + footer **«Программы»** → `/courses/` | `atmo-header.php`, `atmo-footer.php` |
+| Retired **`atmo-courses`** | Removed from account sidebar in **`ecfd8f5`** | — |
+
+### 11.1a Pre-ship state (reference — superseded by `ecfd8f5`)
 
 | Piece | Today | File |
 |-------|-------|------|
@@ -512,11 +537,11 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 **Safest sequence:**
 
 1. **Docs** — endpoint plan (this section) ✓  
-2. **Child theme commit A** — `add_rewrite_endpoint`, menu IA (**«Мои курсы»**), remove **`atmo-courses`**, static empty shell, scoped CSS, **one-time permalink flush** documented in `CHANGES.md`  
-3. **QA** — §11.6  
-4. **Child theme commit B** — LMS adapter PHP + wire `woocommerce_account_my-courses_endpoint` to **`get_enrolled_courses()`**  
+2. **Child theme commit A** — `add_rewrite_endpoint`, menu IA (**«Мои курсы»**), remove **`atmo-courses`**, static empty shell, scoped CSS — **done `ecfd8f5`** · one-time permalink flush documented in `CHANGES.md`  
+3. **QA** — §11.6 — **PASS on Local 2026-05-22**  
+4. **Child theme commit B** — LMS adapter PHP + wire `woocommerce_account_my-courses_endpoint` to **`get_enrolled_courses()`** — **next**  
 5. **Optional commit C** — dashboard «Следующий шаг» + panel links to **`my-courses`**
 
 ---
 
-*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, and endpoint plan signed off; implementation follows §11 sequence.*
+*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, and endpoint shell shipped; adapter PHP is next (§11 commit B).*

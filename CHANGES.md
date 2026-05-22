@@ -6,6 +6,25 @@
 
 ---
 
+## 2026-05-22 — Woo `my-courses` endpoint shell (phase 1)
+
+- **Scope:** child theme only — `inc/atmo-account.php`, `assets/css/atmo-account.css`; no adapter, LD API, lite, DB, snippets, or PHP flush
+- **Commit:** `ecfd8f5` — Add Woo my-courses account endpoint shell (`kadence-child`)
+- **Implemented:**
+  - real Woo account endpoint **`my-courses`** → `/my-account/my-courses/`
+  - account nav: **Обзор · Мои курсы · Заказы · Настройки · Выйти**
+  - removed fake **`atmo-courses`** slug + `woocommerce_get_endpoint_url` override from account sidebar
+  - header/footer **«Программы»** → `/courses/` unchanged
+  - static empty shell **`.atmo-my-courses`** — honest copy + CTAs to `/courses/` and `/каталог/`; no fake progress or enrolled cards
+- **Permalink flush:** one-time manual flush performed on Local for QA (WP Admin → Settings → Permalinks → Save); **required on other environments** before endpoint QA; **no** `flush_rewrite_rules()` in theme PHP
+- **QA (Local, user r4t5, post-flush):** `/my-account/my-courses/` desktop + mobile PASS — loads, 5-item nav, **«Мои курсы»** active, shell visible, no `.atmo-dash`, no LD cards/progress
+- **Regression PASS:** `/my-account/`, `/my-account/orders/`, `/my-account/edit-account/`, `/my-account/payment-methods/`, `/courses/` (public LD archive)
+- **Rollback:** `git revert ecfd8f5` in `kadence-child`, then one-time manual permalink flush
+- **Next blocker:** LMS adapter PHP (phase 2) — wire `get_enrolled_courses()` to endpoint — `LMS_ADAPTER_SPEC.md` §11 commit B
+- **Docs:** `BACKLOG.md` §2 · `LMS_ADAPTER_SPEC.md` §11 · `WP_DEPENDENCY_MAP.md` Woo row · `ONBOARDING.md`
+
+---
+
 ## 2026-05-22 — Woo `my-courses` endpoint audit + plan
 
 - **Scope:** read-only audit of `kadence-child/inc/atmo-account.php` + docs; no PHP/rewrite/DB changes
@@ -40,7 +59,7 @@
 - **Traceability:** optional **`source_order_id`**, **`source_order_item_id`** on `EnrollmentState`; **`order_item_id`** on `OrderAccessContext`
 - **Renewal CTA:** optional **`product_permalink`** on `EnrolledCourse` for expired / no-access rows
 - **LD coupling:** confirmed — ATMO UI consumes ViewModels only; no LearnDash HTML/classes in theme chrome
-- **Still blocked:** ~~Code Snippets export~~ — done; **`my-courses`** endpoint **implementation** (plan done 2026-05-22 §11)
+- **Still blocked:** ~~`my-courses` endpoint implementation~~ — shell done `ecfd8f5`; **LMS adapter PHP** (phase 2)
 - **Docs:** `LMS_ADAPTER_SPEC.md` §4.7 · `BACKLOG.md` §2 decision #3
 
 ---

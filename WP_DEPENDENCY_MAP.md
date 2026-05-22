@@ -63,8 +63,9 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 
 - ✅ Woo My Account (`assets/css/atmo-account.css`, `inc/atmo-account.php`):
   - CSS на `is_account_page()` only; LearnDash `/courses/`, `/profile/`, `/reset-password/` not enqueued.
-  - Menu filter (`d4ee689`): Обзор → `dashboard` · **interim** Программы → `/courses/` via fake slug **`atmo-courses`** (external URL filter, not rewrite) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout`
-  - **Planned:** replace **`atmo-courses`** with real endpoint **`my-courses`** (**«Мои курсы»**) — `LMS_ADAPTER_SPEC.md` §11; **«Программы»** remains header/footer only
+  - Menu filter: Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
+  - **«Программы»** → `/courses/` in **header/footer only** (removed from account sidebar in `ecfd8f5`)
+  - **`/my-account/my-courses/`:** phase 1 empty shell **`.atmo-my-courses`** — adapter list pending; one-time permalink flush required on deploy (`CHANGES.md`)
   - Hidden from nav, direct URL only: `downloads`, `edit-address` (+ billing/shipping), `payment-methods`
   - Styled passes: auth (`353346c`), shell (`3122f4f`), dashboard static shell (`534b241`), orders (`3704226`), view-order access-type meta (`2da518f`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
   - Account shell/wiring done; completed #3801 view-order QA (line item shell, qty/total, customer details, order-again visibility — not clicked); access-type meta pill on view-order (`2da518f`, item meta `тип-доступа`); saved payment-methods table not live-QA'd; real LMS/enrolled widgets deferred until adapter decision
@@ -121,7 +122,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 | Account menu | 5 items — see Theme Layer Woo My Account block |
 | Hidden account URLs | `/my-account/downloads/`, `/edit-address/`, `/payment-methods/` (reachable, not in nav) |
 | `/courses/` from account nav | External LearnDash **public archive**; label **«Программы»** — not enrolled UI |
-| **`/my-account/my-courses/`** | **Decided** enrolled **«Мои курсы»** MVP — **plan done 2026-05-22** (`LMS_ADAPTER_SPEC.md` §11); slug **`my-courses`**, shell-first implementation; one-time permalink flush after register |
+| **`/my-account/my-courses/`** | **Live (phase 1 shell)** — real endpoint **`my-courses`**, empty **`.atmo-my-courses`**; **`ecfd8f5`**; adapter PHP next — `LMS_ADAPTER_SPEC.md` §11 |
 
 Активные WC-расширения, которые важно учитывать:
 
@@ -138,7 +139,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 Текущий runtime для course/lesson UI: LearnDash.  
 `atmo-lms-lite` **active** on Local, in development — candidate future runtime; не строить критичный UI на нём без явного решения; **no front-end assets observed** on course routes (2026-05-22 QA).
 
-**Route reality (2026-05-22):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/` (interim relabel). **«Мои курсы»** enrolled MVP → **`/my-account/my-courses/`** (decided, not built) — `LMS_ADAPTER_SPEC.md` §2. **`/courses/` stays public.**
+**Route reality (2026-05-22):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/` (header/footer). **«Мои курсы»** → **`/my-account/my-courses/`** — **live empty shell** (`ecfd8f5`); enrolled list pending adapter PHP — `LMS_ADAPTER_SPEC.md` §11.
 
 LearnDash CPTs:
 
@@ -174,7 +175,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
 
-До PHP adapter и route registration следовать **`LMS_ADAPTER_SPEC.md` §11** (endpoint plan **done 2026-05-22**): shell-first — register **`my-courses`**, menu IA, empty state, flush, QA — then adapter. ViewModel contract **signed off 2026-05-22** (§4.7). **Do not touch LearnDash templates.**
+Endpoint shell **shipped `ecfd8f5` 2026-05-22**. **Next:** LMS adapter PHP + wire **`get_enrolled_courses()`** to **`/my-account/my-courses/`** (`LMS_ADAPTER_SPEC.md` §11 commit B). ViewModel contract **signed off 2026-05-22** (§4.7). **Do not touch LearnDash templates.**
 
 ## Custom ATMO Plugins
 
@@ -294,6 +295,6 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 **Architectural blockers (do not bypass):**
 
-- LMS adapter / ViewModel contract **signed off 2026-05-22** — endpoint plan **done** §11; next: shell commit then adapter PHP
+- LMS adapter PHP — endpoint shell **done `ecfd8f5`**; wire **`get_enrolled_courses()`** next (`LMS_ADAPTER_SPEC.md` §11 commit B)
 - Do not touch LearnDash templates or build critical UI on `atmo-lms-lite` without explicit decision
 - Saved-card / payment-token scope — requires explicit approval before live-QA or UI work
