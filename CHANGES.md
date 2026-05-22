@@ -6,6 +6,24 @@
 
 ---
 
+## 2026-05-22 — Account LMS copy polish
+
+- **Scope:** child theme only — `inc/atmo-account.php`; customer-facing copy only; no CSS, adapter logic, routes, DB, snippets, or settings
+- **Commit:** `4e180b9` — fix(account): replace backend LMS copy with customer-facing Russian text (`kadence-child`)
+- **Changed:**
+  - removed **LearnDash** from user-visible copy on dashboard «Курсы» panel and `/my-account/my-courses/` empty state (+ enrolled lead line)
+  - removed raw endpoint paths (`/my-account/my-courses/`, `/courses/`) from dashboard panel note
+  - CTAs unchanged: **Мои курсы** → `/my-account/my-courses/` · **Программы** → `/courses/` · empty state **К программам** / **Каталог**
+- **QA (Local, user atmo-qa-empty, 5/5 PASS):**
+  - **`/my-account/`** desktop **1440×900** + mobile **390×844** — new panel note · CTAs correct · no stale copy · no overflow
+  - **`/my-account/my-courses/`** desktop + mobile — new empty-state copy · CTAs correct · **0** cards · no overflow
+  - **`/my-account/my-courses/`** logged out — login gate only; no `.atmo-my-courses` shell leak
+- **Not live-QA:** r4t5 enrolled path — no Local password available; adapter/dashboard logic unchanged; prior r4t5 QA (`648e562`, `a352081`) still valid
+- **Rollback:** `git revert 4e180b9` in `kadence-child` — **no permalink flush**
+- **Docs:** `BACKLOG.md`
+
+---
+
 ## 2026-05-22 — Zero-enrollment QA fixture + empty-state QA
 
 - **Scope:** Local-only WP user fixture + read-only browser QA; no child theme, docs-only record here; no orders/enrollments created
