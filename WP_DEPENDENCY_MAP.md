@@ -3,7 +3,7 @@
 Карта зависимостей для переноса HTML-прототипа на Local WordPress.
 
 Дата: 2026-05-22  
-Статус: child theme active; header + footer + catalog MVP + single product MVP + Woo My Account passes 1–5 in child theme; preview mu-plugin temporary.
+Статус: child theme active; **shell/wiring phase complete (re-QA 2026-05-22)** — header, footer, catalog, PDP, cart, checkout, order-received, account; preview mu-plugin keep-for-now.
 
 ## Executive Summary
 
@@ -33,7 +33,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 |---|---|
 | Parent theme | `wp-content/themes/kadence/` |
 | Child theme | `wp-content/themes/kadence-child/` |
-| Child files | `style.css`, `functions.php`, `assets/css/atmo-base.css`, `assets/css/atmo-header.css`, `assets/js/atmo-header.js`, `inc/atmo-header.php`, `assets/css/atmo-footer.css`, `inc/atmo-footer.php`, `assets/css/atmo-catalog.css`, `inc/atmo-catalog.php`, `woocommerce/content-product.php`, `assets/css/atmo-product.css`, `inc/atmo-product.php`, `woocommerce/content-single-product.php`, `assets/css/atmo-account.css`, `inc/atmo-account.php` |
+| Child files | `style.css`, `functions.php`, `assets/css/atmo-base.css`, `assets/css/atmo-header.css`, `assets/js/atmo-header.js`, `inc/atmo-header.php`, `assets/css/atmo-footer.css`, `inc/atmo-footer.php`, `assets/css/atmo-catalog.css`, `inc/atmo-catalog.php`, `woocommerce/content-product.php`, `assets/css/atmo-product.css`, `inc/atmo-product.php`, `woocommerce/content-single-product.php`, `assets/css/atmo-cart.css`, `assets/css/atmo-checkout.css`, `assets/css/atmo-confirmation.css`, `assets/css/atmo-account.css`, `inc/atmo-account.php` |
 | Header ID | `#masthead` (Kadence, скрыт CSS `body.atmo-header-active`) |
 | Footer ID | `#colophon` (Kadence, скрыт CSS `body.atmo-footer-active`) |
 
@@ -264,7 +264,7 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-Header, footer, MVP каталог/PDP и Woo My Account shell/wiring перенесены. **Open tasks:** see `BACKLOG.md`.
+**Shell/wiring phase complete (re-QA 2026-05-22).** Open work is product/LMS/payment-scope decisions and optional polish — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
 
 **Architectural blockers (do not bypass):**
 

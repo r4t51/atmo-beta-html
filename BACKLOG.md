@@ -5,7 +5,24 @@
 
 ---
 
-## Done (account / Woo shell)
+## Done — ATMO shell/wiring phase (re-QA 2026-05-22)
+
+Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md` entries dated 2026-05-22). **Next phase:** product/LMS decisions + optional polish — not more shell wiring unless a functional gap appears.
+
+| Area | Status |
+|------|--------|
+| Header / footer | ✅ ATMO child chrome |
+| Catalog + goal chips | ✅ MVP + server-side `filter_goal` |
+| PDP | ✅ simple + variable #3614 |
+| Cart | ✅ `atmo-cart.css` + cross-sells |
+| Checkout | ✅ `atmo-checkout.css`; gateways visible on Local (BLIK/Klarna) |
+| Order received | ✅ `atmo-confirmation.css` |
+| Account | ✅ passes 1–5 + dashboard + view-order meta (detail below) |
+| Preview mu-plugin | ✅ **keep for now** — opt-in only (`?atmo_preview_shell=1`) |
+
+**By design / not built:** `/payment-failed/` → 404; LMS/enrolled widgets; payment-token live QA.
+
+### Account / Woo (detail)
 
 - Logged-out auth shell + re-QA (`353346c`, pass 1)
 - Logged-in account shell / nav / menu IA (`3122f4f`, `d4ee689`, pass 2a)

@@ -177,6 +177,8 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - Variable access-tier (#3614 `abdomen_pelvic`): Woo Variation Swatches for **тип-доступа**; re-QA PASS 2026-05-22 — see `CHANGES.md` → 2026-05-22 PDP QA; optional polish — `BACKLOG.md`.
   - LearnDash / enrolled / access state НЕ включены.
   - CSS: `atmo-product.css` on `is_product()`; `atmo-catalog.css` on PDP for related cards only.
+- ✅ Корзина — shell: `assets/css/atmo-cart.css` (+ `atmo-catalog.css` для cross-sells); re-QA PASS 2026-05-22 — `CHANGES.md`.
+- ✅ Checkout — shell: `assets/css/atmo-checkout.css`; order-received → `atmo-confirmation.css`; re-QA PASS 2026-05-22 — `CHANGES.md`. `/payment-failed/` → 404 by design.
 - ✅ Woo My Account — passes 1–5 + mobile orders fix: `assets/css/atmo-account.css`, `inc/atmo-account.php` (menu filter in `functions.php`).
   - CSS только на `is_account_page()`; `/courses/`, `/profile/`, `/reset-password/` (LearnDash) **не** enqueued.
   - **Меню (5 пунктов):** Обзор → `dashboard` · Мои курсы → `/courses/` (внешний LD URL, не Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout`
@@ -203,7 +205,14 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 ## Следующий безопасный шаг
 
-Header, footer, MVP каталог/PDP и Woo My Account shell/wiring перенесены. **Open tasks:** см. `BACKLOG.md`.
+**Shell/wiring phase complete (2026-05-22):** header, footer, catalog, PDP, cart, checkout, order-received, account — re-QA PASS; preview mu-plugin keep-for-now decision documented. **Do not start more shell CSS** unless a functional gap is found.
+
+**Pick next work from `BACKLOG.md` by scope:**
+
+1. **Blocked** — LMS adapter / ViewModel + «Мои курсы» route decision (before enrolled UI)
+2. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows
+3. **Optional polish** — catalog chip URLs, PDP #3614 tier hero, static `/payment-failed/` page
+4. **Data/fixture QA** — saved address profile, filled address forms, downloads with real files
 
 **Architectural blockers (do not bypass):**
 
