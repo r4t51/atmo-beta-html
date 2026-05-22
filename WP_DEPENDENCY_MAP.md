@@ -25,6 +25,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 | LearnDash | `sfwd-lms` 5.0.5, active current LMS |
 | Future LMS | `atmo-lms-lite`, **active** on Local, in development (LearnDash still primary for course/lesson UI) |
 | Code Snippets | бизнес-логика в БД, не в VCS |
+| Cookie consent | CookieYes (`cookie-law-info`), active; **RU notice + preference panel** — plugin/runtime settings only, **not child theme** |
 | Preview layer | mu-plugin `atmo-redesign-preview`, temporary |
 
 ## Theme Layer
@@ -185,6 +186,8 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 | `learndash-training-diary` | active | shortcode `[training_diary]`, таблица `wp_ld_training_diary`, связан с LearnDash |
 | `atmo-redesign-preview` | mu-plugin | temporary preview/integration layer |
 | `atmo-lms-lite` | active (in development) | candidate future LMS; do not build critical UI on it without explicit decision |
+
+**CookieYes (`cookie-law-info`):** cookie banner/consent UI — **not in child theme or docs repo**. Copy and default language live in WP DB/options, plugin tables (`wp_cky_banners`, `wp_cky_cookie_categories`), and uploads `cookieyes/languages/banners/ru.json`. RU notice bar + preference panel QA **PASS 2026-05-22** (`CHANGES.md`); no VCS commit for the runtime change.
 
 ## Code Snippets
 

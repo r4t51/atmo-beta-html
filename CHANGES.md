@@ -6,6 +6,20 @@
 
 ---
 
+## 2026-05-22 — CookieYes RU banner + preference panel QA
+
+- **Scope:** docs-only record; CookieYes plugin/runtime settings only; **no** child theme, repo code, WP Admin manual DB edits, or git commit for the runtime change
+- **Source:** CookieYes | GDPR Cookie Consent (`cookie-law-info`); default language **`ru`**; copy from plugin settings + `wp-content/uploads/cookieyes/languages/banners/ru.json`
+- **Storage (runtime, not VCS):** `wp_options` (`cky_settings`, `cky_banner_template`) · `wp_cky_banners` · `wp_cky_cookie_categories` · uploads `cookieyes/languages/banners/ru.json`
+- **Visible RU:** notice bar (title, body, **Настроить** / **Отклонить все** / **Принять все**) · revisit **Настройки cookie** · preference panel after **Настроить** (title, body, category names/descriptions, buttons, toggles, audit empty state)
+- **QA pages:** `/` · `/каталог/` · `/my-account/`
+- **Viewports:** desktop **1440×900** + mobile **390×844**
+- **Result:** **PASS (6/6)** — RU notice bar · RU preference panel after **Настроить** · **0** English CookieYes strings detected · no horizontal overflow · **Accept / Reject / Save not clicked**
+- **Git/code impact:** child theme unchanged · runtime/plugin settings only · no code commit for the CookieYes change
+- **Docs:** `WP_DEPENDENCY_MAP.md`
+
+---
+
 ## 2026-05-22 — Cart + checkout with cart fixture QA (follow-up)
 
 - **Scope:** read-only browser QA; no code/DB/snippets/Woo/Stripe settings changes; no checkout submit; **`#place_order` not clicked**; no order created
