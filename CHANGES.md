@@ -6,6 +6,16 @@
 
 ---
 
+## 2026-05-22 — Code Snippets export to docs repo
+
+- **Scope:** read-only MariaDB export → `docs/snippets/`; no DB/WP/snippet setting changes
+- **Count:** 16 snippets (IDs 1–17, no ID 6); UTF-8 markdown + `_manifest.json`
+- **Prior audit:** `d2f7262` — LMS-Woo routing audit unchanged; export adds full code bodies to VCS
+- **High-impact:** see `docs/snippets/README.md` (#5, #9–#12, #14–#17)
+- **Re-export:** when `wp_snippets` rows change on Local/staging
+
+---
+
 ## 2026-05-22 — LMS Adapter ViewModel contract sign-off (MVP)
 
 - **Scope:** docs review/sign-off only; no WP/PHP/DB/LD/lite settings changes

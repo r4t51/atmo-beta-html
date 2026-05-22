@@ -151,7 +151,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 |------|--------|
 | Preview mu-plugin — remove later | **Decision (2026-05-22): keep for now** — low-risk legacy comparison tool. **Local-only / unversioned:** `wp-content/mu-plugins/atmo-redesign-preview.php`, `wp-content/mu-plugins/atmo-redesign/assets/css/atmo-preview.css`. **Runtime:** no-op without `?atmo_preview_shell=1`; normal pages use child header/footer; preview assets, body classes, and legacy header/footer only with query param. **Remove when all checked:** ☐ explicit sign-off that child header/footer are canonical ☐ `?atmo_preview_shell=1` compare no longer needed ☐ backup/snapshot 2 mu-plugin files before delete ☐ optional kadence-child cleanup: `body.atmo-preview-shell-enabled` rules in `atmo-header.css` / `atmo-footer.css` + preview-font comment in `functions.php`. Details/rollback: `CHANGES.md` → 2026-05-22 preview mu-plugin discovery. |
 | Adapter / ViewModel interface | **Signed off 2026-05-22** — `LMS_ADAPTER_SPEC.md` §4.7 · summary in `WP_DEPENDENCY_MAP.md` |
-| Code Snippets — export/version | **Before adapter implementation or snippet migration** — snippets live in DB `wp_snippets` only (not VCS); export/backup registry in `WP_DEPENDENCY_MAP.md`; audit `CHANGES.md` → 2026-05-22 Code Snippets audit |
+| Code Snippets — export/version | **Done (2026-05-22):** `docs/snippets/` — see README; re-export when DB snippets change |
 | Cross-repo rollback notes | Keep `CHANGES.md` as source of truth for DB + kadence-child commits |
 
 ---

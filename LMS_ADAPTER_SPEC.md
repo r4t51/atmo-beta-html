@@ -382,12 +382,12 @@ Before any enrolled UI or route implementation:
 - [x] Enrolled route chosen: **`/my-account/my-courses/`** (`BACKLOG.md` #2 — 2026-05-22).
 - [ ] Woo **`my-courses`** endpoint audit + registration plan (no implementation in spec commit).
 - [x] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver §5).
-- [ ] Code Snippets export/backup completed.
+- [x] Code Snippets export/backup completed — `docs/snippets/` (`CHANGES.md` 2026-05-22).
 - [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
 - [x] **Access expiry semantics** — LD access start + Woo duration label (`CHANGES.md` 2026-05-22).
 - [x] **No LearnDash HTML in ATMO UI** — ViewModels only (§3, §4.7 #8).
 
-**After sign-off:** implement adapter behind this contract only; theme work references this file, not LD internals. **Remaining gate:** endpoint audit + snippets export before PHP/route work.
+**After sign-off:** implement adapter behind this contract only; theme work references this file, not LD internals. **Remaining gate:** `my-courses` endpoint audit before PHP/route work.
 
 ---
 

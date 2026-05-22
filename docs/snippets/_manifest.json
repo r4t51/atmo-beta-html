@@ -1,0 +1,184 @@
+{
+    "exported_at": "2026-05-22",
+    "source": "Local wp_snippets (read-only MariaDB JSON export)",
+    "audit_ref": "d2f7262 docs: record Code Snippets LMS-Woo routing audit",
+    "count": 16,
+    "snippets": [
+        {
+            "id": 1,
+            "name": "Сделать имена загружаемых файлов строчными",
+            "active": 0,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2023-08-30 11:17:28",
+            "tags": "sample, media",
+            "file": "snippet-01-wp-sample-lowercase-filenames.md",
+            "code_len": 52
+        },
+        {
+            "id": 2,
+            "name": "Отключить панель администратора",
+            "active": 0,
+            "scope": "front-end",
+            "priority": 10,
+            "modified": "2023-08-30 11:17:28",
+            "tags": "sample, admin-bar",
+            "file": "snippet-02-wp-sample-disable-admin-bar.md",
+            "code_len": 115
+        },
+        {
+            "id": 3,
+            "name": "Разрешить смайлики",
+            "active": 0,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2023-08-30 11:17:28",
+            "tags": "sample",
+            "file": "snippet-03-wp-sample-smilies.md",
+            "code_len": 187
+        },
+        {
+            "id": 4,
+            "name": "Текущий год",
+            "active": 0,
+            "scope": "content",
+            "priority": 10,
+            "modified": "2023-08-30 11:17:28",
+            "tags": "sample, dates",
+            "file": "snippet-04-wp-sample-current-year.md",
+            "code_len": 26
+        },
+        {
+            "id": 5,
+            "name": "Thank You Redirect",
+            "active": 0,
+            "scope": "front-end",
+            "priority": 10,
+            "modified": "2023-08-30 11:24:12",
+            "tags": "",
+            "file": "snippet-05-thank-you-redirect.md",
+            "code_len": 318
+        },
+        {
+            "id": 7,
+            "name": "Login Log",
+            "active": 1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2025-10-14 11:06:12",
+            "tags": "",
+            "file": "snippet-07-login-log.md",
+            "code_len": 11297
+        },
+        {
+            "id": 8,
+            "name": "Student's Journal",
+            "active": 1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-02-21 21:26:16",
+            "tags": "",
+            "file": "snippet-08-student-s-journal.md",
+            "code_len": 2911
+        },
+        {
+            "id": 9,
+            "name": "Course Info Card",
+            "active": 1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-04-12 14:51:40",
+            "tags": "",
+            "file": "snippet-09-course-info-card.md",
+            "code_len": 2970
+        },
+        {
+            "id": 10,
+            "name": "Currency",
+            "active": 1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-04-13 09:52:33",
+            "tags": "",
+            "file": "snippet-10-currency.md",
+            "code_len": 1364
+        },
+        {
+            "id": 11,
+            "name": "Courses Carousel for mainpage",
+            "active": 0,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-02-22 09:13:30",
+            "tags": "",
+            "file": "snippet-11-courses-carousel-for-mainpage.md",
+            "code_len": 5721
+        },
+        {
+            "id": 12,
+            "name": "Bottom Button",
+            "active": 1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-02-22 10:34:39",
+            "tags": "",
+            "file": "snippet-12-bottom-button.md",
+            "code_len": 4782
+        },
+        {
+            "id": 13,
+            "name": "Google Search",
+            "active": 1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-02-25 18:19:52",
+            "tags": "",
+            "file": "snippet-13-google-search.md",
+            "code_len": 201
+        },
+        {
+            "id": 14,
+            "name": "Courses Carousel for mainpage NEW",
+            "active": 1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-02-28 15:47:21",
+            "tags": "",
+            "file": "snippet-14-courses-carousel-for-mainpage-new.md",
+            "code_len": 7706
+        },
+        {
+            "id": 15,
+            "name": "ATMO Quiz → Order Meta",
+            "active": 1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-03-01 12:18:14",
+            "tags": "",
+            "file": "snippet-15-atmo-quiz-order-meta.md",
+            "code_len": 5882
+        },
+        {
+            "id": 16,
+            "name": "META hide in E-mail",
+            "active": 1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-04-15 13:59:33",
+            "tags": "",
+            "file": "snippet-16-meta-hide-in-e-mail.md",
+            "code_len": 509
+        },
+        {
+            "id": 17,
+            "name": "Before&After for 33_Pelvic Floor",
+            "active": -1,
+            "scope": "global",
+            "priority": 10,
+            "modified": "2026-04-28 09:24:26",
+            "tags": "",
+            "file": "snippet-17-before-after-for-33-pelvic-floor.md",
+            "code_len": 1992
+        }
+    ]
+}

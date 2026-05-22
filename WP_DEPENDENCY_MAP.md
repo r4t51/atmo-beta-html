@@ -186,7 +186,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 
 ## Code Snippets
 
-Сниппеты живут в таблице **`wp_snippets`** (Code Snippets plugin), **не в VCS**. Read-only audit **2026-05-22** via Local MariaDB — see `CHANGES.md`. **Export/version before adapter implementation or snippet migration.**
+Сниппеты живут в таблице **`wp_snippets`** (Code Snippets plugin), **не в VCS**. Read-only audit **2026-05-22** via Local MariaDB — see `CHANGES.md`. **Versioned export:** `docs/snippets/` (README + per-snippet markdown + `_manifest.json`).
 
 **LMS / routing (audit summary):** no **active** snippet controls LearnDash enrollment, `/courses/` route, `/my-account/` dashboard, or enrolled **«Мои курсы»** route. Enrollment SoT = LearnDash + Woo bridge (+ future `atmo-lms-lite` backend), not snippets.
 
