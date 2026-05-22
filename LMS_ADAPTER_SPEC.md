@@ -1,7 +1,7 @@
 # LMS Adapter Spec v0
 
-> **Status:** route live (shell) · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **next: adapter PHP** · **2026-05-22**  
-> **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell shipped in child theme.  
+> **Status:** route live (adapter MVP) · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **next: optional dashboard wiring** · **2026-05-22**  
+> **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
 ---
@@ -10,7 +10,7 @@
 
 Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo backends so enrolled courses, progress, and access can ship without LearnDash HTML coupling or premature `atmo-lms-lite` dependency.
 
-**Gate:** no adapter-backed enrolled list or deep port of `lesson.html` / `product-enrolled.html` until ViewModel contract is signed off (**done 2026-05-22**) and endpoint shell is live (**done `ecfd8f5` 2026-05-22**). **Next ship:** adapter PHP + wire **`get_enrolled_courses()`** (§11 commit B).
+**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**. Deep port of `lesson.html` / `product-enrolled.html` and dashboard «Следующий шаг» wiring remain **post-MVP / optional phase 3**.
 
 ---
 
@@ -19,7 +19,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 | Route | Role | Status |
 |-------|------|--------|
 | `/courses/` | LearnDash **public CPT archive** — nav label **«Программы»** | **Live** (interim relabel 2026-05-22) — **not** enrolled UI |
-| **`/my-account/my-courses/`** | **«Мои курсы»** — enrolled list + progress (MVP) | **Live (phase 1 shell)** — empty **`.atmo-my-courses`**; adapter list pending — `ecfd8f5` |
+| **`/my-account/my-courses/`** | **«Мои курсы»** — enrolled list + progress (MVP) | **Live (adapter MVP)** — `get_enrolled_courses()` list UI — `a352081` |
 
 ### Decision (2026-05-22): enrolled route = **`/my-account/my-courses/`**
 
@@ -41,7 +41,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 - **Technical:** no LearnDash CPT slug collision; `is_account_page()` CSS scope already defined; hidden-endpoint audit precedent (`downloads`, `edit-address`, `payment-methods`).
 - **Adapter / lite:** route choice does not bind backend — LearnDash today, `atmo-lms-lite` later via same ViewModels.
 
-**Implementation sequence (§11):** (1) register **`my-courses`** endpoint + menu IA + static empty shell — **done `ecfd8f5`**; (2) adapter PHP + wire `get_enrolled_courses()` — **next**; (3) optional dashboard «Следующий шаг» wiring.
+**Implementation sequence (§11):** (1) register **`my-courses`** endpoint + menu IA + static empty shell — **done `ecfd8f5`**; (2) adapter PHP + wire `get_enrolled_courses()` — **done `a352081`**; (3) optional dashboard «Следующий шаг» wiring — **next optional**.
 
 **Reserved naming:** **«Мои курсы»** = `/my-account/my-courses/`. **«Программы»** = public `/courses/` only.
 
@@ -383,14 +383,14 @@ Before any enrolled UI or route implementation:
 - [x] Product approves ViewModel field list — **2026-05-22** (§4.7).
 - [x] Enrolled route chosen: **`/my-account/my-courses/`** (`BACKLOG.md` #2 — 2026-05-22).
 - [x] Woo **`my-courses`** endpoint shell (phase 1) — **`ecfd8f5` 2026-05-22** (§11 commit A).
-- [ ] LMS adapter PHP + wire endpoint to **`get_enrolled_courses()`** (§11 commit B).
+- [x] LMS adapter PHP + wire endpoint to **`get_enrolled_courses()`** (§11 commit B) — **`a352081` 2026-05-22**.
 - [x] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver §5).
 - [x] Code Snippets export/backup completed — `docs/snippets/` (`CHANGES.md` 2026-05-22).
 - [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
 - [x] **Access expiry semantics** — LD access start + Woo duration label (`CHANGES.md` 2026-05-22).
 - [x] **No LearnDash HTML in ATMO UI** — ViewModels only (§3, §4.7 #8).
 
-**After sign-off:** endpoint shell **shipped** (`ecfd8f5`); implement adapter PHP next (§11 commit B); theme consumes ViewModels only — not LD internals.
+**After sign-off:** endpoint shell **shipped** (`ecfd8f5`); adapter MVP **shipped** (`a352081`); optional dashboard wiring next (§11 commit C); theme consumes ViewModels only — not LD internals.
 
 ### 11.0 Phase 1 shipped (`ecfd8f5` 2026-05-22)
 
@@ -405,6 +405,22 @@ Before any enrolled UI or route implementation:
 | Permalink flush on deploy | **Manual one-time** — no PHP flush in theme |
 
 **Rollback:** `git revert ecfd8f5` + manual permalink flush.
+
+### 11.0a Phase 2 shipped (`a352081` 2026-05-22)
+
+| Item | Status |
+|------|--------|
+| `atmo_get_enrolled_courses()` read-only adapter | **Live** |
+| Completed Woo orders → `_related_course` (variation first) → LD enrollment meta | **Live** |
+| Access type: item meta **`тип-доступа`** + variation attribute fallback | **Live** |
+| Lifetime vs unknown duration handling | **Live** — explicit «Бессрочно» only |
+| `starts_at` / `expires_at` per §5 | **Live** — adapter-computed, no LD meta mutation |
+| Progress bar | **Hidden** unless real activity/completion — no fake 0% |
+| «Продолжить» / `next_lesson` | **Live** when LD returns safe incomplete lesson |
+| Enrolled list UI (`.atmo-my-courses__list`) | **Live** — empty state when `[]` |
+| Local QA (#3801 / r4t5) | **PASS** — `CHANGES.md` |
+
+**Rollback:** `git revert a352081` — **no permalink flush** (phase 1 endpoint remains).
 
 ---
 
@@ -494,9 +510,9 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 | Phase | Content | Adapter |
 |-------|---------|---------|
-| **1 — Shell (recommended first ship)** | ATMO empty state: honest copy + CTAs to **«Программы»** / catalog; wrapper e.g. `.atmo-my-courses` | **None** — no `get_enrolled_courses()` yet |
-| **2 — Adapter** | List rows from **`EnrolledCourse[]`** per §4.3 / §7 | **`get_enrolled_courses( user_id )`** required; optional **`get_next_lesson()`** for row CTAs |
-| **3 — Dashboard** | «Следующий шаг» hero uses adapter when non-null `next_lesson` | Same adapter; separate template hook |
+| **1 — Shell (recommended first ship)** | ATMO empty state: honest copy + CTAs to **«Программы»** / catalog; wrapper e.g. `.atmo-my-courses` | **Done `ecfd8f5`** |
+| **2 — Adapter** | List rows from **`EnrolledCourse[]`** per §4.3 / §7 | **Done `a352081`** — `get_enrolled_courses()` |
+| **3 — Dashboard** | «Следующий шаг» hero uses adapter when non-null `next_lesson` | **Optional next** — separate template hook |
 
 **Shell rules:** no LearnDash HTML/classes; no fake progress rows; match MVP empty state in §7.
 
@@ -539,9 +555,9 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 1. **Docs** — endpoint plan (this section) ✓  
 2. **Child theme commit A** — `add_rewrite_endpoint`, menu IA (**«Мои курсы»**), remove **`atmo-courses`**, static empty shell, scoped CSS — **done `ecfd8f5`** · one-time permalink flush documented in `CHANGES.md`  
 3. **QA** — §11.6 — **PASS on Local 2026-05-22**  
-4. **Child theme commit B** — LMS adapter PHP + wire `woocommerce_account_my-courses_endpoint` to **`get_enrolled_courses()`** — **next**  
-5. **Optional commit C** — dashboard «Следующий шаг» + panel links to **`my-courses`**
+4. **Child theme commit B** — LMS adapter PHP + wire `woocommerce_account_my-courses_endpoint` to **`get_enrolled_courses()`** — **done `a352081`** · QA PASS — `CHANGES.md`  
+5. **Optional commit C** — dashboard «Следующий шаг» + panel links to **`my-courses`** — **next optional**
 
 ---
 
-*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, and endpoint shell shipped; adapter PHP is next (§11 commit B).*
+*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, endpoint shell, and adapter MVP shipped; optional dashboard wiring next (§11 commit C).*

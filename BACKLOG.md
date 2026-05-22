@@ -67,7 +67,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Logged-in behavior | Still shows all 18 public courses — **not** enrolled-only |
 | Single course | e.g. `/courses/testmyself/` — LD single template, `.learndash-wrapper`, course contents / lesson links |
 | Nav label **«Программы»** | Header + footer → **`/courses/`** (public LD archive) — **not** in account sidebar since `ecfd8f5` |
-| **`/my-account/my-courses/`** | **Live (phase 1 shell)** — real Woo endpoint **`my-courses`**, static empty **`.atmo-my-courses`**; adapter data deferred — `ecfd8f5` |
+| **`/my-account/my-courses/`** | **Live (adapter MVP)** — real Woo endpoint + read-only **`get_enrolled_courses()`** list — `a352081` |
 | UX mismatch (interim) | **Resolved** — **«Мои курсы»** = enrolled route; **«Программы»** = public archive (header/footer) |
 | CSS scope | `atmo-account.css` on `is_account_page()` only — **not** on `/courses/` |
 | Primary runtime | LearnDash `sfwd-lms` 5.0.5 + Woo bridge |
@@ -84,8 +84,9 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | 5 | **Access expiry semantics** — «60 дней» / `expires_at` when LD `expire_access` off | **Done (2026-05-22):** `starts_at` from LD access meta + duration from `тип-доступа` — `LMS_ADAPTER_SPEC.md` §5 · `CHANGES.md` |
 | 6 | **`my-courses` endpoint plan** — Woo rewrite + menu IA + shell-first sequence | **Done (2026-05-22):** audit + plan — `LMS_ADAPTER_SPEC.md` §11 · `CHANGES.md` |
 | 7 | **`my-courses` endpoint shell (phase 1)** — register endpoint + empty UI | **Done (2026-05-22):** `ecfd8f5` — real endpoint, menu IA, `.atmo-my-courses` shell; Local QA PASS post-flush — `CHANGES.md` |
+| 8 | **LMS adapter MVP (phase 2)** — wire `get_enrolled_courses()` + enrolled list UI | **Done (2026-05-22):** `a352081` — read-only Woo+LD adapter; fixture #3801 QA PASS — `CHANGES.md` |
 
-**Recommendation:** keep `/courses/` public **«Программы»** (header/footer); **next:** LMS adapter PHP at **`/my-account/my-courses/`** (phase 2) → optional dashboard wiring (phase 3).
+**Recommendation:** keep `/courses/` public **«Программы»** (header/footer); **next optional:** dashboard «Следующий шаг» wiring (phase 3) → post-MVP lesson/course hub port.
 
 ### Route options (reference)
 
@@ -93,7 +94,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 |-----|----------|--------|
 | Public archive | `/courses/` + nav **«Программы»** | **Live** — not enrolled UI |
 | **A** | Standalone `/my-courses/` | **Rejected** — see `LMS_ADAPTER_SPEC.md` §2 |
-| **B** | Woo **`/my-account/my-courses/`** | **Live (shell)** — adapter list pending |
+| **B** | Woo **`/my-account/my-courses/`** | **Live (adapter MVP)** — enrolled list from `get_enrolled_courses()` — `a352081` |
 | LD shortcode page | Filtered WP page | **Rejected** — LD template coupling |
 | Wait for lite only | No route until `atmo-lms-lite` | **Rejected** — blocks MVP; adapter handles backend swap |
 
@@ -104,18 +105,20 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Wire `courses.html` demo data or fake progress into WP
 - Build critical UI on `atmo-lms-lite` without explicit decision
 - Register new Woo endpoints or change rewrites without plan — **`my-courses` shell shipped** (`ecfd8f5`); further endpoint changes need audit
-- Deep-port `lesson.html` / `product-enrolled.html` until adapter interface is fixed
+- Deep-port `lesson.html` / `product-enrolled.html` until adapter MVP is stable (list shipped `a352081`)
 - Treat Woo order line items alone as enrollment UI (bridge + adapter must agree)
 
 ### Blocked items
 
 | Item | Blocker |
 |------|---------|
-| Real LMS/enrolled dashboard widgets | Adapter PHP + optional dashboard wiring |
-| «Мои курсы» enrolled list (real data) | **Adapter PHP** — endpoint shell done (`ecfd8f5`); wire `get_enrolled_courses()` |
-| LearnDash templates | Do not touch until adapter implemented |
+| Real LMS/enrolled dashboard widgets | **Optional phase 3** — dashboard wiring to adapter (`next_lesson`) |
+| ~~«Мои курсы» enrolled list (real data)~~ | **Done `a352081`** — see `CHANGES.md` |
+| LearnDash templates | Do not touch — post-MVP hub/lesson port |
 | `atmo-lms-lite` critical UI | Dev-only; no front-end without explicit decision |
-| Course progress / next lesson / enrolled cards | Prototype in `courses.html` (demo off); `account.html` MVP-safe shell only |
+| Pending-order rows on my-courses | Not in MVP — non-completed orders excluded |
+| Empty-state with zero-enrollment user | Not live-QA'd — needs another fixture user |
+| Course hub / lesson deep port | Post-MVP — MVP links to LD URLs via ViewModel |
 
 ---
 
@@ -155,7 +158,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Preview mu-plugin — remove later | **Decision (2026-05-22): keep for now** — low-risk legacy comparison tool. **Local-only / unversioned:** `wp-content/mu-plugins/atmo-redesign-preview.php`, `wp-content/mu-plugins/atmo-redesign/assets/css/atmo-preview.css`. **Runtime:** no-op without `?atmo_preview_shell=1`; normal pages use child header/footer; preview assets, body classes, and legacy header/footer only with query param. **Remove when all checked:** ☐ explicit sign-off that child header/footer are canonical ☐ `?atmo_preview_shell=1` compare no longer needed ☐ backup/snapshot 2 mu-plugin files before delete ☐ optional kadence-child cleanup: `body.atmo-preview-shell-enabled` rules in `atmo-header.css` / `atmo-footer.css` + preview-font comment in `functions.php`. Details/rollback: `CHANGES.md` → 2026-05-22 preview mu-plugin discovery. |
 | Adapter / ViewModel interface | **Signed off 2026-05-22** — `LMS_ADAPTER_SPEC.md` §4.7 · summary in `WP_DEPENDENCY_MAP.md` |
 | **`my-courses` endpoint shell** | **Done (2026-05-22):** `ecfd8f5` — see `CHANGES.md`; one-time permalink flush on deploy |
-| **LMS adapter PHP (phase 2)** | Next — wire `get_enrolled_courses()` per `LMS_ADAPTER_SPEC.md` §11 commit B |
+| **LMS adapter MVP (phase 2)** | **Done (2026-05-22):** `a352081` — see `CHANGES.md` |
+| **Dashboard adapter wiring (phase 3)** | Optional next — `LMS_ADAPTER_SPEC.md` §11 commit C |
 | Code Snippets — export/version | **Done (2026-05-22):** `docs/snippets/` — see README; re-export when DB snippets change |
 | Cross-repo rollback notes | Keep `CHANGES.md` as source of truth for DB + kadence-child commits |
 

@@ -110,7 +110,7 @@ npx http-server . -p 3333 --cors -c-1
 
 - Live **`/courses/`** = LearnDash **public archive** (18 courses, no enrolled filter, no progress UI).
 - **«Программы»** → `/courses/` in **header + footer only** (not account sidebar since `ecfd8f5`).
-- **`/my-account/my-courses/`** = real Woo endpoint **`my-courses`** — phase 1 **empty shell** (`.atmo-my-courses`); enrolled list pending LMS adapter PHP — `ecfd8f5` · `CHANGES.md`.
+- **`/my-account/my-courses/`** = real Woo endpoint **`my-courses`** — **adapter MVP live** (`get_enrolled_courses()` enrolled list) — **`a352081`** · shell **`ecfd8f5`** · `CHANGES.md`.
 - `atmo-account.css` does **not** load on `/courses/`.
 
 Правило: не строить финальные course/lesson шаблоны на LearnDash HTML. Course/lesson UI должен идти через adapter/ViewModel слой:
@@ -121,7 +121,7 @@ npx http-server . -p 3333 --cors -c-1
 - `LessonProgress` / `LessonData`
 - `AccessData`
 
-До фиксации adapter interface не начинать глубокий перенос `lesson.html`, `product-enrolled.html`, и enrolled course dashboard.
+До фиксации adapter interface не начинать глубокий перенос `lesson.html`, `product-enrolled.html`. **Enrolled list MVP shipped `a352081`** — dashboard wiring and hub/lesson port remain post-MVP.
 
 ## WordPress Local
 
@@ -191,10 +191,11 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - **Меню (5 пунктов):** Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
   - **«Программы»** → `/courses/` in header/footer only (removed from account sidebar in `ecfd8f5`)
   - **Скрыты из меню, доступны по прямому URL:** `/my-account/downloads/`, `/my-account/edit-address/` (+ `billing`/`shipping`), `/my-account/payment-methods/`
-  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell**
-  - **`/my-account/my-courses/` (`ecfd8f5`):** static empty `.atmo-my-courses` shell; one-time permalink flush on deploy; Local QA PASS — `CHANGES.md`
-  - **Dashboard (`534b241`):** static ATMO cards on logged-in `/my-account/` only; last order read-only Woo summary; no LMS progress / fake enrolled data
-  - **Account status:** shell/wiring done (passes 1–5, dashboard `534b241`, add-payment audit); completed #3801 view-order QA; access-type meta pill (`2da518f`); saved payment cards table not live-QA; real enrolled **list data** deferred until adapter PHP
+  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP**
+  - **`/my-account/my-courses/` (`a352081`):** adapter-backed enrolled list; empty state when `[]`; fixture #3801 QA PASS — `CHANGES.md`
+  - **`/my-account/my-courses/` shell (`ecfd8f5`):** endpoint + menu IA; one-time permalink flush on deploy
+  - **Dashboard (`534b241`):** static ATMO cards on logged-in `/my-account/` only; last order read-only Woo summary; **no adapter wiring yet** (optional phase 3)
+  - **Account status:** shell/wiring done; my-courses adapter MVP live (`a352081`); #3801 view-order QA; access-type meta pill (`2da518f`); saved payment cards table not live-QA; dashboard LMS widgets optional next
   - **Caveats:** не редиректить Woo endpoints без аудита; `/my-account/add-payment-method/` audited 2026-05-22 (read-only PASS; Stripe card/BLIK absent on Local — env, not theme); Woo default dashboard copy hidden by CSS when `.atmo-dash` present
   - **Open tasks:** `BACKLOG.md`
   - Rollback: см. `CHANGES.md` по commit; menu PHP: `git revert d4ee689`
@@ -218,14 +219,14 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Blocked** — LMS adapter PHP (phase 2) — wire **`get_enrolled_courses()`** to **`/my-account/my-courses/`** (endpoint shell done `ecfd8f5` — `CHANGES.md`)
+1. **Optional next** — dashboard «Следующий шаг» wiring to adapter / **`/my-account/my-courses/`** (phase 3 — `LMS_ADAPTER_SPEC.md` §11 commit C)
 2. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows
 3. **Optional polish** — catalog chip URLs, PDP #3614 tier hero, static `/payment-failed/` page
 4. **Data/fixture QA** — saved address profile, filled address forms, downloads with real files
 
 **Architectural blockers (do not bypass):**
 
-- LMS adapter PHP — endpoint shell **done `ecfd8f5`**; enrolled list data before dashboard LMS widgets — `LMS_ADAPTER_SPEC.md` §11 commit B
+- ~~LMS adapter PHP~~ — **done `a352081`**; optional dashboard wiring — `LMS_ADAPTER_SPEC.md` §11 commit C
 - Do not touch LearnDash templates or build critical UI on `atmo-lms-lite` without explicit decision
 - Saved-card / payment-token scope — requires explicit approval before live-QA or UI work
 

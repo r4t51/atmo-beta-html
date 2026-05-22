@@ -6,6 +6,28 @@
 
 ---
 
+## 2026-05-22 — LMS adapter MVP for account `my-courses` (phase 2)
+
+- **Scope:** child theme only — `inc/atmo-account.php`, `assets/css/atmo-account.css`; read-only Woo + LearnDash; no DB, snippets, settings, LD template overrides, or `atmo-lms-lite`
+- **Commit:** `a352081` — Add LMS adapter MVP for account my-courses (`kadence-child`)
+- **Implemented:**
+  - read-only adapter MVP at **`/my-account/my-courses/`** — `atmo_get_enrolled_courses()` + enrolled list UI (`.atmo-my-courses__list`)
+  - completed Woo orders → line items → **`_related_course`** (variation first, else product) → LD enrollment meta gate
+  - access type label: order item meta **`тип-доступа`** via `atmo_get_order_item_access_meta()` → fallback variation attribute / post meta
+  - **explicit lifetime vs unknown:** «Бессрочно» only when label says so; empty/unknown → no «Срок: Бессрочно»; unknown does not beat finite in multi-order merge
+  - **`starts_at`:** `course_{id}_access_from` → `learndash_course_{id}_enrolled_at` → order completed date
+  - **`expires_at`:** `starts_at + access_duration_days` when finite; lifetime → null
+  - progress hidden unless real activity (`completed > 0`, LD status completed, or `learndash_course_completed()`) — **no fake 0%**
+  - **`next_lesson` / «Продолжить»** only when LD returns safe incomplete lesson URL; else hub CTA when active
+  - empty state unchanged when adapter returns `[]`
+- **QA (Local, user r4t5, fixture #3801):** one course **«Живот и Тазовое дно»** — status **Доступ активен** · access **60 дней** · **2 мая 2026 → 1 июля 2026** · no progress bar / no 0% · **Продолжить** + **К программе** visible · desktop **1440×900** + mobile **390×844** PASS · no overflow · 5-item nav · no `.atmo-dash`
+- **Not done:** dashboard «Следующий шаг» wiring (phase 3 optional); full lesson/course hub port; `atmo-lms-lite`; LearnDash template overrides; pending-order rows; empty-state live QA with another zero-enrollment user
+- **Rollback:** `git revert a352081` in `kadence-child` — **no permalink flush** (endpoint shell `ecfd8f5` remains)
+- **Next optional:** dashboard wiring to **`/my-account/my-courses/`** + adapter `next_lesson` — `LMS_ADAPTER_SPEC.md` §11 commit C
+- **Docs:** `BACKLOG.md` §2 · `LMS_ADAPTER_SPEC.md` §11 · `WP_DEPENDENCY_MAP.md` · `ONBOARDING.md`
+
+---
+
 ## 2026-05-22 — Woo `my-courses` endpoint shell (phase 1)
 
 - **Scope:** child theme only — `inc/atmo-account.php`, `assets/css/atmo-account.css`; no adapter, LD API, lite, DB, snippets, or PHP flush
@@ -20,7 +42,7 @@
 - **QA (Local, user r4t5, post-flush):** `/my-account/my-courses/` desktop + mobile PASS — loads, 5-item nav, **«Мои курсы»** active, shell visible, no `.atmo-dash`, no LD cards/progress
 - **Regression PASS:** `/my-account/`, `/my-account/orders/`, `/my-account/edit-account/`, `/my-account/payment-methods/`, `/courses/` (public LD archive)
 - **Rollback:** `git revert ecfd8f5` in `kadence-child`, then one-time manual permalink flush
-- **Next blocker:** LMS adapter PHP (phase 2) — wire `get_enrolled_courses()` to endpoint — `LMS_ADAPTER_SPEC.md` §11 commit B
+- **Next blocker:** ~~LMS adapter PHP (phase 2)~~ — **done `a352081`**; optional dashboard wiring (phase 3)
 - **Docs:** `BACKLOG.md` §2 · `LMS_ADAPTER_SPEC.md` §11 · `WP_DEPENDENCY_MAP.md` Woo row · `ONBOARDING.md`
 
 ---
@@ -59,7 +81,7 @@
 - **Traceability:** optional **`source_order_id`**, **`source_order_item_id`** on `EnrollmentState`; **`order_item_id`** on `OrderAccessContext`
 - **Renewal CTA:** optional **`product_permalink`** on `EnrolledCourse` for expired / no-access rows
 - **LD coupling:** confirmed — ATMO UI consumes ViewModels only; no LearnDash HTML/classes in theme chrome
-- **Still blocked:** ~~`my-courses` endpoint implementation~~ — shell done `ecfd8f5`; **LMS adapter PHP** (phase 2)
+- **Still blocked:** ~~`my-courses` endpoint implementation~~ — shell done `ecfd8f5`; ~~**LMS adapter PHP** (phase 2)~~ — **done `a352081`**
 - **Docs:** `LMS_ADAPTER_SPEC.md` §4.7 · `BACKLOG.md` §2 decision #3
 
 ---
