@@ -152,6 +152,8 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 
 ### LMS Architecture Rule
 
+**Adapter spec (v0):** `LMS_ADAPTER_SPEC.md` — ViewModel contract, MVP enrolled UI, route candidates, sign-off checklist. This section is a short field summary only.
+
 Не копировать LearnDash HTML как финальный UI. Все course/lesson компоненты должны получать нормализованные данные через **adapter interface** (PHP), not LD DOM/classes:
 
 | ViewModel | Минимальные данные |
@@ -159,13 +161,14 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 | `CourseCard` | id, title, slug, permalink, thumbnail_url, excerpt, price_html?, categories[], goal_slug? |
 | `EnrollmentState` | course_id, is_enrolled, status (`none`\|`active`\|`expired`\|`completed`), progress_percent, completed_steps, total_steps, expires_at?, source (`learndash`\|`atmo-lms`) |
 | `EnrolledCourse` | CourseCard + EnrollmentState + last_lesson?, next_lesson?, cta_label, cta_url |
-| `LessonProgress` / `LessonData` | id, title, permalink, course_id, order_index, is_complete, is_accessible, prev?, next?, content_html? |
-| `AccessData` | has_access, reason (`enrolled`\|`purchase_pending`\|`expired`\|`guest`), expiry?, product_id?, order_id? |
+| `LessonRef` / `LessonProgress` | id, title, permalink, course_id, order_index, is_complete, is_accessible, prev?, next?, content_html? (deferred) |
+| `AccessData` | has_access, reason (`enrolled`\|`purchase_pending`\|`expired`\|`guest`\|`none`), expiry?, product_id?, order_id? |
+| `OrderAccessContext` | order_id, order_status, product_id, product_name, access_type_label?, quiz_meta?, purchased_at? — display only, not enrollment SoT |
 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
 
-До фиксации adapter interface не начинать глубокий перенос `lesson.html`, `product-enrolled.html`, enrolled course dashboard, или access UI. **Do not touch LearnDash templates.**
+До sign-off **`LMS_ADAPTER_SPEC.md` v0** не начинать глубокий перенос `lesson.html`, `product-enrolled.html`, enrolled course dashboard, или access UI. **Do not touch LearnDash templates.**
 
 ## Custom ATMO Plugins
 

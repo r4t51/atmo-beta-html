@@ -78,9 +78,9 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 |---|----------|--------|
 | 1 | **Interim nav label** for public `/courses/` archive | **Done (2026-05-22):** **«Программы»** in header, footer, account menu — see `CHANGES.md` |
 | 2 | **Target enrolled route** — where real **«Мои курсы»** lives | **Open** |
-| 3 | **Adapter interface sign-off** — PHP adapter + ViewModel before enrolled UI | **Open** |
+| 3 | **Adapter interface sign-off** — PHP adapter + ViewModel before enrolled UI | **Open** — draft spec: **`LMS_ADAPTER_SPEC.md` v0** |
 
-**Recommendation:** keep `/courses/` public; enrolled UI waits on decisions 2–3 + adapter.
+**Recommendation:** keep `/courses/` public; enrolled UI waits on decisions 2–3 + adapter sign-off per spec checklist.
 
 **Leaning guidance (not final):**
 
@@ -153,7 +153,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Item | Notes |
 |------|--------|
 | Preview mu-plugin — remove later | **Decision (2026-05-22): keep for now** — low-risk legacy comparison tool. **Local-only / unversioned:** `wp-content/mu-plugins/atmo-redesign-preview.php`, `wp-content/mu-plugins/atmo-redesign/assets/css/atmo-preview.css`. **Runtime:** no-op without `?atmo_preview_shell=1`; normal pages use child header/footer; preview assets, body classes, and legacy header/footer only with query param. **Remove when all checked:** ☐ explicit sign-off that child header/footer are canonical ☐ `?atmo_preview_shell=1` compare no longer needed ☐ backup/snapshot 2 mu-plugin files before delete ☐ optional kadence-child cleanup: `body.atmo-preview-shell-enabled` rules in `atmo-header.css` / `atmo-footer.css` + preview-font comment in `functions.php`. Details/rollback: `CHANGES.md` → 2026-05-22 preview mu-plugin discovery. |
-| Adapter / ViewModel interface | Gate for LMS + enrolled UI; field list in `WP_DEPENDENCY_MAP.md`; route options in §2 above |
+| Adapter / ViewModel interface | Gate for LMS + enrolled UI; **spec:** `LMS_ADAPTER_SPEC.md` v0 · summary fields in `WP_DEPENDENCY_MAP.md` · route options in §2 above |
 | Code Snippets — export/version | **Before adapter implementation or snippet migration** — snippets live in DB `wp_snippets` only (not VCS); export/backup registry in `WP_DEPENDENCY_MAP.md`; audit `CHANGES.md` → 2026-05-22 Code Snippets audit |
 | Cross-repo rollback notes | Keep `CHANGES.md` as source of truth for DB + kadence-child commits |
 
