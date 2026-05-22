@@ -1,6 +1,6 @@
 # LMS Adapter Spec v0
 
-> **Status:** route decided · adapter sign-off pending · **2026-05-22**  
+> **Status:** route decided · **ViewModel sign-off done** · endpoint audit pending · **2026-05-22**  
 > **Scope:** ViewModel contract + adapter boundaries only — no PHP implementation, no route registration, no WP changes.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
@@ -10,7 +10,7 @@
 
 Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo backends so enrolled courses, progress, and access can ship without LearnDash HTML coupling or premature `atmo-lms-lite` dependency.
 
-**Gate:** no enrolled UI, dashboard LMS widgets, or deep port of `lesson.html` / `product-enrolled.html` until this spec is signed off (product decision #3 in `BACKLOG.md` §2).
+**Gate:** no enrolled UI, dashboard LMS widgets, or deep port of `lesson.html` / `product-enrolled.html` until ViewModel contract is signed off (**done 2026-05-22**) and **`my-courses`** endpoint audit is complete (`BACKLOG.md` §2).
 
 ---
 
@@ -41,7 +41,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 - **Technical:** no LearnDash CPT slug collision; `is_account_page()` CSS scope already defined; hidden-endpoint audit precedent (`downloads`, `edit-address`, `payment-methods`).
 - **Adapter / lite:** route choice does not bind backend — LearnDash today, `atmo-lms-lite` later via same ViewModels.
 
-**Implementation still blocked by:** adapter sign-off (#3), endpoint registration audit, Code Snippets export — see §10.
+**Implementation still blocked by:** `my-courses` endpoint registration audit, Code Snippets export — see §10. ViewModel contract signed off 2026-05-22 (§4.7).
 
 **Reserved naming:** **«Мои курсы»** = `/my-account/my-courses/`. **«Программы»** = public `/courses/` only.
 
@@ -74,62 +74,82 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 
 All shapes are **normalized display contracts**. Fields marked *(optional)* may be omitted when unknown; UI must degrade gracefully.
 
+**MVP scope:** `/my-account/my-courses/` enrolled list + account dashboard «Следующий шаг» shell. **`LessonProgress[]` outline** and full **`product-enrolled.html`** hub are **post-MVP** — list MVP needs `EnrolledCourse` + optional `LessonRef` on `next_lesson` only.
+
+**Field tiers:** **required** = adapter must return for MVP row/state; **optional** = omit or null when unknown; **deferred** = not used on enrolled list MVP.
+
+**UI rule (confirmed):** child theme **never** reads LearnDash HTML, CSS classes (`.learndash-wrapper`, etc.), or LD shortcodes in ATMO chrome — ViewModels only (§3).
+
 ### 4.1 `CourseCard`
 
 Shared course/program identity for lists and headers. Catalog cards today cover **Woo sell-side** only; enrolled UI may reuse overlapping fields from LMS course post.
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `id` | int | LMS course post ID (or future lite ID) |
-| `slug` | string | URL slug |
-| `title` | string | Display title |
-| `permalink` | string | Public or enrolled course hub URL (context-dependent) |
-| `thumbnail_url` | string *(optional)* | Featured image |
-| `excerpt` | string *(optional)* | Short summary |
-| `goal_slug` | string *(optional)* | e.g. `pa_goal` mapping when available |
-| `goal_label` | string *(optional)* | Human label |
-| `duration_label` | string *(optional)* | e.g. «4 нед · 20 мин» — prototype only until CMS field exists |
+| Field | Tier | Type | Notes |
+|-------|------|------|-------|
+| `id` | required | int | LMS course post ID (or future lite ID) |
+| `slug` | required | string | URL slug |
+| `title` | required | string | Display title |
+| `permalink` | required | string | Public LD course URL or enrolled hub URL (context-dependent) |
+| `thumbnail_url` | optional | string \| null | Featured image; null → placeholder |
+| `excerpt` | optional | string \| null | Short summary |
+| `goal_slug` | deferred | string \| null | Goal grouping post-MVP (`courses.html` groups) |
+| `goal_label` | deferred | string \| null | Human label |
+| `duration_label` | optional | string \| null | e.g. «4 нед · 20 мин» — omit until CMS field exists |
+
+**SoT (today):** LearnDash `sfwd-courses` post (+ linked Woo product attribute when available). **Producible today:** yes for id, slug, title, permalink, thumbnail.
 
 ### 4.2 `EnrollmentState`
 
-Per-user enrollment + progress for one course.
+Per-user enrollment + progress for one course. **Canonical access/expiry fields for enrolled list UI** — use these for status pills, expiry copy, and progress strip (not raw `OrderAccessContext` alone).
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `course_id` | int | FK to course |
-| `is_enrolled` | bool | User has active or recoverable access |
-| `status` | enum | `none` \| `active` \| `expired` \| `completed` \| `pending` |
-| `progress_percent` | int | 0–100; **real backend only** — no fabricated values |
-| `completed_steps` | int | Lessons/steps complete |
-| `total_steps` | int | Total lessons/steps in course |
-| `starts_at` | string *(optional)* | ISO8601 — access window start (see §5 expiry) |
-| `order_completed_at` | string *(optional)* | ISO8601 — granting completed order (fallback start only) |
-| `access_type_label` | string *(optional)* | e.g. «60 дней», «Бессрочно» — from order line / variation |
-| `access_duration_days` | int \| null *(optional)* | Parsed days; **null** = lifetime |
-| `expires_at` | string \| null *(optional)* | ISO8601 end of finite access; **null** = lifetime |
-| `source` | enum | `learndash` \| `atmo-lms-lite` — which backend answered |
+| Field | Tier | Type | Notes |
+|-------|------|------|-------|
+| `course_id` | required | int | FK to course |
+| `is_enrolled` | required | bool | User has LD enrollment record (may still be `expired` / `pending`) |
+| `status` | required | enum | `none` \| `active` \| `expired` \| `completed` \| `pending` |
+| `progress_percent` | optional | int \| null | 0–100 when LD progress exists; **null** → hide progress bar (no fake 0%) |
+| `completed_steps` | optional | int \| null | Lessons complete; **null** when progress unknown |
+| `total_steps` | optional | int \| null | Total lessons; **null** when progress unknown |
+| `starts_at` | optional | string \| null | ISO8601 — access window start (see §5 expiry) |
+| `order_completed_at` | optional | string \| null | ISO8601 — granting completed order (fallback start + traceability) |
+| `access_type_label` | optional | string \| null | e.g. «60 дней», «Бессрочно» — from winning order line / variation |
+| `access_duration_days` | optional | int \| null | Parsed days; **null** = lifetime |
+| `expires_at` | optional | string \| null | ISO8601 end of finite access; **null** = lifetime — **canonical for list UI** |
+| `source_order_id` | optional | int \| null | Woo order that granted the winning access window (support / view-order link) |
+| `source_order_item_id` | optional | int \| null | Granting line item ID |
+| `source` | required | enum | `learndash` \| `atmo-lms-lite` — which backend answered |
+
+**SoT (today):** enrollment = LearnDash + bridge; access window = §5 (LD user meta + Woo duration); progress = LD user progress APIs/meta when present (fixture user **679** has enrollment but **no** progress meta — nulls are expected).
 
 **Status semantics (MVP UI):**
 
-- `none` — not enrolled; show empty / catalog CTA.
-- `active` — can open course hub and continue lesson if `next_lesson` present.
-- `pending` — paid or order exists but access not yet granted (bridge lag, manual review).
-- `expired` — enrolled but **`expires_at` in the past** (finite access ended); show renewal / support CTA, not lesson links.
-- `completed` — 100% progress or LD complete flag; show «Пройдена», optional review CTA.
+- `none` — not enrolled; empty state or omit row.
+- `active` — access valid (`expires_at` null or future); hub + continue CTA when `next_lesson` present.
+- `pending` — no LD enrollment yet, or only non-completed / on-hold orders; generic «ожидание доступа» copy. **Do not** add separate `pending_payment` enum for MVP — unpaid/processing detail lives in `AccessData.reason` / paired `OrderAccessContext.order_status`.
+- `expired` — LD enrollment exists but **`expires_at` in the past**; show renewal via `product_permalink`, not lesson links.
+- `completed` — LD course complete flag **or** verifiable 100% progress only; show «Пройдена».
 
 ### 4.3 `EnrolledCourse`
 
 `CourseCard` + `EnrollmentState` + navigation CTA for list/grid/dashboard rows.
 
-| Field | Type | Notes |
-|-------|------|-------|
-| *(CourseCard fields)* | | |
-| *(EnrollmentState fields)* | | |
-| `last_lesson` | `LessonRef` *(optional)* | Last visited or last completed |
-| `next_lesson` | `LessonRef` *(optional)* | **Only if backend provides** — UI must not invent |
-| `cta_label` | string *(optional)* | e.g. «Продолжить», «Начать», «Пройдена» |
-| `cta_url` | string *(optional)* | Target lesson or course hub; omit if no safe target |
-| `course_hub_url` | string | Enrolled course overview (maps to `product-enrolled.html` intent) |
+| Field | Tier | Type | Notes |
+|-------|------|------|-------|
+| *(CourseCard fields)* | | | see §4.1 |
+| *(EnrollmentState fields)* | | | see §4.2 |
+| `course_hub_url` | required | string | Enrolled course overview (maps to `product-enrolled.html` intent; may be LD course URL until hub port) |
+| `product_permalink` | optional | string \| null | Woo PDP for renewal / «Купить снова» when `expired` or no access; from granting order product/variation |
+| `last_lesson` | deferred | `LessonRef` \| null | Post-MVP outline / diary |
+| `next_lesson` | optional | `LessonRef` \| null | **Null** when unknown — hide «Продолжить» CTA; never invent |
+| `cta_label` | optional | string \| null | e.g. «Продолжить», «Начать», «Пройдена» — omit when no CTA |
+| `cta_url` | optional | string \| null | Lesson or hub URL; omit when `next_lesson` null and status ≠ `active` |
+
+**MVP UI rules:**
+
+- **`progress_percent` null** → no progress bar / no «0%» (fixture #3616 / user 679).
+- **`next_lesson` null** → no continue CTA; generic «Открыть программу» → `course_hub_url` only when `status === active`.
+- **`status === expired`** → CTA → `product_permalink` or catalog; disable lesson links.
+- **`status === pending`** → no lesson links; optional order hint from paired `OrderAccessContext`.
 
 **Prototype mapping:** `courses.html` grid/list rows; `account.html` «Следующий шаг» hero (when adapter supplies `next_lesson`).
 
@@ -137,61 +157,94 @@ Per-user enrollment + progress for one course.
 
 Lightweight lesson pointer for nav, outline, and progress strip — not full lesson body.
 
-**`LessonRef`**
+**`LessonRef`** — used on enrolled list MVP via `EnrolledCourse.next_lesson` only.
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `id` | int | Lesson post ID |
-| `title` | string | Display title |
-| `permalink` | string | Lesson URL (future ATMO lesson template or LD URL until port) |
-| `course_id` | int | Parent course |
-| `order_index` | int | 1-based step number in course outline |
+| Field | Tier | Type | Notes |
+|-------|------|------|-------|
+| `id` | required | int | Lesson post ID |
+| `title` | required | string | Display title |
+| `permalink` | required | string | Lesson URL (LD URL until ATMO lesson template) |
+| `course_id` | required | int | Parent course |
+| `order_index` | required | int | 1-based step in course outline |
 
-**`LessonProgress`** extends `LessonRef`:
+**SoT (today):** LearnDash lessons + `learndash_get_course_lessons_list` / progress APIs. **Producible today:** yes when LD exposes next step; **null** `next_lesson` when progress API returns nothing.
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `is_complete` | bool | |
-| `is_accessible` | bool | false → show locked state in outline |
-| `is_current` | bool *(optional)* | Highlight in course outline |
-| `prev` | `LessonRef` *(optional)* | |
-| `next` | `LessonRef` *(optional)* | |
-| `content_html` | string *(optional)* | **Deferred** — full lesson port post-MVP; adapter may omit in v0 |
+**`LessonProgress`** extends `LessonRef` — **deferred for enrolled list MVP** (course hub outline post-MVP):
+
+| Field | Tier | Type | Notes |
+|-------|------|------|-------|
+| `is_complete` | required | bool | |
+| `is_accessible` | required | bool | false → locked in outline |
+| `is_current` | optional | bool | Highlight in outline |
+| `prev` | optional | `LessonRef` \| null | |
+| `next` | optional | `LessonRef` \| null | |
+| `content_html` | deferred | string \| null | Full lesson port post-MVP |
 
 **Prototype mapping:** `product-enrolled.html` outline steps; `lesson.html` breadcrumb + prev/next.
 
 ### 4.5 `AccessData`
 
-Effective access for gating UI (course hub, lesson entry).
+Effective access for gating UI (course hub, lesson entry). **Enrolled list MVP** uses **`EnrollmentState.status`** + `expires_at` for row copy; `AccessData` is for **`get_access()`** on hub/lesson routes (post-MVP deep port).
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `has_access` | bool | |
-| `reason` | enum | `enrolled` \| `purchase_pending` \| `expired` \| `guest` \| `none` |
-| `expiry` | string *(optional)* | Display expiry |
-| `product_id` | int *(optional)* | Linked Woo product |
-| `order_id` | int *(optional)* | Granting order |
+| Field | Tier | Type | Notes |
+|-------|------|------|-------|
+| `has_access` | required | bool | |
+| `reason` | required | enum | `enrolled` \| `purchase_pending` \| `expired` \| `guest` \| `none` |
+| `expiry` | optional | string \| null | ISO8601 — mirrors `EnrollmentState.expires_at` for gating context |
+| `product_id` | optional | int \| null | Linked Woo product |
+| `order_id` | optional | int \| null | Granting or pending order |
+
+**`purchase_pending`** covers unpaid/processing/on-hold Woo orders without LD enrollment — use for hub gating and support copy; enrolled list rows use `EnrollmentState.status === pending` instead of a separate enum value.
 
 ### 4.6 `OrderAccessContext`
 
-Read-only Woo context for **display** alongside LMS enrollment — **not** enrollment source of truth.
+Read-only Woo context for **display** alongside LMS enrollment — **not** enrollment source of truth. Per-order mirror of expiry fields; **list UI reads `EnrollmentState.expires_at`** after multi-order merge (§5).
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `order_id` | int | |
-| `order_status` | string | Woo status slug |
-| `product_id` | int | |
-| `product_name` | string | |
-| `variation_id` | int *(optional)* | From order line — use for `_related_course` lookup on variable products |
-| `order_completed_at` | string *(optional)* | ISO8601 — Woo order completed timestamp |
-| `access_type_label` | string *(optional)* | From item meta `тип-доступа` (e.g. «60 дней», «Бессрочно») |
-| `access_duration_days` | int \| null *(optional)* | Parsed from label; **null** = «Бессрочно» |
-| `starts_at` | string *(optional)* | ISO8601 — computed per §5 (for this order/grant context) |
-| `expires_at` | string \| null *(optional)* | ISO8601 or **null** (lifetime) — computed per §5 |
-| `quiz_meta` | object *(optional)* | Snippet #15 `_atmo_quiz` / `atmo_*` keys — display or support only |
-| `purchased_at` | string *(optional)* | Order created date (informational; **not** access start for MVP) |
+| Field | Tier | Type | Notes |
+|-------|------|------|-------|
+| `order_id` | required | int | |
+| `order_item_id` | optional | int \| null | Granting line item — pairs with `EnrollmentState.source_order_item_id` |
+| `order_status` | required | string | Woo status slug |
+| `product_id` | required | int | |
+| `product_name` | required | string | |
+| `variation_id` | optional | int \| null | From order line — use for `_related_course` lookup on variable products |
+| `order_completed_at` | optional | string \| null | ISO8601 — Woo order completed timestamp |
+| `access_type_label` | optional | string \| null | From item meta `тип-доступа` (e.g. «60 дней», «Бессрочно») |
+| `access_duration_days` | optional | int \| null | Parsed from label; **null** = «Бессрочно» |
+| `starts_at` | optional | string \| null | ISO8601 — computed per §5 for **this order** |
+| `expires_at` | optional | string \| null | ISO8601 or **null** (lifetime) — computed per §5 for **this order** |
+| `quiz_meta` | deferred | object \| null | Snippet #15 — display/support only |
+| `purchased_at` | optional | string \| null | Order created date (informational; **not** access start for MVP) |
 
-**Rule:** adapter **pairs** `OrderAccessContext` with `EnrollmentState` for pills and empty/pending copy; must not treat order line or **`тип-доступа`** alone as enrolled. **`access_type_label`** is not enrollment SoT (confirmed #3801 fixture — `CHANGES.md` 2026-05-22 mapping discovery).
+**Rule:** adapter **pairs** `OrderAccessContext` with `EnrollmentState` for pills and pending copy; must not treat order line or **`тип-доступа`** alone as enrolled. **`access_type_label`** is not enrollment SoT (confirmed #3801 fixture — `CHANGES.md` 2026-05-22 mapping discovery).
+
+### 4.7 ViewModel sign-off decisions (2026-05-22)
+
+Contract accepted for MVP **`/my-account/my-courses/`**. Specific answers:
+
+| # | Question | Decision |
+|---|----------|----------|
+| 1 | `progress_percent` optional/nullable? | **Yes** — `int \| null`; hide bar when null |
+| 2 | `completed_steps` / `total_steps` optional? | **Yes** — `int \| null`; omit step copy when null |
+| 3 | `next_lesson` nullable; hide CTA when absent? | **Yes** — `LessonRef \| null`; no synthetic continue link |
+| 4 | `expires_at` in `EnrollmentState`, `OrderAccessContext`, or both? | **Both** — `EnrollmentState` = canonical merged window for UI; `OrderAccessContext` = per-order computed values for traceability |
+| 5 | Separate `pending_payment` in `status`? | **No for MVP** — keep `pending`; use `AccessData.reason = purchase_pending` + `order_status` when detail needed |
+| 6 | `source_order_id` / `source_order_item_id`? | **Yes** — optional on `EnrollmentState`; `order_item_id` on `OrderAccessContext` |
+| 7 | `product_permalink` for expired renewal CTA? | **Yes** — optional on `EnrolledCourse` |
+| 8 | No UI reads LearnDash HTML/classes? | **Confirmed** — ViewModels only; LD URLs allowed in `permalink` fields until ATMO templates exist |
+
+**MVP UI state coverage:**
+
+| UI state | Primary fields |
+|----------|----------------|
+| Empty enrolled | `get_enrolled_courses()` → `[]` |
+| Enrolled list row | `EnrolledCourse` + `CourseCard` + `EnrollmentState` |
+| Active finite access | `status: active`, `expires_at` future, `access_type_label` |
+| Lifetime access | `expires_at: null`, `access_duration_days: null`, label «Бессрочно» |
+| Expired access | `status: expired`, `product_permalink` for renewal |
+| Pending / no active access | `status: pending`, optional paired `OrderAccessContext` |
+| Continue CTA | `next_lesson` + `cta_url` only when adapter provides |
+| No fake progress | `progress_percent: null` → no bar |
 
 ---
 
@@ -259,7 +312,7 @@ Post-MVP: reconcile with refunds / `atmo-lms-lite` if rules diverge.
 
 #### ViewModel fields
 
-`EnrollmentState` and `OrderAccessContext` both expose: **`starts_at`**, **`order_completed_at`**, **`access_type_label`**, **`access_duration_days`**, **`expires_at`** (see §4.2, §4.6).
+`EnrollmentState` and `OrderAccessContext` both expose: **`starts_at`**, **`order_completed_at`**, **`access_type_label`**, **`access_duration_days`**, **`expires_at`** (see §4.2, §4.6). **`EnrollmentState`** also carries optional **`source_order_id`** / **`source_order_item_id`**; **`EnrolledCourse`** adds optional **`product_permalink`** for renewal CTAs (§4.7).
 
 ---
 
@@ -285,9 +338,9 @@ Implementation file/namespace TBD in child theme or small mu-plugin. v0 defines 
 Minimum first ship once route + adapter are approved (maps to `courses.html` default empty state + future demo-off behavior):
 
 1. **Empty enrolled state** — user with zero enrollments: honest copy + CTAs to catalog and/or «Программы» (`/courses/`); no fake rows.
-2. **Enrolled list** — one or more `EnrolledCourse` rows/cards: title, status, real `progress_percent` when available.
-3. **Continue / next lesson CTA** — render **only** when adapter returns `next_lesson` + `cta_url`; otherwise generic «Открыть программу» or hub link only.
-4. **Expired / pending** — distinct copy and disabled lesson links when `status` is `expired` or `pending`; surface `access_type_label` / order hint when `OrderAccessContext` exists.
+2. **Enrolled list** — one or more `EnrolledCourse` rows/cards: title, status, `access_type_label` / `expires_at` when finite; **`progress_percent` only when non-null**.
+3. **Continue / next lesson CTA** — render **only** when adapter returns non-null `next_lesson` + safe `cta_url`; otherwise hub link or «Открыть программу» when `status === active`.
+4. **Expired / pending** — distinct copy and disabled lesson links when `status` is `expired` or `pending`; **`product_permalink`** for renewal; surface order hint when `OrderAccessContext` exists.
 
 **Explicitly later (post-MVP):** list/grid toggle, goal grouping, course hub hero, full lesson port, diary/trainer widgets (`account.html` localStorage panels).
 
@@ -325,16 +378,17 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 
 Before any enrolled UI or route implementation:
 
-- [ ] Product approves this ViewModel field list (or documents deltas).
+- [x] Product approves ViewModel field list — **2026-05-22** (§4.7).
 - [x] Enrolled route chosen: **`/my-account/my-courses/`** (`BACKLOG.md` #2 — 2026-05-22).
 - [ ] Woo **`my-courses`** endpoint audit + registration plan (no implementation in spec commit).
-- [ ] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver above).
+- [x] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver §5).
 - [ ] Code Snippets export/backup completed.
 - [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
 - [x] **Access expiry semantics** — LD access start + Woo duration label (`CHANGES.md` 2026-05-22).
+- [x] **No LearnDash HTML in ATMO UI** — ViewModels only (§3, §4.7 #8).
 
-**After sign-off:** implement adapter behind this contract only; theme work references this file, not LD internals.
+**After sign-off:** implement adapter behind this contract only; theme work references this file, not LD internals. **Remaining gate:** endpoint audit + snippets export before PHP/route work.
 
 ---
 
-*Spec v0 — 2026-05-22. Route decided same day; adapter sign-off pending.*
+*Spec v0 — 2026-05-22. Route, mapping, expiry, and ViewModel contract signed off; endpoint audit pending.*

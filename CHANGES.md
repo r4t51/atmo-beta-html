@@ -6,6 +6,22 @@
 
 ---
 
+## 2026-05-22 — LMS Adapter ViewModel contract sign-off (MVP)
+
+- **Scope:** docs review/sign-off only; no WP/PHP/DB/LD/lite settings changes
+- **Decision:** ViewModel contract in `LMS_ADAPTER_SPEC.md` **accepted** for MVP **`/my-account/my-courses/`**
+- **Progress fields:** `progress_percent`, `completed_steps`, `total_steps` → **optional `int | null`**; UI hides bar when null (no fake 0%)
+- **Continue CTA:** `next_lesson` → **`LessonRef | null`**; hide continue link when absent
+- **Expiry:** **`expires_at` on both** `EnrollmentState` (canonical merged window) and `OrderAccessContext` (per-order)
+- **Pending:** keep single `pending` status; **`pending_payment`** deferred — use `AccessData.reason = purchase_pending` for order detail
+- **Traceability:** optional **`source_order_id`**, **`source_order_item_id`** on `EnrollmentState`; **`order_item_id`** on `OrderAccessContext`
+- **Renewal CTA:** optional **`product_permalink`** on `EnrolledCourse` for expired / no-access rows
+- **LD coupling:** confirmed — ATMO UI consumes ViewModels only; no LearnDash HTML/classes in theme chrome
+- **Still blocked:** `my-courses` Woo endpoint audit + registration; Code Snippets export before adapter PHP
+- **Docs:** `LMS_ADAPTER_SPEC.md` §4.7 · `BACKLOG.md` §2 decision #3
+
+---
+
 ## 2026-05-22 — Access expiry semantics (adapter MVP)
 
 - **Scope:** docs-only product decision; no WP/PHP/DB/LD/lite settings changes
@@ -41,7 +57,7 @@
 - **Rejected:** standalone `/my-courses/`; public `/courses/` as enrolled view; LD shortcode page; wait-for-lite-only
 - **Why:** `courses.html` uses **account shell** (same sidebar IA as `account.html`); enrolled state = user account data; reuses `atmo-account.css` + existing endpoint audit pattern; no LD slug collision
 - **Unchanged:** `/courses/` stays public LearnDash archive — nav **«Программы»** (header, footer, account menu)
-- **Still blocked:** adapter sign-off (`LMS_ADAPTER_SPEC.md` §10); `my-courses` endpoint registration audit; Code Snippets export
+- **Still blocked (superseded):** ~~adapter sign-off~~ — done 2026-05-22; **`my-courses`** endpoint registration audit; Code Snippets export
 - **Docs:** `LMS_ADAPTER_SPEC.md` §2 · `BACKLOG.md` §2 decision #2
 
 ---

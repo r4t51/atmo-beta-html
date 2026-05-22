@@ -157,23 +157,23 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 
 ### LMS Architecture Rule
 
-**Adapter spec (v0):** `LMS_ADAPTER_SPEC.md` — ViewModel contract, MVP enrolled UI, route candidates, sign-off checklist. This section is a short field summary only.
+**Adapter spec (v0):** `LMS_ADAPTER_SPEC.md` — ViewModel contract **signed off 2026-05-22** (§4.7), MVP enrolled UI, sign-off checklist. This section is a short field summary only.
 
 Не копировать LearnDash HTML как финальный UI. Все course/lesson компоненты должны получать нормализованные данные через **adapter interface** (PHP), not LD DOM/classes:
 
 | ViewModel | Минимальные данные |
 |---|---|
-| `CourseCard` | id, title, slug, permalink, thumbnail_url, excerpt, price_html?, categories[], goal_slug? |
-| `EnrollmentState` | course_id, is_enrolled, status, progress_*, **starts_at**, **order_completed_at**, **access_type_label**, **access_duration_days**, **expires_at**, source |
-| `EnrolledCourse` | CourseCard + EnrollmentState + last_lesson?, next_lesson?, cta_label, cta_url |
-| `LessonRef` / `LessonProgress` | id, title, permalink, course_id, order_index, is_complete, is_accessible, prev?, next?, content_html? (deferred) |
-| `AccessData` | has_access, reason, expiry?, product_id?, order_id? |
-| `OrderAccessContext` | order_id, order_status, product_id, product_name, **order_completed_at**, **access_type_label**, **access_duration_days**, **starts_at**, **expires_at**, quiz_meta?, variation_id? — pairing/display; enrollment SoT = LD |
+| `CourseCard` | id, title, slug, permalink, thumbnail_url?, excerpt?, duration_label? |
+| `EnrollmentState` | course_id, is_enrolled, status, progress_percent?, completed_steps?, total_steps?, **starts_at**, **order_completed_at**, **access_type_label**, **access_duration_days**, **expires_at** (canonical UI), **source_order_id?**, **source_order_item_id?**, source |
+| `EnrolledCourse` | CourseCard + EnrollmentState + **course_hub_url**, **product_permalink?**, next_lesson?, cta_label?, cta_url? |
+| `LessonRef` / `LessonProgress` | LessonRef: id, title, permalink, course_id, order_index — list MVP via `next_lesson` only; full `LessonProgress[]` deferred |
+| `AccessData` | has_access, reason (`purchase_pending` for unpaid orders), expiry?, product_id?, order_id? |
+| `OrderAccessContext` | order_id, **order_item_id?**, order_status, product_id, product_name, **order_completed_at**, **access_type_label**, **access_duration_days**, **starts_at**, **expires_at** (per-order), variation_id? — pairing only |
 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
 
-До sign-off **`LMS_ADAPTER_SPEC.md` v0** не начинать глубокий перенос `lesson.html`, `product-enrolled.html`, enrolled course dashboard, или access UI. **Do not touch LearnDash templates.**
+До **`my-courses`** endpoint audit + Code Snippets export не начинать PHP adapter, route registration, или глубокий перенос `lesson.html`, `product-enrolled.html`. ViewModel contract **signed off 2026-05-22** (`LMS_ADAPTER_SPEC.md` §4.7). **Do not touch LearnDash templates.**
 
 ## Custom ATMO Plugins
 
@@ -293,6 +293,6 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 **Architectural blockers (do not bypass):**
 
-- LMS adapter / ViewModel decision — before real LMS/enrolled widgets on `/my-account/` or `/courses/`
+- LMS adapter / ViewModel contract **signed off 2026-05-22** — PHP adapter + `my-courses` endpoint audit before enrolled widgets
 - Do not touch LearnDash templates or build critical UI on `atmo-lms-lite` without explicit decision
 - Saved-card / payment-token scope — requires explicit approval before live-QA or UI work

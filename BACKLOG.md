@@ -78,11 +78,11 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 |---|----------|--------|
 | 1 | **Interim nav label** for public `/courses/` archive | **Done (2026-05-22):** **«Программы»** in header, footer, account menu — see `CHANGES.md` |
 | 2 | **Target enrolled route** — where real **«Мои курсы»** lives | **Done (2026-05-22):** **`/my-account/my-courses/`** Woo endpoint — see `LMS_ADAPTER_SPEC.md` §2, `CHANGES.md` |
-| 3 | **Adapter interface sign-off** — PHP adapter + ViewModel before enrolled UI | **Open** — draft spec: **`LMS_ADAPTER_SPEC.md` v0** |
+| 3 | **Adapter interface sign-off** — PHP adapter + ViewModel before enrolled UI | **Done (2026-05-22):** ViewModel contract accepted — `LMS_ADAPTER_SPEC.md` §4.7 · `CHANGES.md` |
 | 4 | **Product ↔ course mapping** — Woo sell-side → LD course ID | **Done (2026-05-22):** `_related_course` + variation-first resolver — `CHANGES.md` mapping discovery · `LMS_ADAPTER_SPEC.md` §5 |
 | 5 | **Access expiry semantics** — «60 дней» / `expires_at` when LD `expire_access` off | **Done (2026-05-22):** `starts_at` from LD access meta + duration from `тип-доступа` — `LMS_ADAPTER_SPEC.md` §5 · `CHANGES.md` |
 
-**Recommendation:** keep `/courses/` public **«Программы»**; build enrolled MVP at **`/my-account/my-courses/`** after adapter sign-off (#3) + endpoint audit.
+**Recommendation:** keep `/courses/` public **«Программы»**; build enrolled MVP at **`/my-account/my-courses/`** after **`my-courses`** endpoint audit + Code Snippets export.
 
 ### Route options (reference)
 
@@ -108,8 +108,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 | Item | Blocker |
 |------|---------|
-| Real LMS/enrolled dashboard widgets | Adapter sign-off (#3) |
-| «Мои курсы» enrolled view | Adapter sign-off (#3) + `my-courses` endpoint audit — route decided: **`/my-account/my-courses/`** |
+| Real LMS/enrolled dashboard widgets | `my-courses` endpoint audit + adapter PHP |
+| «Мои курсы» enrolled view | **`my-courses`** endpoint audit + registration — route + ViewModel contract done |
 | LearnDash templates | Do not touch until adapter decided |
 | `atmo-lms-lite` critical UI | Dev-only; no front-end without explicit decision |
 | Course progress / next lesson / enrolled cards | Prototype in `courses.html` (demo off); `account.html` MVP-safe shell only |
@@ -150,7 +150,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Item | Notes |
 |------|--------|
 | Preview mu-plugin — remove later | **Decision (2026-05-22): keep for now** — low-risk legacy comparison tool. **Local-only / unversioned:** `wp-content/mu-plugins/atmo-redesign-preview.php`, `wp-content/mu-plugins/atmo-redesign/assets/css/atmo-preview.css`. **Runtime:** no-op without `?atmo_preview_shell=1`; normal pages use child header/footer; preview assets, body classes, and legacy header/footer only with query param. **Remove when all checked:** ☐ explicit sign-off that child header/footer are canonical ☐ `?atmo_preview_shell=1` compare no longer needed ☐ backup/snapshot 2 mu-plugin files before delete ☐ optional kadence-child cleanup: `body.atmo-preview-shell-enabled` rules in `atmo-header.css` / `atmo-footer.css` + preview-font comment in `functions.php`. Details/rollback: `CHANGES.md` → 2026-05-22 preview mu-plugin discovery. |
-| Adapter / ViewModel interface | Gate for LMS + enrolled UI; **spec:** `LMS_ADAPTER_SPEC.md` v0 · summary fields in `WP_DEPENDENCY_MAP.md` · route options in §2 above |
+| Adapter / ViewModel interface | **Signed off 2026-05-22** — `LMS_ADAPTER_SPEC.md` §4.7 · summary in `WP_DEPENDENCY_MAP.md` |
 | Code Snippets — export/version | **Before adapter implementation or snippet migration** — snippets live in DB `wp_snippets` only (not VCS); export/backup registry in `WP_DEPENDENCY_MAP.md`; audit `CHANGES.md` → 2026-05-22 Code Snippets audit |
 | Cross-repo rollback notes | Keep `CHANGES.md` as source of truth for DB + kadence-child commits |
 
