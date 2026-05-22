@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Мои курсы — ATMO</title>
+<title>Курсы — ATMO</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -139,6 +139,7 @@
     display: inline-flex; gap: 4px; padding: 4px;
     background: var(--bg-warm); border-radius: 999px;
   }
+  .toggle-view[hidden] { display: none !important; }
   .toggle-view button {
     padding: 6px 14px; border-radius: 999px;
     background: transparent; border: none; cursor: pointer;
@@ -275,11 +276,11 @@
         <header class="page-head" style="padding-top:0">
           <div style="display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap">
             <div>
-              <span class="eyebrow with-tick">Куплены · 3 из 19</span>
-              <h1>Мои курсы</h1>
-              <p>Программы, к которым у вас открыт доступ. Сгруппировано по цели.</p>
+              <span class="eyebrow with-tick" id="courses-eyebrow">Прототип · будущий экран доступа</span>
+              <h1>Курсы</h1>
+              <p id="courses-lead">На сайте <code style="font-family:'Space Mono',monospace;font-size:13px">/courses/</code> сейчас — публичный архив LearnDash. Здесь — прототип будущего «Мои курсы» с доступом и прогрессом после подключения LMS.</p>
             </div>
-            <div class="toggle-view" role="tablist">
+            <div class="toggle-view" role="tablist" id="view-toggle" hidden>
               <button id="btn-list">Списком</button>
               <button id="btn-grid" class="active">Сеткой</button>
             </div>
@@ -300,32 +301,44 @@
   <script>
     ATMO.renderShell({ active: 'courses' });
 
-    // Simulate owned courses — in production comes from user's purchases
-    const OWNED_IDS = ['belly-floor', 'levelup-neuro', 'cardio-zero'];
-    const PROGRESS  = { 'belly-floor': 28, 'levelup-neuro': 32, 'cardio-zero': 100 };
+    /*
+     * FUTURE ENROLLED VIEW — aspirational prototype only.
+     * Live WP /courses/ = public LearnDash archive (see catalog.html for browse).
+     * Enrolled courses + progress require LMS adapter decision — do not wire fake data.
+     *
+     * Set SHOW_ENROLLED_DEMO = true to preview list/grid layout with static demo IDs.
+     */
+    const SHOW_ENROLLED_DEMO = false;
+    const DEMO_OWNED_IDS = ['belly-floor', 'levelup-neuro', 'cardio-zero'];
+    const DEMO_PROGRESS  = { 'belly-floor': 28, 'levelup-neuro': 32, 'cardio-zero': 100 };
+
+    const OWNED_IDS = SHOW_ENROLLED_DEMO ? DEMO_OWNED_IDS : [];
+    const PROGRESS  = SHOW_ENROLLED_DEMO ? DEMO_PROGRESS : {};
 
     const owned = ATMO.PRODUCTS.filter(p => OWNED_IDS.includes(p.id));
 
-    // Update eyebrow count dynamically
-    document.querySelector('.eyebrow.with-tick').textContent =
-      `Куплены · ${owned.length} из ${ATMO.PRODUCTS.length}`;
-
     if (owned.length === 0) {
-      document.querySelector('.toggle-view').style.display = 'none';
-      document.querySelector('header.page-head p').textContent =
-        'Здесь появятся программы, к которым у вас открыт доступ.';
+      document.getElementById('view-toggle').hidden = true;
       const emptyHTML = `
         <div class="courses-empty">
-          <div class="empty-icon">🎓</div>
-          <h2>Курсов пока нет</h2>
-          <p>Выберите программу из каталога — доступ откроется сразу после оплаты.</p>
+          <div class="empty-icon">📚</div>
+          <h2>Доступ к курсам пока не подключён</h2>
+          <p>Прогресс и список купленных программ появятся после решения по LMS-адаптеру. Сейчас все программы доступны в публичном архиве.</p>
           <div class="empty-actions">
-            <a class="btn btn-primary btn-lg" href="catalog.html">Посмотреть программы</a>
+            <a class="btn btn-primary btn-lg" href="catalog.html">Смотреть каталог</a>
+            <a class="btn btn-ghost btn-lg" href="account.html">В кабинет</a>
           </div>
         </div>`;
+      document.getElementById('view-list').classList.remove('hidden');
+      document.getElementById('view-grid').classList.remove('visible');
       document.getElementById('view-list').innerHTML = emptyHTML;
       document.getElementById('view-grid').innerHTML = '';
     } else {
+      document.getElementById('view-toggle').hidden = false;
+      document.getElementById('courses-eyebrow').textContent =
+        `Прототип · ${owned.length} из ${ATMO.PRODUCTS.length} (демо)`;
+      document.getElementById('courses-lead').textContent =
+        'Демо-данные для проверки макета. В продакшне список и прогресс придут из LMS после покупки.';
 
     const groups = ['energy', 'mobility', 'strength'];
     const groupTitles = {
