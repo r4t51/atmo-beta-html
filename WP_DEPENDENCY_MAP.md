@@ -63,7 +63,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 
 - ✅ Woo My Account (`assets/css/atmo-account.css`, `inc/atmo-account.php`):
   - CSS на `is_account_page()` only; LearnDash `/courses/`, `/profile/`, `/reset-password/` not enqueued.
-  - Menu filter (`d4ee689`): Обзор → `dashboard` · Мои курсы → `/courses/` (external link, not Woo rewrite) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout`
+  - Menu filter (`d4ee689`): Обзор → `dashboard` · Программы → `/courses/` (external link, not Woo rewrite) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout`
   - Hidden from nav, direct URL only: `downloads`, `edit-address` (+ billing/shipping), `payment-methods`
   - Styled passes: auth (`353346c`), shell (`3122f4f`), dashboard static shell (`534b241`), orders (`3704226`), view-order access-type meta (`2da518f`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
   - Account shell/wiring done; completed #3801 view-order QA (line item shell, qty/total, customer details, order-again visibility — not clicked); access-type meta pill on view-order (`2da518f`, item meta `тип-доступа`); saved payment-methods table not live-QA'd; real LMS/enrolled widgets deferred until adapter decision
@@ -119,7 +119,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 | My Account page | `/my-account/` + Woo endpoints; menu IA in `inc/atmo-account.php` |
 | Account menu | 5 items — see Theme Layer Woo My Account block |
 | Hidden account URLs | `/my-account/downloads/`, `/edit-address/`, `/payment-methods/` (reachable, not in nav) |
-| `/courses/` from account nav | External LearnDash **public archive**, **not** a Woo endpoint rewrite; label «Мои курсы» pending product decision — see LMS Map |
+| `/courses/` from account nav | External LearnDash **public archive**, **not** a Woo endpoint rewrite; nav label **«Программы»** (interim, 2026-05-22) — real **«Мои курсы»** enrolled route still open |
 
 Активные WC-расширения, которые важно учитывать:
 
@@ -136,7 +136,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 Текущий runtime для course/lesson UI: LearnDash.  
 `atmo-lms-lite` **active** on Local, in development — candidate future runtime; не строить критичный UI на нём без явного решения; **no front-end assets observed** on course routes (2026-05-22 QA).
 
-**Route reality (2026-05-22):** `/courses/` = LearnDash **public CPT archive** (`post-type-archive-sfwd-courses`, 18 cards, no enrolled filter). Header/footer/account nav label **«Мои курсы»** → `/courses/` — UX mismatch confirmed; product decision pending. **`/courses/` stays public** until enrolled route is chosen. Active route options A–E: **`BACKLOG.md` §2** (do not implement without adapter + product sign-off).
+**Route reality (2026-05-22):** `/courses/` = LearnDash **public CPT archive** (`post-type-archive-sfwd-courses`, 18 cards, no enrolled filter). Header/footer/account nav **«Программы»** → `/courses/` (interim relabel done — `CHANGES.md`). Name **«Мои курсы»** reserved for future enrolled route. **`/courses/` stays public.** Active route options B–E: **`BACKLOG.md` §2**.
 
 LearnDash CPTs:
 

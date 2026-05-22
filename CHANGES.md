@@ -6,6 +6,21 @@
 
 ---
 
+## 2026-05-22 — Interim nav relabel: `/courses/` → «Программы»
+
+- **Scope:** label-only in kadence-child; docs update; no route/endpoint/LD/prototype changes
+- **Commit:** `be90ec5` — Relabel courses archive nav to Programs
+- **WP files:** `inc/atmo-header.php`, `inc/atmo-footer.php`, `inc/atmo-account.php` — visible label **«Мои курсы»** → **«Программы»** for `/courses/` links; href and endpoint slug `atmo-courses` unchanged
+- **Unchanged:** dashboard card **«Курсы»**; CTAs **«К программам»** / **«Смотреть программы»**; shell note reserving future **«Мои курсы»** enrolled screen
+- **QA (r4t5, read-only):** `/`, `/courses/`, `/my-account/` — desktop 1440×900 + mobile 390×844 — PASS
+  - Header, footer, account menu: **«Программы»** → `/courses/`
+  - No **«Мои курсы»** in ATMO header/footer/account nav
+  - `/courses/` still public LD archive (h1 «Курсы», 18 cards); no layout overflow observed
+- **Note:** hidden legacy Kadence menu may still show **«Все Курсы»** in DOM — not ATMO child nav
+- **Decision:** BACKLOG option A interim fix applied; real **«Мои курсы»** enrolled route still open — see `BACKLOG.md` §2
+
+---
+
 ## 2026-05-22 — LMS adapter / «Мои курсы» route discovery
 
 - **Scope:** read-only discovery + docs decision record; no code/DB/plugin settings/LearnDash template/atmo-lms-lite UI changes; no commit in this step

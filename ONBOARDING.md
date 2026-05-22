@@ -106,10 +106,10 @@ npx http-server . -p 3333 --cors -c-1
 
 Сейчас рабочий сайт использует LearnDash для course/lesson UI. `atmo-lms-lite` **active** on Local, still in development — не строить на нём критичный UI без явного решения.
 
-**`/courses/` vs «Мои курсы» (2026-05-22 discovery):**
+**`/courses/` vs «Мои курсы» (2026-05-22):**
 
 - Live **`/courses/`** = LearnDash **public archive** (18 courses, no enrolled filter, no progress UI) — not the enrolled «Мои курсы» screen.
-- Header, footer, and account menu still label the link **«Мои курсы»** → `/courses/` — UX mismatch **confirmed**; intentional pending **product decision** (interim relabel vs future enrolled route). Details: `BACKLOG.md` §2, `CHANGES.md` → 2026-05-22 LMS discovery.
+- **Interim nav (2026-05-22):** header, footer, and account menu label the public archive **«Программы»** → `/courses/` (`CHANGES.md`). Name **«Мои курсы»** reserved for future enrolled route.
 - `atmo-account.css` does **not** load on `/courses/`.
 
 Правило: не строить финальные course/lesson шаблоны на LearnDash HTML. Course/lesson UI должен идти через adapter/ViewModel слой:
@@ -157,7 +157,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
 - Добавлен `assets/css/atmo-base.css` с безопасными `--atmo-*` design tokens.
 - Google Fonts подключены в child theme.
 - ✅ Header перенесён: `inc/atmo-header.php` (хук `kadence_before_header`), `assets/css/atmo-header.css`, `assets/js/atmo-header.js`.
-  - Sticky nav: brand, 4 ссылки (Главная / Каталог / Мои курсы / Кабинет), корзина `/cart-2/`, burger + drawer.
+  - Sticky nav: brand, 4 ссылки (Главная / Каталог / Программы / Кабинет), корзина `/cart-2/`, burger + drawer.
   - Active state: `is_front_page()`, `is_shop()`, `sfwd-*`, `is_account_page()`.
   - Drawer: overlay + Escape + ✕ закрывают.
 - ✅ Footer перенесён: `inc/atmo-footer.php` (хук `kadence_before_footer`), `assets/css/atmo-footer.css`.
@@ -187,7 +187,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
 - ✅ Checkout — shell: `assets/css/atmo-checkout.css`; order-received → `atmo-confirmation.css`; re-QA PASS 2026-05-22 — `CHANGES.md`. `/payment-failed/` → 404 by design.
 - ✅ Woo My Account — passes 1–5 + mobile orders fix: `assets/css/atmo-account.css`, `inc/atmo-account.php` (menu filter in `functions.php`).
   - CSS только на `is_account_page()`; `/courses/`, `/profile/`, `/reset-password/` (LearnDash) **не** enqueued.
-  - **Меню (5 пунктов):** Обзор → `dashboard` · Мои курсы → `/courses/` (внешний LD public archive, не Woo endpoint; label pending product decision — см. LMS posture) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout`
+  - **Меню (5 пунктов):** Обзор → `dashboard` · Программы → `/courses/` (внешний LD public archive, не Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout`
   - **Скрыты из меню, доступны по прямому URL:** `/my-account/downloads/`, `/my-account/edit-address/` (+ `billing`/`shipping`), `/my-account/payment-methods/`
   - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta
   - **Dashboard (`534b241`):** static ATMO cards on logged-in `/my-account/` only; last order read-only Woo summary; no LMS progress / fake enrolled data; `/courses/` stays public LD archive
@@ -215,7 +215,7 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Blocked** — LMS adapter / ViewModel + «Мои курсы» route decision (before enrolled UI)
+1. **Blocked** — LMS adapter / ViewModel + enrolled **«Мои курсы»** route (interim public archive label **«Программы»** done — `CHANGES.md`)
 2. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows
 3. **Optional polish** — catalog chip URLs, PDP #3614 tier hero, static `/payment-failed/` page
 4. **Data/fixture QA** — saved address profile, filled address forms, downloads with real files

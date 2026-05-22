@@ -66,19 +66,21 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | `/courses/` | LearnDash **public CPT archive** — `post-type-archive-sfwd-courses`, `learndash-template-ld30`, h1 «Курсы», **18** cards, no progress/status UI |
 | Logged-in behavior | Still shows all 18 public courses — **not** enrolled-only |
 | Single course | e.g. `/courses/testmyself/` — LD single template, `.learndash-wrapper`, course contents / lesson links |
-| Nav label **«Мои курсы»** | Header, footer, account menu → **`/courses/`** (external LD URL via fake endpoint `atmo-courses`) |
-| UX mismatch | Label implies «my enrolled courses»; route is public archive — **confirmed**, intentional pending product decision |
+| Nav label **«Программы»** | Header, footer, account menu → **`/courses/`** (external LD URL via fake endpoint `atmo-courses`) — **interim relabel done 2026-05-22** |
+| UX mismatch (interim) | **Resolved** for public archive link; name **«Мои курсы»** reserved for future enrolled route |
 | CSS scope | `atmo-account.css` on `is_account_page()` only — **not** on `/courses/` |
 | Primary runtime | LearnDash `sfwd-lms` 5.0.5 + Woo bridge |
 | `atmo-lms-lite` | Active on Local v0.2.0, dev-only — no front-end assets observed |
 
-### Needed product decisions (before code)
+### Product decisions
 
-1. **Interim nav label** — keep «Мои курсы» until enrolled route ships, or relabel public link to «Все курсы» / «Программы»?
-2. **Target enrolled route** — where should real «Мои курсы» live?
-3. **Adapter interface sign-off** — PHP adapter + ViewModel fields before any enrolled UI or lesson port.
+| # | Decision | Status |
+|---|----------|--------|
+| 1 | **Interim nav label** for public `/courses/` archive | **Done (2026-05-22):** **«Программы»** in header, footer, account menu — see `CHANGES.md` |
+| 2 | **Target enrolled route** — where real **«Мои курсы»** lives | **Open** |
+| 3 | **Adapter interface sign-off** — PHP adapter + ViewModel before enrolled UI | **Open** |
 
-**Recommendation (docs only, 2026-05-22):** no implementation yet; keep `/courses/` public until decisions 1–3 are made.
+**Recommendation:** keep `/courses/` public; enrolled UI waits on decisions 2–3 + adapter.
 
 **Leaning guidance (not final):**
 
@@ -89,7 +91,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 | Opt | Approach | Pros | Cons / risks |
 |-----|----------|------|--------------|
-| **A** | Keep `/courses/` public; relabel nav to «Все курсы» / «Программы» | Zero LD/Woo risk; honest UX; copy-only interim fix | Does not deliver enrolled view |
+| **A** | Keep `/courses/` public; relabel nav to «Все курсы» / «Программы» | Zero LD/Woo risk; honest UX; copy-only interim fix | Does not deliver enrolled view — **interim label applied: «Программы»** |
 | **B** | Standalone `/my-courses/` enrolled route | Clean separation; matches `courses.html`; own shell/CSS | Needs adapter + new page; slug collision check |
 | **C** | Woo endpoint `/my-account/my-courses/` | Shared account IA + `atmo-account.css` | Rewrite/endpoint audit; couples to WC routing |
 | **D** | LearnDash shortcode/filtered WP page | Uses LD enrollment APIs | **High LD template coupling** — conflicts with adapter rule |
@@ -110,7 +112,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Item | Blocker |
 |------|---------|
 | Real LMS/enrolled dashboard widgets | Adapter + route decision (above) |
-| «Мои курсы» enrolled view | Product decisions 1–2 + adapter sign-off |
+| «Мои курсы» enrolled view | Product decision 2 + adapter sign-off (decision 3) |
 | LearnDash templates | Do not touch until adapter decided |
 | `atmo-lms-lite` critical UI | Dev-only; no front-end without explicit decision |
 | Course progress / next lesson / enrolled cards | Prototype in `courses.html` (demo off); `account.html` MVP-safe shell only |
