@@ -35,6 +35,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Address endpoints read-only QA (2026-05-22): `/edit-address/` index + billing/shipping forms PASS; empty r4t5 profile verified; #3801 order-level billing block sanity
 - Account regression QA after adapter MVP (`a352081`, 2026-05-22): 8 routes × desktop/mobile PASS — see `CHANGES.md`; no functional regressions; view-order #3801 pill intact; `/courses/` public archive unchanged
 - Dashboard CTA wiring for my-courses (`648e562`, 2026-05-22): stale LMS copy removed; «Следующий шаг» + courses panel wired to adapter / my-courses — see `CHANGES.md`; my-courses page unchanged
+- Zero-enrollment empty-state QA (`691` / `atmo-qa-empty`, 2026-05-22): dashboard + my-courses empty paths PASS desktop/mobile — see `CHANGES.md`
 
 ---
 
@@ -52,7 +53,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 **Local fixtures**
 
-- **#3801** — completed, 1 line item; order-again visible (not clicked); delete in WP Admin when done
+- **r4t5 (679) / #3801** — enrolled path: completed, 1 line item → LD course 3616; order-again visible (not clicked)
+- **atmo-qa-empty (691)** — zero-enrollment path: customer, 0 orders, 0 LD meta; Local-only QA fixture — delete in WP Admin when done
 - **#3800** — pending, 0 items; keep for empty/pending/cancel shell QA
 
 ---
@@ -89,8 +91,9 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | 8 | **LMS adapter MVP (phase 2)** — wire `get_enrolled_courses()` + enrolled list UI | **Done (2026-05-22):** `a352081` — read-only Woo+LD adapter; fixture #3801 QA PASS — `CHANGES.md` |
 | 9 | **Account regression QA after adapter MVP** — full account sweep post-`a352081` | **Done (2026-05-22):** 8 routes × desktop/mobile PASS; no blockers — `CHANGES.md` |
 | 10 | **Dashboard CTA wiring (phase 3)** — «Следующий шаг» + courses panel to my-courses / adapter | **Done (2026-05-22):** `648e562` — read-only adapter reuse; fixture #3801 QA PASS — `CHANGES.md` |
+| 11 | **Zero-enrollment empty-state QA** — fixture user + dashboard/my-courses empty paths | **Done (2026-05-22):** fixture **691** / `atmo-qa-empty`; 6/6 PASS desktop/mobile — `CHANGES.md` |
 
-**Recommendation:** keep `/courses/` public **«Программы»** (header/footer); **next:** post-MVP lesson/course hub port; zero-enrollment dashboard QA; `atmo-lms-lite` decision when hub/lesson work starts.
+**Recommendation:** keep `/courses/` public **«Программы»** (header/footer); **next:** post-MVP lesson/course hub port; `atmo-lms-lite` decision when hub/lesson work starts.
 
 ### Route options (reference)
 
@@ -121,7 +124,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | LearnDash templates | Do not touch — post-MVP hub/lesson port |
 | `atmo-lms-lite` critical UI | Dev-only; no front-end without explicit decision |
 | Pending-order rows on my-courses | Not in MVP — non-completed orders excluded |
-| Empty-state with zero-enrollment user | Not live-QA'd — needs another fixture user |
+| ~~Empty-state with zero-enrollment user~~ | **Done 2026-05-22** — fixture **691** / `atmo-qa-empty`; dashboard + my-courses empty QA PASS — `CHANGES.md` |
 | Course hub / lesson deep port | Post-MVP — MVP links to LD URLs via ViewModel |
 
 ---

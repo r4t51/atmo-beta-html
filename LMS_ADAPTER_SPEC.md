@@ -1,6 +1,6 @@
 # LMS Adapter Spec v0
 
-> **Status:** route live (adapter MVP) · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **2026-05-22**  
+> **Status:** route live (adapter MVP) · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **2026-05-22**  
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
@@ -386,13 +386,14 @@ Before any enrolled UI or route implementation:
 - [x] LMS adapter PHP + wire endpoint to **`get_enrolled_courses()`** (§11 commit B) — **`a352081` 2026-05-22**.
 - [x] Account regression QA after adapter MVP — **2026-05-22** (§11.0a · `CHANGES.md`).
 - [x] Dashboard «Следующий шаг» CTA wiring (phase 3) — **`648e562` 2026-05-22** (§11.0b · `CHANGES.md`).
+- [x] Zero-enrollment empty-state QA — fixture **691** / `atmo-qa-empty` — **2026-05-22** (§11.0c · `CHANGES.md`).
 - [x] Enrollment SoT documented for MVP — **LD + bridge** (`_related_course` resolver §5).
 - [x] Code Snippets export/backup completed — `docs/snippets/` (`CHANGES.md` 2026-05-22).
 - [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
 - [x] **Access expiry semantics** — LD access start + Woo duration label (`CHANGES.md` 2026-05-22).
 - [x] **No LearnDash HTML in ATMO UI** — ViewModels only (§3, §4.7 #8).
 
-**After sign-off:** endpoint shell **shipped** (`ecfd8f5`); adapter MVP **shipped** (`a352081`); dashboard CTA wiring **shipped** (`648e562`); theme consumes ViewModels only — not LD internals. **Post-MVP:** lesson/course hub port.
+**After sign-off:** endpoint shell **shipped** (`ecfd8f5`); adapter MVP **shipped** (`a352081`); dashboard CTA wiring **shipped** (`648e562`); zero-enrollment empty-state QA **done** (fixture **691**); theme consumes ViewModels only — not LD internals. **Post-MVP:** lesson/course hub port.
 
 ### 11.0 Phase 1 shipped (`ecfd8f5` 2026-05-22)
 
@@ -437,9 +438,21 @@ Before any enrolled UI or route implementation:
 | `/my-account/my-courses/` adapter page | **Unchanged** |
 | Local QA (#3801 / r4t5) | **PASS** — dashboard + my-courses + `/courses/` desktop/mobile — `CHANGES.md` |
 
-**Caveats:** dashboard calls adapter on every `/my-account/` load; zero-enrollment state not live-QA'd; multi-course hero = first active continue CTA (adapter sort).
+**Caveats:** dashboard calls adapter on every `/my-account/` load; multi-course hero = first active continue CTA (adapter sort).
 
 **Rollback:** `git revert 648e562` — adapter `a352081` + endpoint `ecfd8f5` remain.
+
+### 11.0c Zero-enrollment QA fixture + empty-state QA (691 / `atmo-qa-empty` 2026-05-22)
+
+| Item | Status |
+|------|--------|
+| Local-only fixture user **691** / `atmo-qa-empty` | **Created** — customer; 0 orders; 0 LD enrollment meta |
+| Enrolled-path pair fixture | **r4t5 / #3801** — unchanged |
+| `/my-account/` empty dashboard | **QA PASS** — desktop + mobile — `CHANGES.md` |
+| `/my-account/my-courses/` empty state | **QA PASS** — desktop + mobile — `CHANGES.md` |
+| `/courses/` public archive | **QA PASS** — 18 programs unchanged — `CHANGES.md` |
+
+**Rollback:** delete user **691** via WP Admin or SQL; no orders/enrollments to clean.
 
 ---
 
@@ -556,7 +569,9 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 **Account regression sweep (post-`a352081`, 2026-05-22):** **PASS** — `/my-account/` · `/my-account/my-courses/` · `/my-account/orders/` · `/view-order/3801/` · `/edit-account/` · `/edit-address/` · `/payment-methods/` · `/courses/` on desktop **1440×900** + mobile **390×844**; scope checks OK — `CHANGES.md`. Dashboard stale copy resolved in phase 3 **`648e562`**.
 
-**Dashboard CTA wiring QA (post-`648e562`, 2026-05-22):** **PASS** — `/my-account/` · `/my-account/my-courses/` · `/courses/` desktop + mobile; no overflow — `CHANGES.md`.
+**Dashboard CTA wiring QA (post-`648e562`, 2026-05-22):** **PASS** — `/my-account/` · `/my-account/my-courses/` · `/courses/` desktop + mobile; no overflow — `CHANGES.md` (enrolled path: r4t5 / #3801).
+
+**Zero-enrollment empty-state QA (691 / `atmo-qa-empty`, 2026-05-22):** **PASS** — `/my-account/` + `/my-account/my-courses/` empty paths desktop + mobile; `/courses/` archive unchanged — `CHANGES.md`.
 
 ### 11.7 Rollback
 
@@ -580,8 +595,9 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 3. **QA** — §11.6 — **PASS on Local 2026-05-22**  
 4. **Child theme commit B** — LMS adapter PHP + wire `woocommerce_account_my-courses_endpoint` to **`get_enrolled_courses()`** — **done `a352081`** · QA PASS — `CHANGES.md`  
 4a. **Account regression QA** (post-`a352081`) — **PASS 2026-05-22** — `CHANGES.md`  
-5. **Commit C** — dashboard «Следующий шаг» + panel links to **`my-courses`** — **done `648e562`** · QA PASS — `CHANGES.md`
+5. **Commit C** — dashboard «Следующий шаг» + panel links to **`my-courses`** — **done `648e562`** · QA PASS — `CHANGES.md`  
+6. **Zero-enrollment fixture + QA** — user **691** / `atmo-qa-empty`; empty dashboard + my-courses QA — **done 2026-05-22** — `CHANGES.md`
 
 ---
 
-*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, and dashboard CTA wiring shipped; post-MVP: lesson/course hub port.*
+*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, and zero-enrollment QA shipped; post-MVP: lesson/course hub port.*

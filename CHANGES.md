@@ -6,6 +6,22 @@
 
 ---
 
+## 2026-05-22 — Zero-enrollment QA fixture + empty-state QA
+
+- **Scope:** Local-only WP user fixture + read-only browser QA; no child theme, docs-only record here; no orders/enrollments created
+- **Fixture user:** **`atmo-qa-empty`** (ID **691**) · `atmo-qa-empty@local.test` · display **ATMO QA Empty** · role **customer** · Local-only
+- **Verification (MariaDB read-only):** **0** Woo orders · **0** completed orders · **0** LD enrollment meta (`course_*_access_from`, `learndash_course_*_enrolled_at`) · **0** `_sfwd-course_progress`
+- **Pairing:** **r4t5 / #3801** = enrolled path fixture · **691 / atmo-qa-empty** = zero-enrollment path fixture
+- **QA (Local, user atmo-qa-empty, 6/6 PASS):**
+  - **`/my-account/`** desktop **1440×900** + mobile **390×844** — empty dashboard copy **«Выберите программу или откройте доступ»** · primary **«Мои курсы»** → `/my-account/my-courses/` · secondary **«Каталог»** · «Последний заказ» placeholder · no cards/progress · no overflow
+  - **`/my-account/my-courses/`** desktop + mobile — empty state **«Пока нет программ с доступом»** · CTAs **«К программам»** → `/courses/` · **«Каталог»** · **0** cards · **0** progress · no overflow
+  - **`/courses/`** desktop + mobile — public LD archive unchanged (**18** programs) · no overflow
+- **Rollback:** delete user **691** via WP Admin or SQL (`wp_usermeta` + `wp_users`); no orders/enrollments to clean; temp QA password Local-only — rotate/delete with user
+- **Still open:** post-MVP lesson/course hub port; pending-order rows; `atmo-lms-lite` decision — `BACKLOG.md` §2
+- **Docs:** `BACKLOG.md` · `LMS_ADAPTER_SPEC.md` §11.0c · `ONBOARDING.md`
+
+---
+
 ## 2026-05-22 — Account dashboard CTA wiring for my-courses (phase 3)
 
 - **Scope:** child theme only — `inc/atmo-account.php`; read-only adapter reuse; no DB, snippets, settings, CSS, LD template overrides, or `atmo-lms-lite`
@@ -22,9 +38,9 @@
   - **`/my-account/`** desktop **1440×900** + mobile **390×844** **PASS** — «Продолжите программу» · primary **Продолжить** → LD lesson · secondary **Мои курсы** → `/my-account/my-courses/` · courses panel CTAs correct · no stale copy · no dashboard list/progress · `.atmo-dash` only · no overflow
   - **`/my-account/my-courses/`** desktop + mobile **PASS** — unchanged: one card, no fake progress
   - **`/courses/`** desktop + mobile **PASS** — public LD archive unchanged
-- **Caveats:** dashboard calls `atmo_get_enrolled_courses()` on every `/my-account/` load; zero-enrollment dashboard state not live-QA'd; multi-course users — hero picks first active course with safe continue CTA (adapter sort)
+- **Caveats:** dashboard calls `atmo_get_enrolled_courses()` on every `/my-account/` load; multi-course users — hero picks first active course with safe continue CTA (adapter sort); zero-enrollment path QA — see zero-enrollment fixture entry same date
 - **Rollback:** `git revert 648e562` in `kadence-child` — **no permalink flush** (endpoint `ecfd8f5` + adapter `a352081` remain)
-- **Still open:** zero-enrollment dashboard QA; post-MVP lesson/course hub port; pending-order rows; `atmo-lms-lite` decision — `BACKLOG.md` §2
+- **Still open:** post-MVP lesson/course hub port; pending-order rows; `atmo-lms-lite` decision — `BACKLOG.md` §2
 - **Docs:** `BACKLOG.md` · `LMS_ADAPTER_SPEC.md` §11 commit C · `WP_DEPENDENCY_MAP.md` · `ONBOARDING.md`
 
 ---
