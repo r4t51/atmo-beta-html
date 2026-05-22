@@ -6,6 +6,20 @@
 
 ---
 
+## 2026-05-22 — Woo My Account view-order access-type meta display
+
+- **Commit:** `2da518f` — Add account order access-type meta display
+- **Files:** `inc/atmo-account.php`, `assets/css/atmo-account.css`
+- **Behavior:**
+  - On `/my-account/view-order/`, access type renders as structured pill/row when Woo skips default item meta (e.g. #3801: **Тип доступа: 60 дней**)
+  - Data from real order item meta key `тип-доступа`; scoped to account view-order only; no fake data; no DB/order mutations
+  - Duplicate guard if Woo default `wc-item-meta` renders the same attribute in future
+- **Caveats:** attribute slug `тип-доступа` hardcoded (matches current ATMO variable products); #3801 fixture still in WP Admin; saved payment-methods table still open (payment-token scope)
+- **QA:** `/view-order/3801/` desktop 1440×900 + mobile 390×844 PASS; sanity `/view-order/3800/` + `/orders/` PASS; order-again visible (not clicked); no overflow/overlap; 5-item nav; no `.atmo-dash` leak
+- **Rollback:** `git revert 2da518f`
+
+---
+
 ## 2026-05-22 — Woo My Account completed view-order fixture QA
 
 - **Scope:** read-only QA; no code/DB/Snippets/Woo settings changes; fixture order #3801 (manual WP Admin)
@@ -13,8 +27,8 @@
 - **Fixture:** #3801 completed, r4t5 / user 679, 1 item «Живот и Тазовое дно - 60 дней», qty 1, 399 PLN; #3800 unchanged (pending, 0 items)
 - **Viewports:** desktop 1440×900, mobile 390×844
 - **Result:** PASS — completed order row; line item shell; qty/total; customer details; order-again visible (not clicked); no pay/cancel on completed view; no page overflow; no `.atmo-dash` leak on view-order
-- **Partial:** access type «60 дней» visible in product title/URL; no structured item meta row/pill (`wc-item-meta` / `variation` empty)
-- **Still open (optional):** structured variation/meta pill rendering; saved payment-methods table with stored cards
+- **Partial:** access type «60 дней» visible in product title/URL; no structured item meta row/pill (`wc-item-meta` / `variation` empty) — **addressed in `2da518f`**
+- **Still open (optional):** saved payment-methods table with stored cards
 - **Rollback fixture:** delete order #3801 in WP Admin if no longer needed
 - **Open items:** see `BACKLOG.md`
 

@@ -13,7 +13,8 @@
 - Orders list + view-order shell CSS (pass 3); mobile orders actions fix (`fcca2e5`)
 - Settings form (pass 4); hidden endpoints (pass 5)
 - add-payment-method read-only audit (2026-05-22)
-- Completed view-order fixture QA — #3801 (2026-05-22): line item shell, qty/total, customer details, order-again **visibility** verified (not clicked); structured meta pill **not** verified
+- Completed view-order fixture QA — #3801 (2026-05-22): line item shell, qty/total, customer details, order-again **visibility** verified (not clicked)
+- View-order access-type meta pill — `тип-доступа` (`2da518f`, 2026-05-22): structured **Тип доступа: 60 дней** on #3801; Woo-skipped meta only; duplicate guard
 
 ---
 
@@ -21,7 +22,6 @@
 
 | Item | Notes |
 |------|--------|
-| Structured variation/meta pills on view-order | **Optional.** #3801 shows «60 дней» in product title/URL only; `wc-item-meta` / `variation` empty |
 | Saved payment-methods table with stored cards | **Avoid unless explicit** — needs payment token / saved-card scope |
 | Downloads list with real files | Pass 5 styled empty state only |
 | `/edit-address/shipping/` form | Pass 5 not fully QA'd |
