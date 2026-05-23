@@ -8,6 +8,22 @@
 
 ---
 
+## 2026-05-23 — Billing/shipping profile fixture — r4t5 (runtime/DB)
+
+- **Scope:** WP Admin data entry + DB fix; **no** code changes, no snippets, no plugin edits
+- **Git:** both repos clean before/after; no commits
+- **WP Admin:** `user-edit.php?user_id=679` — all 20 billing+shipping meta fields saved; reload confirmed
+- **DB fix (Claude):** `billing_state` + `shipping_state` corrected from free-text «Masovian (mazowieckie)» → WooCommerce PL code `MZ` (direct SQL, 2 rows)
+- **DB verified:** all fields in `wp_usermeta` for user 679 match spec — `PL`, `ul. Marszałkowska 1/5`, `Warszawa`, `00-001`, `MZ`
+- **QA `/my-account/edit-address/`:** two address cards (billing + shipping) with «Anastasiya Vidruk / ul. Marszałkowska 1/5 / 00-001 Warszawa»; ATMO shell; Edit links; mobile stack PASS
+- **QA `/my-account/edit-address/billing/`:** ATMO header/footer; fields filled (first/last name, email, country «Польша», city, postcode); POST → current URL; no overflow
+- **QA `/my-account/edit-address/shipping/`:** ATMO header/footer; all shipping fields filled including `address_1`; after MZ fix, province dropdown shows «Mazowieckie»; no overflow
+- **QA `/my-account/view-order/3801/`:** order-level billing unchanged (checkout snapshot «r4 t5 / Gdansk / …») — by design, order meta is separate from user meta
+- **Residual:** ATMO billing edit form renders subset of fields (no `address_1`, `state`, `phone` on billing form UI); no snippet or child theme filter found — likely WooCommerce locale behavior or Kadence default; fields exist in meta and appear on index cards; low priority
+- **Rollback:** SQL `UPDATE wp_usermeta SET meta_value='Masovian (mazowieckie)' WHERE user_id=679 AND meta_key IN ('billing_state','shipping_state')`; WP Admin reset fields to blank
+
+---
+
 ## 2026-05-23 — LD lesson chrome v2
 
 - **Scope:** child theme only; **no** LD template overrides, DB, snippets, or plugin edits

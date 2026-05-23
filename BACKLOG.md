@@ -77,8 +77,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 |------|--------|
 | Saved payment-methods table with stored cards | **Avoid unless explicit** — needs payment token / saved-card scope |
 | Downloads list with real files | Pass 5 styled empty state only |
-| Saved billing/shipping profile cards + edit links | r4t5 profile unconfigured; index shows add CTAs only — needs saved-address fixture |
-| Filled address forms (all fields populated) | Billing/shipping shell QA done empty; populated layout unverified |
+| ~~Saved billing/shipping profile cards + edit links~~ | ✅ Done 2026-05-23 — r4t5 populated (Anastasiya Vidruk / Warszawa / PL / MZ) |
+| ~~Filled address forms (all fields populated)~~ | ✅ Done 2026-05-23 — index cards + shipping form verified; billing form shows subset (address/state/phone absent from billing edit UI — residual, low priority) |
 | View-order shipping customer block | Absent on #3801; billing order-level block verified on #3801 |
 | Address save/validation flow | Out of scope unless explicit |
 | Woo default dashboard `<p>` in DOM | Hidden by CSS when `.atmo-dash` present; template override optional later |
