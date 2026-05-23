@@ -66,7 +66,8 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - CSS на `is_account_page()` only; LearnDash `/courses/`, `/profile/`, `/reset-password/` not enqueued.
   - Menu filter: Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
   - **«Программы»** → `/courses/` in **header/footer only** (removed from account sidebar in `ecfd8f5`)
-  - **`/my-account/my-courses/`:** adapter-backed enrolled list **`.atmo-my-courses`** — `get_enrolled_courses()` — **`a352081`**; endpoint shell **`ecfd8f5`**; one-time permalink flush on deploy (`CHANGES.md`)
+  - **`/my-account/my-courses/`:** adapter-backed enrolled list **`.atmo-my-courses`** — `get_enrolled_courses()` — **`a352081`**; endpoint shell **`ecfd8f5`**
+  - **`/my-account/my-courses/?course_id={id}`:** account course hub v1 **`.atmo-course-hub`** — **`81c3a7d`**; no new rewrite; one-time permalink flush **not** required for hub
   - Hidden from nav, direct URL only: `downloads`, `edit-address` (+ billing/shipping), `payment-methods`
   - Styled passes: auth (`353346c`), shell (`3122f4f`), dashboard static shell (`534b241`), dashboard CTA wiring (`648e562`), orders (`3704226`), view-order access-type meta (`2da518f`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
   - Account shell/wiring done; **`/my-account/my-courses/`** adapter MVP live (`a352081`); dashboard CTAs wired to adapter (`648e562`); completed #3801 view-order QA; access-type meta pill on view-order (`2da518f`); saved payment-methods table not live-QA'd
@@ -124,6 +125,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 | Hidden account URLs | `/my-account/downloads/`, `/edit-address/`, `/payment-methods/` (reachable, not in nav) |
 | `/courses/` from account nav | External LearnDash **public archive**; label **«Программы»** — not enrolled UI |
 | **`/my-account/my-courses/`** | **Live (adapter MVP)** — `get_enrolled_courses()` enrolled list — **`a352081`**; shell **`ecfd8f5`** — `LMS_ADAPTER_SPEC.md` §11 |
+| **`/my-account/my-courses/?course_id={id}`** | **Live (hub v1)** — account-shelled enrolled course hub — **`81c3a7d`**; `/courses/` and `/lessons/` unchanged |
 
 Активные WC-расширения, которые важно учитывать:
 
@@ -140,7 +142,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 Текущий runtime для course/lesson UI: LearnDash.  
 `atmo-lms-lite` **active** on Local, in development — candidate future runtime; не строить критичный UI на нём без явного решения; **no front-end assets observed** on course routes (2026-05-22 QA).
 
-**Route reality (2026-05-22):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/` (header/footer). **«Мои курсы»** → **`/my-account/my-courses/`** — **live adapter MVP** (`a352081`); empty state when no enrollments — `LMS_ADAPTER_SPEC.md` §11.
+**Route reality (2026-05-23):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/`. **«Мои курсы»** → **`/my-account/my-courses/`** — enrolled list (`a352081`). **Account hub v1** → **`/my-account/my-courses/?course_id={id}`** (`81c3a7d`). **`/lessons/`** remains LD lesson route — continue CTAs from hub/list land there.
 
 **Public course URL hygiene (2026-05-23):** LearnDash Closed **`custom_button_url`** (`#btn-join`) + one course body link had host typo `atmoredesign.local.local` — fixed via WP Admin course settings/content; logged-out crawl **18** course pages, **0** `local.local` on course HTML — `CHANGES.md`. Snippet **#5** (inactive) redirect URL unchanged.
 
@@ -170,7 +172,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 |---|---|
 | `CourseCard` | id, title, slug, permalink, thumbnail_url?, excerpt?, duration_label? |
 | `EnrollmentState` | course_id, is_enrolled, status, progress_percent?, completed_steps?, total_steps?, **starts_at**, **order_completed_at**, **access_type_label**, **access_duration_days**, **expires_at** (canonical UI), **source_order_id?**, **source_order_item_id?**, source |
-| `EnrolledCourse` | CourseCard + EnrollmentState + **course_hub_url**, **product_permalink?**, next_lesson?, cta_label?, cta_url? |
+| `EnrolledCourse` | CourseCard + EnrollmentState + **course_hub_url** (account hub `?course_id=`), **product_permalink?**, next_lesson?, cta_label?, cta_url? |
 | `LessonRef` / `LessonProgress` | LessonRef: id, title, permalink, course_id, order_index — list MVP via `next_lesson` only; full `LessonProgress[]` deferred |
 | `AccessData` | has_access, reason (`purchase_pending` for unpaid orders), expiry?, product_id?, order_id? |
 | `OrderAccessContext` | order_id, **order_item_id?**, order_status, product_id, product_name, **order_completed_at**, **access_type_label**, **access_duration_days**, **starts_at**, **expires_at** (per-order), variation_id? — pairing only |
@@ -178,7 +180,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
 
-Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**. **Post-MVP:** lesson/course hub port. ViewModel contract **signed off 2026-05-22** (§4.7). **Do not touch LearnDash templates.**
+Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**; account course hub v1 **shipped `81c3a7d` 2026-05-23**. **Post-MVP:** LD lesson template port. ViewModel contract **signed off 2026-05-22** (§4.7). **Do not touch LearnDash lesson templates.**
 
 ## Custom ATMO Plugins
 

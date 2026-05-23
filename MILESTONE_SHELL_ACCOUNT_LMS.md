@@ -12,13 +12,15 @@
 | Phase | State |
 |-------|--------|
 | **ATMO shell / wiring** | **Complete** — header, footer, catalog, PDP, cart, checkout, order-received; account passes 1–5; re-QA PASS 2026-05-22 |
-| **Account / LMS MVP** | **Complete** — `/my-account/my-courses/` endpoint + adapter MVP + dashboard CTA wiring + enrolled + zero-enrollment QA |
+| **Account / LMS MVP** | **Complete** — `/my-account/my-courses/` endpoint + adapter MVP + dashboard CTA wiring + **account course hub v1 (`81c3a7d`)** + enrolled + zero-enrollment QA |
 
-**Not a blocker:** preview mu-plugin kept for now (`?atmo_preview_shell=1` only). Post-MVP hub/lesson port is the next *product* phase, not shell wiring.
+**Not a blocker:** preview mu-plugin kept for now (`?atmo_preview_shell=1` only). **LD lesson template port** is the next *product* phase, not shell wiring.
 
 **Update 2026-05-23:** Catalog + PDP **public polish complete** — toolbar/cards, content cleanup, hero price sync, Woo tabs, Snippet 12 variable mitigation. Detail: `CHANGES.md` → *2026-05-23 — Catalog + PDP public polish milestone*.
 
 **Update 2026-05-23 (LMS URL hygiene):** LearnDash public course join CTA + one body link — `atmoredesign.local.local` host typo resolved via WP Admin; logged-out crawl **18** course pages, **0** `local.local` on course HTML. Detail: `CHANGES.md` → *LearnDash public course URL hygiene*.
+
+**Update 2026-05-23 (LMS hub v1):** Account enrolled course hub at **`/my-account/my-courses/?course_id={id}`** — child theme **`81c3a7d`**; no new rewrite; lessons still on LD routes. Detail: `CHANGES.md` → *LMS account course hub v1*.
 
 ---
 
@@ -32,7 +34,8 @@
 | Cart / checkout / order-received | `atmo-cart.css`, `atmo-checkout.css`, `atmo-confirmation.css`; re-QA PASS |
 | Payment failed | `/payment-failed/` → **404 by design** (no static page) |
 | Woo My Account | Auth, dashboard, orders, view-order, settings, hidden endpoints — shell/wiring done |
-| **`/my-account/my-courses/`** | Woo endpoint **`my-courses`** · adapter `get_enrolled_courses()` · empty + enrolled states · dashboard «Следующий шаг» wired |
+| **`/my-account/my-courses/`** | Woo endpoint **`my-courses`** · adapter `get_enrolled_courses()` · empty + enrolled list · dashboard «Следующий шаг» wired |
+| **`/my-account/my-courses/?course_id={id}`** | **Account course hub v1** (`81c3a7d`) — enrolled overview + lesson outline in account shell; denial when no access |
 
 **By design (not bugs):** no course list/progress widgets on dashboard (CTAs only); no fake progress bars; `/courses/` stays public LD archive (not enrolled-only).
 
@@ -47,6 +50,7 @@
 | **`ecfd8f5`** | Woo **`my-courses`** endpoint shell — register endpoint, 5-item nav IA, static empty `.atmo-my-courses`; drop fake `atmo-courses` sidebar slug |
 | **`a352081`** | LMS adapter MVP — read-only Woo+LD `get_enrolled_courses()`, enrolled list UI, mapping/expiry rules, no fake 0% |
 | **`648e562`** | Dashboard CTA wiring — «Следующий шаг» + courses panel → adapter / `/my-account/my-courses/` |
+| **`81c3a7d`** | Account course hub v1 — `?course_id=` on existing endpoint; `.atmo-course-hub` in account shell; lesson outline via read-only LD API |
 
 **Deploy note:** one-time permalink flush required after `ecfd8f5` on new environments (WP Admin → Settings → Permalinks → Save). No `flush_rewrite_rules()` in theme PHP.
 
@@ -72,7 +76,7 @@ Per-commit rollback: `git revert <hash>` in `kadence-child` — see `CHANGES.md`
 
 | Fixture | Role | Notes |
 |---------|------|--------|
-| **r4t5 (679) / #3801** | **Enrolled path** | Completed order → variation **3628** → LD course **3616**; «60 дней»; dashboard continue CTA + my-courses card QA |
+| **r4t5 (679) / #3801** | **Enrolled path** | Completed order → variation **3628** → LD course **3616**; «60 дней»; dashboard continue CTA + my-courses card + **hub `?course_id=3616`** QA |
 | **#3800** | Pending empty order | Pending, 0 line items — pending/cancel shell QA |
 | **atmo-qa-empty (691)** | **Zero-enrollment path** | Customer, 0 orders, 0 LD meta; Local-only — dashboard + my-courses empty-state QA PASS |
 
@@ -141,8 +145,8 @@ Source of truth: **`BACKLOG.md`**. Summary only — not a duplicate of `CHANGES.
 
 ### LMS post-MVP
 
-- **Lesson / course hub port** (`product-enrolled.html`, `lesson.html`) — primary next product phase
-- LearnDash template overrides
+- **LD lesson template / `lesson.html` port** — primary next product phase (account hub v1 **done `81c3a7d`**)
+- LearnDash template overrides (single lesson body)
 - Pending-order rows on my-courses (non-completed orders excluded from MVP)
 - `atmo-lms-lite` as UI backend — decide when hub/lesson work starts
 - Optional: goal grouping, list/grid toggle, `display_title` on catalog cards
@@ -161,7 +165,7 @@ Source of truth: **`BACKLOG.md`**. Summary only — not a duplicate of `CHANGES.
 
 **Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first pick:
 
-> **Post-MVP lesson/course hub port** (`product-enrolled.html`, `lesson.html`) — requires written plan; do not touch LearnDash templates without adapter-backed scope.
+> **Post-MVP lesson/course hub port** (`lesson.html`, LD lesson chrome) — requires written plan; account hub v1 **shipped `81c3a7d`**; do not touch LearnDash lesson templates without adapter-backed scope.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 

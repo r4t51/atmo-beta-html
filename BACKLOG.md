@@ -55,6 +55,13 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Logged-out crawl **18** course pages from `/courses/` — **0** remaining `local.local` in course HTML — see `CHANGES.md`
 - Snippet **#5** (inactive) still has broken redirect URL in source — not part of this fix
 
+### LMS account course hub v1 (2026-05-23)
+
+- Account enrolled course hub on existing **`/my-account/my-courses/?course_id={id}`** — child theme **`81c3a7d`**
+- **`course_hub_url`** → account hub; **`permalink`** → public LD course; **«Продолжить»** → LD lesson URL
+- No new rewrite · no permalink flush · no LD template overrides · no `atmo-lms-lite` front-end UI
+- QA PASS — r4t5 / atmo-qa-empty / public route regression — see `CHANGES.md`
+
 ---
 
 ## 1. Account / Woo — open
@@ -110,8 +117,9 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | 9 | **Account regression QA after adapter MVP** — full account sweep post-`a352081` | **Done (2026-05-22):** 8 routes × desktop/mobile PASS; no blockers — `CHANGES.md` |
 | 10 | **Dashboard CTA wiring (phase 3)** — «Следующий шаг» + courses panel to my-courses / adapter | **Done (2026-05-22):** `648e562` — read-only adapter reuse; fixture #3801 QA PASS — `CHANGES.md` |
 | 11 | **Zero-enrollment empty-state QA** — fixture user + dashboard/my-courses empty paths | **Done (2026-05-22):** fixture **691** / `atmo-qa-empty`; 6/6 PASS desktop/mobile — `CHANGES.md` |
+| 12 | **Account enrolled course hub v1** — `?course_id=` on existing my-courses endpoint | **Done (2026-05-23):** `81c3a7d` — account shell hub + lesson outline; no new rewrite — `CHANGES.md` |
 
-**Recommendation:** keep `/courses/` public **«Программы»** (header/footer); **next:** post-MVP lesson/course hub port; `atmo-lms-lite` decision when hub/lesson work starts.
+**Recommendation:** keep `/courses/` public **«Программы»** (header/footer); **next:** LD lesson template port / `lesson.html` chrome; `atmo-lms-lite` decision when lesson work starts.
 
 ### Route options (reference)
 
@@ -130,7 +138,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Wire `courses.html` demo data or fake progress into WP
 - Build critical UI on `atmo-lms-lite` without explicit decision
 - Register new Woo endpoints or change rewrites without plan — **`my-courses` shell shipped** (`ecfd8f5`); further endpoint changes need audit
-- Deep-port `lesson.html` / `product-enrolled.html` until adapter MVP is stable (list shipped `a352081`)
+- Deep-port `lesson.html` / LD lesson template until account hub v1 is stable (**hub v1 shipped `81c3a7d`**)
 - Treat Woo order line items alone as enrollment UI (bridge + adapter must agree)
 
 ### Blocked items
@@ -143,7 +151,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | `atmo-lms-lite` critical UI | Dev-only; no front-end without explicit decision |
 | Pending-order rows on my-courses | Not in MVP — non-completed orders excluded |
 | ~~Empty-state with zero-enrollment user~~ | **Done 2026-05-22** — fixture **691** / `atmo-qa-empty`; dashboard + my-courses empty QA PASS — `CHANGES.md` |
-| Course hub / lesson deep port | Post-MVP — MVP links to LD URLs via ViewModel |
+| ~~Account enrolled course hub v1~~ | **Done 2026-05-23** — `81c3a7d`; `?course_id=` hub in account shell — `CHANGES.md` |
+| LD lesson template / `lesson.html` port | Post-MVP — hub v1 links to LD lesson URLs via ViewModel |
 
 ---
 
@@ -192,4 +201,4 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 ---
 
-*Last synced from docs: 2026-05-23*
+*Last synced from docs: 2026-05-23 (hub v1 record)*

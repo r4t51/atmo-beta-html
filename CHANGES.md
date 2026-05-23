@@ -6,6 +6,23 @@
 
 ---
 
+## 2026-05-23 — LMS account course hub v1
+
+- **Scope:** docs-only record; child theme commit below; **no** rewrite endpoint, permalink flush, LearnDash template overrides, or `atmo-lms-lite` front-end UI
+- **Commit:** `81c3a7d` — Add account course hub for enrolled LMS courses (`kadence-child`)
+- **Files:** `inc/atmo-account.php` · `assets/css/atmo-account.css`
+- **Route:** existing Woo endpoint **`/my-account/my-courses/`** + query arg **`?course_id={LD course id}`** — fixture hub `/my-account/my-courses/?course_id=3616`
+- **Behavior:** enrolled list **`course_hub_url`** → account hub; **`permalink`** stays public LD course URL; **«Продолжить»** → next LearnDash lesson URL; hub renders from adapter ViewModel + read-only LD lesson list API (no scraped LD HTML, no `.learndash-wrapper` on hub)
+- **Not shipped:** new rewrite endpoint · LD single course/lesson template overrides · lesson body port
+- **QA `r4t5` / 679** (desktop **1440×900** + mobile **390×844**): `/my-account/my-courses/` — **1** enrolled card; title + **К программе** → `?course_id=3616`; **Продолжить** → `/lessons/план-программы/`; hub `.atmo-course-hub` with title/status/access meta, honest null progress (no fake **0%**), **13** lesson outline links, no mark-complete controls, no overflow
+- **QA `atmo-qa-empty` / 691:** `?course_id=3616` → **Программа недоступна**; no `.learndash-wrapper`; no overflow desktop/mobile
+- **Public regression** `/courses/abdominal_pelvicfloormuscles/` (logged-out): no `.atmo-course-hub`; ATMO header/footer + LearnDash wrapper present
+- **Rollback:** `git revert 81c3a7d` in `kadence-child` — **no permalink flush**
+- **Still open:** lesson port / LD lesson chrome — `BACKLOG.md` §2 · `LMS_ADAPTER_SPEC.md`
+- **Docs:** `LMS_ADAPTER_SPEC.md` · `MILESTONE_SHELL_ACCOUNT_LMS.md` · `BACKLOG.md` · `WP_DEPENDENCY_MAP.md`
+
+---
+
 ## 2026-05-23 — LearnDash public course URL hygiene (runtime/content)
 
 - **Scope:** runtime/content only via WP Admin; **no** child theme, snippets, plugin settings, or repo code changes; **no** commit in this step

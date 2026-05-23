@@ -1,6 +1,6 @@
 # LMS Adapter Spec v0
 
-> **Status:** route live (adapter MVP) · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **2026-05-22**  
+> **Status:** route live (adapter MVP) · **account course hub v1 done (`81c3a7d`)** · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **2026-05-22–23**
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
@@ -10,7 +10,7 @@
 
 Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo backends so enrolled courses, progress, and access can ship without LearnDash HTML coupling or premature `atmo-lms-lite` dependency.
 
-**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**; dashboard «Следующий шаг» CTA wiring **shipped (`648e562` 2026-05-22)**. Deep port of `lesson.html` / `product-enrolled.html` remains **post-MVP**.
+**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**; dashboard «Следующий шаг» CTA wiring **shipped (`648e562` 2026-05-22)**; account-shelled enrolled course hub v1 **shipped (`81c3a7d` 2026-05-23)**. Deep port of `lesson.html` and LD lesson template chrome remains **post-MVP**.
 
 ---
 
@@ -19,7 +19,9 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 | Route | Role | Status |
 |-------|------|--------|
 | `/courses/` | LearnDash **public CPT archive** — nav label **«Программы»** | **Live** (interim relabel 2026-05-22) — **not** enrolled UI |
-| **`/my-account/my-courses/`** | **«Мои курсы»** — enrolled list + progress (MVP) | **Live (adapter MVP)** — `get_enrolled_courses()` list UI — `a352081` |
+| **`/my-account/my-courses/`** | **«Мои курсы»** — enrolled list (MVP) | **Live (adapter MVP)** — `get_enrolled_courses()` list UI — `a352081` |
+| **`/my-account/my-courses/?course_id={id}`** | **Account course hub v1** — enrolled overview + lesson outline | **Live** — existing endpoint + query arg; no new rewrite — `81c3a7d` |
+| `/lessons/{slug}/` | LearnDash lesson body | **Live (LD template)** — continue CTA from hub/list still lands here |
 
 ### Decision (2026-05-22): enrolled route = **`/my-account/my-courses/`**
 
@@ -74,7 +76,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 
 All shapes are **normalized display contracts**. Fields marked *(optional)* may be omitted when unknown; UI must degrade gracefully.
 
-**MVP scope:** `/my-account/my-courses/` enrolled list + account dashboard «Следующий шаг» CTAs — **both shipped**. **`LessonProgress[]` outline** and full **`product-enrolled.html`** hub are **post-MVP** — list MVP needs `EnrolledCourse` + optional `LessonRef` on `next_lesson` only.
+**MVP scope:** `/my-account/my-courses/` enrolled list + account dashboard «Следующий шаг» CTAs — **both shipped**. **Account course hub v1** (`?course_id=`) — **shipped `81c3a7d`** — read-only outline via LD lesson list API inside account shell. **LD lesson body port** (`lesson.html` chrome, mark-complete in ATMO shell) remains **post-MVP**.
 
 **Field tiers:** **required** = adapter must return for MVP row/state; **optional** = omit or null when unknown; **deferred** = not used on enrolled list MVP.
 
@@ -89,7 +91,7 @@ Shared course/program identity for lists and headers. Catalog cards today cover 
 | `id` | required | int | LMS course post ID (or future lite ID) |
 | `slug` | required | string | URL slug |
 | `title` | required | string | Display title |
-| `permalink` | required | string | Public LD course URL or enrolled hub URL (context-dependent) |
+| `permalink` | required | string | **Public LD course URL** — unchanged on enrolled rows; use **`course_hub_url`** for account hub |
 | `thumbnail_url` | optional | string \| null | Featured image; null → placeholder |
 | `excerpt` | optional | string \| null | Short summary |
 | `goal_slug` | deferred | string \| null | Goal grouping post-MVP (`courses.html` groups) |
@@ -137,7 +139,7 @@ Per-user enrollment + progress for one course. **Canonical access/expiry fields 
 |-------|------|------|-------|
 | *(CourseCard fields)* | | | see §4.1 |
 | *(EnrollmentState fields)* | | | see §4.2 |
-| `course_hub_url` | required | string | Enrolled course overview (maps to `product-enrolled.html` intent; may be LD course URL until hub port) |
+| `course_hub_url` | required | string | **Account hub URL** — `/my-account/my-courses/?course_id={id}` for enrolled courses (`81c3a7d`); not the public LD course URL |
 | `product_permalink` | optional | string \| null | Woo PDP for renewal / «Купить снова» when `expired` or no access; from granting order product/variation |
 | `last_lesson` | deferred | `LessonRef` \| null | Post-MVP outline / diary |
 | `next_lesson` | optional | `LessonRef` \| null | **Null** when unknown — hide «Продолжить» CTA; never invent |
@@ -169,7 +171,7 @@ Lightweight lesson pointer for nav, outline, and progress strip — not full les
 
 **SoT (today):** LearnDash lessons + `learndash_get_course_lessons_list` / progress APIs. **Producible today:** yes when LD exposes next step; **null** `next_lesson` when progress API returns nothing.
 
-**`LessonProgress`** extends `LessonRef` — **deferred for enrolled list MVP** (course hub outline post-MVP):
+**Account hub v1** (`81c3a7d`) uses a lightweight read-only lesson outline from LearnDash lesson-list APIs. Full **`LessonProgress[]`** and ATMO lesson template port remain **post-MVP**:
 
 | Field | Tier | Type | Notes |
 |-------|------|------|-------|
@@ -342,7 +344,9 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 3. **Continue / next lesson CTA** — render **only** when adapter returns non-null `next_lesson` + safe `cta_url`; otherwise hub link or «Открыть программу» when `status === active`.
 4. **Expired / pending** — distinct copy and disabled lesson links when `status` is `expired` or `pending`; **`product_permalink`** for renewal; surface order hint when `OrderAccessContext` exists.
 
-**Explicitly later (post-MVP):** list/grid toggle, goal grouping, course hub hero, full lesson port, diary/trainer widgets (`account.html` localStorage panels).
+**Shipped beyond list MVP:** account course hub v1 at **`?course_id=`** — title, status, access meta, honest progress, lesson outline, continue CTA to LD lesson (`81c3a7d`).
+
+**Explicitly later (post-MVP):** list/grid toggle, goal grouping, **LD lesson template / `lesson.html` port**, diary/trainer widgets (`account.html` localStorage panels).
 
 ---
 
@@ -392,8 +396,9 @@ Before any enrolled UI or route implementation:
 - [x] Product ↔ course mapping discovered — **`_related_course`** + variation-first resolver (`CHANGES.md` 2026-05-22).
 - [x] **Access expiry semantics** — LD access start + Woo duration label (`CHANGES.md` 2026-05-22).
 - [x] **No LearnDash HTML in ATMO UI** — ViewModels only (§3, §4.7 #8).
+- [x] **Account course hub v1** — query URL on existing endpoint — **`81c3a7d` 2026-05-23** (§11.0d).
 
-**After sign-off:** endpoint shell **shipped** (`ecfd8f5`); adapter MVP **shipped** (`a352081`); dashboard CTA wiring **shipped** (`648e562`); zero-enrollment empty-state QA **done** (fixture **691**); theme consumes ViewModels only — not LD internals. **Post-MVP:** lesson/course hub port.
+**After sign-off:** endpoint shell **shipped** (`ecfd8f5`); adapter MVP **shipped** (`a352081`); dashboard CTA wiring **shipped** (`648e562`); account course hub v1 **shipped** (`81c3a7d`); zero-enrollment empty-state QA **done** (fixture **691**); theme consumes ViewModels only — not LD internals. **Post-MVP:** LD lesson template port.
 
 ### 11.0 Phase 1 shipped (`ecfd8f5` 2026-05-22)
 
@@ -453,6 +458,22 @@ Before any enrolled UI or route implementation:
 | `/courses/` public archive | **QA PASS** — 18 programs unchanged — `CHANGES.md` |
 
 **Rollback:** delete user **691** via WP Admin or SQL; no orders/enrollments to clean.
+
+### 11.0d Account course hub v1 shipped (`81c3a7d` 2026-05-23)
+
+| Item | Status |
+|------|--------|
+| Hub URL pattern | **`/my-account/my-courses/?course_id={LD course id}`** — no new rewrite endpoint |
+| `EnrolledCourse.course_hub_url` | Points to account hub query URL — not public `/courses/...` |
+| `EnrolledCourse.permalink` | Remains **public LD course URL** |
+| Hub content | Adapter ViewModel + read-only `learndash_get_course_lessons_list()` outline — no scraped LD HTML |
+| Continue CTA | **«Продолжить»** → existing LearnDash lesson URL (`cta_url` / `next_lesson`) |
+| Denial state | Unknown / unauthorized `course_id` → **«Программа недоступна»** |
+| LearnDash templates | **Not overridden** — hub is account shell only |
+| Permalink flush | **Not required** |
+| Local QA | **PASS** — r4t5 / atmo-qa-empty / public route regression — `CHANGES.md` |
+
+**Rollback:** `git revert 81c3a7d` — enrolled list adapter (`a352081`) + endpoint (`ecfd8f5`) remain; **no permalink flush**.
 
 ---
 
@@ -600,4 +621,4 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 ---
 
-*Spec v0 — 2026-05-22. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, and zero-enrollment QA shipped; post-MVP: lesson/course hub port.*
+*Spec v0 — 2026-05-22–23. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, account course hub v1, and zero-enrollment QA shipped; post-MVP: LD lesson template port.*
