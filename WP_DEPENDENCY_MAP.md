@@ -142,6 +142,8 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 
 **Route reality (2026-05-22):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/` (header/footer). **«Мои курсы»** → **`/my-account/my-courses/`** — **live adapter MVP** (`a352081`); empty state when no enrollments — `LMS_ADAPTER_SPEC.md` §11.
 
+**Public course URL hygiene (2026-05-23):** LearnDash Closed **`custom_button_url`** (`#btn-join`) + one course body link had host typo `atmoredesign.local.local` — fixed via WP Admin course settings/content; logged-out crawl **18** course pages, **0** `local.local` on course HTML — `CHANGES.md`. Snippet **#5** (inactive) redirect URL unchanged.
+
 LearnDash CPTs:
 
 - `sfwd-courses`;

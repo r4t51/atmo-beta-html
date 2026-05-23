@@ -18,6 +18,8 @@
 
 **Update 2026-05-23:** Catalog + PDP **public polish complete** — toolbar/cards, content cleanup, hero price sync, Woo tabs, Snippet 12 variable mitigation. Detail: `CHANGES.md` → *2026-05-23 — Catalog + PDP public polish milestone*.
 
+**Update 2026-05-23 (LMS URL hygiene):** LearnDash public course join CTA + one body link — `atmoredesign.local.local` host typo resolved via WP Admin; logged-out crawl **18** course pages, **0** `local.local` on course HTML. Detail: `CHANGES.md` → *LearnDash public course URL hygiene*.
+
 ---
 
 ## 2. Closed surfaces

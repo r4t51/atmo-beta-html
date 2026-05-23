@@ -6,6 +6,17 @@
 
 ---
 
+## 2026-05-23 — LearnDash public course URL hygiene (runtime/content)
+
+- **Scope:** runtime/content only via WP Admin; **no** child theme, snippets, plugin settings, or repo code changes; **no** commit in this step
+- **Issue:** LearnDash Closed course **`URL кнопки`** (`custom_button_url`) stored `http://atmoredesign.local.local/product/...`; one inline body link on **Level Up: Нейросила** had the same host typo
+- **Fix:** per-course LearnDash settings — replace host `atmoredesign.local.local` → `atmoredesign.local`; preserve product paths; one Gutenberg paragraph link `«Level Up: Твоя Сила»` on `/courses/levelup_neuropower/` → `/product/levelup_your_strenght/`
+- **QA (logged-out, plain fetch — no cache-bust):** `/courses/` archive → **18** unique course pages (+ `/courses/feed/` RSS excluded); **0** pages with `atmoredesign.local.local`; **0** `#btn-join` hrefs with `local.local`; `/courses/levelup_neuropower/` inline link OK · `#btn-join` → `/product/levelup_neuropower/` · **join/product links not clicked**
+- **Residual:** Snippet **#5** Thank You Redirect (inactive) still contains broken `atmoredesign.local.local/courses` in snippet source — out of scope; do not re-enable without safe thank-you spec
+- **Docs:** `BACKLOG.md` · `MILESTONE_SHELL_ACCOUNT_LMS.md` · `WP_DEPENDENCY_MAP.md`
+
+---
+
 ## 2026-05-23 — Catalog + PDP public polish milestone
 
 - **Scope:** docs-only record; child theme commits below; catalog content + Snippet 12 runtime via WP Admin/DB (not VCS)

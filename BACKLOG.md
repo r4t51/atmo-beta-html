@@ -49,6 +49,12 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Snippet 12 variable PDP skip — runtime (WP Admin) + docs `ece38f6`
 - QA PASS — see `CHANGES.md` → 2026-05-23 Catalog + PDP public polish milestone; **Add to cart/checkout/payment not clicked**
 
+### LearnDash public course URL hygiene (2026-05-23)
+
+- LearnDash Closed `#btn-join` custom URLs + one course body link — `atmoredesign.local.local` host typo fixed via WP Admin (runtime/content only)
+- Logged-out crawl **18** course pages from `/courses/` — **0** remaining `local.local` in course HTML — see `CHANGES.md`
+- Snippet **#5** (inactive) still has broken redirect URL in source — not part of this fix
+
 ---
 
 ## 1. Account / Woo — open
