@@ -8,6 +8,17 @@
 
 ---
 
+## 2026-05-23 — Pending-order rows on my-courses — verified, closed (read-only)
+
+- **Scope:** discovery only; no code changes
+- **Order #3800:** `wc-pending`, user 679, PLN 0, **0 line items** — ghost order, no course product
+- **Adapter behavior:** `atmo_get_enrolled_courses()` queries `status: ['completed']` only → #3800 excluded by design
+- **QA:** `/my-account/my-courses/` for r4t5 shows 1 enrolled course from #3801 (completed); #3800 does not interfere
+- **Decision:** pending orders with 0 items have nothing to display; no UI change needed; a pending-order badge/card would require a real pending+course fixture and is deferred until a concrete product need arises
+- **Keep #3800:** useful for cancel/expired shell QA later
+
+---
+
 ## 2026-05-23 — Billing/shipping profile fixture — r4t5 (runtime/DB)
 
 - **Scope:** WP Admin data entry + DB fix; **no** code changes, no snippets, no plugin edits

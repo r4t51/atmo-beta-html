@@ -100,7 +100,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Item | Notes |
 |------|--------|
 | **Lesson-number prefix in title** | «Урок N ·» prefix before `h1.entry-title` — deferred; needs adapter outline-order lookup. |
-| Pending-order rows on my-courses | Not in MVP — non-completed orders excluded from enrolled list |
+| ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | `atmo-lms-lite` UI backend decision | Dev-only on Local; decide when lesson port work starts |
 
 ### Current routes (reference)
