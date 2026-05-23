@@ -4,7 +4,19 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-23):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1 shipped (`ed7afcf`). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** lesson chrome v2 polish (prev link, back copy) — `BACKLOG.md` §2.
+> **Supersession (2026-05-23):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** lesson-number prefix (deferred) · `atmo-lms-lite` decision — `BACKLOG.md` §2.
+
+---
+
+## 2026-05-23 — LD lesson chrome v2
+
+- **Scope:** child theme only; **no** LD template overrides, DB, snippets, or plugin edits
+- **Commit:** `1e08a3d` — feat(lesson): lesson chrome v2 — prev link + back copy (`kadence-child`)
+- **Files:** `inc/atmo-lesson.php` · `assets/css/atmo-lesson.css`
+- **PHP:** `body_class` filter → adds `atmo-lesson--no-prev` on first lesson via `learndash_previous_post_link('', 'id', $post)` (returns `''` when no previous step); `learndash_template_progression_step_back_to_course_label` filter → «Вернуться к программе»
+- **CSS:** `.atmo-lesson--no-prev .ld-navigation__previous { display: none }` — LD element stays in DOM, hidden by class
+- **QA r4t5:** first lesson — prev hidden, body class present, back label «Вернуться к программе»; second lesson — prev visible → first lesson URL, no body class; mobile 375px clean; hub regression PASS
+- **Rollback:** `git revert 1e08a3d` — no DB or flush required
 
 ---
 

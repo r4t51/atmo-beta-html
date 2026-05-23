@@ -62,9 +62,10 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - No new rewrite · no permalink flush · no LD template overrides · no `atmo-lms-lite` front-end UI
 - QA PASS — r4t5 / atmo-qa-empty / public route regression — see `CHANGES.md`
 
-### LD lesson chrome v1 (2026-05-23)
+### LD lesson chrome v1+v2 (2026-05-23)
 
-- CSS + filter hook — `ed7afcf`: `.ld-layout__header` suppressed; content card; nav; mark-complete pill; back link → account hub via `learndash_template_progression_step_back_to_course_url`
+- **v1** — `ed7afcf`: `.ld-layout__header` suppressed; content card; nav; mark-complete pill; back link → account hub via `learndash_template_progression_step_back_to_course_url`
+- **v2** — `1e08a3d`: first-lesson prev link hidden (`atmo-lesson--no-prev` body class via `learndash_previous_post_link()`); back label → «Вернуться к программе» via `learndash_template_progression_step_back_to_course_label`
 - No LD template overrides; `kadence-child/learndash/` not created
 - QA PASS — r4t5 / atmo-qa-empty / logged-out / hub + catalog regressions — see `CHANGES.md`
 
@@ -98,8 +99,6 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 | Item | Notes |
 |------|--------|
-| **Lesson chrome v2 — prev link dedup** | First lesson: LD Modern renders `.ld-navigation__previous-link` with hub URL (fallback behavior). Hide or relabel via CSS/filter. |
-| **Lesson chrome v2 — back link copy** | «Вернуться к Курс» → «Вернуться к программе» via `learndash_template_progression_step_back_to_course_label` filter or equivalent. |
 | **Lesson-number prefix in title** | «Урок N ·» prefix before `h1.entry-title` — deferred; needs adapter outline-order lookup. |
 | Pending-order rows on my-courses | Not in MVP — non-completed orders excluded from enrolled list |
 | `atmo-lms-lite` UI backend decision | Dev-only on Local; decide when lesson port work starts |
