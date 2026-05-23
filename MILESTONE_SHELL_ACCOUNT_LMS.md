@@ -16,6 +16,8 @@
 
 **Not a blocker:** preview mu-plugin kept for now (`?atmo_preview_shell=1` only). Post-MVP hub/lesson port is the next *product* phase, not shell wiring.
 
+**Update 2026-05-23:** Catalog + PDP **public polish complete** — toolbar/cards, content cleanup, hero price sync, Woo tabs, Snippet 12 variable mitigation. Detail: `CHANGES.md` → *2026-05-23 — Catalog + PDP public polish milestone*.
+
 ---
 
 ## 2. Closed surfaces
@@ -23,8 +25,8 @@
 | Surface | Notes |
 |---------|--------|
 | Header / footer | ATMO child chrome; Kadence `#masthead` / `#colophon` hidden by CSS |
-| Catalog + goal chips | MVP cards + server-side `filter_goal`; chip URLs → main `/каталог/` base |
-| PDP | Simple + variable `#3614`; Snippets #9/#10/#12 accounted for |
+| Catalog + goal chips | MVP + **public polish complete 2026-05-23** (`6f4790b` + WP Admin content) — see `CHANGES.md` |
+| PDP | Simple + variable `#3614`; **hero price sync + Woo tabs 2026-05-23** (`4132f1f`, `106250d`); Snippet 12 skips variable PDP |
 | Cart / checkout / order-received | `atmo-cart.css`, `atmo-checkout.css`, `atmo-confirmation.css`; re-QA PASS |
 | Payment failed | `/payment-failed/` → **404 by design** (no static page) |
 | Woo My Account | Auth, dashboard, orders, view-order, settings, hidden endpoints — shell/wiring done |
@@ -141,7 +143,7 @@ Source of truth: **`BACKLOG.md`**. Summary only — not a duplicate of `CHANGES.
 - LearnDash template overrides
 - Pending-order rows on my-courses (non-completed orders excluded from MVP)
 - `atmo-lms-lite` as UI backend — decide when hub/lesson work starts
-- Optional: goal grouping, list/grid toggle, `display_title` on catalog cards, #3614 tier hero polish
+- Optional: goal grouping, list/grid toggle, `display_title` on catalog cards
 
 ### Docs / process
 

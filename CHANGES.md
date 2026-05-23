@@ -6,6 +6,18 @@
 
 ---
 
+## 2026-05-23 — Catalog + PDP public polish milestone
+
+- **Scope:** docs-only record; child theme commits below; catalog content + Snippet 12 runtime via WP Admin/DB (not VCS)
+- **Catalog code:** `6f4790b` — archive toolbar polish, goal labels on cards, hide result count + grid/list toggle
+- **Catalog content (WP Admin):** `pa_goal energy` **Энергиѯ→Энергия**; **Интенсив. Осанка, Шея, Лицо** — removed Misc, assigned **Тренировки**; **ФИТНЕС СЕЗОН 3** — marketing short description
+- **PDP code:** `4132f1f` hero price sync · `106250d` Woo tabs ATMO styling
+- **Snippet 12:** variable PDP skip (runtime) + docs `ece38f6` — see entry below
+- **QA catalog** `/каталог/` (1440×900 / 390×844): 16 cards · no **Энергиѯ** / **Misc** · marketing excerpt visible · sort + pagination visible · no overflow · **Add to cart/checkout/payment not clicked**
+- **QA PDP** `/product/abdomen_pelvic/`: one variation form · no `.app-bottom-checkout` · hero price sync + styled Woo tabs · `/product/testmyself/` keeps bottom CTA · **Add to cart not clicked**
+
+---
+
 ## 2026-05-23 — Snippet 12 variable PDP mitigation (docs record)
 
 - **Scope:** docs-only record; runtime change was made via WP Admin / Code Snippets; **no** child theme edits; **no** commit in this step

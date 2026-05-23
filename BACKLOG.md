@@ -40,6 +40,15 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Account LMS copy polish (`4e180b9`, 2026-05-22): removed LearnDash + raw endpoint paths from user copy; CTAs/adapter unchanged — atmo-qa-empty QA PASS; r4t5 not re-QA (no password) — see `CHANGES.md`
 - Cart + checkout with cart fixture QA (2026-05-22): session **1× #3628**; checkout payment UI PASS desktop/mobile; BLIK/Klarna visible — see `CHANGES.md`
 
+### Catalog + PDP public polish (2026-05-23)
+
+- Catalog toolbar/cards — `6f4790b`: goal labels on cards; result count + grid/list toggle hidden; sort + pagination kept
+- Catalog content cleanup (WP Admin, not VCS): `pa_goal energy` typo **Энергиѯ→Энергия**; product **Интенсив. Осанка, Шея, Лицо** — removed Misc, assigned **Тренировки**; **ФИТНЕС СЕЗОН 3** marketing short description
+- PDP hero price sync — `4132f1f`: tier-specific hero price + reset restores range on `#3614`
+- PDP Woo tabs ATMO styling — `106250d`
+- Snippet 12 variable PDP skip — runtime (WP Admin) + docs `ece38f6`
+- QA PASS — see `CHANGES.md` → 2026-05-23 Catalog + PDP public polish milestone; **Add to cart/checkout/payment not clicked**
+
 ---
 
 ## 1. Account / Woo — open
@@ -157,7 +166,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 | Item | Notes |
 |------|--------|
-| #3614 access-tier UI polish | **Optional** — variable `abdomen_pelvic` (#3614): Woo Variation Swatches **60 дней** / **Бессрочно** functional; hero may keep price range after tier pick. Re-QA PASS 2026-05-22 confirms wiring OK; polish only if product wants tier-specific hero price. See `CHANGES.md` → 2026-05-22 PDP QA. Pricing unchanged (399–799). |
+| Variable PDP bottom CTA replacement (#3614) | **Optional** — Snippet 12 skips variable PDP after 2026-05-23; simple PDP keeps bottom CTA. Future sticky/bottom CTA if product wants one on variable pages. |
+| Full PDP hero redesign | **Optional** — out of scope for 2026-05-23 polish; current hero + tabs + price sync accepted |
 
 ---
 
@@ -176,4 +186,4 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 ---
 
-*Last synced from docs: 2026-05-22*
+*Last synced from docs: 2026-05-23*
