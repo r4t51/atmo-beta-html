@@ -15,6 +15,8 @@
 | Tags | — |
 | Source file | `snippet-12-bottom-button.md` |
 
+> **2026-05-23:** live snippet now skips variable products to avoid duplicate independent variation forms.
+
 ## Code
 
 ```php
@@ -26,7 +28,7 @@ function custom_append_bottom_checkout_to_description( $content ) {
     }
 
     global $product;
-    if ( ! $product || ! $product->is_in_stock() ) {
+    if ( ! $product || ! $product->is_in_stock() || $product->is_type( 'variable' ) ) {
         return $content;
     }
 

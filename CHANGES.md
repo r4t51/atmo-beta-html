@@ -6,6 +6,17 @@
 
 ---
 
+## 2026-05-23 — Snippet 12 variable PDP mitigation (docs record)
+
+- **Scope:** docs-only record; runtime change was made via WP Admin / Code Snippets; **no** child theme edits; **no** commit in this step
+- **Change:** Snippet 12 **Bottom Button** now skips variable products (`$product->is_type( 'variable' )` early return)
+- **Reason:** prevent duplicate independent variation forms and stale bottom price on variable PDP
+- **QA variable PDP** `/product/abdomen_pelvic/` (desktop **1440×900**, mobile **390×844**): `.app-bottom-checkout` absent · one `form.variations_form` · hero price sync **399zł – 799zł** → **60 дней** `399zł (~ 94 €)` → **Бессрочно** `799zł (~ 188 €)` → reset restores range · no horizontal overflow · **Add to cart not clicked**
+- **QA simple PDP** `/product/testmyself/`: bottom CTA remains · price **18zł (~ 4 €)** · **Add to cart not clicked**
+- **Docs:** `docs/snippets/snippet-12-bottom-button.md` · `WP_DEPENDENCY_MAP.md`
+
+---
+
 ## 2026-05-22 — CookieYes RU banner + preference panel QA
 
 - **Scope:** docs-only record; CookieYes plugin/runtime settings only; **no** child theme, repo code, WP Admin manual DB edits, or git commit for the runtime change
