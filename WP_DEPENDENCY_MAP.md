@@ -180,7 +180,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
 
-Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**; account course hub v1 **shipped `81c3a7d` 2026-05-23**. **Post-MVP:** LD lesson template port. ViewModel contract **signed off 2026-05-22** (§4.7). **Do not touch LearnDash lesson templates.**
+Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**; account course hub v1 **shipped `81c3a7d` 2026-05-23**; lesson chrome v1/v2 **shipped `ed7afcf` / `1e08a3d`**, hardened in **`897409c`**. ViewModel contract **signed off 2026-05-22** (§4.7). **Do not add LearnDash template overrides without explicit scoped plan.**
 
 ## Custom ATMO Plugins
 
@@ -298,7 +298,7 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-**Shell + Account/LMS MVP + account hub v1 complete** (through `81c3a7d`, 2026-05-23). **Next:** LD lesson template port; account fixture polish; optional catalog/PDP rows — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
+**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 complete** (through `897409c`, 2026-05-23). **Next:** account fixture polish; optional lesson-number prefix; optional catalog/PDP rows — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
 
 **Do not bypass without explicit scope:**
 

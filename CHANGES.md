@@ -8,6 +8,18 @@
 
 ---
 
+## 2026-05-23 — LD lesson chrome stabilization
+
+- **Scope:** child theme hardening only; no docs/runtime/DB/settings changes in code commit
+- **Commit:** `897409c` — `fix(lesson): harden chrome hooks and CSS` (`kadence-child`)
+- **Files:** `inc/atmo-lesson.php` · `assets/css/atmo-lesson.css`
+- **Fix:** guard LearnDash step/course methods and `learndash_get_course_id()` / `learndash_previous_post_link()` calls before use; no behavioral change when LD is active
+- **CSS:** replaced viewport-scaled lesson card padding with fixed desktop/mobile values; removed negative letter spacing in lesson content headings
+- **QA:** PHP syntax OK; `git diff --check` OK; bad CSS patterns removed from `atmo-lesson.css`; logged-out lesson URL redirects to course without fatal/overflow
+- **Rollback:** `git revert 897409c` — no DB or flush required
+
+---
+
 ## 2026-05-23 — Pending-order rows on my-courses — verified, closed (read-only)
 
 - **Scope:** discovery only; no code changes

@@ -14,7 +14,7 @@
 | **ATMO shell / wiring** | **Complete** — header, footer, catalog, PDP, cart, checkout, order-received; account passes 1–5; re-QA PASS 2026-05-22 |
 | **Account / LMS MVP** | **Complete** — `/my-account/my-courses/` endpoint + adapter MVP + dashboard CTA wiring + **account course hub v1 (`81c3a7d`)** + enrolled + zero-enrollment QA |
 
-**Not a blocker:** preview mu-plugin kept for now (`?atmo_preview_shell=1` only). **LD lesson template port** is the next *product* phase, not shell wiring.
+**Not a blocker:** preview mu-plugin kept for now (`?atmo_preview_shell=1` only). LD lesson chrome v1/v2 is shipped without template overrides; remaining lesson work is optional polish / formal adapter work.
 
 **Update 2026-05-23:** Catalog + PDP **public polish complete** — toolbar/cards, content cleanup, hero price sync, Woo tabs, Snippet 12 variable mitigation. Detail: `CHANGES.md` → *2026-05-23 — Catalog + PDP public polish milestone*.
 
@@ -113,7 +113,7 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 
 | Area | Why |
 |------|-----|
-| LearnDash templates | `ld30`, course-grid, single course/lesson — **LD lesson template port only**; account hub v1 done (`81c3a7d`) |
+| LearnDash templates | `ld30`, course-grid, single course/lesson — lesson chrome shipped via CSS/filters; no template overrides without scoped plan |
 | `atmo-lms-lite` critical UI | Dev-only on Local; not SoT; no front-end without explicit product choice |
 | Payment / saved cards | Stripe tokens, saved payment-methods table, live gateway QA — env + scope, not theme CSS |
 | Order / payment mutations | No new test orders, enrollments, or snippet toggles unless explicitly requested |
@@ -128,7 +128,7 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 
 **Canonical open tasks:** `BACKLOG.md` §1–§5.
 
-- **Next product phase:** LD lesson template port (`/lessons/` chrome)
+- **Current LMS polish:** lesson-number prefix (deferred), `atmo-lms-lite` UI backend decision
 - **Optional polish:** account address fixtures, downloads with real files, catalog/PDP optional rows
 - **Avoid unless explicit:** payments, saved cards, test orders
 - **Process:** preview mu-plugin removal when checkboxes met; re-export snippets when DB changes
@@ -143,7 +143,7 @@ Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending
 
 **Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first pick:
 
-> **LD lesson template port** (`lesson.html`, `/lessons/` chrome) — requires written plan; do not touch LearnDash lesson templates without adapter-backed scope.
+> Pick one scoped item from `BACKLOG.md`: account fixture polish, lesson-number prefix, or explicit `atmo-lms-lite` decision. Do not touch LearnDash templates without adapter-backed scope.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 

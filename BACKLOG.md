@@ -8,7 +8,7 @@
 
 ## Done — ATMO shell/wiring phase (re-QA 2026-05-22)
 
-Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Next:** LD lesson template port or account fixture polish — not more shell wiring unless a functional gap appears.
+Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Next:** account fixture polish or explicit product decision — not more shell wiring unless a functional gap appears.
 
 | Area | Status |
 |------|--------|
@@ -66,6 +66,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 - **v1** — `ed7afcf`: `.ld-layout__header` suppressed; content card; nav; mark-complete pill; back link → account hub via `learndash_template_progression_step_back_to_course_url`
 - **v2** — `1e08a3d`: first-lesson prev link hidden (`atmo-lesson--no-prev` body class via `learndash_previous_post_link()`); back label → «Вернуться к программе» via `learndash_template_progression_step_back_to_course_label`
+- **Stabilization** — `897409c`: LearnDash hook guards + CSS rule cleanup (no viewport-scaled padding, no negative letter spacing)
 - No LD template overrides; `kadence-child/learndash/` not created
 - QA PASS — r4t5 / atmo-qa-empty / logged-out / hub + catalog regressions — see `CHANGES.md`
 
