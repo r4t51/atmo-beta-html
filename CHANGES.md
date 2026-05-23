@@ -4,7 +4,26 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-23):** Account course hub v1 shipped (`81c3a7d`). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS item:** LD lesson template port (`/lessons/` chrome).
+> **Supersession (2026-05-23):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1 shipped (`ed7afcf`). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** lesson chrome v2 polish (prev link, back copy) — `BACKLOG.md` §2.
+
+---
+
+## 2026-05-23 — LD lesson chrome v1
+
+- **Scope:** child theme only; **no** LD template overrides, DB, snippets, or plugin edits
+- **Commit:** `ed7afcf` — feat(lesson): add ATMO lesson chrome v1 (`kadence-child`)
+- **Files:** `inc/atmo-lesson.php` · `assets/css/atmo-lesson.css` · `functions.php`
+- **PHP:** filter `learndash_template_progression_step_back_to_course_url` → `atmo_lms_build_course_hub_url($course_id)` — back-to-course link now points to `/my-account/my-courses/?course_id={id}`; safe fallback for guests and no-course state
+- **CSS (`body.single-sfwd-lessons`):** `.ld-layout__header` suppressed (duplicate breadcrumb); `.ld-layout__content` card (`--atmo-bg-card`, `20px` radius, `820px` max-width, shadow); nav row flex; mark-complete button violet pill (`--atmo-secondary`); prev/next/back link styles; mobile 640px column
+- **Not implemented:** LD template overrides (`kadence-child/learndash/` not created); diary/reflection/photo lesson types; lesson-number prefix
+- **QA r4t5 / 679** (desktop **1440×900** + mobile **375px**): ATMO header/footer present; `.ld-layout__header` hidden; `h1.entry-title` «План программы» visible; content card rendered; mark-complete button styled `rgb(115,119,227)` — **NOT clicked**; `form.sfwd-mark-complete` nonce fields intact; back link → `?course_id=3616`; next link → second lesson clean URL; no horizontal overflow
+- **QA atmo-qa-empty / 691:** `/lessons/план-программы/` → **302** → `/courses/abdominal_pelvicfloormuscles/` (denial, no lesson content)
+- **QA logged-out:** `/lessons/план-программы/` (no session) → **302** → `/courses/abdominal_pelvicfloormuscles/`
+- **Hub regression:** `/my-account/my-courses/?course_id=3616` — hub renders, «Продолжить» → lesson URL — **PASS**
+- **Catalog regression:** `/каталог/` — product grid, `atmo-lesson.css` **not** loaded — **PASS**
+- **PDP regression:** `/product/abdomen_pelvic/` — PDP renders normally — **PASS** (note: QA matrix had wrong slug `/product/abdominal_pelvicfloormuscles/` → 404 pre-existing; live slug confirmed `/product/abdomen_pelvic/`)
+- **Residual v2 open:** first-lesson prev link renders with hub URL (LD Modern fallback behavior); back link copy «Вернуться к Курс» → needs «Вернуться к программе» — both **BACKLOG.md** §2
+- **Rollback:** `git revert ed7afcf` in `kadence-child` — no DB, no flush required
 
 ---
 

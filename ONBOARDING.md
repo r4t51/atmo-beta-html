@@ -123,7 +123,7 @@ npx http-server . -p 3333 --cors -c-1
 - `LessonProgress` / `LessonData`
 - `AccessData`
 
-Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**. **LD lesson template port** (`lesson.html`, `/lessons/`) remains open — do not deep-port lesson body without explicit scope.
+Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **lesson chrome v1 shipped `ed7afcf`** (CSS + filter hook, no LD template override). Open: lesson chrome v2 polish (prev link, back copy) — `BACKLOG.md` §2.
 
 ## WordPress Local
 
@@ -193,17 +193,22 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - **Меню (5 пунктов):** Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
   - **«Программы»** → `/courses/` in header/footer only (removed from account sidebar in `ecfd8f5`)
   - **Скрыты из меню, доступны по прямому URL:** `/my-account/downloads/`, `/my-account/edit-address/` (+ `billing`/`shipping`), `/my-account/payment-methods/`
-  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP** · **`648e562` dashboard CTA wiring** · **`81c3a7d` account hub v1**
+  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP** · **`648e562` dashboard CTA wiring** · **`81c3a7d` account hub v1** · **`ed7afcf` lesson chrome v1**
   - **`/my-account/my-courses/` (`a352081`):** adapter-backed enrolled list; empty state when `[]`; fixture #3801 QA PASS — `CHANGES.md`
   - **`/my-account/my-courses/?course_id={id}` (`81c3a7d`):** account hub v1 — enrolled overview + lesson outline; denial when no access — `CHANGES.md`
   - **Local QA fixtures:** **r4t5 / #3801** = enrolled path · **691 / `atmo-qa-empty`** = zero-enrollment path — empty-state QA PASS 2026-05-22 — `CHANGES.md`
   - **`/my-account/my-courses/` shell (`ecfd8f5`):** endpoint + menu IA; one-time permalink flush on deploy
   - **Dashboard (`534b241` + `648e562`):** «Следующий шаг» + courses panel wired to adapter / **`/my-account/my-courses/`**; no dashboard list/progress — `CHANGES.md`
-  - **Account status:** shell/wiring done; my-courses adapter MVP live (`a352081`); dashboard CTAs wired (`648e562`); account hub v1 live (`81c3a7d`); enrolled + zero-enrollment empty-state QA done; #3801 view-order QA; access-type meta pill (`2da518f`); saved payment cards table not live-QA
+  - **Account status:** shell/wiring done; my-courses adapter MVP live (`a352081`); dashboard CTAs wired (`648e562`); account hub v1 live (`81c3a7d`); enrolled + zero-enrollment empty-state QA done; #3801 view-order QA; access-type meta pill (`2da518f`); saved payment cards table not live-QA; lesson chrome v1 live (`ed7afcf`) — `/lessons/` pages styled with ATMO card/nav/button chrome via CSS + back-to-hub filter
   - **Caveats:** не редиректить Woo endpoints без аудита; `/my-account/add-payment-method/` audited 2026-05-22 (read-only PASS; Stripe card/BLIK absent on Local — env, not theme); Woo default dashboard copy hidden by CSS when `.atmo-dash` present
   - **Open tasks:** `BACKLOG.md`
   - Rollback: см. `CHANGES.md` по commit; menu PHP: `git revert d4ee689`
-- LearnDash templates не тронуты.
+- ✅ LearnDash lesson chrome v1 — `inc/atmo-lesson.php` · `assets/css/atmo-lesson.css` · **`ed7afcf`**
+  - CSS scoped to `body.single-sfwd-lessons`: content card, nav row, mark-complete violet pill, back link.
+  - Filter `learndash_template_progression_step_back_to_course_url` → account hub.
+  - No LD template overrides; `kadence-child/learndash/` not created.
+  - Rollback: `git revert ed7afcf` — no DB or flush required.
+  - Open v2: prev link dedup, back copy «Вернуться к программе» — `BACKLOG.md` §2.
 
 Google Fonts и preview CSS грузятся только при `?atmo_preview_shell=1`. На обычных страницах дубля нет.
 
