@@ -1,6 +1,6 @@
 # ATMO shell + account/LMS MVP — milestone snapshot
 
-> **Date:** 2026-05-22  
+> **Date:** 2026-05-22 baseline · **updated 2026-05-23** (account hub v1)
 > **Repos:** docs `beta html` · child theme `kadence-child` (Local)  
 > **Purpose:** concise closure record — what shipped, what fixtures exist, what stays out of scope.  
 > **Detail / rollback:** `CHANGES.md` · **open work:** `BACKLOG.md` · **adapter contract:** `LMS_ADAPTER_SPEC.md`
@@ -113,7 +113,7 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 
 | Area | Why |
 |------|-----|
-| LearnDash templates | `ld30`, course-grid, single course/lesson — post-MVP hub/lesson port only |
+| LearnDash templates | `ld30`, course-grid, single course/lesson — **LD lesson template port only**; account hub v1 done (`81c3a7d`) |
 | `atmo-lms-lite` critical UI | Dev-only on Local; not SoT; no front-end without explicit product choice |
 | Payment / saved cards | Stripe tokens, saved payment-methods table, live gateway QA — env + scope, not theme CSS |
 | Order / payment mutations | No new test orders, enrollments, or snippet toggles unless explicitly requested |
@@ -124,38 +124,16 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 
 ---
 
-## 7. Remaining backlog (grouped)
+## 7. Remaining backlog (summary)
 
-Source of truth: **`BACKLOG.md`**. Summary only — not a duplicate of `CHANGES.md`.
+**Canonical open tasks:** `BACKLOG.md` §1–§5.
 
-### Account / Woo fixtures
+- **Next product phase:** LD lesson template port (`/lessons/` chrome)
+- **Optional polish:** account address fixtures, downloads with real files, catalog/PDP optional rows
+- **Avoid unless explicit:** payments, saved cards, test orders
+- **Process:** preview mu-plugin removal when checkboxes met; re-export snippets when DB changes
 
-- Saved billing/shipping profile cards + filled address forms (needs saved-address fixture)
-- Downloads list with real files (empty state styled only)
-- View-order shipping customer block (absent on #3801)
-- Address save/validation flow (out of scope unless explicit)
-- Woo default dashboard `<p>` hidden by CSS when `.atmo-dash` — template override optional later
-
-### Payments — avoid unless explicit
-
-- Saved payment-methods table with stored cards
-- Stripe card on Local (HTTP + live mode)
-- BLIK / Klarna gateway availability
-- Test orders / payment flows
-
-### LMS post-MVP
-
-- **LD lesson template / `lesson.html` port** — primary next product phase (account hub v1 **done `81c3a7d`**)
-- LearnDash template overrides (single lesson body)
-- Pending-order rows on my-courses (non-completed orders excluded from MVP)
-- `atmo-lms-lite` as UI backend — decide when hub/lesson work starts
-- Optional: goal grouping, list/grid toggle, `display_title` on catalog cards
-
-### Docs / process
-
-- Preview mu-plugin removal (after explicit sign-off that child header/footer are canonical)
-- Re-export Code Snippets when DB changes
-- Cross-repo rollback notes stay in `CHANGES.md`
+Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending — see §4.
 
 ---
 
@@ -165,7 +143,7 @@ Source of truth: **`BACKLOG.md`**. Summary only — not a duplicate of `CHANGES.
 
 **Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first pick:
 
-> **Post-MVP lesson/course hub port** (`lesson.html`, LD lesson chrome) — requires written plan; account hub v1 **shipped `81c3a7d`**; do not touch LearnDash lesson templates without adapter-backed scope.
+> **LD lesson template port** (`lesson.html`, `/lessons/` chrome) — requires written plan; do not touch LearnDash lesson templates without adapter-backed scope.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 
@@ -184,4 +162,4 @@ Do **not** resume generic shell CSS unless a functional gap is found.
 
 ---
 
-*Snapshot v1 — 2026-05-22. Update this file when a new milestone closes; keep narrative history in `CHANGES.md`.*
+*Snapshot v1.1 — baseline 2026-05-22 · hub v1 update 2026-05-23. Keep narrative history in `CHANGES.md`; open tasks in `BACKLOG.md`.*

@@ -18,7 +18,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 
 | Route | Role | Status |
 |-------|------|--------|
-| `/courses/` | LearnDash **public CPT archive** — nav label **«Программы»** | **Live** (interim relabel 2026-05-22) — **not** enrolled UI |
+| `/courses/` | LearnDash **public CPT archive** — nav label **«Программы»** | **Live** (stable public archive) — **not** enrolled UI |
 | **`/my-account/my-courses/`** | **«Мои курсы»** — enrolled list (MVP) | **Live (adapter MVP)** — `get_enrolled_courses()` list UI — `a352081` |
 | **`/my-account/my-courses/?course_id={id}`** | **Account course hub v1** — enrolled overview + lesson outline | **Live** — existing endpoint + query arg; no new rewrite — `81c3a7d` |
 | `/lessons/{slug}/` | LearnDash lesson body | **Live (LD template)** — continue CTA from hub/list still lands here |
@@ -141,7 +141,7 @@ Per-user enrollment + progress for one course. **Canonical access/expiry fields 
 | *(EnrollmentState fields)* | | | see §4.2 |
 | `course_hub_url` | required | string | **Account hub URL** — `/my-account/my-courses/?course_id={id}` for enrolled courses (`81c3a7d`); not the public LD course URL |
 | `product_permalink` | optional | string \| null | Woo PDP for renewal / «Купить снова» when `expired` or no access; from granting order product/variation |
-| `last_lesson` | deferred | `LessonRef` \| null | Post-MVP outline / diary |
+| `last_lesson` | deferred | `LessonRef` \| null | Post-MVP diary / resume (hub v1 outline shipped via read-only lesson list) |
 | `next_lesson` | optional | `LessonRef` \| null | **Null** when unknown — hide «Продолжить» CTA; never invent |
 | `cta_label` | optional | string \| null | e.g. «Продолжить», «Начать», «Пройдена» — omit when no CTA |
 | `cta_url` | optional | string \| null | Lesson or hub URL; omit when `next_lesson` null and status ≠ `active` |
@@ -186,7 +186,7 @@ Lightweight lesson pointer for nav, outline, and progress strip — not full les
 
 ### 4.5 `AccessData`
 
-Effective access for gating UI (course hub, lesson entry). **Enrolled list MVP** uses **`EnrollmentState.status`** + `expires_at` for row copy; `AccessData` is for **`get_access()`** on hub/lesson routes (post-MVP deep port).
+Effective access for gating UI (course hub, lesson entry). **Enrolled list + hub v1 denial** use **`EnrollmentState.status`** + enrollment check on `course_id`. **`AccessData` / `get_access()`** for richer hub/lesson gating remains optional polish.
 
 | Field | Tier | Type | Notes |
 |-------|------|------|-------|
@@ -327,7 +327,7 @@ Implementation file/namespace TBD in child theme or small mu-plugin. v0 defines 
 | `get_enrolled_courses( user_id )` | `EnrolledCourse[]` | «Мои курсы» list, dashboard course panel |
 | `get_enrollment_state( user_id, course_id )` | `EnrollmentState` | Course hub, access banners |
 | `get_access( user_id, course_id )` | `AccessData` | Gating, expired/pending UI |
-| `get_course_outline( user_id, course_id )` | `LessonProgress[]` | `product-enrolled.html` outline (post-MVP) |
+| `get_course_outline( user_id, course_id )` | `LessonProgress[]` | Hub v1 uses **inline** lightweight outline (`81c3a7d`); formal adapter method / full `LessonProgress[]` optional future |
 | `get_next_lesson( user_id, course_id )` | `LessonRef` \| null | Dashboard «Следующий шаг», continue CTA |
 | `get_order_access_context( order_id )` | `OrderAccessContext` \| null | View-order pairing, pending access copy |
 
@@ -375,7 +375,7 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 | **Thank-you redirect** | Snippet #5 broken URL, inactive | Separate thank-you spec before any post-checkout redirect |
 | **Product ↔ course map** | ~~Woo ID ≠ LD ID~~ | **Discovered:** `_related_course` + variation-first resolver — `CHANGES.md` 2026-05-22 |
 | **Access expiry** | ~~LD `expire_access` off~~ | **Decided:** adapter computes from LD `starts_at` + Woo duration label — `CHANGES.md` 2026-05-22 |
-| **Lesson URLs** | Deep port blocked until adapter fixed | MVP may link to LD lesson URLs via `permalink` until ATMO lesson template |
+| **Lesson URLs** | ATMO lesson shell not shipped | **Current:** continue CTAs link to LD lesson URLs via `permalink`; ATMO lesson template port remains post-MVP |
 | **Dashboard widgets** | Diary/trainer from other plugins | Out of MVP; do not block enrolled list on diary data |
 
 ---
@@ -478,6 +478,8 @@ Before any enrolled UI or route implementation:
 ---
 
 ## 11. Woo `my-courses` endpoint plan (audit 2026-05-22)
+
+> **Note:** §11.1–11.8 below is the **historical implementation plan** (pre-ship audit + phased rollout). Shipped state: §11.0–§11.0d · current routes: §2.
 
 Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-account.css`. **No PHP shipped in audit commit.**
 

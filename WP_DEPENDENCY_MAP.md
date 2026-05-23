@@ -59,7 +59,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - WC mechanics сохранены: `woocommerce_before_single_product` (notices), `woocommerce_after_single_product_summary` (tabs + upsells + related), `woocommerce_after_single_product`;
   - Snippet 10 учтён в price CSS; Snippet 12 (bottom CTA) active для simple in-stock PDP в description tab через `the_content`; variable PDPs skipped after 2026-05-23 mitigation; Snippet 9 (`[course_info_card]`) рендерится в short_description_html;
   - Re-QA PASS 2026-05-22 (`CHANGES.md`): simple + variable (#3614) + recovery spot-check; asset scope confirmed — `atmo-product.css` + `atmo-catalog.css` (related) only; no account/cart/checkout/filter JS on PDP.
-  - Optional: #3614 access-tier hero polish after tier pick — `BACKLOG.md` (not a wiring blocker).
+  - #3614 access-tier hero price sync shipped 2026-05-23 (`4132f1f`); variable bottom CTA remains optional (`BACKLOG.md`).
   - LearnDash / enrolled / access state не включены.
 
 - ✅ Woo My Account (`assets/css/atmo-account.css`, `inc/atmo-account.php`):
@@ -173,7 +173,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 | `CourseCard` | id, title, slug, permalink, thumbnail_url?, excerpt?, duration_label? |
 | `EnrollmentState` | course_id, is_enrolled, status, progress_percent?, completed_steps?, total_steps?, **starts_at**, **order_completed_at**, **access_type_label**, **access_duration_days**, **expires_at** (canonical UI), **source_order_id?**, **source_order_item_id?**, source |
 | `EnrolledCourse` | CourseCard + EnrollmentState + **course_hub_url** (account hub `?course_id=`), **product_permalink?**, next_lesson?, cta_label?, cta_url? |
-| `LessonRef` / `LessonProgress` | LessonRef: id, title, permalink, course_id, order_index — list MVP via `next_lesson` only; full `LessonProgress[]` deferred |
+| `LessonRef` / `LessonProgress` | LessonRef via `next_lesson` on list; hub v1 inline outline shipped (`81c3a7d`); formal `LessonProgress[]` adapter method optional/future |
 | `AccessData` | has_access, reason (`purchase_pending` for unpaid orders), expiry?, product_id?, order_id? |
 | `OrderAccessContext` | order_id, **order_item_id?**, order_status, product_id, product_name, **order_completed_at**, **access_type_label**, **access_duration_days**, **starts_at**, **expires_at** (per-order), variation_id? — pairing only |
 
@@ -298,10 +298,11 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-**Shell/wiring phase complete (re-QA 2026-05-22).** Open work is product/LMS/payment-scope decisions and optional polish — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
+**Shell + Account/LMS MVP + account hub v1 complete** (through `81c3a7d`, 2026-05-23). **Next:** LD lesson template port; account fixture polish; optional catalog/PDP rows — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
 
-**Architectural blockers (do not bypass):**
+**Do not bypass without explicit scope:**
 
-- ~~LMS adapter PHP~~ — **done `a352081`**; ~~dashboard wiring~~ — **done `648e562`**
-- Do not touch LearnDash templates or build critical UI on `atmo-lms-lite` without explicit decision
-- Saved-card / payment-token scope — requires explicit approval before live-QA or UI work
+- LearnDash **lesson** template overrides
+- Critical UI on `atmo-lms-lite`
+- Saved-card / payment-token live QA
+- Snippet **#5** re-enable (broken redirect URL in inactive source)

@@ -4,6 +4,8 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
+> **Supersession (2026-05-23):** Account course hub v1 shipped (`81c3a7d`). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS item:** LD lesson template port (`/lessons/` chrome).
+
 ---
 
 ## 2026-05-23 — LMS account course hub v1
