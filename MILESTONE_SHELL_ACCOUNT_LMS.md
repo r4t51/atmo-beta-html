@@ -139,7 +139,8 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 
 - **Account fixture polish:** **closed 2026-05-24** — no mandatory account theme work; dev pill removed (`dc1e2be`); see `CHANGES.md`
 - **LMS polish:** lesson H1 number prefix **done `caaaa96`**; **`atmo-lms-lite` bridge decision** — defer runtime integration until stable read API + cutover
-- **Optional polish:** PDP optional rows; billing edit field subset (Woo locale/config, low priority)
+- **Optional polish:** PDP optional rows (full hero redesign cosmetic only)
+- **Closed / config:** billing edit field subset — Checkout Field Editor + Woo settings; not child-theme work (2026-05-24)
 - **Avoid unless explicit:** payments, saved cards, test orders; downloads/shipping blocks until real fixtures exist
 - **Process:** preview mu-plugin removal when checkboxes met; re-export snippets when DB changes
 

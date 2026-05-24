@@ -4,9 +4,20 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`); **catalog card display titles shipped** (`4993bd9`, 2026-05-21); **variable PDP bottom CTA deferred by design** (discovery 2026-05-24). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open items:** explicit `atmo-lms-lite` API/cutover contract when product-ready · optional full PDP hero redesign (cosmetic) — `BACKLOG.md` §2 / §5.
+> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`); **catalog card display titles shipped** (`4993bd9`, 2026-05-21); **variable PDP bottom CTA deferred by design** (discovery 2026-05-24); **billing edit field subset closed as config decision** (discovery 2026-05-24). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open items:** explicit `atmo-lms-lite` API/cutover contract when product-ready · optional full PDP hero redesign (cosmetic) — `BACKLOG.md` §2 / §5.
 
 ---
+
+## 2026-05-24 — Billing edit field subset closed (config decision)
+
+- **Scope:** docs-only discovery record; no child theme, runtime, DB, snippet, Woo, or Checkout Field Editor changes
+- **Fixture:** user **679** (`r4t5`)
+- **QA** (desktop **1440×900**, mobile **390×844**): `/my-account/edit-address/` index cards show saved street · `/edit-address/billing/` **7 fields** (email, name, Instagram custom, country, city, postcode) · `/edit-address/shipping/` fuller default Woo fieldset incl. `address_1` · **Save not clicked**
+- **Billing form omits:** `billing_address_1`, `billing_address_2`, `billing_state`, `billing_phone` — meta **preserved** on user 679
+- **Root cause:** **woo-checkout-field-editor-pro** applies `wc_fields_billing` on `edit-address`; `billing_address_1` / `billing_address_2` / `billing_state` have **`enabled=0`** · Woo options `woocommerce_checkout_phone_field=hidden`, `woocommerce_checkout_company_field=hidden` · **no** child-theme address field filters or template overrides
+- **Decision:** **accepted no-op / configuration decision** — not a child-theme bug; index cards read saved meta correctly
+- **Future change (product decision only):** WP Admin → **Checkout Field Editor** — do **not** force fields via child-theme filters unless explicitly scoped
+- **Docs:** `BACKLOG.md` · `WP_DEPENDENCY_MAP.md` · `ONBOARDING.md` · `MILESTONE_SHELL_ACCOUNT_LMS.md`
 
 ## 2026-05-24 — Variable PDP bottom CTA deferred by design
 
@@ -75,7 +86,7 @@
 - **Downloads:** 0 downloadable products, 0 download grants for users 679/691 — styled empty state sufficient; **no action** until product creates downloadable SKU/grant
 - **Payment methods:** 0 saved tokens for users 679/691; Local add-payment-method shows Klarna only (Stripe card absent by env) — **avoid unless explicit** saved-card/token task
 - **r4t5 profile:** billing/shipping meta populated; address index cards + forms visually acceptable; **atmo-qa-empty** empty account states sane
-- **Billing edit field subset:** no `address_1`/`state`/`phone` on billing edit UI — Woo locale/config behavior, low priority; not a child-theme bug
+- **Billing edit field subset:** no `address_1`/`state`/`phone` on billing edit UI — *(superseded: config decision 2026-05-24 — Checkout Field Editor `wc_fields_billing` + Woo phone hidden; not child-theme bug)*
 - **Child theme commit `dc1e2be`** — `fix(account): remove dashboard dev pill` — removed customer-visible **`WooCommerce · shell`** pill from dashboard; kept **«Аккаунт активен»**
 - **QA (discovery):** no payment/save/order/cancel/logout actions clicked
 - **Rollback (pill):** `git revert dc1e2be` in `kadence-child`
@@ -116,7 +127,7 @@
 - **QA `/my-account/edit-address/billing/`:** ATMO header/footer; fields filled (first/last name, email, country «Польша», city, postcode); POST → current URL; no overflow
 - **QA `/my-account/edit-address/shipping/`:** ATMO header/footer; all shipping fields filled including `address_1`; after MZ fix, province dropdown shows «Mazowieckie»; no overflow
 - **QA `/my-account/view-order/3801/`:** order-level billing unchanged (checkout snapshot «r4 t5 / Gdansk / …») — by design, order meta is separate from user meta
-- **Residual:** ATMO billing edit form renders subset of fields (no `address_1`, `state`, `phone` on billing form UI); no snippet or child theme filter found — likely WooCommerce locale behavior or Kadence default; fields exist in meta and appear on index cards; low priority
+- **Residual:** ATMO billing edit form renders subset of fields (no `address_1`, `state`, `phone` on billing form UI); no snippet or child theme filter found — *(superseded: Checkout Field Editor `wc_fields_billing` disabled fields — see `CHANGES.md` 2026-05-24)*
 - **Rollback:** SQL `UPDATE wp_usermeta SET meta_value='Masovian (mazowieckie)' WHERE user_id=679 AND meta_key IN ('billing_state','shipping_state')`; WP Admin reset fields to blank
 
 ---

@@ -110,8 +110,9 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | ~~Filled address forms (all fields populated)~~ | ✅ Done 2026-05-23 — index cards + shipping form verified |
 | ~~View-order shipping customer block~~ | **No action** — #3801 has no shipping meta (fixture absent); not a CSS/template bug |
 | ~~Dashboard dev pill `WooCommerce · shell`~~ | ✅ Done `dc1e2be` 2026-05-24 — removed; **«Аккаунт активен»** kept |
-| Billing edit field subset (optional) | Low priority Woo locale/config — billing edit UI omits address/state/phone; meta on index cards; no child-theme filter |
+| ~~Billing edit field subset~~ | ✅ **Closed / accepted no-op 2026-05-24** — Checkout Field Editor `wc_fields_billing` + Woo phone/company hidden; index cards show saved meta; **not** child-theme bug — see `CHANGES.md` |
 | Address save/validation flow | Out of scope unless explicit |
+| Child-theme billing/shipping field filters | **Do not add** unless explicitly scoped — use Checkout Field Editor / Woo settings for field changes |
 | Woo default dashboard `<p>` in DOM | Hidden by CSS when `.atmo-dash` present; template override optional later |
 
 **Local fixtures**
@@ -202,4 +203,4 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-*Last synced: 2026-05-24 (variable PDP bottom CTA deferred; LMS bridge decision; lesson prefix `caaaa96`)*
+*Last synced: 2026-05-24 (billing edit field subset closed; variable PDP bottom CTA deferred; LMS bridge decision)*

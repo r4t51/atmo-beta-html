@@ -193,6 +193,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - **Меню (5 пунктов):** Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
   - **«Программы»** → `/courses/` in header/footer only (removed from account sidebar in `ecfd8f5`)
   - **Скрыты из меню, доступны по прямому URL:** `/my-account/downloads/`, `/my-account/edit-address/` (+ `billing`/`shipping`), `/my-account/payment-methods/`
+  - **Адреса (`edit-address`):** index cards показывают сохранённый meta; billing edit subset — **Checkout Field Editor** `wc_fields_billing` + Woo phone hidden (**config decision 2026-05-24**, not child-theme bug) — do not add theme billing field filters unless explicitly scoped
   - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP** · **`648e562` dashboard CTA wiring** · **`81c3a7d` account hub v1** · **`dc1e2be` dashboard dev pill removal** · **`ed7afcf` lesson chrome v1** · **`1e08a3d` lesson chrome v2** · **`897409c` lesson hardening** · **`caaaa96` lesson H1 number prefix**
   - **`/my-account/my-courses/` (`a352081`):** adapter-backed enrolled list; empty state when `[]`; fixture #3801 QA PASS — `CHANGES.md`
   - **`/my-account/my-courses/?course_id={id}` (`81c3a7d`):** account hub v1 — enrolled overview + lesson outline; denial when no access — `CHANGES.md`
@@ -228,11 +229,12 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Optional / product-scoped** — full PDP hero redesign (cosmetic); billing edit field subset (Woo locale/config, low priority)
+1. **Optional / product-scoped** — full PDP hero redesign (cosmetic)
 2. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24)
 3. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist
 4. **Account fixture polish** — **closed 2026-05-24** (see `CHANGES.md`); do not treat as next mandatory phase
 5. **Variable PDP bottom CTA (#3614)** — **deferred 2026-05-24**; Snippet 12 variable skip is intentional — do not re-enable without redesign
+6. **Billing edit field subset** — **closed / config decision 2026-05-24** — Checkout Field Editor controls billing fields; do not fix via child-theme filters
 
 **Do not bypass without explicit scope:**
 
