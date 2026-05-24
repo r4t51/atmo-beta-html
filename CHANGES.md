@@ -4,9 +4,20 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`); **catalog card display titles shipped** (`4993bd9`, 2026-05-21). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** optional PDP polish · explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`); **catalog card display titles shipped** (`4993bd9`, 2026-05-21); **variable PDP bottom CTA deferred by design** (discovery 2026-05-24). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open items:** explicit `atmo-lms-lite` API/cutover contract when product-ready · optional full PDP hero redesign (cosmetic) — `BACKLOG.md` §2 / §5.
 
 ---
+
+## 2026-05-24 — Variable PDP bottom CTA deferred by design
+
+- **Scope:** docs-only discovery record; no child theme, runtime, DB, snippet, or content changes
+- **Product:** `#3614` `/product/abdomen_pelvic/` (variable access tiers **3628** / **3629**)
+- **Snippet 12:** variable skip confirmed intentional — `$product->is_type( 'variable' )` early return prevents second independent `form.variations_form` from `woocommerce_template_single_add_to_cart()` in description tab
+- **Variable PDP QA** (desktop **1440×900**, mobile **390×844**): `.app-bottom-checkout` **absent** · **1** hero `form.variations_form` · hero price sync **399zł – 799zł** → **60 дней** `399zł (~ 94 €)` / `#3628` → **Бессрочно** `799zł (~ 188 €)` / `#3629` → reset restores range · no horizontal overflow · **Add to cart not clicked**
+- **Simple PDP comparison** `/product/levelup_neuropower/`: `.app-bottom-checkout` **present** · hero + bottom «В корзину» · price **399zł (~ 94 €)** · **Add to cart not clicked**
+- **Decision:** **defer** — not a functional blocker; do **not** remove Snippet 12 variable guard without redesign
+- **Future safe path (product decision only):** child-theme scroll/sticky CTA tied to existing hero form — **not** a second Woo variation form
+- **Docs:** `BACKLOG.md` · `WP_DEPENDENCY_MAP.md` · `ONBOARDING.md` · `MILESTONE_SHELL_ACCOUNT_LMS.md`
 
 ## 2026-05-24 — Catalog card `display_title` docs closure
 

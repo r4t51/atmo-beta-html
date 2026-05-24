@@ -30,7 +30,7 @@
 |---------|--------|
 | Header / footer | ATMO child chrome; Kadence `#masthead` / `#colophon` hidden by CSS |
 | Catalog + goal chips | MVP + **public polish complete 2026-05-23** (`6f4790b` + WP Admin content); card display titles **`4993bd9`** 2026-05-21; taxonomy-aware chip URLs **`7b163be`** 2026-05-24 — see `CHANGES.md` |
-| PDP | Simple + variable `#3614`; **hero price sync + Woo tabs 2026-05-23** (`4132f1f`, `106250d`); Snippet 12 skips variable PDP |
+| PDP | Simple + variable `#3614`; **hero price sync + Woo tabs 2026-05-23** (`4132f1f`, `106250d`); Snippet 12 skips variable PDP **by design** (deferred 2026-05-24) |
 | Cart / checkout / order-received | `atmo-cart.css`, `atmo-checkout.css`, `atmo-confirmation.css`; re-QA PASS |
 | Payment failed | `/payment-failed/` → **200** static page (WP **#3807** + `page-payment-failed.php` / `atmo-payment-failed.css`, `c9ac2b1`); Woo order-specific failed UX stays on order-received |
 | Woo My Account | Auth, dashboard, orders, view-order, settings, hidden endpoints — shell/wiring done |
@@ -153,7 +153,7 @@ Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending
 
 **Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first pick:
 
-> Pick one scoped item from `BACKLOG.md`: optional PDP polish, or explicit `atmo-lms-lite` API/cutover contract when product-ready. Static `/payment-failed/` shipped (2026-05-24). Lesson-number prefix is done (`caaaa96`). Account fixture polish is closed — do not treat as next mandatory phase. Do not touch LearnDash templates without adapter-backed scope.
+> Pick one scoped item from `BACKLOG.md`: explicit `atmo-lms-lite` API/cutover contract when product-ready, or optional full PDP hero redesign (cosmetic). Static `/payment-failed/` shipped (2026-05-24). Variable PDP bottom CTA **deferred by design** (2026-05-24) — not next mandatory work. Lesson-number prefix is done (`caaaa96`). Account fixture polish is closed — do not treat as next mandatory phase. Do not touch LearnDash templates without adapter-backed scope.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 

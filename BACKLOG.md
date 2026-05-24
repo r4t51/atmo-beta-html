@@ -8,7 +8,7 @@
 
 ## Done — ATMO shell/wiring phase (re-QA 2026-05-22)
 
-Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Account fixture polish closed 2026-05-24** — no mandatory account theme work. **Next:** optional PDP polish or explicit `atmo-lms-lite` API/cutover contract later — not more shell wiring unless a functional gap appears.
+Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Account fixture polish closed 2026-05-24** — no mandatory account theme work. **Variable PDP bottom CTA deferred 2026-05-24** — not a functional blocker. **Next:** explicit `atmo-lms-lite` API/cutover contract when product-ready — not more shell wiring unless a functional gap appears.
 
 | Area | Status |
 |------|--------|
@@ -46,7 +46,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Catalog content cleanup (WP Admin, not VCS): `pa_goal energy` typo **Энергиѯ→Энергия**; product **Интенсив. Осанка, Шея, Лицо** — removed Misc, assigned **Тренировки**; **ФИТНЕС СЕЗОН 3** marketing short description
 - PDP hero price sync — `4132f1f`: tier-specific hero price + reset restores range on `#3614`
 - PDP Woo tabs ATMO styling — `106250d`
-- Snippet 12 variable PDP skip — runtime (WP Admin) + docs `ece38f6`
+- Snippet 12 variable PDP skip — runtime (WP Admin) + docs `ece38f6`; **deferred by design 2026-05-24** — see `CHANGES.md` → *Variable PDP bottom CTA deferred*
 - QA PASS — see `CHANGES.md` → 2026-05-23 Catalog + PDP public polish milestone; **Add to cart/checkout/payment not clicked**
 
 ### LearnDash public course URL hygiene (2026-05-23)
@@ -134,7 +134,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
 
-**Next likely (optional / product-scoped):** explicit `atmo-lms-lite` API/cutover contract · PDP optional polish — see §5.
+**Next likely (optional / product-scoped):** explicit `atmo-lms-lite` API/cutover contract · full PDP hero redesign (cosmetic only) — see §5.
 
 ### Current routes (reference)
 
@@ -157,6 +157,7 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 - Build critical UI on `atmo-lms-lite` without explicit decision
 - Register new Woo endpoints or change rewrites without audit + docs
 - Re-enable Snippet **#5** Thank You Redirect (broken URL in source)
+- Re-enable Snippet **#12** variable branch or add a second `form.variations_form` on variable PDP without redesign (duplicate variation-form risk — see `CHANGES.md` 2026-05-24)
 - Treat Woo order line items alone as enrollment UI (bridge + adapter must agree)
 
 ---
@@ -182,11 +183,11 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-## 5. PDP — optional
+## 5. PDP — optional / deferred
 
 | Item | Notes |
 |------|--------|
-| Variable PDP bottom CTA replacement (#3614) | **Optional** — Snippet 12 skips variable PDP after 2026-05-23; simple PDP keeps bottom CTA. Future sticky/bottom CTA if product wants one on variable pages. |
+| Variable PDP bottom CTA (#3614) | **Deferred / product decision (2026-05-24)** — Snippet 12 variable skip is **intentional and safe**; not a functional blocker. Variable PDP: 0 `.app-bottom-checkout`, 1 hero `form.variations_form`, hero price sync PASS (`4132f1f`). Simple PDP keeps Snippet 12 bottom CTA. **Do not** remove Snippet 12 variable guard or duplicate Woo variation forms. If product wants bottom conversion later: child-theme **scroll/sticky CTA tied to hero form only** — see `CHANGES.md`. |
 | Full PDP hero redesign | **Optional** — out of scope for 2026-05-23 polish; current hero + tabs + price sync accepted |
 
 ---
@@ -201,4 +202,4 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-*Last synced: 2026-05-24 (LMS bridge decision + lesson prefix `caaaa96`)*
+*Last synced: 2026-05-24 (variable PDP bottom CTA deferred; LMS bridge decision; lesson prefix `caaaa96`)*

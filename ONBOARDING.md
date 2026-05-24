@@ -123,7 +123,7 @@ npx http-server . -p 3333 --cors -c-1
 - `LessonProgress` / `LessonData`
 - `AccessData`
 
-Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`; **lesson H1 number prefix shipped `caaaa96`**. Open: optional PDP polish; explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`; **lesson H1 number prefix shipped `caaaa96`**. **Variable PDP bottom CTA deferred 2026-05-24** — not mandatory. Open: explicit `atmo-lms-lite` API/cutover contract when product-ready — `BACKLOG.md` §2.
 
 ## WordPress Local
 
@@ -180,10 +180,10 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - Hero: 2-колоночный grid (изображение + сводка), `h1.atmo-pdp-title`, `.atmo-pdp-desc`, buy box с ценой и WC add-to-cart формой.
   - Сохранены WC mechanics: notices (`woocommerce_before_single_product`), add-to-cart форма, tabs, upsells, related products.
   - Snippet 10 (price wrapping) учтён в CSS через `.custom-main-price` + `.euro-hint`.
-  - Snippet 12 (bottom CTA) продолжает работать в description tab через `the_content` filter.
+  - Snippet 12 (bottom CTA) продолжает работать в description tab через `the_content` filter — **simple in-stock PDP only**; variable PDP skip intentional (2026-05-23 mitigation, **deferred by design 2026-05-24**).
   - Snippet 9 (`[course_info_card]`) рендерится в `.atmo-pdp-desc` через `apply_filters('woocommerce_short_description', ...)`.
-  - Snippet 12 duplicate add-to-cart in description-tab CTA — by design (hero + bottom form).
-  - Variable access-tier (#3614 `abdomen_pelvic`): Woo Variation Swatches for **тип-доступа**; re-QA PASS 2026-05-22 — see `CHANGES.md` → 2026-05-22 PDP QA; optional polish — `BACKLOG.md`.
+  - Snippet 12 duplicate add-to-cart in description-tab CTA — by design on **simple** PDP (hero + bottom form). **Do not** add a second variable `form.variations_form` — use scroll/sticky CTA to hero if product requests it later.
+  - Variable access-tier (#3614 `abdomen_pelvic`): Woo Variation Swatches for **тип-доступа**; hero price sync **`4132f1f`**; re-QA PASS 2026-05-22 / 2026-05-24 — see `CHANGES.md`; bottom CTA deferred — `BACKLOG.md` §5.
   - LearnDash / enrolled / access state НЕ включены.
   - CSS: `atmo-product.css` on `is_product()`; `atmo-catalog.css` on PDP for related cards only.
 - ✅ Корзина — shell: `assets/css/atmo-cart.css` (+ `atmo-catalog.css` для cross-sells); re-QA PASS 2026-05-22 — `CHANGES.md`.
@@ -228,10 +228,11 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Optional polish** — variable PDP bottom CTA; billing edit field subset (Woo locale/config, low priority)
+1. **Optional / product-scoped** — full PDP hero redesign (cosmetic); billing edit field subset (Woo locale/config, low priority)
 2. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24)
 3. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist
 4. **Account fixture polish** — **closed 2026-05-24** (see `CHANGES.md`); do not treat as next mandatory phase
+5. **Variable PDP bottom CTA (#3614)** — **deferred 2026-05-24**; Snippet 12 variable skip is intentional — do not re-enable without redesign
 
 **Do not bypass without explicit scope:**
 

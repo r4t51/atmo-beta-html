@@ -57,9 +57,9 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - `inc/atmo-product.php`: `atmo_build_product_page()` ViewModel — id, title, permalink, thumbnail_url, price_html, is_on_sale, short_description_html, categories; без LD coupling;
   - `assets/css/atmo-product.css`: hero 2-col grid (≥920px), buy box, price (`.custom-main-price`), WC add-to-cart button; грузится только на is_product();
   - WC mechanics сохранены: `woocommerce_before_single_product` (notices), `woocommerce_after_single_product_summary` (tabs + upsells + related), `woocommerce_after_single_product`;
-  - Snippet 10 учтён в price CSS; Snippet 12 (bottom CTA) active для simple in-stock PDP в description tab через `the_content`; variable PDPs skipped after 2026-05-23 mitigation; Snippet 9 (`[course_info_card]`) рендерится в short_description_html;
+  - Snippet 10 учтён в price CSS; Snippet 12 (bottom CTA) active для simple in-stock PDP в description tab через `the_content`; **variable PDPs skipped intentionally** (2026-05-23 mitigation, **deferred by design 2026-05-24** — not missing wiring); Snippet 9 (`[course_info_card]`) рендерится в short_description_html;
   - Re-QA PASS 2026-05-22 (`CHANGES.md`): simple + variable (#3614) + recovery spot-check; asset scope confirmed — `atmo-product.css` + `atmo-catalog.css` (related) only; no account/cart/checkout/filter JS on PDP.
-  - #3614 access-tier hero price sync shipped 2026-05-23 (`4132f1f`); variable bottom CTA remains optional (`BACKLOG.md`).
+  - #3614 access-tier hero price sync shipped 2026-05-23 (`4132f1f`); variable bottom CTA **deferred / product decision** 2026-05-24 — do not add second variation form (`BACKLOG.md` §5).
   - LearnDash / enrolled / access state не включены.
 
 - ✅ Woo My Account (`assets/css/atmo-account.css`, `inc/atmo-account.php`):
@@ -210,7 +210,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 | **9** | **Course Info Card** | Yes | **PDP** | `[course_info_card]`; inline styles — theme strips leak in `atmo-product.php` |
 | **10** | **Currency** | Yes | **Price HTML** | `woocommerce_get_price_html` → `.custom-main-price` + `.euro-hint`; theme CSS expects markup |
 | 11 | Courses Carousel (old) | No | — | Superseded by **#14**; same `[featured_courses]` shortcode name |
-| **12** | **Bottom Button** | Yes | **PDP (simple in-stock only)** | `the_content` → bottom CTA in description tab; **variable PDPs skipped** after 2026-05-23 mitigation |
+| **12** | **Bottom Button** | Yes | **PDP (simple in-stock only)** | `the_content` → bottom CTA in description tab; **variable PDPs skipped intentionally** (2026-05-23; deferred by design 2026-05-24) — do not re-enable without redesign |
 | 13 | Google Search | Yes | `wp_head` | Site verification meta |
 | **14** | **Courses Carousel NEW** | Yes | **Homepage** | `[featured_courses]` → **Woo product** PDPs, **not** LD `/courses/` |
 | **15** | **ATMO Quiz → Order Meta** | Yes | **Cart/checkout/order** | `atmo_*` item meta + `_atmo_quiz`; adapter = **order context**, not enrollment SoT |
@@ -274,9 +274,9 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
    - ViewModel `atmo_build_product_page()`: id, title, permalink, thumbnail_url, price_html, is_on_sale, short_description_html, categories; без LD coupling.
    - Hero: 2-col grid (≥920px), изображение с aspect-ratio 4/5 (3/2 на мобайл), buy box с WC add-to-cart формой.
    - WC mechanics: `woocommerce_before_single_product` (notices), `woocommerce_after_single_product_summary` (tabs + upsells + related products), `woocommerce_after_single_product`.
-   - Snippet 10 учтён в CSS (`.custom-main-price` Fraunces 44px); Snippet 12 active for simple in-stock PDP bottom CTA in description tab; variable PDPs skipped after 2026-05-23 mitigation; Snippet 9 рендерится в short_description_html.
+   - Snippet 10 учтён в CSS (`.custom-main-price` Fraunces 44px); Snippet 12 active for simple in-stock PDP bottom CTA in description tab; variable PDPs skipped intentionally (deferred 2026-05-24); Snippet 9 рендерится в short_description_html.
    - Related products используют `.atmo-product-card` из atmo-catalog.css.
-   - Re-QA PASS 2026-05-22 — simple, variable #3614 (Woo Variation Swatches), asset scope; optional #3614 polish — `BACKLOG.md`.
+   - Re-QA PASS 2026-05-22 — simple, variable #3614 (Woo Variation Swatches), asset scope; #3614 bottom CTA deferred by design — `BACKLOG.md`.
    - LearnDash / enrolled / access state не включены.
 9. ✅ Woo My Account: `assets/css/atmo-account.css` + `inc/atmo-account.php`.
    - Passes 1–5 + mobile orders actions fix (`fcca2e5`); details in Theme Layer and `CHANGES.md`.
@@ -298,7 +298,7 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix complete** (through `caaaa96`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration. **Next:** optional PDP polish; explicit `atmo-lms-lite` API/cutover contract when product-ready — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
+**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix complete** (through `caaaa96`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **variable PDP bottom CTA deferred** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration. **Next:** explicit `atmo-lms-lite` API/cutover contract when product-ready — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
 
 **Do not bypass without explicit scope:**
 
@@ -306,3 +306,4 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 - Critical UI on `atmo-lms-lite`
 - Saved-card / payment-token live QA
 - Snippet **#5** re-enable (broken redirect URL in inactive source)
+- Snippet **#12** variable branch re-enable or second `form.variations_form` on variable PDP without redesign (2026-05-24)
