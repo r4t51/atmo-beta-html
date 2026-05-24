@@ -4,7 +4,18 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** optional catalog/PDP polish · explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** optional catalog/PDP polish · explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+
+---
+
+## 2026-05-24 — Catalog taxonomy-aware goal chip URLs
+
+- **Scope:** child theme one-file change; no CSS/JS/query/settings/product/permalink changes
+- **Child theme commit `7b163be`** — `Keep catalog goal chips on taxonomy archives` (`kadence-child`)
+- **File:** `inc/atmo-catalog.php` — added `atmo_get_catalog_filter_base_url()`; updated `atmo_get_catalog_goal_filter_url()`
+- **Behavior:** goal chip hrefs preserve current archive base — `/каталог/` on shop; `/product-category/{slug}/` on category archives; tag archive code path same when tags exist; «Все» removes `filter_goal`, `paged`, `product-page`; goal chips strip pagination and add `filter_goal={slug}`; `filter_goal` capture/query and pagination hook unchanged
+- **QA (Codex verification):** `php -l inc/atmo-catalog.php` PASS · `git diff --check` PASS before commit; `/product-category/training/` — «Все» → training archive, goal chips stay on training base; `/product-category/training/?filter_goal=energy` → **2 программ**, chips stay on training; product tag archives **not live-tested** (no product tags on Local)
+- **Rollback:** `git revert 7b163be` in `kadence-child` — no DB or flush required
 
 ---
 

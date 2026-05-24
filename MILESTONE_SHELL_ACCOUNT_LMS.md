@@ -29,7 +29,7 @@
 | Surface | Notes |
 |---------|--------|
 | Header / footer | ATMO child chrome; Kadence `#masthead` / `#colophon` hidden by CSS |
-| Catalog + goal chips | MVP + **public polish complete 2026-05-23** (`6f4790b` + WP Admin content) — see `CHANGES.md` |
+| Catalog + goal chips | MVP + **public polish complete 2026-05-23** (`6f4790b` + WP Admin content); taxonomy-aware chip URLs **`7b163be`** 2026-05-24 — see `CHANGES.md` |
 | PDP | Simple + variable `#3614`; **hero price sync + Woo tabs 2026-05-23** (`4132f1f`, `106250d`); Snippet 12 skips variable PDP |
 | Cart / checkout / order-received | `atmo-cart.css`, `atmo-checkout.css`, `atmo-confirmation.css`; re-QA PASS |
 | Payment failed | `/payment-failed/` → **200** static page (WP **#3807** + `page-payment-failed.php` / `atmo-payment-failed.css`, `c9ac2b1`); Woo order-specific failed UX stays on order-received |

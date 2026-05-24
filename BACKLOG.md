@@ -86,6 +86,12 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Generic failure UX only; Woo order-specific failed flow stays on `/checkout/order-received/{id}/?key=...` (`atmo-confirmation.css`)
 - QA PASS — see `CHANGES.md`
 
+### Catalog taxonomy-aware goal chips (2026-05-24)
+
+- **`7b163be`**: goal chip URLs preserve shop/category/tag archive base; «Все» clears `filter_goal` + pagination params
+- One file: `inc/atmo-catalog.php`; query/CSS/JS unchanged; product tags not live-tested (no tags on Local)
+- QA PASS — see `CHANGES.md`
+
 ---
 
 ## 1. Account / Woo — reference (fixture polish closed 2026-05-24)
@@ -165,7 +171,7 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 | Item | Notes |
 |------|--------|
-| Category/tag-aware goal chip URLs | **Optional** — chips on category/tag archives currently link to main `/каталог/?filter_goal=…` (MVP). Re-QA PASS 2026-05-22 confirms intentional behavior; implement only if product decision. See `CHANGES.md` → 2026-05-22 catalog QA. |
+| Category/tag-aware goal chip URLs | ✅ Done **`7b163be`** 2026-05-24 — chips preserve shop/category/tag archive base — see `CHANGES.md` |
 | `display_title` on catalog cards | Optional — cards still use `post_title`; PDP may use `_atmo_display_title` separately |
 
 ---

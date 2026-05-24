@@ -52,7 +52,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - `inc/atmo-catalog.php`: `atmo_build_course_card()` ViewModel без LD coupling;
   - `assets/css/atmo-catalog.css`: грузится на is_shop/is_product_category/is_product_tag/is_product (для related products);
   - Snippet ID 10 (`.custom-main-price` + `.euro-hint`) учтён в CSS;
-  - `pa_goal` / goal attribute on Local; 18 redesign products assigned; goal chips + server-side `filter_goal` (`CHANGES.md` 2026-05-20; re-QA PASS 2026-05-22). Chip URLs always `/каталог/` base — not category/tag-aware (optional future — `BACKLOG.md`). `atmo-catalog-filters.js` absent / not enqueued.
+  - `pa_goal` / goal attribute on Local; 18 redesign products assigned; goal chips + server-side `filter_goal` (`CHANGES.md` 2026-05-20; re-QA PASS 2026-05-22). Chip URLs preserve current archive base on shop/category/tag (**`7b163be`** 2026-05-24); tag code path exists but no local product-tag fixture. `atmo-catalog-filters.js` absent / not enqueued.
 - ✅ Single product MVP: `woocommerce/content-single-product.php` override с ATMO hero layout;
   - `inc/atmo-product.php`: `atmo_build_product_page()` ViewModel — id, title, permalink, thumbnail_url, price_html, is_on_sale, short_description_html, categories; без LD coupling;
   - `assets/css/atmo-product.css`: hero 2-col grid (≥920px), buy box, price (`.custom-main-price`), WC add-to-cart button; грузится только на is_product();
@@ -269,7 +269,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
    - WC archive infrastructure (pagination, result count, ordering, visibility) не тронута.
    - CSS грузится на shop/category/tag архивах и single product (для related products).
    - Snippet ID 10 учтён: `.custom-main-price`, `.euro-hint`, `del`/`ins` обработаны в CSS.
-   - Goal chips + server-side `filter_goal`; `pa_goal` on Local, 18 products assigned (`CHANGES.md` 2026-05-20).
+   - Goal chips + server-side `filter_goal`; chip hrefs preserve shop/category/tag archive base (`7b163be`); `pa_goal` on Local, 18 products assigned (`CHANGES.md` 2026-05-20).
 8. ✅ Single product MVP: `woocommerce/content-single-product.php` + `inc/atmo-product.php` + `assets/css/atmo-product.css`.
    - ViewModel `atmo_build_product_page()`: id, title, permalink, thumbnail_url, price_html, is_on_sale, short_description_html, categories; без LD coupling.
    - Hero: 2-col grid (≥920px), изображение с aspect-ratio 4/5 (3/2 на мобайл), buy box с WC add-to-cart формой.
