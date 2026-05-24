@@ -21,7 +21,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Account | ✅ passes 1–5 + dashboard + view-order meta (detail below) |
 | Preview mu-plugin | ✅ **keep for now** — opt-in only (`?atmo_preview_shell=1`) |
 
-**By design / not built:** `/payment-failed/` → 404; dashboard course list/progress widgets (CTAs only — `648e562`); payment-token live QA.
+**By design / not built:** dashboard course list/progress widgets (CTAs only — `648e562`); payment-token live QA.
 
 ### Account / Woo (detail)
 
@@ -80,6 +80,12 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 - Future LearnDash replacement; active on Local but **defer runtime integration** — empty enrollment/access tables; no theme-facing front-end API/UI; stay LearnDash-backed ViewModels until stable read API + cutover readiness — see `CHANGES.md`
 
+### Static payment-failed page (2026-05-24)
+
+- **`/payment-failed/`** — static landing page (WP page ID **3807**, slug `payment-failed`) + child theme template/CSS (`c9ac2b1`)
+- Generic failure UX only; Woo order-specific failed flow stays on `/checkout/order-received/{id}/?key=...` (`atmo-confirmation.css`)
+- QA PASS — see `CHANGES.md`
+
 ---
 
 ## 1. Account / Woo — reference (fixture polish closed 2026-05-24)
@@ -116,7 +122,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
 
-**Next likely (optional / product-scoped):** explicit `atmo-lms-lite` API/cutover contract · catalog/PDP optional polish · static `/payment-failed/` page — see §4–§5.
+**Next likely (optional / product-scoped):** explicit `atmo-lms-lite` API/cutover contract · catalog/PDP optional polish — see §4–§5.
 
 ### Current routes (reference)
 

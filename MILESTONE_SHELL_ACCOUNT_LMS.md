@@ -32,7 +32,7 @@
 | Catalog + goal chips | MVP + **public polish complete 2026-05-23** (`6f4790b` + WP Admin content) — see `CHANGES.md` |
 | PDP | Simple + variable `#3614`; **hero price sync + Woo tabs 2026-05-23** (`4132f1f`, `106250d`); Snippet 12 skips variable PDP |
 | Cart / checkout / order-received | `atmo-cart.css`, `atmo-checkout.css`, `atmo-confirmation.css`; re-QA PASS |
-| Payment failed | `/payment-failed/` → **404 by design** (no static page) |
+| Payment failed | `/payment-failed/` → **200** static page (WP **#3807** + `page-payment-failed.php` / `atmo-payment-failed.css`, `c9ac2b1`); Woo order-specific failed UX stays on order-received |
 | Woo My Account | Auth, dashboard, orders, view-order, settings, hidden endpoints — shell/wiring done |
 | **`/my-account/my-courses/`** | Woo endpoint **`my-courses`** · adapter `get_enrolled_courses()` · empty + enrolled list · dashboard «Следующий шаг» wired |
 | **`/my-account/my-courses/?course_id={id}`** | **Account course hub v1** (`81c3a7d`) — enrolled overview + lesson outline in account shell; denial when no access |
@@ -139,7 +139,7 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 
 - **Account fixture polish:** **closed 2026-05-24** — no mandatory account theme work; dev pill removed (`dc1e2be`); see `CHANGES.md`
 - **LMS polish:** lesson H1 number prefix **done `caaaa96`**; **`atmo-lms-lite` bridge decision** — defer runtime integration until stable read API + cutover
-- **Optional polish:** catalog/PDP optional rows; billing edit field subset (Woo locale/config, low priority); static `/payment-failed/`
+- **Optional polish:** catalog/PDP optional rows; billing edit field subset (Woo locale/config, low priority)
 - **Avoid unless explicit:** payments, saved cards, test orders; downloads/shipping blocks until real fixtures exist
 - **Process:** preview mu-plugin removal when checkboxes met; re-export snippets when DB changes
 
@@ -153,7 +153,7 @@ Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending
 
 **Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first pick:
 
-> Pick one scoped item from `BACKLOG.md`: optional catalog/PDP polish, static `/payment-failed/`, or explicit `atmo-lms-lite` API/cutover contract when product-ready. Lesson-number prefix is done (`caaaa96`). Account fixture polish is closed — do not treat as next mandatory phase. Do not touch LearnDash templates without adapter-backed scope.
+> Pick one scoped item from `BACKLOG.md`: optional catalog/PDP polish, or explicit `atmo-lms-lite` API/cutover contract when product-ready. Static `/payment-failed/` shipped (2026-05-24). Lesson-number prefix is done (`caaaa96`). Account fixture polish is closed — do not treat as next mandatory phase. Do not touch LearnDash templates without adapter-backed scope.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 

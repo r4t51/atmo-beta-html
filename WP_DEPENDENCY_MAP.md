@@ -115,7 +115,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 |---|---|
 | Cart URL | `/cart-2/`, нестандартный slug; shell `atmo-cart.css` + `atmo-catalog.css` (cross-sells); cart-fixture QA PASS 2026-05-22 (1× variation **3628**) |
 | Checkout | `/checkout/` — **200** + full form when cart has items; empty cart may redirect to `/cart-2/` (Woo default; not re-tested 2026-05-22). Shell `atmo-checkout.css` (excludes order-received). Cart-fixture QA PASS 2026-05-22 — `#payment` / gateways visible; theme does not hide payment UI |
-| Payment failed | `/payment-failed/` → **404** by design (no static page yet); standard 404 shell |
+| Payment failed | `/payment-failed/` → **200** static page (WP **#3807**, slug `payment-failed`; child commit `c9ac2b1`); shell `atmo-payment-failed.css`; separate from Woo `order-received` failed flow (`atmo-confirmation.css`) |
 | Order received | `/checkout/order-received/` → `atmo-confirmation.css` only; excludes `atmo-checkout.css` |
 | HPOS | таблицы созданы, custom order storage отключён |
 | Orders storage | legacy `wp_posts` / `wp_postmeta` |
@@ -262,7 +262,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
    - 4-колоночный grid: бренд + лид, Программы, Кабинет, Студия; правовые ссылки; год `date('Y')`.
    - Kadence `#colophon` скрыт: `body.atmo-footer-active #colophon { display: none !important }`.
    - Preview mode: `body.atmo-preview-shell-enabled .atmo-site-footer { display: none }`.
-6. Проверено: основные URL отвечают 200; `/checkout/` with cart items → 200 + checkout form (re-QA 2026-05-22); empty cart may redirect to cart; `/payment-failed/` → 404 by design; preview shell работает; child footer скрыт в preview mode.
+6. Проверено: основные URL отвечают 200; `/checkout/` with cart items → 200 + checkout form (re-QA 2026-05-22); empty cart may redirect to cart; `/payment-failed/` → **200** static page (2026-05-24); preview shell работает; child footer скрыт в preview mode.
 7. ✅ Каталог MVP: `woocommerce/content-product.php` + `inc/atmo-catalog.php` + `assets/css/atmo-catalog.css`.
    - ViewModel `atmo_build_course_card()`: id, title, permalink, thumbnail_url, price_html, excerpt, on_sale, categories, `goal_slug`/`goal_label` from `pa_goal`.
    - Карточка `.atmo-product-card` внутри стандартного WC `ul.products li.atmo-card-item`.

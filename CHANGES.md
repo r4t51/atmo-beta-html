@@ -4,7 +4,20 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover. Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** optional catalog/PDP polish · explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** optional catalog/PDP polish · explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+
+---
+
+## 2026-05-24 — Static `/payment-failed/` page
+
+- **Scope:** child theme template + CSS + WP Admin page; no Woo payment flow/gateway/snippet/rewrite changes
+- **WP Admin:** published page **#3807** — title `Ошибка оплаты`, slug `payment-failed`, empty content (template owns markup); not in nav menus
+- **Child theme commit `c9ac2b1`:** `Add static payment failed page` — `page-payment-failed.php` · `assets/css/atmo-payment-failed.css` · `functions.php` (conditional enqueue + `body_class` filter)
+- **Behavior:** generic static failure landing at `/payment-failed/`; order-specific failed UX stays on `/checkout/order-received/{id}/?key=...` (`atmo-confirmation.css`)
+- **Copy:** H1 `Не удалось провести платёж.`; subcopy + reasons card; CTAs → `/checkout/`, `/cart-2/`; help `mailto:mail@atmo.by`
+- **Asset scope:** `/payment-failed/` → `atmo-payment-failed.css` only (plus base/header/footer); **not** `atmo-checkout.css` / `atmo-confirmation.css`
+- **QA (read-only):** desktop ~1440×900 + mobile 390×844 — **200**, ATMO header/footer, required copy/CTAs, no horizontal overflow; `/checkout/` still loads `atmo-checkout.css`; no order submit/payment actions
+- **Rollback:** unpublish/delete WP page #3807; remove theme files + enqueue/body_class from `functions.php`
 
 ---
 

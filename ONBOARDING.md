@@ -187,7 +187,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - LearnDash / enrolled / access state НЕ включены.
   - CSS: `atmo-product.css` on `is_product()`; `atmo-catalog.css` on PDP for related cards only.
 - ✅ Корзина — shell: `assets/css/atmo-cart.css` (+ `atmo-catalog.css` для cross-sells); re-QA PASS 2026-05-22 — `CHANGES.md`.
-- ✅ Checkout — shell: `assets/css/atmo-checkout.css`; order-received → `atmo-confirmation.css`; cart-fixture QA PASS 2026-05-22 — BLIK/Klarna visible, payment UI not hidden — `CHANGES.md`. `/payment-failed/` → 404 by design.
+- ✅ Checkout — shell: `assets/css/atmo-checkout.css`; order-received → `atmo-confirmation.css`; cart-fixture QA PASS 2026-05-22 — BLIK/Klarna visible, payment UI not hidden — `CHANGES.md`. **`/payment-failed/`** → static page **#3807** + `atmo-payment-failed.css` (`c9ac2b1`, 2026-05-24).
 - ✅ Woo My Account — passes 1–5 + mobile orders fix: `assets/css/atmo-account.css`, `inc/atmo-account.php` (menu filter in `functions.php`).
   - CSS только на `is_account_page()`; `/courses/`, `/profile/`, `/reset-password/` (LearnDash) **не** enqueued.
   - **Меню (5 пунктов):** Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
@@ -228,7 +228,7 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Optional polish** — catalog chip URLs, variable PDP bottom CTA, static `/payment-failed/` page; billing edit field subset (Woo locale/config, low priority)
+1. **Optional polish** — catalog chip URLs, variable PDP bottom CTA; billing edit field subset (Woo locale/config, low priority)
 2. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24)
 3. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist
 4. **Account fixture polish** — **closed 2026-05-24** (see `CHANGES.md`); do not treat as next mandatory phase
