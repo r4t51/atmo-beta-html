@@ -49,7 +49,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 - Kadence `#colophon` скрыт CSS-правилом `body.atmo-footer-active #colophon { display: none !important; }`;
 - Preview shell: CSS скрывает `.atmo-site-header` и `.atmo-site-footer` когда активен `body.atmo-preview-shell-enabled`;
 - ✅ Каталог MVP: `woocommerce/content-product.php` override рендерит `.atmo-product-card` внутри стандартной WC `ul.products li.product` разметки;
-  - `inc/atmo-catalog.php`: `atmo_build_course_card()` ViewModel без LD coupling;
+  - `inc/atmo-catalog.php`: `atmo_build_course_card()` ViewModel без LD coupling; card `title` from `_atmo_display_title` fallback to Woo name (**`4993bd9`**);
   - `assets/css/atmo-catalog.css`: грузится на is_shop/is_product_category/is_product_tag/is_product (для related products);
   - Snippet ID 10 (`.custom-main-price` + `.euro-hint`) учтён в CSS;
   - `pa_goal` / goal attribute on Local; 18 redesign products assigned; goal chips + server-side `filter_goal` (`CHANGES.md` 2026-05-20; re-QA PASS 2026-05-22). Chip URLs preserve current archive base on shop/category/tag (**`7b163be`** 2026-05-24); tag code path exists but no local product-tag fixture. `atmo-catalog-filters.js` absent / not enqueued.
@@ -264,7 +264,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
    - Preview mode: `body.atmo-preview-shell-enabled .atmo-site-footer { display: none }`.
 6. Проверено: основные URL отвечают 200; `/checkout/` with cart items → 200 + checkout form (re-QA 2026-05-22); empty cart may redirect to cart; `/payment-failed/` → **200** static page (2026-05-24); preview shell работает; child footer скрыт в preview mode.
 7. ✅ Каталог MVP: `woocommerce/content-product.php` + `inc/atmo-catalog.php` + `assets/css/atmo-catalog.css`.
-   - ViewModel `atmo_build_course_card()`: id, title, permalink, thumbnail_url, price_html, excerpt, on_sale, categories, `goal_slug`/`goal_label` from `pa_goal`.
+   - ViewModel `atmo_build_course_card()`: id, title (`_atmo_display_title` → Woo name fallback, **`4993bd9`**), permalink, thumbnail_url, price_html, excerpt, on_sale, categories, `goal_slug`/`goal_label` from `pa_goal`.
    - Карточка `.atmo-product-card` внутри стандартного WC `ul.products li.atmo-card-item`.
    - WC archive infrastructure (pagination, result count, ordering, visibility) не тронута.
    - CSS грузится на shop/category/tag архивах и single product (для related products).
@@ -298,7 +298,7 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix complete** (through `caaaa96`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration. **Next:** optional catalog/PDP polish; explicit `atmo-lms-lite` API/cutover contract when product-ready — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
+**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix complete** (through `caaaa96`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration. **Next:** optional PDP polish; explicit `atmo-lms-lite` API/cutover contract when product-ready — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
 
 **Do not bypass without explicit scope:**
 

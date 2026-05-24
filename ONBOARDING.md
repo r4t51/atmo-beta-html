@@ -123,7 +123,7 @@ npx http-server . -p 3333 --cors -c-1
 - `LessonProgress` / `LessonData`
 - `AccessData`
 
-Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`; **lesson H1 number prefix shipped `caaaa96`**. Open: optional catalog/PDP polish; explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`; **lesson H1 number prefix shipped `caaaa96`**. Open: optional PDP polish; explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
 
 ## WordPress Local
 
@@ -170,13 +170,13 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - В preview-режиме child footer скрыт CSS: `body.atmo-preview-shell-enabled .atmo-site-footer { display: none !important }`.
 - Preview mu-plugin: **keep for now** as low-risk legacy comparison tool (`?atmo_preview_shell=1` only); remove later per `BACKLOG.md` / `CHANGES.md`.
 - ✅ Каталог — MVP карточки: `woocommerce/content-product.php` override + `inc/atmo-catalog.php` + `assets/css/atmo-catalog.css`.
-  - `atmo_build_course_card()` ViewModel: id, title, permalink, thumbnail, price_html, excerpt, on_sale, categories, `goal_slug`/`goal_label` from `pa_goal`.
+  - `atmo_build_course_card()` ViewModel: id, title (`_atmo_display_title` → Woo name fallback, **`4993bd9`**), permalink, thumbnail, price_html, excerpt, on_sale, categories, `goal_slug`/`goal_label` from `pa_goal`.
   - Карточки `.atmo-product-card` внутри стандартной WC-разметки `ul.products li.product`.
   - CSS грузится на `is_shop()` / `is_product_category()` / `is_product_tag()` / `is_product()` (для related products на single product).
   - Snippet ID 10 (`.custom-main-price` + `.euro-hint`) учтён в CSS.
   - Goal chips + server-side `filter_goal` on shop/category/tag archives (`pa_goal` on Local; 18 redesign products assigned). Taxonomy-aware chip URLs **`7b163be`** 2026-05-24 — chips stay on current archive base. Details: `CHANGES.md` → `2026-05-20 — pa_goal + goal chips`, `Server-side goal filter`, `2026-05-24 — Catalog taxonomy-aware goal chip URLs`.
 - ✅ Страница продукта — MVP: `woocommerce/content-single-product.php` override + `inc/atmo-product.php` + `assets/css/atmo-product.css`.
-  - `atmo_build_product_page()` ViewModel: id, title, permalink, thumbnail_url, price_html, is_on_sale, short_description_html, categories.
+  - `atmo_build_product_page()` ViewModel: id, title (`_atmo_display_title` fallback), permalink, thumbnail_url, price_html, is_on_sale, short_description_html, categories.
   - Hero: 2-колоночный grid (изображение + сводка), `h1.atmo-pdp-title`, `.atmo-pdp-desc`, buy box с ценой и WC add-to-cart формой.
   - Сохранены WC mechanics: notices (`woocommerce_before_single_product`), add-to-cart форма, tabs, upsells, related products.
   - Snippet 10 (price wrapping) учтён в CSS через `.custom-main-price` + `.euro-hint`.

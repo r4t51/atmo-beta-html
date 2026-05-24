@@ -8,7 +8,7 @@
 
 ## Done — ATMO shell/wiring phase (re-QA 2026-05-22)
 
-Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Account fixture polish closed 2026-05-24** — no mandatory account theme work. **Next:** optional catalog/PDP polish or explicit `atmo-lms-lite` API/cutover contract later — not more shell wiring unless a functional gap appears.
+Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Account fixture polish closed 2026-05-24** — no mandatory account theme work. **Next:** optional PDP polish or explicit `atmo-lms-lite` API/cutover contract later — not more shell wiring unless a functional gap appears.
 
 | Area | Status |
 |------|--------|
@@ -92,6 +92,12 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - One file: `inc/atmo-catalog.php`; query/CSS/JS unchanged; product tags not live-tested (no tags on Local)
 - QA PASS — see `CHANGES.md`
 
+### Catalog card display titles (2026-05-21)
+
+- **`4993bd9`**: `atmo_build_course_card()` uses `_atmo_display_title` with Woo name fallback; PDP ViewModel same pattern
+- One file: `inc/atmo-catalog.php`; 18/18 redesign products have meta locally; 7 card titles differ from `post_title`
+- QA PASS — see `CHANGES.md`
+
 ---
 
 ## 1. Account / Woo — reference (fixture polish closed 2026-05-24)
@@ -128,7 +134,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
 
-**Next likely (optional / product-scoped):** explicit `atmo-lms-lite` API/cutover contract · catalog/PDP optional polish — see §4–§5.
+**Next likely (optional / product-scoped):** explicit `atmo-lms-lite` API/cutover contract · PDP optional polish — see §5.
 
 ### Current routes (reference)
 
@@ -172,7 +178,7 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 | Item | Notes |
 |------|--------|
 | Category/tag-aware goal chip URLs | ✅ Done **`7b163be`** 2026-05-24 — chips preserve shop/category/tag archive base — see `CHANGES.md` |
-| `display_title` on catalog cards | Optional — cards still use `post_title`; PDP may use `_atmo_display_title` separately |
+| `display_title` on catalog cards | ✅ Done **`4993bd9`** 2026-05-21 — `_atmo_display_title` in `atmo_build_course_card()` with Woo name fallback; PDP ViewModel same — see `CHANGES.md` |
 
 ---
 

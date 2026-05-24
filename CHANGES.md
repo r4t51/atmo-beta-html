@@ -4,7 +4,17 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** optional catalog/PDP polish · explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`); **catalog card display titles shipped** (`4993bd9`, 2026-05-21). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** optional PDP polish · explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+
+---
+
+## 2026-05-24 — Catalog card `display_title` docs closure
+
+- **Scope:** docs-only; records existing child theme behavior — no code/runtime/DB changes in this task
+- **Child theme commit `4993bd9`** (2026-05-21) — `Use ATMO display titles on product cards` (`kadence-child`)
+- **File:** `inc/atmo-catalog.php` — `atmo_build_course_card()` reads `_atmo_display_title`, fallback `$product->get_name()`; `woocommerce/content-product.php` renders `$card['title']`; PDP ViewModel (`inc/atmo-product.php`) uses same meta
+- **Local data:** 18 published products have `_atmo_display_title`; **7** differ from `post_title` (prototype-aligned titles, e.g. `LevelUp: Нейросила` → `LevelUp · Нейросила`)
+- **Rollback:** `git revert 4993bd9` in `kadence-child` — cards revert to Woo product name only
 
 ---
 
@@ -1146,7 +1156,7 @@ WHERE post_id = 32
 ### Known follow-ups
 
 - **Pricing:** closed — Woo canonical; see **2026-05-21 — Price policy** (no Woo price / sale changes from prototype).
-- **Catalog cards** still use `post_title`; showing `_atmo_display_title` on cards is a separate decision
+- **Catalog cards** still use `post_title`; showing `_atmo_display_title` on cards is a separate decision *(superseded: shipped `4993bd9` 2026-05-21)*
 - **Admin UX:** optional meta box for `_atmo_*` editing in child theme (later)
 
 ---
@@ -1489,4 +1499,4 @@ COMMIT;
 **Checkout follow-ups (next):** terms/link-only decision; static `/payment-failed/` page not implemented (notices styled in `abc2ef1`). Mobile compact spacing done (`8f98db0`); sticky CTA deferred.  
 **Pricing:** closed — Woo canonical; prototype `price` / `oldPrice` non-authoritative (see **2026-05-21 — Price policy**). No bulk price updates planned.  
 **PDP (optional):** variable access-tier UI polish for 3614 — separate from pricing.  
-**Catalog (optional):** `display_title` on catalog cards; category/tag-aware chip URLs; remove retired `atmo-catalog-filters.js` (already deleted in `aba83cd`).
+**Catalog (optional):** ~~`display_title` on catalog cards~~ done `4993bd9`; ~~category/tag-aware chip URLs~~ done `7b163be`; remove retired `atmo-catalog-filters.js` (already deleted in `aba83cd`).
