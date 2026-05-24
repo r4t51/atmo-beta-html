@@ -135,7 +135,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
 
-**Next likely (optional / product-scoped):** explicit `atmo-lms-lite` API/cutover contract · full PDP hero redesign (cosmetic only) — see §5.
+**Next likely (optional / product-scoped):** homepage Social section (04 testimonials) · explicit `atmo-lms-lite` API/cutover contract · full PDP hero redesign (cosmetic only) — see §5.
 
 ### Current routes (reference)
 
@@ -193,7 +193,17 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-## 6. Docs / Process
+## 6. Homepage — open
+
+| Item | Notes |
+|------|-------|
+| **Section 04 Social** — testimonials | Deferred 2026-05-24 — no hardcoded copy; needs real CMS-driven testimonials or product decision |
+| Hero product card — real image | Product 3614 has no WP featured image set; shows `.atmo-ph` placeholder; add image via WP Admin Media when ready |
+| Variable product price range on hero/featured | 3614 shows «399 zł – 799 zł» (WC variable); acceptable; can display min price only with `$p->get_variation_price('min')` if product decision |
+
+---
+
+## 7. Docs / Process
 
 | Item | Notes |
 |------|--------|

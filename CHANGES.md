@@ -4,6 +4,8 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
+> **Supersession (2026-05-24 updated):** ATMO homepage `front-page.php` shipped (`075179f`). Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`); **catalog card display titles shipped** (`4993bd9`, 2026-05-21); **variable PDP bottom CTA deferred by design** (discovery 2026-05-24); **billing edit field subset closed as config decision** (discovery 2026-05-24). **Current open items:** homepage Social section (deferred) · explicit `atmo-lms-lite` API/cutover contract · optional full PDP hero redesign — `BACKLOG.md`.
+
 > **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`); **catalog card display titles shipped** (`4993bd9`, 2026-05-21); **variable PDP bottom CTA deferred by design** (discovery 2026-05-24); **billing edit field subset closed as config decision** (discovery 2026-05-24). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open items:** explicit `atmo-lms-lite` API/cutover contract when product-ready · optional full PDP hero redesign (cosmetic) — `BACKLOG.md` §2 / §5.
 
 ---
@@ -102,6 +104,25 @@
 - **CSS:** replaced viewport-scaled lesson card padding with fixed desktop/mobile values; removed negative letter spacing in lesson content headings
 - **QA:** PHP syntax OK; `git diff --check` OK; bad CSS patterns removed from `atmo-lesson.css`; logged-out lesson URL redirects to course without fatal/overflow
 - **Rollback:** `git revert 897409c` — no DB or flush required
+
+---
+
+## 2026-05-24 — ATMO Homepage (front-page.php)
+
+- **Scope:** child theme only — 2 new files, 1 modified; no DB, no WP Admin, no snippets
+- **Commit:** `075179f` — feat(home): add ATMO homepage — Hero, Featured, Paths
+- **Files:** `front-page.php` (303 lines) · `assets/css/atmo-home.css` (694 lines) · `functions.php` (+11 lines enqueue)
+- **Template:** `front-page.php` replaces page 562 content (old Gutenberg junk ignored via `front-page.php` override — `the_content()` never called)
+- **Sections:**
+  - **01 Hero** — eyebrow, serif H1 «Просыпаться в теле, которое снова *ваше*», lead, two CTAs, trust line (с 2015 / 18 программ / 15–40 мин / YouTube 130 000+), hero product card (ID 3614, dynamic price + URL)
+  - **02 Featured** — «Начать здесь», product 3614 spotlight: image/placeholder, bullets ×3, dynamic price, CTA → PDP
+  - **03 Paths** — 3 symptom cards: ID 727 (energy/teal), ID 3614 (recovery/rose), ID 2903 (strength/purple) — dynamic price + permalink
+  - **04 Social** — **skipped** (deferred — no hardcoded testimonials)
+- **CSS:** scoped under `.atmo-home`; Kadence page chrome hidden via `body.home .entry-header` etc.; `--atmo-*` tokens throughout; `is_front_page()` conditional enqueue
+- **Products:** `_atmo_display_title` meta → fallback `get_name()`; `get_price_html()` for live prices; `get_permalink()` for URLs
+- **QA desktop / mobile 375px:** ATMO shell present; all 3 sections render; product links correct; no overflow; `atmo-home.css` NOT loaded on catalog/account/PDP
+- **Minor delta vs prototype:** YouTube rendered as 4th stat (not separate pill); variable product 3614 shows WC price range (correct); «Хит» badge fallback (no `_atmo_subtitle` meta on 3614)
+- **Rollback:** `git revert 075179f` — WP reverts to rendering page 562 content (broken Gutenberg blocks); no DB change required
 
 ---
 
