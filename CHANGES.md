@@ -10,6 +10,20 @@
 
 ---
 
+## 2026-05-24 — Cart page polish: remove link, eyebrow, trust bullets, coupon centering
+
+- **Child theme commit:** `3e4748f`
+- **New file:** `inc/atmo-cart.php` — three WooCommerce hooks:
+  - `woocommerce_cart_item_remove_link` — replaces `class="remove"` → `class="atmo-cart-remove"` and `×` → «Убрать из корзины»; bypasses Kadence `color:red !important` on `a.remove`
+  - `woocommerce_before_cart_table` — renders «N программа/программы/программ» eyebrow (correct Russian pluralisation)
+  - `woocommerce_after_cart_totals` — renders 3 trust bullets with teal checkmarks below «Оформить» CTA
+- **`assets/css/atmo-cart.css`** — `.atmo-cart-remove` styles (`white-space: nowrap`), eyebrow styles, trust bullet styles, `apply_coupon` inline-flex centering, `.product-quantity { display: none }` (no quantity stepper for courses)
+- **`functions.php`** — `require_once` for `inc/atmo-cart.php`
+- **QA** (desktop 1920px): eyebrow ✅ · remove link in one line grey ✅ · trust bullets 3 items teal checkmarks ✅ · «Применить» centered ✅ · no overflow ✅ · no stripes ✅
+- **Regression:** `/каталог/` + `/my-account/` — `atmo-cart.css` not loaded, no overflow ✅
+
+---
+
 ## 2026-05-24 — Billing edit field subset closed (config decision)
 
 - **Scope:** docs-only discovery record; no child theme, runtime, DB, snippet, Woo, or Checkout Field Editor changes

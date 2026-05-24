@@ -15,7 +15,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Header / footer | ✅ ATMO child chrome |
 | Catalog + goal chips | ✅ MVP + server-side `filter_goal` |
 | PDP | ✅ simple + variable #3614 |
-| Cart | ✅ `atmo-cart.css` + cross-sells |
+| Cart | ✅ `atmo-cart.css` + cross-sells · polish `3e4748f` (remove link, eyebrow, trust bullets, coupon centering) |
 | Checkout | ✅ `atmo-checkout.css`; gateways visible on Local (**BLIK** default, **Klarna**); cart-fixture QA PASS 2026-05-22 |
 | Order received | ✅ `atmo-confirmation.css` |
 | Account | ✅ passes 1–5 + dashboard + view-order meta (detail below) |
