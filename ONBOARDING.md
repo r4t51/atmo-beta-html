@@ -106,7 +106,7 @@ npx http-server . -p 3333 --cors -c-1
 
 ## LMS posture
 
-Сейчас рабочий сайт использует LearnDash для course/lesson UI. `atmo-lms-lite` **active** on Local, still in development — не строить на нём критичный UI без явного решения.
+Сейчас рабочий сайт использует LearnDash для course/lesson UI. `atmo-lms-lite` **active** on Local as **future replacement**, still in development — **bridge decision (2026-05-24):** defer runtime integration; Local enrollment/access tables empty; no theme-facing front-end API/UI; stay LearnDash-backed ViewModels until stable read API + cutover.
 
 **`/courses/` vs «Мои курсы» (2026-05-22):**
 
@@ -123,7 +123,7 @@ npx http-server . -p 3333 --cors -c-1
 - `LessonProgress` / `LessonData`
 - `AccessData`
 
-Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`. Open: lesson-number prefix (deferred) and `atmo-lms-lite` UI backend decision — `BACKLOG.md` §2.
+Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`; **lesson H1 number prefix shipped `caaaa96`**. Open: optional catalog/PDP polish; explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
 
 ## WordPress Local
 
@@ -193,22 +193,22 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - **Меню (5 пунктов):** Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
   - **«Программы»** → `/courses/` in header/footer only (removed from account sidebar in `ecfd8f5`)
   - **Скрыты из меню, доступны по прямому URL:** `/my-account/downloads/`, `/my-account/edit-address/` (+ `billing`/`shipping`), `/my-account/payment-methods/`
-  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP** · **`648e562` dashboard CTA wiring** · **`81c3a7d` account hub v1** · **`dc1e2be` dashboard dev pill removal** · **`ed7afcf` lesson chrome v1** · **`1e08a3d` lesson chrome v2** · **`897409c` lesson hardening**
+  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP** · **`648e562` dashboard CTA wiring** · **`81c3a7d` account hub v1** · **`dc1e2be` dashboard dev pill removal** · **`ed7afcf` lesson chrome v1** · **`1e08a3d` lesson chrome v2** · **`897409c` lesson hardening** · **`caaaa96` lesson H1 number prefix**
   - **`/my-account/my-courses/` (`a352081`):** adapter-backed enrolled list; empty state when `[]`; fixture #3801 QA PASS — `CHANGES.md`
   - **`/my-account/my-courses/?course_id={id}` (`81c3a7d`):** account hub v1 — enrolled overview + lesson outline; denial when no access — `CHANGES.md`
   - **Local QA fixtures:** **r4t5 / #3801** = enrolled path · **691 / `atmo-qa-empty`** = zero-enrollment path — empty-state QA PASS 2026-05-22 — `CHANGES.md`
   - **`/my-account/my-courses/` shell (`ecfd8f5`):** endpoint + menu IA; one-time permalink flush on deploy
   - **Dashboard (`534b241` + `648e562`):** «Следующий шаг» + courses panel wired to adapter / **`/my-account/my-courses/`**; no dashboard list/progress — `CHANGES.md`
-  - **Account status:** shell/wiring done; my-courses adapter MVP live (`a352081`); dashboard CTAs wired (`648e562`); account hub v1 live (`81c3a7d`); **account fixture polish closed 2026-05-24** — no mandatory account theme work; dashboard dev pill removed (`dc1e2be`); enrolled + zero-enrollment empty-state QA done; #3801 view-order QA; access-type meta pill (`2da518f`); downloads/payment-methods empty states sufficient (no fixtures); lesson chrome v1/v2 live (`ed7afcf`, `1e08a3d`) with hardening (`897409c`) — `/lessons/` pages styled with ATMO card/nav/button chrome via CSS + back-to-hub filter
+  - **Account status:** shell/wiring done; my-courses adapter MVP live (`a352081`); dashboard CTAs wired (`648e562`); account hub v1 live (`81c3a7d`); **account fixture polish closed 2026-05-24** — no mandatory account theme work; dashboard dev pill removed (`dc1e2be`); enrolled + zero-enrollment empty-state QA done; #3801 view-order QA; access-type meta pill (`2da518f`); downloads/payment-methods empty states sufficient (no fixtures); lesson chrome v1/v2 live (`ed7afcf`, `1e08a3d`) with hardening (`897409c`) and **lesson H1 prefix live (`caaaa96`)** — `/lessons/` pages styled with ATMO card/nav/button chrome via CSS + filters; Kadence entry H1 shows **`Урок N · {title}`** when outline order resolvable (logged-in only)
   - **Caveats:** не редиректить Woo endpoints без аудита; `/my-account/add-payment-method/` audited 2026-05-22 (read-only PASS; Stripe card/BLIK absent on Local — env, not theme); Woo default dashboard copy hidden by CSS when `.atmo-dash` present
   - **Open tasks:** `BACKLOG.md`
   - Rollback: см. `CHANGES.md` по commit; menu PHP: `git revert d4ee689`
-- ✅ LearnDash lesson chrome v1/v2 — `inc/atmo-lesson.php` · `assets/css/atmo-lesson.css` · **`ed7afcf`**, **`1e08a3d`**, hardening **`897409c`**
+- ✅ LearnDash lesson chrome v1/v2 + H1 prefix — `inc/atmo-lesson.php` · `assets/css/atmo-lesson.css` · **`ed7afcf`**, **`1e08a3d`**, hardening **`897409c`**, prefix **`caaaa96`**
   - CSS scoped to `body.single-sfwd-lessons`: content card, nav row, mark-complete violet pill, back link.
   - Filter `learndash_template_progression_step_back_to_course_url` → account hub.
+  - Filter `the_title` → **`Урок N · {title}`** on Kadence entry H1 only (hub outline order; logged-in only).
   - No LD template overrides; `kadence-child/learndash/` not created.
-  - Rollback: `git revert 897409c`, `git revert 1e08a3d`, `git revert ed7afcf` in reverse order — no DB or flush required.
-  - Open: lesson-number prefix before title (deferred; needs outline-order lookup) — `BACKLOG.md` §2.
+  - Rollback: `git revert caaaa96`, `git revert 897409c`, `git revert 1e08a3d`, `git revert ed7afcf` in reverse order — no DB or flush required.
 
 Google Fonts и preview CSS грузятся только при `?atmo_preview_shell=1`. На обычных страницах дубля нет.
 
@@ -228,8 +228,8 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **LMS / product decision** — lesson-number prefix (deferred) or explicit `atmo-lms-lite` UI backend choice
-2. **Optional polish** — catalog chip URLs, variable PDP bottom CTA, static `/payment-failed/` page; billing edit field subset (Woo locale/config, low priority)
+1. **Optional polish** — catalog chip URLs, variable PDP bottom CTA, static `/payment-failed/` page; billing edit field subset (Woo locale/config, low priority)
+2. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24)
 3. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist
 4. **Account fixture polish** — **closed 2026-05-24** (see `CHANGES.md`); do not treat as next mandatory phase
 

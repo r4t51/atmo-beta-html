@@ -11,7 +11,7 @@
 
 Kadence не содержит WooCommerce или LearnDash template overrides, поэтому перенос можно вести инкрементально через child theme без миграции чужих theme templates.
 
-`atmo-lms-lite` находится в разработке и **active** on Local; LearnDash остаётся primary для course/lesson UI. Course/lesson UI нельзя жёстко строить на LearnDash HTML или LearnDash-specific functions без adapter/ViewModel слоя.
+`atmo-lms-lite` находится в разработке и **active** on Local; LearnDash остаётся primary для course/lesson UI. **Bridge decision (2026-05-24):** defer `atmo-lms-lite` runtime integration — Local enrollment/access tables empty; no theme-facing front-end API/UI; stay adapter-first / LearnDash-backed until stable read API + cutover. Course/lesson UI нельзя жёстко строить на LearnDash HTML или LearnDash-specific functions без adapter/ViewModel слоя.
 
 ## Current Stack
 
@@ -140,9 +140,9 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 ## LMS Map
 
 Текущий runtime для course/lesson UI: LearnDash.  
-`atmo-lms-lite` **active** on Local, in development — candidate future runtime; не строить критичный UI на нём без явного решения; **no front-end assets observed** on course routes (2026-05-22 QA).
+`atmo-lms-lite` **active** on Local, in development — **future** runtime replacement; **not** a current theme UI source (Local `wp_atmo_lms_enrollments` / `wp_atmo_lms_access_rules` empty; no front-end assets on course routes). Bridge stays LearnDash-backed ViewModels until cutover readiness.
 
-**Route reality (2026-05-23):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/`. **«Мои курсы»** → **`/my-account/my-courses/`** — enrolled list (`a352081`). **Account hub v1** → **`/my-account/my-courses/?course_id={id}`** (`81c3a7d`). **`/lessons/`** remains LD lesson route — continue CTAs from hub/list land there.
+**Route reality (2026-05-23–24):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/`. **«Мои курсы»** → **`/my-account/my-courses/`** — enrolled list (`a352081`). **Account hub v1** → **`/my-account/my-courses/?course_id={id}`** (`81c3a7d`). **`/lessons/`** remains LD lesson route — continue CTAs from hub/list land there. **Lesson H1 number prefix** — child-theme title filter **`caaaa96`** (Kadence entry H1 only; hub outline order; not LD template override).
 
 **Public course URL hygiene (2026-05-23):** LearnDash Closed **`custom_button_url`** (`#btn-join`) + one course body link had host typo `atmoredesign.local.local` — fixed via WP Admin course settings/content; logged-out crawl **18** course pages, **0** `local.local` on course HTML — `CHANGES.md`. Snippet **#5** (inactive) redirect URL unchanged.
 
@@ -154,7 +154,7 @@ LearnDash CPTs:
 - `sfwd-quiz`;
 - `groups`.
 
-`atmo-lms-lite` active on Local, in development: modules include courses, lessons, mapping, migration, access-gate, access-rules, enrollment-hook, guest-orders, reconciler, refunds, run-log, status, woocommerce, work-queue, diagnostics. LearnDash templates/caution still applies for production UI until adapter decision.
+`atmo-lms-lite` active on Local, in development: modules include courses, lessons, mapping, migration, access-gate, access-rules, enrollment-hook, guest-orders, reconciler, refunds, run-log, status, woocommerce, work-queue, diagnostics. **Local enrollment/access tables empty (2026-05-24 audit).** Future driver should sit behind adapter ViewModels — not direct theme calls. LearnDash templates/caution still applies for production UI until cutover.
 
 Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not order line items alone). Snippet **#5** Thank You Redirect is **inactive** (`active = 0`); do not re-enable without safe thank-you spec — see Code Snippets registry.
 
@@ -180,7 +180,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
 
-Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**; account course hub v1 **shipped `81c3a7d` 2026-05-23**; lesson chrome v1/v2 **shipped `ed7afcf` / `1e08a3d`**, hardened in **`897409c`**. ViewModel contract **signed off 2026-05-22** (§4.7). **Do not add LearnDash template overrides without explicit scoped plan.**
+Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**; account course hub v1 **shipped `81c3a7d` 2026-05-23**; lesson chrome v1/v2 **shipped `ed7afcf` / `1e08a3d`**, hardened in **`897409c`**; lesson H1 number prefix **shipped `caaaa96` 2026-05-24** (title filter, not template override). ViewModel contract **signed off 2026-05-22** (§4.7). **Do not add LearnDash template overrides without explicit scoped plan.**
 
 ## Custom ATMO Plugins
 
@@ -189,7 +189,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 | `atmo-reflection-forms` | active | shortcode `[atmo_reflection]`, таблица `wp_atmo_reflection_entries`, CSS/JS грузятся на всех страницах |
 | `learndash-training-diary` | active | shortcode `[training_diary]`, таблица `wp_ld_training_diary`, связан с LearnDash |
 | `atmo-redesign-preview` | mu-plugin | temporary preview/integration layer |
-| `atmo-lms-lite` | active (in development) | candidate future LMS; do not build critical UI on it without explicit decision |
+| `atmo-lms-lite` | active (in development) | future LMS replacement; **bridge only** on Local — empty tables; no theme UI dependency until explicit cutover |
 
 **CookieYes (`cookie-law-info`):** cookie banner/consent UI — **not in child theme or docs repo**. Copy and default language live in WP DB/options, plugin tables (`wp_cky_banners`, `wp_cky_cookie_categories`), and uploads `cookieyes/languages/banners/ru.json`. RU notice bar + preference panel QA **PASS 2026-05-22** (`CHANGES.md`); no VCS commit for the runtime change.
 
@@ -298,7 +298,7 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 complete** (through `897409c`, 2026-05-23); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24). **Next:** optional lesson-number prefix; optional catalog/PDP rows; explicit `atmo-lms-lite` decision — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
+**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix complete** (through `caaaa96`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration. **Next:** optional catalog/PDP polish; explicit `atmo-lms-lite` API/cutover contract when product-ready — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
 
 **Do not bypass without explicit scope:**
 

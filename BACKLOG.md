@@ -8,7 +8,7 @@
 
 ## Done — ATMO shell/wiring phase (re-QA 2026-05-22)
 
-Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Account fixture polish closed 2026-05-24** — no mandatory account theme work. **Next:** optional LMS/catalog polish or explicit product decision — not more shell wiring unless a functional gap appears.
+Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Account fixture polish closed 2026-05-24** — no mandatory account theme work. **Next:** optional catalog/PDP polish or explicit `atmo-lms-lite` API/cutover contract later — not more shell wiring unless a functional gap appears.
 
 | Area | Status |
 |------|--------|
@@ -70,6 +70,16 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - No LD template overrides; `kadence-child/learndash/` not created
 - QA PASS — r4t5 / atmo-qa-empty / logged-out / hub + catalog regressions — see `CHANGES.md`
 
+### Lesson H1 number prefix (2026-05-24)
+
+- **`caaaa96`**: singular LD lesson Kadence entry H1 → **`Урок N · {title}`** via `the_title` filter + scope hooks; outline order from **`atmo_lms_get_course_lesson_outline()`**; logged-in only; user-aware cache guard
+- No LD template overrides; no `atmo-lms-lite` integration
+- QA PASS — Codex WP-CLI simulation + logged-out HTTP — see `CHANGES.md`
+
+### `atmo-lms-lite` bridge decision (2026-05-24)
+
+- Future LearnDash replacement; active on Local but **defer runtime integration** — empty enrollment/access tables; no theme-facing front-end API/UI; stay LearnDash-backed ViewModels until stable read API + cutover readiness — see `CHANGES.md`
+
 ---
 
 ## 1. Account / Woo — reference (fixture polish closed 2026-05-24)
@@ -102,9 +112,11 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 | Item | Notes |
 |------|--------|
-| **Lesson-number prefix in title** | «Урок N ·» prefix before `h1.entry-title` — deferred; needs adapter outline-order lookup. |
+| ~~**Lesson-number prefix in title**~~ | ✅ Done **`caaaa96`** 2026-05-24 — «Урок N ·» on Kadence entry H1; hub outline order; logged-in only — see `CHANGES.md` |
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
-| `atmo-lms-lite` UI backend decision | Dev-only on Local; decide when lesson port work starts |
+| **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
+
+**Next likely (optional / product-scoped):** explicit `atmo-lms-lite` API/cutover contract · catalog/PDP optional polish · static `/payment-failed/` page — see §4–§5.
 
 ### Current routes (reference)
 
@@ -115,7 +127,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | `/my-account/my-courses/?course_id={id}` | **Account hub v1** — enrolled overview + lesson outline — `81c3a7d` |
 | `/lessons/{slug}/` | LearnDash lesson body — **«Продолжить»** from hub/list lands here |
 
-Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_page()` only · `atmo-lms-lite` active on Local, no front-end assets on course routes.
+Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_page()` only · `atmo-lms-lite` active on Local (future replacement; **bridge only** — no theme UI dependency; Local tables empty).
 
 **Rejected routes (archive):** standalone `/my-courses/` · LD shortcode enrolled page · wait-for-lite-only — see `LMS_ADAPTER_SPEC.md` §2.
 
@@ -171,4 +183,4 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-*Last synced: 2026-05-23 (backlog hygiene after hub v1)*
+*Last synced: 2026-05-24 (LMS bridge decision + lesson prefix `caaaa96`)*

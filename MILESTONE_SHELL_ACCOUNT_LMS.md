@@ -14,7 +14,7 @@
 | **ATMO shell / wiring** | **Complete** — header, footer, catalog, PDP, cart, checkout, order-received; account passes 1–5; re-QA PASS 2026-05-22 |
 | **Account / LMS MVP** | **Complete** — `/my-account/my-courses/` endpoint + adapter MVP + dashboard CTA wiring + **account course hub v1 (`81c3a7d`)** + enrolled + zero-enrollment QA |
 
-**Not a blocker:** preview mu-plugin kept for now (`?atmo_preview_shell=1` only). LD lesson chrome v1/v2 is shipped without template overrides; remaining lesson work is optional polish / formal adapter work.
+**Not a blocker:** preview mu-plugin kept for now (`?atmo_preview_shell=1` only). LD lesson chrome v1/v2 + lesson H1 number prefix (`caaaa96`) shipped without template overrides; remaining LMS work is optional polish / formal adapter work / future `atmo-lms-lite` cutover contract.
 
 **Update 2026-05-23:** Catalog + PDP **public polish complete** — toolbar/cards, content cleanup, hero price sync, Woo tabs, Snippet 12 variable mitigation. Detail: `CHANGES.md` → *2026-05-23 — Catalog + PDP public polish milestone*.
 
@@ -51,6 +51,15 @@
 | **`a352081`** | LMS adapter MVP — read-only Woo+LD `get_enrolled_courses()`, enrolled list UI, mapping/expiry rules, no fake 0% |
 | **`648e562`** | Dashboard CTA wiring — «Следующий шаг» + courses panel → adapter / `/my-account/my-courses/` |
 | **`81c3a7d`** | Account course hub v1 — `?course_id=` on existing endpoint; `.atmo-course-hub` in account shell; lesson outline via read-only LD API |
+
+### Lesson chrome + H1 prefix (2026-05-23–24)
+
+| Commit | Scope |
+|--------|--------|
+| **`ed7afcf`** | Lesson chrome v1 — content card, nav, mark-complete pill, back-to-hub filter |
+| **`1e08a3d`** | Lesson chrome v2 — first-lesson prev hidden; back label «Вернуться к программе» |
+| **`897409c`** | Lesson hardening — LD hook guards + CSS cleanup |
+| **`caaaa96`** | Lesson H1 number prefix — **`Урок N · {title}`** on Kadence entry H1 via title filter; hub outline order; logged-in only |
 
 **Deploy note:** one-time permalink flush required after `ecfd8f5` on new environments (WP Admin → Settings → Permalinks → Save). No `flush_rewrite_rules()` in theme PHP.
 
@@ -114,7 +123,7 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 | Area | Why |
 |------|-----|
 | LearnDash templates | `ld30`, course-grid, single course/lesson — lesson chrome shipped via CSS/filters; no template overrides without scoped plan |
-| `atmo-lms-lite` critical UI | Dev-only on Local; not SoT; no front-end without explicit product choice |
+| `atmo-lms-lite` critical UI | Future replacement on Local; **bridge only** — empty tables; no theme UI dependency until explicit cutover |
 | Payment / saved cards | Stripe tokens, saved payment-methods table, live gateway QA — env + scope, not theme CSS |
 | Order / payment mutations | No new test orders, enrollments, or snippet toggles unless explicitly requested |
 | Redirects / Snippet #5 | Broken thank-you redirect if re-enabled |
@@ -129,8 +138,8 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 **Canonical open tasks:** `BACKLOG.md` §1–§5.
 
 - **Account fixture polish:** **closed 2026-05-24** — no mandatory account theme work; dev pill removed (`dc1e2be`); see `CHANGES.md`
-- **Current LMS polish:** lesson-number prefix (deferred), `atmo-lms-lite` UI backend decision
-- **Optional polish:** catalog/PDP optional rows; billing edit field subset (Woo locale/config, low priority)
+- **LMS polish:** lesson H1 number prefix **done `caaaa96`**; **`atmo-lms-lite` bridge decision** — defer runtime integration until stable read API + cutover
+- **Optional polish:** catalog/PDP optional rows; billing edit field subset (Woo locale/config, low priority); static `/payment-failed/`
 - **Avoid unless explicit:** payments, saved cards, test orders; downloads/shipping blocks until real fixtures exist
 - **Process:** preview mu-plugin removal when checkboxes met; re-export snippets when DB changes
 
@@ -144,7 +153,7 @@ Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending
 
 **Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first pick:
 
-> Pick one scoped item from `BACKLOG.md`: lesson-number prefix, explicit `atmo-lms-lite` decision, or optional catalog/PDP polish. Account fixture polish is closed — do not treat as next mandatory phase. Do not touch LearnDash templates without adapter-backed scope.
+> Pick one scoped item from `BACKLOG.md`: optional catalog/PDP polish, static `/payment-failed/`, or explicit `atmo-lms-lite` API/cutover contract when product-ready. Lesson-number prefix is done (`caaaa96`). Account fixture polish is closed — do not treat as next mandatory phase. Do not touch LearnDash templates without adapter-backed scope.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 

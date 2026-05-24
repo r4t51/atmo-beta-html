@@ -10,7 +10,7 @@
 
 Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo backends so enrolled courses, progress, and access can ship without LearnDash HTML coupling or premature `atmo-lms-lite` dependency.
 
-**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**; dashboard «Следующий шаг» CTA wiring **shipped (`648e562` 2026-05-22)**; account-shelled enrolled course hub v1 **shipped (`81c3a7d` 2026-05-23)**; LD lesson chrome v1/v2 **shipped (`ed7afcf`, `1e08a3d`, hardened `897409c`)** without LD template overrides.
+**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**; dashboard «Следующий шаг» CTA wiring **shipped (`648e562` 2026-05-22)**; account-shelled enrolled course hub v1 **shipped (`81c3a7d` 2026-05-23)**; LD lesson chrome v1/v2 **shipped (`ed7afcf`, `1e08a3d`, hardened `897409c`)**; lesson H1 number prefix **shipped (`caaaa96` 2026-05-24)** via child lesson chrome title filter — no LD template overrides.
 
 ---
 
@@ -61,7 +61,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 
 - Child theme **templates consume ViewModels only** — no `learndash_*`, no `.learndash-wrapper`, no LD shortcodes in ATMO chrome.
 - Catalog `atmo_build_course_card()` (Woo products) remains separate; enrolled lists use **`EnrolledCourse`**, not raw WC product cards.
-- **`atmo-lms-lite`:** not a critical UI backend until explicit product decision; adapter may stub or delegate later.
+- **`atmo-lms-lite`:** future LMS replacement; **defer runtime integration (bridge only 2026-05-24)** — Local enrollment/access tables empty; no theme-facing front-end API/UI; adapter may delegate later behind same ViewModels — not direct theme calls.
 
 ### Out of scope for v0 / MVP
 
@@ -375,7 +375,7 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 | **Thank-you redirect** | Snippet #5 broken URL, inactive | Separate thank-you spec before any post-checkout redirect |
 | **Product ↔ course map** | ~~Woo ID ≠ LD ID~~ | **Discovered:** `_related_course` + variation-first resolver — `CHANGES.md` 2026-05-22 |
 | **Access expiry** | ~~LD `expire_access` off~~ | **Decided:** adapter computes from LD `starts_at` + Woo duration label — `CHANGES.md` 2026-05-22 |
-| **Lesson URLs** | Continue CTAs land on LD lesson URLs | **Current:** `/lessons/` keeps LD template but has ATMO chrome CSS/filters (`ed7afcf`, `1e08a3d`, `897409c`); no child template override |
+| **Lesson URLs** | Continue CTAs land on LD lesson URLs | **Current:** `/lessons/` keeps LD template with ATMO chrome CSS/filters (`ed7afcf`, `1e08a3d`, `897409c`); entry H1 **`Урок N · {title}`** via title filter (`caaaa96`); no child template override |
 | **Dashboard widgets** | Diary/trainer from other plugins | Out of MVP; do not block enrolled list on diary data |
 
 ---
@@ -623,4 +623,4 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 ---
 
-*Spec v0 — 2026-05-22–23. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, account course hub v1, LD lesson chrome v1/v2, and zero-enrollment QA shipped; next: optional lesson-number prefix / formal outline adapter.*
+*Spec v0 — 2026-05-22–24. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, account course hub v1, LD lesson chrome v1/v2, lesson H1 prefix (`caaaa96`), zero-enrollment QA, and `atmo-lms-lite` bridge decision shipped/recorded; next: optional catalog/PDP polish · explicit `atmo-lms-lite` API/cutover contract when product-ready.*

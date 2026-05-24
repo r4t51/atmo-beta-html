@@ -4,7 +4,20 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); **account fixture polish closed** (discovery 2026-05-24 — no mandatory account theme work). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** lesson-number prefix (deferred) · `atmo-lms-lite` decision — `BACKLOG.md` §2.
+> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover. Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** optional catalog/PDP polish · explicit `atmo-lms-lite` API/cutover contract later — `BACKLOG.md` §2.
+
+---
+
+## 2026-05-24 — `atmo-lms-lite` bridge decision + lesson H1 number prefix
+
+- **Scope:** docs-only record; child theme commit below; no runtime/DB/snippets/settings/content changes in docs task
+- **`atmo-lms-lite` bridge decision (read-only audit):** plugin is the **future LearnDash replacement**, active on Local, but **not ready to own redesign UI now** — `wp_atmo_lms_enrollments` and `wp_atmo_lms_access_rules` empty; no theme-facing front-end API/UI found; current redesign LMS UI stays **adapter-first / LearnDash-backed** as a bridge; future migration must preserve ViewModel contract and avoid direct theme dependency on plugin internals until stable read API + cutover
+- **Child theme commit `caaaa96`** — `Add lesson number prefix to LearnDash titles` (`kadence-child`)
+- **Files:** `inc/atmo-lesson.php` · `assets/css/atmo-lesson.css` (comment only)
+- **Behavior:** singular LD lesson Kadence entry H1 → **`Урок N · {title}`** for logged-in enrolled user when outline order resolvable; order from existing LearnDash-backed **`atmo_lms_get_course_lesson_outline()`**; scoped via **`kadence_single_before_entry_title`** / **`kadence_single_after_entry_title`**; no prefix in breadcrumbs/nav/document title/account hub; logged-out users keep original title; user-aware title cache guard (Codex review)
+- **Out of scope:** no `atmo-lms-lite` integration · no LearnDash template overrides · no DB/settings/runtime/content changes
+- **QA (Codex verification):** `php -l inc/atmo-lesson.php` PASS · `git diff --check` PASS before commit; WP-CLI simulation — no scope `План программы` · logged-in 679 / lesson 3695 `Урок 1 · План программы` · repeated pass no duplicate · logged-out after primed cache `План программы` · logged-in 679 / lesson 3736 `Урок 7 · 03`; public logged-out HTTP status 200, prefix absent; repos clean after commit
+- **Rollback:** `git revert caaaa96` in `kadence-child` — no DB or flush required
 
 ---
 
