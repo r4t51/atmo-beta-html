@@ -1,6 +1,6 @@
 # ATMO shell + account/LMS MVP — milestone snapshot
 
-> **Date:** 2026-05-22 baseline · **updated 2026-05-23** (account hub v1)
+> **Date:** 2026-05-22 baseline · **updated 2026-05-24** (account fixture polish closed)
 > **Repos:** docs `beta html` · child theme `kadence-child` (Local)  
 > **Purpose:** concise closure record — what shipped, what fixtures exist, what stays out of scope.  
 > **Detail / rollback:** `CHANGES.md` · **open work:** `BACKLOG.md` · **adapter contract:** `LMS_ADAPTER_SPEC.md`
@@ -128,12 +128,13 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 
 **Canonical open tasks:** `BACKLOG.md` §1–§5.
 
+- **Account fixture polish:** **closed 2026-05-24** — no mandatory account theme work; dev pill removed (`dc1e2be`); see `CHANGES.md`
 - **Current LMS polish:** lesson-number prefix (deferred), `atmo-lms-lite` UI backend decision
-- **Optional polish:** account address fixtures, downloads with real files, catalog/PDP optional rows
-- **Avoid unless explicit:** payments, saved cards, test orders
+- **Optional polish:** catalog/PDP optional rows; billing edit field subset (Woo locale/config, low priority)
+- **Avoid unless explicit:** payments, saved cards, test orders; downloads/shipping blocks until real fixtures exist
 - **Process:** preview mu-plugin removal when checkboxes met; re-export snippets when DB changes
 
-Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending — see §4.
+Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending ghost (0 items) — see §4.
 
 ---
 
@@ -143,7 +144,7 @@ Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending
 
 **Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first pick:
 
-> Pick one scoped item from `BACKLOG.md`: account fixture polish, lesson-number prefix, or explicit `atmo-lms-lite` decision. Do not touch LearnDash templates without adapter-backed scope.
+> Pick one scoped item from `BACKLOG.md`: lesson-number prefix, explicit `atmo-lms-lite` decision, or optional catalog/PDP polish. Account fixture polish is closed — do not treat as next mandatory phase. Do not touch LearnDash templates without adapter-backed scope.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 

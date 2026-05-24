@@ -70,7 +70,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - **`/my-account/my-courses/?course_id={id}`:** account course hub v1 **`.atmo-course-hub`** — **`81c3a7d`**; no new rewrite; one-time permalink flush **not** required for hub
   - Hidden from nav, direct URL only: `downloads`, `edit-address` (+ billing/shipping), `payment-methods`
   - Styled passes: auth (`353346c`), shell (`3122f4f`), dashboard static shell (`534b241`), dashboard CTA wiring (`648e562`), orders (`3704226`), view-order access-type meta (`2da518f`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
-  - Account shell/wiring done; **`/my-account/my-courses/`** adapter MVP live (`a352081`); dashboard CTAs wired to adapter (`648e562`); completed #3801 view-order QA; access-type meta pill on view-order (`2da518f`); saved payment-methods table not live-QA'd
+  - Account shell/wiring done; **`/my-account/my-courses/`** adapter MVP live (`a352081`); dashboard CTAs wired to adapter (`648e562`); completed #3801 view-order QA; access-type meta pill on view-order (`2da518f`); dashboard dev pill removed (`dc1e2be`); account fixture polish closed 2026-05-24 — no mandatory account theme work; saved payment-methods table not live-QA'd (0 tokens in fixtures)
   - Audited 2026-05-22 (read-only PASS): `/my-account/add-payment-method/` (shell/wiring OK; Stripe card absent on Local — Woo/Stripe env, not theme CSS; **BLIK/Klarna visible on checkout** — cart-fixture QA same date); dashboard (`534b241` + `648e562`, desktop/mobile PASS; Woo default dashboard copy hidden by CSS when `.atmo-dash` present)
   - **Open tasks:** `BACKLOG.md`
   - Do not redirect Woo account endpoints without audit.
@@ -298,7 +298,7 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 complete** (through `897409c`, 2026-05-23). **Next:** account fixture polish; optional lesson-number prefix; optional catalog/PDP rows — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
+**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 complete** (through `897409c`, 2026-05-23); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24). **Next:** optional lesson-number prefix; optional catalog/PDP rows; explicit `atmo-lms-lite` decision — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
 
 **Do not bypass without explicit scope:**
 

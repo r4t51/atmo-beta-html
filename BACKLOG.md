@@ -1,14 +1,14 @@
 # ATMO.BY — project backlog
 
 > Short, practical backlog — **source of truth for open tasks** + compact reference (not a second changelog).
-> **Milestone:** `MILESTONE_SHELL_ACCOUNT_LMS.md` (baseline 2026-05-22 · updated 2026-05-23 hub v1).
+> **Milestone:** `MILESTONE_SHELL_ACCOUNT_LMS.md` (baseline 2026-05-22 · updated 2026-05-24 account fixture polish closed).
 > History/rollback: `CHANGES.md` · Child theme: `kadence-child` · Prototypes: this repo.
 
 ---
 
 ## Done — ATMO shell/wiring phase (re-QA 2026-05-22)
 
-Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Next:** account fixture polish or explicit product decision — not more shell wiring unless a functional gap appears.
+Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Account fixture polish closed 2026-05-24** — no mandatory account theme work. **Next:** optional LMS/catalog polish or explicit product decision — not more shell wiring unless a functional gap appears.
 
 | Area | Status |
 |------|--------|
@@ -72,15 +72,17 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 ---
 
-## 1. Account / Woo — open
+## 1. Account / Woo — reference (fixture polish closed 2026-05-24)
 
 | Item | Notes |
 |------|--------|
-| Saved payment-methods table with stored cards | **Avoid unless explicit** — needs payment token / saved-card scope |
-| Downloads list with real files | Pass 5 styled empty state only |
+| Saved payment-methods table with stored cards | **Avoid unless explicit** — 0 tokens in fixtures 679/691; needs payment token / saved-card scope |
+| Downloads list with real files | **No action** until downloadable SKU/grant — Pass 5 empty state sufficient (0 products, 0 grants) |
 | ~~Saved billing/shipping profile cards + edit links~~ | ✅ Done 2026-05-23 — r4t5 populated (Anastasiya Vidruk / Warszawa / PL / MZ) |
-| ~~Filled address forms (all fields populated)~~ | ✅ Done 2026-05-23 — index cards + shipping form verified; billing form shows subset (address/state/phone absent from billing edit UI — residual, low priority) |
-| View-order shipping customer block | Absent on #3801; billing order-level block verified on #3801 |
+| ~~Filled address forms (all fields populated)~~ | ✅ Done 2026-05-23 — index cards + shipping form verified |
+| ~~View-order shipping customer block~~ | **No action** — #3801 has no shipping meta (fixture absent); not a CSS/template bug |
+| ~~Dashboard dev pill `WooCommerce · shell`~~ | ✅ Done `dc1e2be` 2026-05-24 — removed; **«Аккаунт активен»** kept |
+| Billing edit field subset (optional) | Low priority Woo locale/config — billing edit UI omits address/state/phone; meta on index cards; no child-theme filter |
 | Address save/validation flow | Out of scope unless explicit |
 | Woo default dashboard `<p>` in DOM | Hidden by CSS when `.atmo-dash` present; template override optional later |
 

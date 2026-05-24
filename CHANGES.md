@@ -4,7 +4,23 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-23):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** lesson-number prefix (deferred) · `atmo-lms-lite` decision — `BACKLOG.md` §2.
+> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); **account fixture polish closed** (discovery 2026-05-24 — no mandatory account theme work). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open LMS items:** lesson-number prefix (deferred) · `atmo-lms-lite` decision — `BACKLOG.md` §2.
+
+---
+
+## 2026-05-24 — Account fixture polish discovery + dashboard dev pill cleanup
+
+- **Scope:** read-only discovery (2026-05-24); this entry + docs closure; no runtime/DB/Snippets/settings changes in docs task
+- **Discovery:** account fixture polish audit complete — **no mandatory child-theme work remains** for account shell/fixture polish
+- **`#3800` ghost fixture:** `wc-pending`, 0 line items; excluded from my-courses by design; keep for cancel/expired shell QA only
+- **`#3801` view-order shipping block absent:** order has **no shipping meta** — missing block is fixture/data absence, not CSS/template bug; order-level billing snapshot unchanged by design
+- **Downloads:** 0 downloadable products, 0 download grants for users 679/691 — styled empty state sufficient; **no action** until product creates downloadable SKU/grant
+- **Payment methods:** 0 saved tokens for users 679/691; Local add-payment-method shows Klarna only (Stripe card absent by env) — **avoid unless explicit** saved-card/token task
+- **r4t5 profile:** billing/shipping meta populated; address index cards + forms visually acceptable; **atmo-qa-empty** empty account states sane
+- **Billing edit field subset:** no `address_1`/`state`/`phone` on billing edit UI — Woo locale/config behavior, low priority; not a child-theme bug
+- **Child theme commit `dc1e2be`** — `fix(account): remove dashboard dev pill` — removed customer-visible **`WooCommerce · shell`** pill from dashboard; kept **«Аккаунт активен»**
+- **QA (discovery):** no payment/save/order/cancel/logout actions clicked
+- **Rollback (pill):** `git revert dc1e2be` in `kadence-child`
 
 ---
 
