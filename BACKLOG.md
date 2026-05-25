@@ -17,7 +17,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | PDP | ✅ simple + variable #3614 |
 | Cart | ✅ `atmo-cart.css` + cross-sells · polish `3e4748f` (remove link, eyebrow, trust bullets, coupon centering) |
 | Checkout | ✅ `atmo-checkout.css`; gateways visible on Local (**BLIK** default, **Klarna**); cart-fixture QA PASS 2026-05-22 |
-| Order received | ✅ `inc/atmo-confirmation.php` + `atmo-confirmation.css` (`f9a7b95`); server-side owner simulation PASS; browser owner visual QA still open |
+| Order received | ✅ `inc/atmo-confirmation.php` + `atmo-confirmation.css` (`f9a7b95`); owner browser QA PASS #3801 / user 679 — `CHANGES.md` 2026-05-25 |
 | Account | ✅ passes 1–5 + dashboard + view-order meta (detail below) |
 | Preview mu-plugin | ✅ **keep for now** — opt-in only (`?atmo_preview_shell=1`) |
 
@@ -106,7 +106,6 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 
 | Priority | Item | Notes |
 |----------|------|-------|
-| P0 | **Order-received owner visual QA** | `f9a7b95` server-side PASS; browser QA for #3801 owner is **blocked until a valid owner session/cookies exists**. Re-run 1440×900 + 390×844 on `/checkout/order-received/3801/?key=wc_order_inQFcSUpkLmE4`; no payment/order actions. |
 | P1 | **Checkout steps bar** | Port shared `Корзина → Оформление → Готово` step header to `/checkout/`; do not change fields, gateways, or submit behavior. |
 | P1 | **Static missing routes** | Footer links `/trainer/`, `/terms/`, `/privacy/` currently 404; WP pages/content decision + child templates/CSS needed. |
 | P2 | **404 page** | `404.html` not ported; add child `404.php` + scoped CSS when brand consistency pass starts. |
@@ -241,4 +240,4 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-*Last synced: 2026-05-25 (prototype coverage audit, order-received layer `f9a7b95`, docs QA gap `c01fc03`)*
+*Last synced: 2026-05-25 (prototype coverage audit, order-received owner browser QA PASS for `f9a7b95`)*

@@ -194,7 +194,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
 - ✅ Order received — `inc/atmo-confirmation.php` + `assets/css/atmo-confirmation.css` (`f9a7b95`).
   - Renders ATMO layer only for valid key + `completed` order when Woo full order flow is available.
   - Course card CTA targets account hub (`/my-account/my-courses/?course_id=...`), not direct `/lessons/`.
-  - Server-side owner simulation PASS for #3801; logged-in browser visual QA is still open until owner session/cookies exist.
+  - Owner browser QA PASS for #3801 at 1440×900 and 390×844 (2026-05-25).
   - **`/payment-failed/`** → static page **#3807** + `page-payment-failed.php` + `atmo-payment-failed.css` (`c9ac2b1`, 2026-05-24).
 - ✅ Woo My Account — passes 1–5 + mobile orders fix: `assets/css/atmo-account.css`, `inc/atmo-account.php` (menu filter in `functions.php`).
   - CSS только на `is_account_page()`; `/courses/`, `/profile/`, `/reset-password/` (LearnDash) **не** enqueued.
@@ -237,12 +237,11 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Close QA gap** — logged-in owner browser QA for order #3801 / `f9a7b95` order-received layer.
-2. **Prototype coverage** — checkout steps, static `/trainer/` + `/terms/` + `/privacy/`, WP 404, course hub/lesson visual polish.
-3. **Optional / product-scoped** — full PDP hero redesign (cosmetic), homepage Social testimonials when CMS/source exists.
-4. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24).
-5. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist.
-6. **Closed no-op items** — account fixture polish, variable PDP bottom CTA, billing edit field subset; do not revive without product scope.
+1. **Prototype coverage** — checkout steps, static `/trainer/` + `/terms/` + `/privacy/`, WP 404, course hub/lesson visual polish.
+2. **Optional polish / product-scoped** — full PDP hero redesign (cosmetic), homepage Social testimonials when CMS/source exists.
+3. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24).
+4. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist.
+5. **Closed no-op items** — account fixture polish, variable PDP bottom CTA, billing edit field subset; do not revive without product scope.
 
 **Do not bypass without explicit scope:**
 

@@ -22,7 +22,7 @@
 
 **Update 2026-05-23 (LMS hub v1):** Account enrolled course hub at **`/my-account/my-courses/?course_id={id}`** — child theme **`81c3a7d`**; no new rewrite; lessons still on LD routes. Detail: `CHANGES.md` → *LMS account course hub v1*.
 
-**Update 2026-05-24–25 (prototype coverage):** Homepage v1 shipped (`075179f`, CSS compliance `214f6b6`), cart polish shipped (`3e4748f`), and order-received PHP confirmation layer shipped (`f9a7b95`). Server-side owner simulation PASS; real logged-in owner browser QA remains open until a valid #3801 owner session is available. Detail: `CHANGES.md` → *Order received confirmation layer `f9a7b95`*.
+**Update 2026-05-24–25 (prototype coverage):** Homepage v1 shipped (`075179f`, CSS compliance `214f6b6`), cart polish shipped (`3e4748f`), and order-received PHP confirmation layer shipped (`f9a7b95`). Owner browser QA PASS for #3801 on desktop/mobile. Detail: `CHANGES.md` → *Order received confirmation layer `f9a7b95`*.
 
 ---
 
@@ -34,7 +34,7 @@
 | Catalog + goal chips | MVP + **public polish complete 2026-05-23** (`6f4790b` + WP Admin content); card display titles **`4993bd9`** 2026-05-21; taxonomy-aware chip URLs **`7b163be`** 2026-05-24 — see `CHANGES.md` |
 | PDP | Simple + variable `#3614`; **hero price sync + Woo tabs 2026-05-23** (`4132f1f`, `106250d`); Snippet 12 skips variable PDP **by design** (deferred 2026-05-24) |
 | Homepage | `front-page.php` + `atmo-home.css` (`075179f`, CSS cleanup `214f6b6`); Social/testimonials deferred |
-| Cart / checkout / order-received | Cart polish `3e4748f`; checkout shell `atmo-checkout.css`; order-received PHP layer `f9a7b95` + `atmo-confirmation.css` (owner visual QA still open) |
+| Cart / checkout / order-received | Cart polish `3e4748f`; checkout shell `atmo-checkout.css`; order-received PHP layer `f9a7b95` + `atmo-confirmation.css` (owner visual QA PASS 2026-05-25) |
 | Payment failed | `/payment-failed/` → **200** static page (WP **#3807** + `page-payment-failed.php` / `atmo-payment-failed.css`, `c9ac2b1`); Woo order-specific failed UX stays on order-received |
 | Woo My Account | Auth, dashboard, orders, view-order, settings, hidden endpoints — shell/wiring done |
 | **`/my-account/my-courses/`** | Woo endpoint **`my-courses`** · adapter `get_enrolled_courses()` · empty + enrolled list · dashboard «Следующий шаг» wired |
@@ -142,7 +142,7 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 
 - **Account fixture polish:** **closed 2026-05-24** — no mandatory account theme work; dev pill removed (`dc1e2be`); see `CHANGES.md`
 - **LMS polish:** lesson H1 number prefix **done `caaaa96`**; **`atmo-lms-lite` bridge decision** — defer runtime integration until stable read API + cutover
-- **Prototype coverage:** order-received owner visual QA, checkout steps, static `/trainer/` + legal routes, 404, course hub/lesson visual polish — see `BACKLOG.md` §0
+- **Prototype coverage:** checkout steps, static `/trainer/` + legal routes, 404, course hub/lesson visual polish — see `BACKLOG.md` §0
 - **Optional polish:** PDP optional rows (full hero redesign cosmetic only)
 - **Closed / config:** billing edit field subset — Checkout Field Editor + Woo settings; not child-theme work (2026-05-24)
 - **Avoid unless explicit:** payments, saved cards, test orders; downloads/shipping blocks until real fixtures exist
@@ -158,7 +158,7 @@ Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending
 
 **Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first picks:
 
-> First close order-received owner browser QA when a valid #3801 owner session exists. Then pick checkout steps or static missing routes (`/trainer/`, `/terms/`, `/privacy/`, 404) before returning to optional PDP/LMS polish. `atmo-lms-lite` work waits for product-ready API/cutover scope.
+> Pick checkout steps or static missing routes (`/trainer/`, `/terms/`, `/privacy/`, 404) before returning to optional PDP/LMS polish. `atmo-lms-lite` work waits for product-ready API/cutover scope.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 

@@ -4,7 +4,7 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA still open); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
 
 ---
 
@@ -17,16 +17,23 @@
 
 ---
 
-## 2026-05-25 — Order received confirmation layer `f9a7b95` — logged-in visual QA (partial)
+## 2026-05-25 — Order received confirmation layer `f9a7b95` — owner browser visual QA PASS
 
 - **Scope:** docs + read-only QA only; child theme unchanged during this task
 - **Child theme commit:** `f9a7b95` — `Add ATMO order received confirmation layer` (`inc/atmo-confirmation.php`, `functions.php`, `assets/css/atmo-confirmation.css`)
 - **Fixture:** order **#3801** (`wc-completed`), key `wc_order_inQFcSUpkLmE4`, owner user **679** / login `atmo-admin` / display `r4t5`; line variation **3628** → LD course **3616** «Живот и Тазовое дно»; hub CTA `/my-account/my-courses/?course_id=3616`
-- **Server-side owner simulation (Codex, pre-browser):** PASS — valid key + `completed` gate; layer HTML; course card; hub CTA «Открыть курс»; no `/lessons/` in card href
-- **Browser visual QA (Cursor, 2026-05-25):** **BLOCKED** — no logged-in order-owner session in automation; fixture cookies `C:\tmp\atmo-handoff\r4t5*.cookies` expired (test cookie only); guest view shows Woo login gate, **no** `.atmo-confirmation-layer`
-- **Negative guards (read-only, 1440×900 + 390×844 spot checks):** PASS — `/checkout/order-received/999/` no layer · `/checkout/` no layer · `/payment-failed/` no layer + static «Не удалось провести платёж.» page intact · no horizontal overflow on tested URLs
-- **Open gap:** re-run logged-in owner browser QA at **1440×900** and **390×844** on `/checkout/order-received/3801/?key=wc_order_inQFcSUpkLmE4` when WP admin-bar session or valid owner cookies available
-- **No payment / order / submit actions clicked**
+- **Target URL:** `/checkout/order-received/3801/?key=wc_order_inQFcSUpkLmE4`
+- **Session:** Cursor **cursor-ide-browser** MCP — existing logged-in session; `/my-account/` shows account shell (Обзор / Мои курсы / Заказы), WP admin bar **«Привет, r4t5»**, no `#customer_login`
+- **Owner browser QA PASS** — desktop **1440×900** + mobile **390×844** (CDP `Emulation.setDeviceMetricsOverride`):
+  - `.atmo-confirmation-layer` present
+  - Steps **Корзина / Оформление / Готово** visible in layer
+  - Hero **«Спасибо»** + **«Заказ принят»**; order **#3801**
+  - Course card **«Ваши курсы»** · **«Живот и Тазовое дно»** · **«60 дней»** · CTA **«Открыть курс»** → `http://atmoredesign.local/my-account/my-courses/?course_id=3616` (hub, **no** `/lessons/` in card href)
+  - Woo order overview + **«Информация о заказе»** visible below layer; duplicate Woo thank-you hidden (`thankyouVisible: 0`)
+  - No horizontal overflow (`scrollWidth === clientWidth`) on both viewports; mobile layout coherent
+- **Negative guards (read-only, 390×844):** PASS — `/checkout/order-received/999/` no layer · `/checkout/` → empty cart (`/cart-2/`) no layer · `/payment-failed/` no layer + static **«Не удалось провести платёж.»** intact
+- **No payment / order / submit / logout / mark-complete actions clicked**
+- **Supersedes:** prior partial BLOCKED note in this entry (guest Playwright / expired cookies)
 
 ---
 
