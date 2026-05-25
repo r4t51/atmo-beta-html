@@ -4,7 +4,30 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+
+---
+
+## 2026-05-25 — Account course hub visual Phase 1 `b1d21b5`
+
+- **Child theme commit:** `b1d21b5` — `Polish account course hub visual layout`
+- **Files:** `inc/atmo-account.php`, `assets/css/atmo-account.css` only
+- **Scope:** visual Phase 1 for existing account hub **`/my-account/my-courses/?course_id=3616`** — no backend/cutover/new data source; no `atmo-lms-lite` integration; no DB/WP Admin/plugin/snippet edits
+- **Visual changes:**
+  - **Hero band** — `.atmo-course-hub__hero`: back link, title, status pill, access meta
+  - **Continue card** — `.atmo-course-hub__continue`: «Продолжить с» + next lesson title; primary **«Продолжить»** (unchanged LD lesson URL); secondary **«К содержанию»** → `#atmo-course-hub-outline`
+  - **Progress strip** — `.atmo-course-hub__progress-strip`; step fraction `N/M шагов` when counts available; honest empty state when `progress_percent` is null (no fake **0%**)
+  - **Outline** — `id="atmo-course-hub-outline"`; first incomplete lesson `.atmo-course-hub__outline-item--current`; LD lesson permalinks unchanged
+- **Not in scope (residual):** marketing body/video/tick-list from `product-enrolled.html`; per-course accent colors; Теория/Практика outline grouping; lesson locking/drip; LD template overrides
+- **Owner QA PASS** (Cursor IDE browser, user **r4t5** / **679**, course **3616**) — desktop **1440×900** + mobile **390×844**:
+  - Hero/title **«Живот и Тазовое дно»** / status / access meta visible
+  - Continue card visible; **Продолжить** → `http://atmoredesign.local/lessons/план-программы/`; **К содержанию** → `#atmo-course-hub-outline`
+  - Progress empty copy (no completed lessons yet); outline **13** items; current **«План программы»**
+  - No horizontal overflow desktop/mobile
+  - **`/my-account/my-courses/`** list — **1** card; **Продолжить** → LD lesson; **К программе** → `?course_id=3616`
+  - No `.atmo-course-hub` leak on `/`, `/каталог/`, `/product/abdomen_pelvic/`
+- **Technical:** `php -l inc/atmo-account.php` PASS · `git diff --check` PASS
+- **Still open:** `atmo-lms-lite` cutover deferred; lesson diary/content polish; static `/trainer/`, `/terms/`, `/privacy/` paused pending approved content — `BACKLOG.md` §0
 
 ---
 

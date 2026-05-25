@@ -123,7 +123,7 @@ npx http-server . -p 3333 --cors -c-1
 - `LessonProgress` / `LessonData`
 - `AccessData`
 
-Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`; **lesson H1 number prefix shipped `caaaa96`**. **Variable PDP bottom CTA deferred 2026-05-24** — not mandatory. Open: explicit `atmo-lms-lite` API/cutover contract when product-ready — `BACKLOG.md` §2.
+Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **hub visual Phase 1 shipped `b1d21b5`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`; **lesson H1 number prefix shipped `caaaa96`**. **Variable PDP bottom CTA deferred 2026-05-24** — not mandatory. Open: lesson diary/content polish; explicit `atmo-lms-lite` API/cutover contract when product-ready — `BACKLOG.md` §0–§2.
 
 ## WordPress Local
 
@@ -203,9 +203,9 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - **«Программы»** → `/courses/` in header/footer only (removed from account sidebar in `ecfd8f5`)
   - **Скрыты из меню, доступны по прямому URL:** `/my-account/downloads/`, `/my-account/edit-address/` (+ `billing`/`shipping`), `/my-account/payment-methods/`
   - **Адреса (`edit-address`):** index cards показывают сохранённый meta; billing edit subset — **Checkout Field Editor** `wc_fields_billing` + Woo phone hidden (**config decision 2026-05-24**, not child-theme bug) — do not add theme billing field filters unless explicitly scoped
-  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP** · **`648e562` dashboard CTA wiring** · **`81c3a7d` account hub v1** · **`dc1e2be` dashboard dev pill removal** · **`ed7afcf` lesson chrome v1** · **`1e08a3d` lesson chrome v2** · **`897409c` lesson hardening** · **`caaaa96` lesson H1 number prefix**
+  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP** · **`648e562` dashboard CTA wiring** · **`81c3a7d` account hub v1** · **`b1d21b5` hub visual Phase 1** · **`dc1e2be` dashboard dev pill removal** · **`ed7afcf` lesson chrome v1** · **`1e08a3d` lesson chrome v2** · **`897409c` lesson hardening** · **`caaaa96` lesson H1 number prefix**
   - **`/my-account/my-courses/` (`a352081`):** adapter-backed enrolled list; empty state when `[]`; fixture #3801 QA PASS — `CHANGES.md`
-  - **`/my-account/my-courses/?course_id={id}` (`81c3a7d`):** account hub v1 — enrolled overview + lesson outline; denial when no access — `CHANGES.md`
+  - **`/my-account/my-courses/?course_id={id}` (`81c3a7d`, `b1d21b5`):** account hub v1 + visual Phase 1 — enrolled overview + lesson outline; denial when no access — `CHANGES.md`
   - **Local QA fixtures:** **r4t5 / #3801** = enrolled path · **691 / `atmo-qa-empty`** = zero-enrollment path — empty-state QA PASS 2026-05-22 — `CHANGES.md`
   - **`/my-account/my-courses/` shell (`ecfd8f5`):** endpoint + menu IA; one-time permalink flush on deploy
   - **Dashboard (`534b241` + `648e562`):** «Следующий шаг» + courses panel wired to adapter / **`/my-account/my-courses/`**; no dashboard list/progress — `CHANGES.md`

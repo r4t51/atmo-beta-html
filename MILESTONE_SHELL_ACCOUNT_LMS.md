@@ -22,6 +22,8 @@
 
 **Update 2026-05-23 (LMS hub v1):** Account enrolled course hub at **`/my-account/my-courses/?course_id={id}`** — child theme **`81c3a7d`**; no new rewrite; lessons still on LD routes. Detail: `CHANGES.md` → *LMS account course hub v1*.
 
+**Update 2026-05-25 (LMS hub visual Phase 1):** Account hub visual polish — child theme **`b1d21b5`**; hero, continue card, progress strip, outline current state; same route and ViewModels as v1. Detail: `CHANGES.md` → *Account course hub visual Phase 1*.
+
 **Update 2026-05-24–25 (prototype coverage):** Homepage v1 shipped (`075179f`, CSS compliance `214f6b6`), cart polish shipped (`3e4748f`), order-received PHP confirmation layer shipped (`f9a7b95`, owner browser QA PASS #3801), checkout progress steps shipped (`1203858`), branded WP 404 shipped (`64f2aa8`). Detail: `CHANGES.md`.
 
 ---
@@ -39,7 +41,7 @@
 | WP 404 | Branded `404.php` + `atmo-404.css` (`64f2aa8`); `is_404()` enqueue only — see `CHANGES.md` 2026-05-25 |
 | Woo My Account | Auth, dashboard, orders, view-order, settings, hidden endpoints — shell/wiring done |
 | **`/my-account/my-courses/`** | Woo endpoint **`my-courses`** · adapter `get_enrolled_courses()` · empty + enrolled list · dashboard «Следующий шаг» wired |
-| **`/my-account/my-courses/?course_id={id}`** | **Account course hub v1** (`81c3a7d`) — enrolled overview + lesson outline in account shell; denial when no access |
+| **`/my-account/my-courses/?course_id={id}`** | **Account course hub v1 + visual Phase 1** (`81c3a7d`, `b1d21b5`) — enrolled overview + lesson outline in account shell; denial when no access |
 
 **By design (not bugs):** no course list/progress widgets on dashboard (CTAs only); no fake progress bars; `/courses/` stays public LD archive (not enrolled-only).
 
@@ -55,6 +57,7 @@
 | **`a352081`** | LMS adapter MVP — read-only Woo+LD `get_enrolled_courses()`, enrolled list UI, mapping/expiry rules, no fake 0% |
 | **`648e562`** | Dashboard CTA wiring — «Следующий шаг» + courses panel → adapter / `/my-account/my-courses/` |
 | **`81c3a7d`** | Account course hub v1 — `?course_id=` on existing endpoint; `.atmo-course-hub` in account shell; lesson outline via read-only LD API |
+| **`b1d21b5`** | Hub visual Phase 1 — hero band, continue card, progress strip, outline anchor/current lesson |
 
 ### Lesson chrome + H1 prefix (2026-05-23–24)
 

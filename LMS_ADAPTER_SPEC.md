@@ -1,6 +1,6 @@
 # LMS Adapter Spec v0
 
-> **Status:** route live (adapter MVP) · **account course hub v1 done (`81c3a7d`)** · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **updated 2026-05-25**
+> **Status:** route live (adapter MVP) · **account course hub v1 done (`81c3a7d`)** · **hub visual Phase 1 done (`b1d21b5`)** · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **updated 2026-05-25**
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
@@ -10,7 +10,7 @@
 
 Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo backends so enrolled courses, progress, and access can ship without LearnDash HTML coupling or premature `atmo-lms-lite` dependency.
 
-**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**; dashboard «Следующий шаг» CTA wiring **shipped (`648e562` 2026-05-22)**; account-shelled enrolled course hub v1 **shipped (`81c3a7d` 2026-05-23)**; LD lesson chrome v1/v2 **shipped (`ed7afcf`, `1e08a3d`, hardened `897409c`)**; lesson H1 number prefix **shipped (`caaaa96` 2026-05-24)** via child lesson chrome title filter — no LD template overrides.
+**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**; dashboard «Следующий шаг» CTA wiring **shipped (`648e562` 2026-05-22)**; account-shelled enrolled course hub v1 **shipped (`81c3a7d` 2026-05-23)**; hub visual Phase 1 **shipped (`b1d21b5` 2026-05-25)**; LD lesson chrome v1/v2 **shipped (`ed7afcf`, `1e08a3d`, hardened `897409c`)**; lesson H1 number prefix **shipped (`caaaa96` 2026-05-24)** via child lesson chrome title filter — no LD template overrides.
 
 ---
 
@@ -20,7 +20,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 |-------|------|--------|
 | `/courses/` | LearnDash **public CPT archive** — nav label **«Программы»** | **Live** (stable public archive) — **not** enrolled UI |
 | **`/my-account/my-courses/`** | **«Мои курсы»** — enrolled list (MVP) | **Live (adapter MVP)** — `get_enrolled_courses()` list UI — `a352081` |
-| **`/my-account/my-courses/?course_id={id}`** | **Account course hub v1** — enrolled overview + lesson outline | **Live** — existing endpoint + query arg; no new rewrite — `81c3a7d` |
+| **`/my-account/my-courses/?course_id={id}`** | **Account course hub v1 + visual Phase 1** — enrolled overview + lesson outline | **Live** — existing endpoint + query arg; no new rewrite — `81c3a7d`, `b1d21b5` |
 | `/lessons/{slug}/` | LearnDash lesson body | **Live (LD template)** — continue CTA from hub/list still lands here |
 
 ### Decision (2026-05-22): enrolled route = **`/my-account/my-courses/`**
@@ -474,6 +474,19 @@ Before any enrolled UI or route implementation:
 | Local QA | **PASS** — r4t5 / atmo-qa-empty / public route regression — `CHANGES.md` |
 
 **Rollback:** `git revert 81c3a7d` — enrolled list adapter (`a352081`) + endpoint (`ecfd8f5`) remain; **no permalink flush**.
+
+### 11.0e Account course hub visual Phase 1 shipped (`b1d21b5` 2026-05-25)
+
+| Item | Status |
+|------|--------|
+| Scope | Visual only — same hub URL and ViewModel data as v1 (`81c3a7d`) |
+| Files | `inc/atmo-account.php`, `assets/css/atmo-account.css` |
+| UI | Hero band, continue card, progress strip, `#atmo-course-hub-outline`, `.atmo-course-hub__outline-item--current` |
+| Continue CTA | Unchanged — **«Продолжить»** → LD lesson URL; **«К содержанию»** → in-page outline anchor |
+| Not shipped | Marketing body/video/tick-list; per-course accent; Теория/Практика grouping; `atmo-lms-lite` cutover |
+| Local QA | **PASS** — r4t5 / course 3616 / desktop + mobile — `CHANGES.md` |
+
+**Rollback:** `git revert b1d21b5` — hub v1 (`81c3a7d`) remains functional; **no permalink flush**.
 
 ---
 

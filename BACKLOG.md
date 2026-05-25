@@ -56,6 +56,13 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Logged-out crawl **18** course pages from `/courses/` — **0** remaining `local.local` in course HTML — see `CHANGES.md`
 - Snippet **#5** (inactive) still has broken redirect URL in source — not part of this fix
 
+### LMS account course hub visual Phase 1 (2026-05-25)
+
+- Account hub visual polish on existing **`/my-account/my-courses/?course_id={id}`** — child theme **`b1d21b5`**
+- Hero band, continue card, progress strip, outline anchor/current lesson — **`inc/atmo-account.php`** + **`assets/css/atmo-account.css`** only
+- No backend/cutover; no `atmo-lms-lite`; marketing body/video/tick-list/per-course accent/grouped outline **not** implemented
+- Owner QA PASS — r4t5 / course 3616 / desktop + mobile — see `CHANGES.md`
+
 ### LMS account course hub v1 (2026-05-23)
 
 - Account enrolled course hub on existing **`/my-account/my-courses/?course_id={id}`** — child theme **`81c3a7d`**
@@ -108,10 +115,9 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 | Priority | Item | Notes |
 |----------|------|-------|
 | P1 | **Static missing routes (paused)** | Footer links `/trainer/`, `/terms/`, `/privacy/` — **content not approved**; routes still 404 (branded `404.php` shell). WP pages + templates deferred until copy sign-off. |
-| P2 | **Course hub visual port** | `product-enrolled.html` visual layer remains partial; hub v1 functionally live on `/my-account/my-courses/?course_id=`. |
 | P2 | **Lesson diary/content polish** | `lesson.html` chrome shipped; diary/reflection plugin blocks still need scoped visual pass if product wants it. |
 
-Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover.
+Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping).
 
 ---
 
@@ -150,7 +156,7 @@ Deferred / product decision: homepage Social testimonials, full PDP hero redesig
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
 
-**Next LMS work only when product-scoped:** explicit `atmo-lms-lite` API/cutover contract, course hub visual port, or lesson diary/content polish. Do not treat LearnDash template overrides as the default path.
+**Next LMS work only when product-scoped:** explicit `atmo-lms-lite` API/cutover contract or lesson diary/content polish. Do not treat LearnDash template overrides as the default path.
 
 ### Current routes (reference)
 
@@ -158,7 +164,7 @@ Deferred / product decision: homepage Social testimonials, full PDP hero redesig
 |-------|------|
 | `/courses/` | LearnDash **public CPT archive** — nav **«Программы»** (header/footer); **18** cards; not enrolled-only |
 | `/my-account/my-courses/` | Enrolled list — adapter `get_enrolled_courses()` — `a352081` |
-| `/my-account/my-courses/?course_id={id}` | **Account hub v1** — enrolled overview + lesson outline — `81c3a7d` |
+| `/my-account/my-courses/?course_id={id}` | **Account hub v1 + visual Phase 1** — enrolled overview + lesson outline — `81c3a7d` · hero/continue/progress/outline current — `b1d21b5` |
 | `/lessons/{slug}/` | LearnDash lesson body — **«Продолжить»** from hub/list lands here |
 
 Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_page()` only · `atmo-lms-lite` active on Local (future replacement; **bridge only** — no theme UI dependency; Local tables empty).

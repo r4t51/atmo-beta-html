@@ -67,7 +67,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - Menu filter: Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
   - **«Программы»** → `/courses/` in **header/footer only** (removed from account sidebar in `ecfd8f5`)
   - **`/my-account/my-courses/`:** adapter-backed enrolled list **`.atmo-my-courses`** — `get_enrolled_courses()` — **`a352081`**; endpoint shell **`ecfd8f5`**
-  - **`/my-account/my-courses/?course_id={id}`:** account course hub v1 **`.atmo-course-hub`** — **`81c3a7d`**; no new rewrite; one-time permalink flush **not** required for hub
+  - **`/my-account/my-courses/?course_id={id}`:** account course hub **`.atmo-course-hub`** — v1 **`81c3a7d`** · visual Phase 1 **`b1d21b5`** (hero, continue card, progress strip, outline anchor/current); no new rewrite; one-time permalink flush **not** required for hub
   - Hidden from nav, direct URL only: `downloads`, `edit-address` (+ billing/shipping), `payment-methods`
   - **`/my-account/edit-address/billing/`:** billing fieldset from **Checkout Field Editor** `wc_fields_billing` (plugin filters on `edit-address`); subset by config — address/state/phone disabled/hidden; index cards still show saved user meta; **closed as config decision 2026-05-24** — not child-theme CSS/filters
   - Styled passes: auth (`353346c`), shell (`3122f4f`), dashboard static shell (`534b241`), dashboard CTA wiring (`648e562`), orders (`3704226`), view-order access-type meta (`2da518f`), settings (`d1748dc`), hidden endpoints (`3135ddb`), mobile orders actions overflow (`fcca2e5`)
@@ -127,7 +127,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 | Hidden account URLs | `/my-account/downloads/`, `/edit-address/`, `/payment-methods/` (reachable, not in nav) |
 | `/courses/` from account nav | External LearnDash **public archive**; label **«Программы»** — not enrolled UI |
 | **`/my-account/my-courses/`** | **Live (adapter MVP)** — `get_enrolled_courses()` enrolled list — **`a352081`**; shell **`ecfd8f5`** — `LMS_ADAPTER_SPEC.md` §11 |
-| **`/my-account/my-courses/?course_id={id}`** | **Live (hub v1)** — account-shelled enrolled course hub — **`81c3a7d`**; `/courses/` and `/lessons/` unchanged |
+| **`/my-account/my-courses/?course_id={id}`** | **Live (hub v1 + visual Phase 1)** — account-shelled enrolled course hub — **`81c3a7d`**, **`b1d21b5`**; `/courses/` and `/lessons/` unchanged |
 
 Активные WC-расширения, которые важно учитывать:
 
@@ -144,7 +144,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 Текущий runtime для course/lesson UI: LearnDash.  
 `atmo-lms-lite` **active** on Local, in development — **future** runtime replacement; **not** a current theme UI source (Local `wp_atmo_lms_enrollments` / `wp_atmo_lms_access_rules` empty; no front-end assets on course routes). Bridge stays LearnDash-backed ViewModels until cutover readiness.
 
-**Route reality (2026-05-23–24):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/`. **«Мои курсы»** → **`/my-account/my-courses/`** — enrolled list (`a352081`). **Account hub v1** → **`/my-account/my-courses/?course_id={id}`** (`81c3a7d`). **`/lessons/`** remains LD lesson route — continue CTAs from hub/list land there. **Lesson H1 number prefix** — child-theme title filter **`caaaa96`** (Kadence entry H1 only; hub outline order; not LD template override).
+**Route reality (2026-05-23–25):** `/courses/` = LearnDash **public CPT archive** (18 cards). **«Программы»** → `/courses/`. **«Мои курсы»** → **`/my-account/my-courses/`** — enrolled list (`a352081`). **Account hub** → **`/my-account/my-courses/?course_id={id}`** (v1 `81c3a7d`, visual Phase 1 `b1d21b5`). **`/lessons/`** remains LD lesson route — continue CTAs from hub/list land there. **Lesson H1 number prefix** — child-theme title filter **`caaaa96`** (Kadence entry H1 only; hub outline order; not LD template override).
 
 **Public course URL hygiene (2026-05-23):** LearnDash Closed **`custom_button_url`** (`#btn-join`) + one course body link had host typo `atmoredesign.local.local` — fixed via WP Admin course settings/content; logged-out crawl **18** course pages, **0** `local.local` on course HTML — `CHANGES.md`. Snippet **#5** (inactive) redirect URL unchanged.
 
@@ -182,7 +182,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
 
-Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**; account course hub v1 **shipped `81c3a7d` 2026-05-23**; lesson chrome v1/v2 **shipped `ed7afcf` / `1e08a3d`**, hardened in **`897409c`**; lesson H1 number prefix **shipped `caaaa96` 2026-05-24** (title filter, not template override). ViewModel contract **signed off 2026-05-22** (§4.7). **Do not add LearnDash template overrides without explicit scoped plan.**
+Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**; account course hub v1 **shipped `81c3a7d` 2026-05-23**; hub visual Phase 1 **shipped `b1d21b5` 2026-05-25**; lesson chrome v1/v2 **shipped `ed7afcf` / `1e08a3d`**, hardened in **`897409c`**; lesson H1 number prefix **shipped `caaaa96` 2026-05-24** (title filter, not template override). ViewModel contract **signed off 2026-05-22** (§4.7). **Do not add LearnDash template overrides without explicit scoped plan.**
 
 ## Custom ATMO Plugins
 
