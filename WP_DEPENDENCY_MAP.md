@@ -34,7 +34,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 |---|---|
 | Parent theme | `wp-content/themes/kadence/` |
 | Child theme | `wp-content/themes/kadence-child/` |
-| Child files | `style.css`, `functions.php`, `assets/css/atmo-base.css`, `assets/css/atmo-header.css`, `assets/js/atmo-header.js`, `inc/atmo-header.php`, `assets/css/atmo-footer.css`, `inc/atmo-footer.php`, `assets/css/atmo-catalog.css`, `inc/atmo-catalog.php`, `woocommerce/content-product.php`, `assets/css/atmo-product.css`, `inc/atmo-product.php`, `woocommerce/content-single-product.php`, `assets/css/atmo-cart.css`, `assets/css/atmo-checkout.css`, `assets/css/atmo-confirmation.css`, `assets/css/atmo-account.css`, `inc/atmo-account.php` |
+| Child files | `style.css`, `functions.php`, `assets/css/atmo-base.css`, `assets/css/atmo-header.css`, `assets/js/atmo-header.js`, `inc/atmo-header.php`, `assets/css/atmo-footer.css`, `inc/atmo-footer.php`, `assets/css/atmo-catalog.css`, `inc/atmo-catalog.php`, `woocommerce/content-product.php`, `assets/css/atmo-product.css`, `inc/atmo-product.php`, `woocommerce/content-single-product.php`, `assets/css/atmo-cart.css`, `inc/atmo-cart.php`, `assets/css/atmo-checkout.css`, `assets/css/atmo-confirmation.css`, `inc/atmo-confirmation.php`, `assets/css/atmo-account.css`, `inc/atmo-account.php` |
 | Header ID | `#masthead` (Kadence, скрыт CSS `body.atmo-header-active`) |
 | Footer ID | `#colophon` (Kadence, скрыт CSS `body.atmo-footer-active`) |
 
@@ -117,7 +117,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 | Cart URL | `/cart-2/`, нестандартный slug; shell `atmo-cart.css` + `atmo-catalog.css` (cross-sells); cart-fixture QA PASS 2026-05-22 (1× variation **3628**) |
 | Checkout | `/checkout/` — **200** + full form when cart has items; empty cart may redirect to `/cart-2/` (Woo default; not re-tested 2026-05-22). Shell `atmo-checkout.css` (excludes order-received). Cart-fixture QA PASS 2026-05-22 — `#payment` / gateways visible; theme does not hide payment UI |
 | Payment failed | `/payment-failed/` → **200** static page (WP **#3807**, slug `payment-failed`; child commit `c9ac2b1`); shell `atmo-payment-failed.css`; separate from Woo `order-received` failed flow (`atmo-confirmation.css`) |
-| Order received | `/checkout/order-received/` → `atmo-confirmation.css` only; excludes `atmo-checkout.css` |
+| Order received | `/checkout/order-received/` → `inc/atmo-confirmation.php` (PHP layer, `f9a7b95`) + `atmo-confirmation.css` only; excludes `atmo-checkout.css`; layer renders on valid key + `completed` when full order DOM available (logged-in owner) |
 | HPOS | таблицы созданы, custom order storage отключён |
 | Orders storage | legacy `wp_posts` / `wp_postmeta` |
 | Bridge | LearnDash WooCommerce bridge продаёт курсы через WC |

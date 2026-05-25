@@ -10,6 +10,19 @@
 
 ---
 
+## 2026-05-25 — Order received confirmation layer `f9a7b95` — logged-in visual QA (partial)
+
+- **Scope:** docs + read-only QA only; child theme unchanged during this task
+- **Child theme commit:** `f9a7b95` — `Add ATMO order received confirmation layer` (`inc/atmo-confirmation.php`, `functions.php`, `assets/css/atmo-confirmation.css`)
+- **Fixture:** order **#3801** (`wc-completed`), key `wc_order_inQFcSUpkLmE4`, owner user **679** / login `atmo-admin` / display `r4t5`; line variation **3628** → LD course **3616** «Живот и Тазовое дно»; hub CTA `/my-account/my-courses/?course_id=3616`
+- **Server-side owner simulation (Codex, pre-browser):** PASS — valid key + `completed` gate; layer HTML; course card; hub CTA «Открыть курс»; no `/lessons/` in card href
+- **Browser visual QA (Cursor, 2026-05-25):** **BLOCKED** — no logged-in order-owner session in automation; fixture cookies `C:\tmp\atmo-handoff\r4t5*.cookies` expired (test cookie only); guest view shows Woo login gate, **no** `.atmo-confirmation-layer`
+- **Negative guards (read-only, 1440×900 + 390×844 spot checks):** PASS — `/checkout/order-received/999/` no layer · `/checkout/` no layer · `/payment-failed/` no layer + static «Не удалось провести платёж.» page intact · no horizontal overflow on tested URLs
+- **Open gap:** re-run logged-in owner browser QA at **1440×900** and **390×844** on `/checkout/order-received/3801/?key=wc_order_inQFcSUpkLmE4` when WP admin-bar session or valid owner cookies available
+- **No payment / order / submit actions clicked**
+
+---
+
 ## 2026-05-24 — Cart page polish: remove link, eyebrow, trust bullets, coupon centering
 
 - **Child theme commit:** `3e4748f`
