@@ -120,6 +120,12 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - One file: `inc/atmo-catalog.php`; 18/18 redesign products have meta locally; 7 card titles differ from `post_title`
 - QA PASS — see `CHANGES.md`
 
+### Legacy `/catalog/` redirect (2026-05-25)
+
+- Child theme **`a0ec00b`** — `inc/atmo-catalog.php` only
+- **301** redirect `/catalog/` and `/catalog` → live `/каталог/`; query string preserved; product/category/tag routes unchanged
+- HTTP QA PASS — see `CHANGES.md`; Kadence `#colophon` footer bleed audit claim **not visually confirmed** (hidden via CSS)
+
 ---
 
 ## 0. Prototype coverage — current next work

@@ -4,7 +4,28 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **legacy `/catalog/` redirect shipped (`a0ec00b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+
+---
+
+## 2026-05-25 — Legacy `/catalog/` redirect `a0ec00b`
+
+- **Child theme commit:** `a0ec00b` — `Redirect legacy catalog slug`
+- **File:** `inc/atmo-catalog.php` only (+38 lines)
+- **Scope:** narrow IA polish — legacy Latin catalog slug redirect; no permalink flush; no Woo shop page or permalink setting changes; no header/footer link edits; no `flush_rewrite_rules()`
+- **Behavior:** `template_redirect` → `atmo_redirect_legacy_catalog_slug()` (priority 0)
+  - `/catalog/` and `/catalog` → **301** to live `/каталог/`
+  - Query string preserved (e.g. `/catalog/?filter_goal=mobility` → `/каталог/?filter_goal=mobility`)
+  - Does **not** redirect `/каталог/`, product, category, or tag URLs
+- **QA PASS** (HTTP read-only):
+  - `/catalog/` → `301 Location: /каталог/`
+  - `/catalog/?filter_goal=mobility` → `301 Location: /каталог/?filter_goal=mobility`
+  - `/catalog` → `301 Location: /каталог/`
+  - `/каталог/` → **200**; `/` → **200**; `/courses/` → **200**; `/product/express_minibands/` → **200**
+  - No PHP fatal/error text on checked pages
+- **Technical:** PHP lint PASS on `inc/atmo-catalog.php` (Local PHP 8.2.29)
+- **Footer verification (same audit pass, read-only):** prior claim that Kadence `#colophon` visibly appears under ATMO footer **not confirmed** — `footer#colophon.site-footer` in DOM with computed `display: none`, `offsetHeight: 0` on `/`, `/каталог/`, `/courses/`, PDP; `.atmo-site-footer` is the visible footer; **no footer change in this commit**
+- **Still open:** `/trainer/`, `/terms/`, `/privacy/` paused pending content/legal copy; plugin enqueue deploy path (outside git); `atmo-lms-lite` cutover deferred; legacy inline `.app-card` HTML in lesson post_content — `BACKLOG.md` §0
 
 ---
 

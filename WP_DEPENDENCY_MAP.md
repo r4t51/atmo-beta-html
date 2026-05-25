@@ -49,7 +49,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 - Kadence `#colophon` скрыт CSS-правилом `body.atmo-footer-active #colophon { display: none !important; }`;
 - Preview shell: CSS скрывает `.atmo-site-header` и `.atmo-site-footer` когда активен `body.atmo-preview-shell-enabled`;
 - ✅ Каталог MVP: `woocommerce/content-product.php` override рендерит `.atmo-product-card` внутри стандартной WC `ul.products li.product` разметки;
-  - `inc/atmo-catalog.php`: `atmo_build_course_card()` ViewModel без LD coupling; card `title` from `_atmo_display_title` fallback to Woo name (**`4993bd9`**);
+  - `inc/atmo-catalog.php`: `atmo_build_course_card()` ViewModel без LD coupling; card `title` from `_atmo_display_title` fallback to Woo name (**`4993bd9`**); legacy **`/catalog/` → `/каталог/`** 301 redirect (**`a0ec00b`**, query string preserved);
   - `assets/css/atmo-catalog.css`: грузится на is_shop/is_product_category/is_product_tag/is_product (для related products);
   - Snippet ID 10 (`.custom-main-price` + `.euro-hint`) учтён в CSS;
   - `pa_goal` / goal attribute on Local; 18 redesign products assigned; goal chips + server-side `filter_goal` (`CHANGES.md` 2026-05-20; re-QA PASS 2026-05-22). Chip URLs preserve current archive base on shop/category/tag (**`7b163be`** 2026-05-24); tag code path exists but no local product-tag fixture. `atmo-catalog-filters.js` absent / not enqueued.
