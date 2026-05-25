@@ -223,7 +223,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 
 ## Frontend Assets Risks
 
-На типовой странице грузятся Kadence, WooCommerce, LearnDash и child theme CSS (base, header, footer, page-specific). Preview mu-plugin **не** грузится без `?atmo_preview_shell=1` (opt-in only). **Local 2026-05-25:** plugin global asset bleed (R3) fixed in runtime PHP — reflection/diary CSS/JS no longer load site-wide; fix **not in git** until patch/plugin repo deploy.
+На типовой странице грузятся Kadence, WooCommerce, LearnDash и child theme CSS (base, header, footer, page-specific). Preview mu-plugin **не** грузится без `?atmo_preview_shell=1` (opt-in only). **Local 2026-05-25:** plugin global asset bleed (R3) fixed in runtime PHP — reflection/diary CSS/JS no longer load site-wide; fix **not in git** until patch/plugin repo deploy. **Child theme `9d8c49e`:** LearnDash/Kadence CSS dequeued on non-LD routes (10 handles); `learndash-admin-bar` retained for logged-in users; LD lesson/course archives unchanged; LD **JS** not touched.
 
 Основные риски:
 
@@ -232,6 +232,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 | R1 | Зависимость от Kadence parent hooks/CSS | Средний |
 | R2 | Code Snippets не в VCS | Высокий |
 | R3 | ~~Plugin global asset bleed~~ — **fixed locally 2026-05-25** (`atmo-reflection-forms` + `ldtd.css` conditional enqueue); **residual: deploy risk** — outside git, apply `C:\tmp\atmo-handoff\plugin-enqueue-tightening-*.patch` or tracked plugin repo | Низкий (deploy) |
+| R3b | ~~LearnDash CSS site-wide bleed~~ — **fixed child theme `9d8c49e` 2026-05-25** — conditional dequeue on non-LD routes; **`learndash-admin-bar`** kept when logged in; **residual:** handle re-audit after LearnDash/Kadence updates; LD **JS** bleed still open | Низкий |
 | R4 | нестандартный cart URL `/cart-2/` | Средний |
 | R5 | checkout empty-cart redirect vs full form — state-dependent (expected Woo); not a global 302 | Низкий |
 | R6 | LearnDash -> atmo-lms-lite migration | Средний/высокий |

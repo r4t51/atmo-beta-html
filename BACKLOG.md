@@ -126,6 +126,15 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - **301** redirect `/catalog/` and `/catalog` → live `/каталог/`; query string preserved; product/category/tag routes unchanged
 - HTTP QA PASS — see `CHANGES.md`; Kadence `#colophon` footer bleed audit claim **not visually confirmed** (hidden via CSS)
 
+### LearnDash CSS dequeue on non-LD routes (2026-05-25)
+
+- Child theme **`9d8c49e`** — `functions.php` only
+- **`atmo_is_learndash_context()`** + **`atmo_dequeue_ld_css_on_non_ld()`** on `wp_print_styles` priority 100
+- Dequeues **10** LD/Kadence CSS handles off non-LD routes; **`learndash-admin-bar`** kept for logged-in users only
+- Does **not** touch LD JS or custom plugin assets (`atmo-reflection-forms`, `ldtd`, photos JS)
+- Guest + logged-in owner QA PASS — see `CHANGES.md`; closes deferred LearnDash global CSS bleed from `9d33b8a`
+- **Residual:** LD **JS** bleed separate; handle list may need re-audit after LearnDash/Kadence updates
+
 ---
 
 ## 0. Prototype coverage — current next work
@@ -267,4 +276,4 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-*Last synced: 2026-05-25 (UI polish batch `9d33b8a` — nav active states, footer IA, catalog ordering; plugin enqueue tightening; order-received QA PASS)*
+*Last synced: 2026-05-25 (LearnDash CSS dequeue `9d8c49e`; UI polish batch `9d33b8a`; plugin enqueue tightening; order-received QA PASS)*

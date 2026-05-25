@@ -4,7 +4,32 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **legacy `/catalog/` redirect shipped (`a0ec00b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; **UI polish batch shipped (`9d33b8a`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **legacy `/catalog/` redirect shipped (`a0ec00b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; **LearnDash CSS dequeue on non-LD routes shipped (`9d8c49e`)**; **UI polish batch shipped (`9d33b8a`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+
+---
+
+## 2026-05-25 — LearnDash CSS dequeue on non-LD routes `9d8c49e`
+
+- **Child theme commit:** `9d8c49e` — `Dequeue LearnDash CSS off non-LD routes`
+- **File:** `functions.php` only (+34 lines)
+- **Scope:** performance/UI cleanup — conditional dequeue of LearnDash/Kadence CSS on non-LD routes; no JS changes; no plugin edits; no LD template overrides; no custom plugin asset logic touched
+- **Behavior:**
+  - **`atmo_is_learndash_context()`** — true on `is_post_type_archive('sfwd-courses')` and `is_singular(['sfwd-courses', 'sfwd-lessons', 'sfwd-topic', 'sfwd-quiz'])`
+  - **`atmo_dequeue_ld_css_on_non_ld()`** — hooked `wp_print_styles` priority **100**
+  - On **non-LD** routes, dequeues **10** CSS handles:
+    - `learndash_quiz_front_css`, `learndash`, `jquery-dropdown-css`, `learndash_lesson_video`
+    - `learndash-course-grid-skin-grid`, `learndash-course-grid-pagination`, `learndash-course-grid-filter`, `learndash-course-grid-card-grid-1`
+    - `learndash-front`, `kadence-learndash`
+  - **`learndash-admin-bar`** — dequeued **only for guests**; retained for logged-in users (WP admin bar styling)
+  - Does **not** dequeue LearnDash JS; does **not** affect `atmo-reflection-forms`, `ldtd.css`, or `ldtd-progress-photos.js` scoping (separate plugin enqueue fix)
+- **QA PASS** (guest HTTP + logged-in owner Cursor IDE browser, user **r4t5**):
+  - **Guest / non-LD:** `/`, `/каталог/`, `/catalog/`, PDP, `/cart-2/`, `/checkout/` final `/cart-2/`, `/payment-failed/`, guest `/my-account/` — **0** LD CSS handles; no PHP fatal
+  - **LD guest:** `/courses/` — **12** LD CSS handles preserved; `/courses/abdominal_pelvicfloormuscles/` — **13** (incl. `learndash-course-reviews`, `learndash-ld30-modern`); guest `/lessons/01-2/` final LD course single — **13** preserved
+  - **Logged-in non-LD:** `/my-account/`, `/my-account/my-courses/`, hub `?course_id=3616` — 10 dequeue targets absent; **`learndash-admin-bar`** present (`sfwd-lms/.../admin-bar/styles.css` on LD 5.x); account/hub UI OK; hub mobile **390×844** no horizontal overflow
+  - **Logged-in LD lessons:** `/lessons/01-2/` — LD CSS preserved + `ldtd.css` + `#ldtd`; reflection absent; lesson **3700** — reflection CSS/JS + `.atmo-rf-wrap`; lesson **3725** — `ldtd.css` + `ldtd-progress-photos.js` + photos block; lesson **3708** — reflection + `ldtd.css` + compare block (photos JS present — page has photos shortcode); `/lessons/план-программы/` — no plugin assets; LD CSS preserved; no PHP fatal / enqueue-related console errors; mobile overflow checks PASS where practical
+  - **`git diff --check`** PASS; IDE lints PASS
+- **Closes:** deferred item from UI polish batch `9d33b8a` — LearnDash global CSS bleed on non-LD pages
+- **Still open / follow-up:** LearnDash **JS** site-wide bleed not touched (separate task); future LearnDash/Kadence updates may require handle re-audit; outside-git plugin enqueue deploy path unchanged — see entry below
 
 ---
 
