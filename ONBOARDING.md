@@ -161,10 +161,10 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
 - Google Fonts подключены в child theme.
 - ✅ Header перенесён: `inc/atmo-header.php` (хук `kadence_before_header`), `assets/css/atmo-header.css`, `assets/js/atmo-header.js`.
   - Sticky nav: brand, 4 ссылки (Главная / Каталог / Программы / Кабинет), корзина `/cart-2/`, burger + drawer.
-  - Active state: `is_front_page()`, `is_shop()`, `sfwd-*`, `is_account_page()`.
+  - Active state: `is_front_page()` → Главная; `is_shop()` + `is_product()` + `is_product_category()` + `is_product_tag()` → Каталог; `is_post_type_archive('sfwd-courses')` + `is_singular('sfwd-*')` → Программы; `is_account_page()` → Кабинет.
   - Drawer: overlay + Escape + ✕ закрывают.
 - ✅ Footer перенесён: `inc/atmo-footer.php` (хук `kadence_before_footer`), `assets/css/atmo-footer.css`.
-  - 4-колоночный grid: бренд + лид, Программы, Кабинет, Студия.
+  - 4-колоночный grid: бренд + лид, **Обучение** (col-title; links: Каталог + Программы), Кабинет, Студия.
   - Правовые ссылки: `/terms/`, `/privacy/`. Год динамический через `date('Y')`.
   - Kadence `#colophon` скрыт CSS: `body.atmo-footer-active #colophon { display: none !important }`.
   - В preview-режиме child footer скрыт CSS: `body.atmo-preview-shell-enabled .atmo-site-footer { display: none !important }`.
@@ -177,6 +177,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - Карточки `.atmo-product-card` внутри стандартной WC-разметки `ul.products li.product`.
   - CSS грузится на `is_shop()` / `is_product_category()` / `is_product_tag()` / `is_product()` (для related products на single product).
   - Snippet ID 10 (`.custom-main-price` + `.euro-hint`) учтён в CSS.
+  - `.woocommerce-ordering select` стилизован под ATMO tokens (pill border-radius, `--atmo-ink`, `--atmo-bg-card`, SVG chevron) — mobile: `width: 100%`.
   - Goal chips + server-side `filter_goal` on shop/category/tag archives (`pa_goal` on Local; 18 redesign products assigned). Taxonomy-aware chip URLs **`7b163be`** 2026-05-24 — chips stay on current archive base. Details: `CHANGES.md` → `2026-05-20 — pa_goal + goal chips`, `Server-side goal filter`, `2026-05-24 — Catalog taxonomy-aware goal chip URLs`.
 - ✅ Страница продукта — MVP: `woocommerce/content-single-product.php` override + `inc/atmo-product.php` + `assets/css/atmo-product.css`.
   - `atmo_build_product_page()` ViewModel: id, title (`_atmo_display_title` fallback), permalink, thumbnail_url, price_html, is_on_sale, short_description_html, categories.
