@@ -190,7 +190,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - LearnDash / enrolled / access state НЕ включены.
   - CSS: `atmo-product.css` on `is_product()`; `atmo-catalog.css` on PDP for related cards only.
 - ✅ Корзина — shell: `assets/css/atmo-cart.css` (+ `atmo-catalog.css` для cross-sells); re-QA PASS 2026-05-22 — `CHANGES.md`.
-- ✅ Checkout — shell: `assets/css/atmo-checkout.css`; cart-fixture QA PASS 2026-05-22 — BLIK/Klarna visible, payment UI not hidden — `CHANGES.md`.
+- ✅ Checkout — shell: `assets/css/atmo-checkout.css` + progress steps `1203858` (`inc/atmo-checkout.php`); cart-fixture QA PASS 2026-05-22 — BLIK/Klarna visible, payment UI not hidden; steps QA PASS 2026-05-25 — `CHANGES.md`.
 - ✅ Order received — `inc/atmo-confirmation.php` + `assets/css/atmo-confirmation.css` (`f9a7b95`).
   - Renders ATMO layer only for valid key + `completed` order when Woo full order flow is available.
   - Course card CTA targets account hub (`/my-account/my-courses/?course_id=...`), not direct `/lessons/`.
@@ -237,7 +237,7 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Prototype coverage** — checkout steps, static `/trainer/` + `/terms/` + `/privacy/`, WP 404, course hub/lesson visual polish.
+1. **Prototype coverage** — static `/trainer/` + `/terms/` + `/privacy/`, WP 404, course hub/lesson visual polish.
 2. **Optional polish / product-scoped** — full PDP hero redesign (cosmetic), homepage Social testimonials when CMS/source exists.
 3. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24).
 4. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist.

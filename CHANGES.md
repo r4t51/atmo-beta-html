@@ -4,7 +4,22 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+
+---
+
+## 2026-05-25 — Checkout progress steps `1203858`
+
+- **Child theme commit:** `1203858` — `Add checkout progress steps`
+- **Files:** `inc/atmo-checkout.php` (new), `functions.php`, `assets/css/atmo-checkout.css`
+- **Scope:** checkout-only ATMO steps bar on `/checkout/` via `woocommerce_before_checkout_form` (priority 5); labels **Корзина / Оформление / Готово**; active step **Оформление** with `aria-current="step"`; cart step links to `wc_get_cart_url()`; no checkout field/gateway/order-review/payment logic changes
+- **QA PASS** (Cursor + Codex, read-only) — `/checkout/` desktop **1440×900** + mobile **390×844**:
+  - `.atmo-checkout-steps` visible above checkout form
+  - `#payment` and `#place_order` visible; **`#place_order` not clicked**; **no order created**
+  - No horizontal overflow (`scrollWidth === clientWidth`)
+  - Session cart fixture variation **3628** (qty 1) used only to render checkout; no DB/WP Admin/plugin/snippet changes
+- **Negative guards:** no checkout steps on `/cart-2/` · no `.atmo-checkout-steps` on order-received (`f9a7b95` confirmation layer unchanged) · no leak on `/payment-failed/`
+- **PHP lint + `git diff --check`:** PASS
 
 ---
 
