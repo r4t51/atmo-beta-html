@@ -4,7 +4,27 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **legacy `/catalog/` redirect shipped (`a0ec00b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **legacy `/catalog/` redirect shipped (`a0ec00b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; **UI polish batch shipped (`9d33b8a`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+
+---
+
+## 2026-05-25 — Header active states + footer IA + catalog ordering `9d33b8a`
+
+- **Child theme commit:** `9d33b8a` — `Polish header active states and catalog ordering`
+- **Files:** `inc/atmo-header.php`, `inc/atmo-footer.php`, `assets/css/atmo-catalog.css` (50 insertions, 2 deletions)
+- **Scope:** UI polish — nav active state corrections, footer column IA label, catalog ordering select ATMO styling; no DB / WP Admin / plugin / permalink changes
+- **Behavior:**
+  - **Header active — `catalog`:** added `is_product()`, `is_product_category()`, `is_product_tag()` guards (WC `function_exists`-guarded); PDP + product category/tag archives now activate «Каталог» nav link
+  - **Header active — `courses`:** replaced `is_page('courses')` (wrong: CPT archive is not a WP page) with `is_post_type_archive('sfwd-courses')`; existing `is_singular('sfwd-*')` guards retained; `/courses/` archive now activates «Программы» nav link
+  - **Footer IA:** `atmo-footer-col-title` first column `Программы` → `Обучение`; links inside column unchanged (Каталог → `/каталог/`, Программы → `/courses/`)
+  - **Catalog ordering select:** `.woocommerce-ordering select` styled with ATMO pill border-radius (`999px`), tokens (`--atmo-ink`, `--atmo-bg-card`, `--atmo-line-strong`, `--atmo-font-sans`), inline SVG chevron; mobile (`≤640px`) `width: 100%` + `--atmo-r-sm`; scoped to `atmo-catalog.css` which loads on catalog/shop pages only
+- **QA PASS** (HTTP read-only, PowerShell + curl):
+  - `/` active = Главная ✅; `/каталог/` active = Каталог ✅; `/product/express_minibands/` active = Каталог ✅; `/courses/` active = Программы ✅
+  - `/cart-2/` 200 ✅; no reflection/ldtd bleed ✅; no PHP fatal/error text ✅
+  - Footer first col title = Обучение ✅; links Каталог + Программы unchanged ✅
+  - `git diff --check` PASS; PHP lint PASS (both changed `.php` files)
+- **Docs:** `ONBOARDING.md` updated — docs commit `86371a9`
+- **Still deferred:** LearnDash global CSS bleed (11 sfwd-lms files on all pages — separate higher-risk task); `/trainer/`, `/terms/`, `/privacy/` paused pending content/legal; Kadence `#masthead/#colophon` DOM removal not needed (no visible bleed); cart badge not proven as regression
 
 ---
 

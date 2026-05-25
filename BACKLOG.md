@@ -12,7 +12,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 | Area | Status |
 |------|--------|
-| Header / footer | ✅ ATMO child chrome |
+| Header / footer | ✅ ATMO child chrome + nav active state polish `9d33b8a` (PDP/category/tag → Каталог; CPT archive → Программы); footer col 1 label «Обучение» |
 | Catalog + goal chips | ✅ MVP + server-side `filter_goal` |
 | PDP | ✅ simple + variable #3614 |
 | Cart | ✅ `atmo-cart.css` + cross-sells · polish `3e4748f` (remove link, eyebrow, trust bullets, coupon centering) |
@@ -223,6 +223,7 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 |------|--------|
 | Category/tag-aware goal chip URLs | ✅ Done **`7b163be`** 2026-05-24 — chips preserve shop/category/tag archive base — see `CHANGES.md` |
 | `display_title` on catalog cards | ✅ Done **`4993bd9`** 2026-05-21 — `_atmo_display_title` in `atmo_build_course_card()` with Woo name fallback; PDP ViewModel same — see `CHANGES.md` |
+| ~~Catalog ordering select styling~~ | ✅ Done **`9d33b8a`** 2026-05-25 — `.woocommerce-ordering select` ATMO pill style (tokens, SVG chevron, mobile full-width); scoped to `atmo-catalog.css` — see `CHANGES.md` |
 
 ---
 
@@ -266,4 +267,4 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-*Last synced: 2026-05-25 (prototype coverage audit, order-received owner browser QA PASS for `f9a7b95`)*
+*Last synced: 2026-05-25 (UI polish batch `9d33b8a` — nav active states, footer IA, catalog ordering; plugin enqueue tightening; order-received QA PASS)*
