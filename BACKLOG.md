@@ -88,8 +88,15 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 - Plugin/content blocks inside LD lessons — child theme **`d37665b`**
 - **`assets/css/atmo-lesson.css`** only — diary `#ldtd`, reflection `.atmo-rf-wrap`, photos `.ldtd-photos-block`, compare `.ldtd-compare-block`; scoped `body.single-sfwd-lessons`
-- No PHP/plugin/DB changes; lesson chrome unchanged; plugin global enqueue (R3) **not** tightened
+- No PHP/plugin/DB changes in child theme; lesson chrome unchanged
 - Owner QA PASS — r4t5 / course 3616 / desktop + mobile — see `CHANGES.md`
+
+### Plugin asset enqueue tightening (2026-05-25)
+
+- **Local runtime fix (outside git)** — `atmo-reflection-forms.php` + `learndash-training-diary.php` on Local only
+- Reflection CSS/JS and `ldtd.css` now load only on logged-in `sfwd-lessons` posts with matching shortcodes; `ldtd-progress-photos.js` unchanged (already shortcode-scoped)
+- Handoff patches under `C:\tmp\atmo-handoff\` — see `CHANGES.md`; **deploy:** apply patches or copy already-fixed Local plugin PHP files; **`.bak` = rollback only**; tracked plugin repo preferred long-term — not child-theme git pull
+- Guest + owner QA PASS — r4t5 **9/9** routes — see `CHANGES.md`; R3 closed locally; **residual risk = deployment/documentation only**
 
 ### `atmo-lms-lite` bridge decision (2026-05-24)
 
@@ -123,7 +130,9 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 |----------|------|-------|
 | P1 | **Static missing routes (paused)** | Footer links `/trainer/`, `/terms/`, `/privacy/` — **content not approved**; routes still 404 (branded `404.php` shell). WP pages + templates deferred until copy sign-off. |
 
-Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping), plugin global enqueue tightening (`atmo-reflection-forms.css` / `ldtd.css` — separate plugin-side task), legacy lesson post inline HTML cleanup.
+Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping), legacy lesson post inline HTML cleanup.
+
+Deploy risk (outside git): plugin enqueue fix on Local only — apply handoff patches or copy already-fixed Local plugin PHP files; tracked plugin repo preferred long-term (`.bak` = rollback only) — `CHANGES.md` 2026-05-25.
 
 ---
 

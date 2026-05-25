@@ -188,8 +188,8 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 
 | Plugin | Статус | Важное |
 |---|---|---|
-| `atmo-reflection-forms` | active | shortcode `[atmo_reflection]`, таблица `wp_atmo_reflection_entries`, CSS/JS грузятся на всех страницах |
-| `learndash-training-diary` | active | shortcode `[training_diary]`, таблица `wp_ld_training_diary`, связан с LearnDash |
+| `atmo-reflection-forms` | active | shortcode `[atmo_reflection]`, таблица `wp_atmo_reflection_entries`; CSS/JS **Local fix 2026-05-25** — only on logged-in `sfwd-lessons` with shortcode; **outside git** — deploy via handoff patch or copy fixed Local PHP; `.bak` rollback only (`CHANGES.md`) |
+| `learndash-training-diary` | active | shortcodes `[training_diary]`, `[ldtd_progress_photos]`, `[ldtd_progress_compare]`; `ldtd.css` **Local fix 2026-05-25** — only on logged-in lessons with matching shortcodes; `ldtd-progress-photos.js` shortcode-scoped; **outside git** — same deploy path as reflection plugin |
 | `atmo-redesign-preview` | mu-plugin | temporary preview/integration layer |
 | `atmo-lms-lite` | active (in development) | future LMS replacement; **bridge only** on Local — empty tables; no theme UI dependency until explicit cutover |
 
@@ -223,7 +223,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 
 ## Frontend Assets Risks
 
-На типовой странице грузятся Kadence, WooCommerce, LearnDash, `atmo-reflection-forms` и child theme CSS (base, header, footer, page-specific). Preview mu-plugin **не** грузится без `?atmo_preview_shell=1` (opt-in only). LearnDash и reflection forms сейчас добавляют CSS/JS шире, чем нужно.
+На типовой странице грузятся Kadence, WooCommerce, LearnDash и child theme CSS (base, header, footer, page-specific). Preview mu-plugin **не** грузится без `?atmo_preview_shell=1` (opt-in only). **Local 2026-05-25:** plugin global asset bleed (R3) fixed in runtime PHP — reflection/diary CSS/JS no longer load site-wide; fix **not in git** until patch/plugin repo deploy.
 
 Основные риски:
 
@@ -231,7 +231,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 |---|---|---|
 | R1 | Зависимость от Kadence parent hooks/CSS | Средний |
 | R2 | Code Snippets не в VCS | Высокий |
-| R3 | `atmo-reflection-forms` грузит assets без условий | Средний |
+| R3 | ~~Plugin global asset bleed~~ — **fixed locally 2026-05-25** (`atmo-reflection-forms` + `ldtd.css` conditional enqueue); **residual: deploy risk** — outside git, apply `C:\tmp\atmo-handoff\plugin-enqueue-tightening-*.patch` or tracked plugin repo | Низкий (deploy) |
 | R4 | нестандартный cart URL `/cart-2/` | Средний |
 | R5 | checkout empty-cart redirect vs full form — state-dependent (expected Woo); not a global 302 | Низкий |
 | R6 | LearnDash -> atmo-lms-lite migration | Средний/высокий |
@@ -302,7 +302,7 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 **Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix + lesson plugin blocks CSS Phase 1 complete** (through `d37665b`, 2026-05-25); **order-received layer shipped** (`f9a7b95`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **variable PDP bottom CTA deferred** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration.
 
-Use `BACKLOG.md` §0 as the active next-work list: paused static routes (`/trainer/`, `/terms/`, `/privacy/`) after content sign-off. Optional later: plugin global enqueue tightening (R3). Do not expand shell CSS without a functional gap.
+Use `BACKLOG.md` §0 as the active next-work list: paused static routes (`/trainer/`, `/terms/`, `/privacy/`) after content sign-off. Plugin enqueue fix (R3) **done on Local** — ensure patch/plugin-repo deploy before staging/production. Do not expand shell CSS without a functional gap.
 
 **Do not bypass without explicit scope:**
 

@@ -4,7 +4,37 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+
+---
+
+## 2026-05-25 — Plugin asset enqueue tightening (local runtime, outside git)
+
+- **Scope:** conditional plugin asset enqueue — **runtime PHP only**; **not** in child theme git; **not** in any plugin git repo (Local plugin dirs have no `.git`)
+- **Changed files (Local filesystem only):**
+  - `wp-content/plugins/atmo-reflection-forms/atmo-reflection-forms.php` — `atmo_rf_enqueue_assets()`
+  - `wp-content/plugins/learndash-training-diary/learndash-training-diary.php` — `LD_Training_Diary::enqueue_assets()` + helper `post_has_ldtd_shortcodes()`
+- **Not changed:** `includes/class-ldtd-progress-photos.php` — `ldtd-progress-photos.js` was already enqueued only inside `[ldtd_progress_photos]` shortcode render
+- **New enqueue rules:**
+  - **`atmo-reflection-forms`** — CSS/JS only when user logged in + `is_singular('sfwd-lessons')` + post has `[atmo_reflection]`
+  - **`learndash-training-diary`** — `ldtd.css` only when user logged in + `is_singular('sfwd-lessons')` + post has one of `[training_diary]`, `[ldtd_progress_photos]`, `[ldtd_progress_compare]`
+- **Audit artifacts (handoff, not VCS):**
+  - **Deploy (canonical):** `C:\tmp\atmo-handoff\plugin-enqueue-tightening-atmo-reflection-forms.patch`, `C:\tmp\atmo-handoff\plugin-enqueue-tightening-learndash-training-diary.patch`
+  - **Rollback only (pre-change, do not deploy):** `C:\tmp\atmo-handoff\atmo-reflection-forms.php.bak`, `C:\tmp\atmo-handoff\learndash-training-diary.php.bak`
+- **Deployment:** fix is **not deploy-safe by git pull** — apply handoff patches (preferred) or copy the **already-fixed** Local plugin PHP files into the target environment; tracked plugin repo is the long-term preferred path; **`.bak` files are rollback/audit only — copying them would revert the fix**
+- **Technical:** PHP lint PASS on both changed plugin files (Local)
+- **Guest QA PASS:** `/`, `/каталог/` — no `atmo-reflection-forms.css/js`, no `ldtd.css`
+- **Owner QA PASS** (Cursor IDE browser, user **r4t5** / **679**, course **3616**) — **9/9** routes:
+  - Clean: `/`, `/каталог/`, hub `?course_id=3616`, `/checkout/` → `/cart-2/` (empty cart redirect)
+  - Diary `/lessons/01-2/` — `ldtd.css` + `#ldtd`
+  - Reflection lesson **3700** — reflection CSS/JS + `.atmo-rf-wrap`
+  - Photos lesson **3725** — `ldtd.css` + `ldtd-progress-photos.js` + photos block
+  - Compare lesson **3708** — reflection CSS/JS + `ldtd.css` + compare block; photos JS present (page also has photos shortcode)
+  - Baseline `/lessons/план-программы/` — no plugin assets
+  - Mobile **390×844** — no horizontal overflow on lesson routes; no PHP fatal/error text; no enqueue-related console errors
+  - **No** form submit/save, photo upload/delete, checkout submit, or logout clicks
+- **Pairs with:** child theme `d37665b` (scoped `atmo-lesson.css` overrides) — child CSS unchanged; R3 global bleed closed at plugin source
+- **Still open:** deploy path for outside-git plugin PHP; `atmo-lms-lite` cutover deferred; static `/trainer/`, `/terms/`, `/privacy/` paused pending approved content; legacy inline `.app-card` HTML in lesson post_content — `BACKLOG.md` §0
 
 ---
 
@@ -19,7 +49,7 @@
   - **Photos** — `.ldtd-photos-block`, `.ldtd-photos-grid` (`[ldtd_progress_photos]`)
   - **Compare** — `.ldtd-compare-block`, `.ldtd-compare-grid`, `.ldtd-compare-cell`; reflection after compare grid (`.atmo-rf-compare-grid`, before/current boxes)
 - **Tokens:** `--atmo-bg-warm`, `--atmo-bg-card`, `--atmo-line`, `--atmo-ink` / `--atmo-ink-soft`, `--atmo-primary`, `--atmo-secondary`, `--atmo-r-sm` / `--atmo-r-md`, `--atmo-font-sans`; `!important` only where plugin CSS already uses it
-- **Not changed:** lesson chrome (nav, H1 prefix, mark-complete, back-to-hub); plugin PHP; plugin global enqueue (R3)
+- **Not changed:** lesson chrome (nav, H1 prefix, mark-complete, back-to-hub); plugin PHP (enqueue tightening shipped separately same day — see entry above)
 - **Owner QA PASS** (Cursor IDE browser, user **r4t5** / **679**, course **3616**) — desktop **1440×900** + mobile **390×844**:
   - `/lessons/01-2/` diary — `#ldtd`, `#ldtd-form`, submit visible; bg token `rgb(234,235,236)`; submit `rgb(115,119,227)`
   - Reflection before (lesson **3700**) — `.atmo-rf-v112`, **10** question cards, submit visible
@@ -30,7 +60,7 @@
   - **No** mark-complete clicks; **no** diary/reflection submit; **no** photo upload/delete
   - Negative: hub `?course_id=3616`, `/`, `/каталог/` — `atmo-lesson.css` **not** loaded
 - **Technical:** `git diff --check` PASS; no `vw`, negative `letter-spacing`, or gradient backgrounds in diff
-- **Still open:** plugin global enqueue tightening (`atmo-reflection-forms.css` / `ldtd.css` site-wide — separate plugin task); `atmo-lms-lite` cutover deferred; static `/trainer/`, `/terms/`, `/privacy/` paused pending approved content; legacy inline `.app-card` HTML in lesson post_content (e.g. **3732**) not stripped — `BACKLOG.md` §0
+- **Still open:** `atmo-lms-lite` cutover deferred; static `/trainer/`, `/terms/`, `/privacy/` paused pending approved content; legacy inline `.app-card` HTML in lesson post_content (e.g. **3732**) not stripped — `BACKLOG.md` §0
 
 ---
 
