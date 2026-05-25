@@ -131,9 +131,19 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Child theme **`9d8c49e`** — `functions.php` only
 - **`atmo_is_learndash_context()`** + **`atmo_dequeue_ld_css_on_non_ld()`** on `wp_print_styles` priority 100
 - Dequeues **10** LD/Kadence CSS handles off non-LD routes; **`learndash-admin-bar`** kept for logged-in users only
-- Does **not** touch LD JS or custom plugin assets (`atmo-reflection-forms`, `ldtd`, photos JS)
+- Does **not** touch LD JS (closed **`e12bdba`**) or custom plugin assets (`atmo-reflection-forms`, `ldtd`, photos JS)
 - Guest + logged-in owner QA PASS — see `CHANGES.md`; closes deferred LearnDash global CSS bleed from `9d33b8a`
-- **Residual:** LD **JS** bleed separate; handle list may need re-audit after LearnDash/Kadence updates
+- **Residual:** handle list may need re-audit after LearnDash/Kadence updates
+
+### LearnDash JS dequeue on non-LD routes (2026-05-25)
+
+- Child theme **`e12bdba`** — `functions.php` only (+20 lines)
+- **`atmo_dequeue_ld_js_on_non_ld()`** on `wp_print_scripts` priority 100; reuses **`atmo_is_learndash_context()`**
+- Dequeues **5** LD script handles off non-LD routes: `learndash-front`, `learndash-main`, `learndash-breakpoints`, `learndash`, `learndash-course-grid-skin-grid`
+- **`wp_dequeue_script()`** only — no deregister; separate from CSS dequeue **`9d8c49e`** and outside-git plugin enqueue fix
+- Does **not** touch plugin assets (`atmo-reflection-forms`, `ldtd`, photos JS) or CSS dequeue logic
+- Guest + logged-in owner QA PASS — see `CHANGES.md`; non-LD routes: **0** target LD JS + inline LD objects absent; LD archive/course/lesson routes preserve LD JS
+- **Residual:** LearnDash/Kadence handle renames; future LD shortcodes/widgets on non-LD pages need re-audit/exception; outside-git plugin enqueue deploy risk unchanged
 
 ---
 
@@ -276,4 +286,4 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-*Last synced: 2026-05-25 (LearnDash CSS dequeue `9d8c49e`; UI polish batch `9d33b8a`; plugin enqueue tightening; order-received QA PASS)*
+*Last synced: 2026-05-25 (LearnDash JS dequeue `e12bdba`; LearnDash CSS dequeue `9d8c49e`; UI polish batch `9d33b8a`; plugin enqueue tightening; order-received QA PASS)*

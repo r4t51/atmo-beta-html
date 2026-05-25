@@ -4,7 +4,31 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **legacy `/catalog/` redirect shipped (`a0ec00b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; **LearnDash CSS dequeue on non-LD routes shipped (`9d8c49e`)**; **UI polish batch shipped (`9d33b8a`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **legacy `/catalog/` redirect shipped (`a0ec00b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; **LearnDash CSS dequeue on non-LD routes shipped (`9d8c49e`)**; **LearnDash JS dequeue on non-LD routes shipped (`e12bdba`)**; **UI polish batch shipped (`9d33b8a`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+
+---
+
+## 2026-05-25 — LearnDash JS dequeue on non-LD routes `e12bdba`
+
+- **Child theme commit:** `e12bdba` — `Dequeue LearnDash JS off non-LD routes`
+- **File:** `functions.php` only (+20 lines)
+- **Scope:** performance cleanup — conditional dequeue of LearnDash JS on non-LD routes; mirrors CSS dequeue `9d8c49e`; no plugin edits; no LD template overrides; no CSS dequeue changes; no custom plugin asset logic touched
+- **Behavior:**
+  - Reuses **`atmo_is_learndash_context()`** — true on `is_post_type_archive('sfwd-courses')` and `is_singular(['sfwd-courses', 'sfwd-lessons', 'sfwd-topic', 'sfwd-quiz'])`
+  - **`atmo_dequeue_ld_js_on_non_ld()`** — hooked `wp_print_scripts` priority **100**
+  - On **non-LD** routes, dequeues **5** script handles:
+    - `learndash-front`, `learndash-main`, `learndash-breakpoints`, `learndash` (course-grid general JS), `learndash-course-grid-skin-grid`
+  - Uses **`wp_dequeue_script()`** only — no deregister
+  - Does **not** dequeue plugin handles (`atmo-reflection-forms`, `ldtd`, `ldtd-progress-photos.js`); does **not** affect CSS dequeue or outside-git plugin enqueue fix
+- **Separate from:** CSS dequeue `9d8c49e` (styles hook / different handle list); outside-git plugin enqueue tightening (reflection/diary scoping at plugin source)
+- **QA PASS** (guest HTTP + logged-in owner Cursor IDE browser, user **r4t5**; controller smoke + Cursor pre-commit QA):
+  - **Guest / non-LD:** `/`, `/каталог/`, `/catalog/`, PDP, `/cart-2/`, `/checkout/` final `/cart-2/`, `/payment-failed/`, guest `/my-account/` — **0** target LD JS handles; inline LD objects absent (`LearnDash_Course_Grid`, `learndash.global`, `learndash.views.breakpoints`, `ldVars`); no PHP fatal
+  - **LD guest:** `/courses/`, course single, guest `/lessons/01-2/` final LD route — target LD JS preserved; inline LD objects preserved; no PHP fatal
+  - **Logged-in non-LD:** `/`, `/каталог/`, `/my-account/`, `/my-account/my-courses/`, hub `?course_id=3616`, `/cart-2/`, `/checkout/` redirect, `/payment-failed/` — **0** target LD JS; inline LD objects absent; account/hub UI OK; hub mobile **390×844** no horizontal overflow
+  - **Logged-in LD lessons:** `/lessons/01-2/` — LD JS preserved + `#ldtd`; lesson **3700** — LD JS + reflection `.atmo-rf-wrap` + reflection plugin JS; lesson **3725** — LD JS + `ldtd-progress-photos.js` + photos block; lesson **3708** — LD JS + compare block (+ photos JS where shortcode present); `/lessons/план-программы/` — LD JS preserved; no plugin blocks; no PHP fatal / enqueue-related console errors
+  - **PHP lint** PASS; **`git diff --check`** PASS before commit
+- **Closes:** LearnDash **JS** site-wide bleed on non-LD routes (five-script bundle from `learndash_30_template_assets()` + course-grid skin enqueue)
+- **Still open / follow-up:** LearnDash/Kadence updates may rename handles — re-audit dequeue lists; future LD shortcodes/widgets embedded on non-LD pages would need exception path; outside-git plugin enqueue deploy path unchanged; **not** all LearnDash assets removed everywhere — only the target JS bundle on non-LD routes
 
 ---
 
@@ -29,7 +53,7 @@
   - **Logged-in LD lessons:** `/lessons/01-2/` — LD CSS preserved + `ldtd.css` + `#ldtd`; reflection absent; lesson **3700** — reflection CSS/JS + `.atmo-rf-wrap`; lesson **3725** — `ldtd.css` + `ldtd-progress-photos.js` + photos block; lesson **3708** — reflection + `ldtd.css` + compare block (photos JS present — page has photos shortcode); `/lessons/план-программы/` — no plugin assets; LD CSS preserved; no PHP fatal / enqueue-related console errors; mobile overflow checks PASS where practical
   - **`git diff --check`** PASS; IDE lints PASS
 - **Closes:** deferred item from UI polish batch `9d33b8a` — LearnDash global CSS bleed on non-LD pages
-- **Still open / follow-up:** LearnDash **JS** site-wide bleed not touched (separate task); future LearnDash/Kadence updates may require handle re-audit; outside-git plugin enqueue deploy path unchanged — see entry below
+- **Still open / follow-up:** LearnDash **JS** bleed closed separately — **`e12bdba`**; future LearnDash/Kadence updates may require handle re-audit; outside-git plugin enqueue deploy path unchanged — see entry below
 
 ---
 
