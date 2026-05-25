@@ -4,7 +4,33 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+
+---
+
+## 2026-05-25 — Lesson plugin blocks CSS Phase 1 `d37665b`
+
+- **Child theme commit:** `d37665b` — `Style lesson plugin blocks with ATMO tokens`
+- **File:** `assets/css/atmo-lesson.css` only (+397 lines, new section «Plugin blocks — Phase 1»)
+- **Scope:** CSS-only visual pass for plugin/content blocks inside LearnDash lessons — scoped under `body.single-sfwd-lessons`; no PHP/JS/plugin/DB/WP Admin changes; no LD template overrides; no `atmo-lms-lite` integration
+- **Targets:**
+  - **Diary** — `#ldtd.ldtd-wrapper`, `.ldtd-tabs`, `.ldtd-tab`, `#ldtd-form` (`[training_diary]` / learndash-training-diary)
+  - **Reflection** — `.atmo-rf-wrap.atmo-rf-v112`, `.atmo-rf-question-card`, `.atmo-rf-submit` (`[atmo_reflection]` / atmo-reflection-forms)
+  - **Photos** — `.ldtd-photos-block`, `.ldtd-photos-grid` (`[ldtd_progress_photos]`)
+  - **Compare** — `.ldtd-compare-block`, `.ldtd-compare-grid`, `.ldtd-compare-cell`; reflection after compare grid (`.atmo-rf-compare-grid`, before/current boxes)
+- **Tokens:** `--atmo-bg-warm`, `--atmo-bg-card`, `--atmo-line`, `--atmo-ink` / `--atmo-ink-soft`, `--atmo-primary`, `--atmo-secondary`, `--atmo-r-sm` / `--atmo-r-md`, `--atmo-font-sans`; `!important` only where plugin CSS already uses it
+- **Not changed:** lesson chrome (nav, H1 prefix, mark-complete, back-to-hub); plugin PHP; plugin global enqueue (R3)
+- **Owner QA PASS** (Cursor IDE browser, user **r4t5** / **679**, course **3616**) — desktop **1440×900** + mobile **390×844**:
+  - `/lessons/01-2/` diary — `#ldtd`, `#ldtd-form`, submit visible; bg token `rgb(234,235,236)`; submit `rgb(115,119,227)`
+  - Reflection before (lesson **3700**) — `.atmo-rf-v112`, **10** question cards, submit visible
+  - Photos before (lesson **3725**) — `.ldtd-photos-block`, grid visible
+  - Compare after (lesson **3708**) — reflection after + photos + `.ldtd-compare-block`
+  - Baseline `/lessons/план-программы/` — content-only; H1 **«Урок 1 · План программы»**; no plugin blocks
+  - No redirect to `/courses/...`; no horizontal overflow; no console errors on probed pages
+  - **No** mark-complete clicks; **no** diary/reflection submit; **no** photo upload/delete
+  - Negative: hub `?course_id=3616`, `/`, `/каталог/` — `atmo-lesson.css` **not** loaded
+- **Technical:** `git diff --check` PASS; no `vw`, negative `letter-spacing`, or gradient backgrounds in diff
+- **Still open:** plugin global enqueue tightening (`atmo-reflection-forms.css` / `ldtd.css` site-wide — separate plugin task); `atmo-lms-lite` cutover deferred; static `/trainer/`, `/terms/`, `/privacy/` paused pending approved content; legacy inline `.app-card` HTML in lesson post_content (e.g. **3732**) not stripped — `BACKLOG.md` §0
 
 ---
 
@@ -27,7 +53,7 @@
   - **`/my-account/my-courses/`** list — **1** card; **Продолжить** → LD lesson; **К программе** → `?course_id=3616`
   - No `.atmo-course-hub` leak on `/`, `/каталог/`, `/product/abdomen_pelvic/`
 - **Technical:** `php -l inc/atmo-account.php` PASS · `git diff --check` PASS
-- **Still open:** `atmo-lms-lite` cutover deferred; lesson diary/content polish; static `/trainer/`, `/terms/`, `/privacy/` paused pending approved content — `BACKLOG.md` §0
+- **Still open:** `atmo-lms-lite` cutover deferred; static `/trainer/`, `/terms/`, `/privacy/` paused pending approved content — `BACKLOG.md` §0
 
 ---
 

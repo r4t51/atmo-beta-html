@@ -14,7 +14,7 @@
 | **ATMO shell / wiring** | **Complete** — header, footer, catalog, PDP, cart, checkout, order-received; account passes 1–5; re-QA PASS 2026-05-22 |
 | **Account / LMS MVP** | **Complete** — `/my-account/my-courses/` endpoint + adapter MVP + dashboard CTA wiring + **account course hub v1 (`81c3a7d`)** + enrolled + zero-enrollment QA |
 
-**Not a blocker:** preview mu-plugin kept for now (`?atmo_preview_shell=1` only). LD lesson chrome v1/v2 + lesson H1 number prefix (`caaaa96`) shipped without template overrides; remaining LMS work is optional polish / formal adapter work / future `atmo-lms-lite` cutover contract.
+**Not a blocker:** preview mu-plugin kept for now (`?atmo_preview_shell=1` only). LD lesson chrome v1/v2 + lesson H1 prefix (`caaaa96`) + plugin blocks CSS Phase 1 (`d37665b`) shipped without template overrides; remaining LMS work is optional formal adapter work / plugin enqueue tightening / future `atmo-lms-lite` cutover contract.
 
 **Update 2026-05-23:** Catalog + PDP **public polish complete** — toolbar/cards, content cleanup, hero price sync, Woo tabs, Snippet 12 variable mitigation. Detail: `CHANGES.md` → *2026-05-23 — Catalog + PDP public polish milestone*.
 
@@ -23,6 +23,8 @@
 **Update 2026-05-23 (LMS hub v1):** Account enrolled course hub at **`/my-account/my-courses/?course_id={id}`** — child theme **`81c3a7d`**; no new rewrite; lessons still on LD routes. Detail: `CHANGES.md` → *LMS account course hub v1*.
 
 **Update 2026-05-25 (LMS hub visual Phase 1):** Account hub visual polish — child theme **`b1d21b5`**; hero, continue card, progress strip, outline current state; same route and ViewModels as v1. Detail: `CHANGES.md` → *Account course hub visual Phase 1*.
+
+**Update 2026-05-25 (Lesson plugin blocks CSS Phase 1):** Diary/reflection/photos/compare blocks inside LD lessons — child theme **`d37665b`**; `assets/css/atmo-lesson.css` only; owner QA PASS r4t5. Detail: `CHANGES.md` → *Lesson plugin blocks CSS Phase 1*.
 
 **Update 2026-05-24–25 (prototype coverage):** Homepage v1 shipped (`075179f`, CSS compliance `214f6b6`), cart polish shipped (`3e4748f`), order-received PHP confirmation layer shipped (`f9a7b95`, owner browser QA PASS #3801), checkout progress steps shipped (`1203858`), branded WP 404 shipped (`64f2aa8`). Detail: `CHANGES.md`.
 
@@ -67,6 +69,7 @@
 | **`1e08a3d`** | Lesson chrome v2 — first-lesson prev hidden; back label «Вернуться к программе» |
 | **`897409c`** | Lesson hardening — LD hook guards + CSS cleanup |
 | **`caaaa96`** | Lesson H1 number prefix — **`Урок N · {title}`** on Kadence entry H1 via title filter; hub outline order; logged-in only |
+| **`d37665b`** | Lesson plugin blocks CSS Phase 1 — diary/reflection/photos/compare token styling in `atmo-lesson.css` only |
 
 **Deploy note:** one-time permalink flush required after `ecfd8f5` on new environments (WP Admin → Settings → Permalinks → Save). No `flush_rewrite_rules()` in theme PHP.
 
@@ -145,8 +148,8 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 **Canonical open tasks:** `BACKLOG.md` §0–§6a.
 
 - **Account fixture polish:** **closed 2026-05-24** — no mandatory account theme work; dev pill removed (`dc1e2be`); see `CHANGES.md`
-- **LMS polish:** lesson H1 number prefix **done `caaaa96`**; **`atmo-lms-lite` bridge decision** — defer runtime integration until stable read API + cutover
-- **Prototype coverage:** static `/trainer/` + legal routes **paused** (content not approved); course hub/lesson visual polish — see `BACKLOG.md` §0
+- **LMS polish:** lesson H1 prefix **done `caaaa96`**; lesson plugin blocks CSS Phase 1 **done `d37665b`**; **`atmo-lms-lite` bridge decision** — defer runtime integration until stable read API + cutover; plugin global enqueue tightening (R3) — separate plugin task
+- **Prototype coverage:** static `/trainer/` + legal routes **paused** (content not approved) — see `BACKLOG.md` §0
 - **Optional polish:** PDP optional rows (full hero redesign cosmetic only)
 - **Closed / config:** billing edit field subset — Checkout Field Editor + Woo settings; not child-theme work (2026-05-24)
 - **Avoid unless explicit:** payments, saved cards, test orders; downloads/shipping blocks until real fixtures exist
@@ -162,7 +165,7 @@ Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending
 
 **Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first picks:
 
-> Pick paused static routes (`/trainer/`, `/terms/`, `/privacy/`) after content sign-off, or optional PDP/LMS polish. `atmo-lms-lite` work waits for product-ready API/cutover scope.
+> Pick paused static routes (`/trainer/`, `/terms/`, `/privacy/`) after content sign-off. `atmo-lms-lite` work waits for product-ready API/cutover scope; plugin enqueue tightening is optional plugin-side follow-up.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 

@@ -182,7 +182,7 @@ Enrollment source of truth today: LearnDash + LearnDash WooCommerce bridge (not 
 **Today:** catalog ViewModel `atmo_build_course_card()` covers **Woo products** only — not LD course archive or enrolled lists.  
 **Later:** adapter may delegate to LearnDash APIs now, `atmo-lms-lite` access modules later — UI consumes ViewModels only.
 
-Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**; account course hub v1 **shipped `81c3a7d` 2026-05-23**; hub visual Phase 1 **shipped `b1d21b5` 2026-05-25**; lesson chrome v1/v2 **shipped `ed7afcf` / `1e08a3d`**, hardened in **`897409c`**; lesson H1 number prefix **shipped `caaaa96` 2026-05-24** (title filter, not template override). ViewModel contract **signed off 2026-05-22** (§4.7). **Do not add LearnDash template overrides without explicit scoped plan.**
+Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22**; dashboard CTA wiring **shipped `648e562` 2026-05-22**; account course hub v1 **shipped `81c3a7d` 2026-05-23**; hub visual Phase 1 **shipped `b1d21b5` 2026-05-25**; lesson chrome v1/v2 **shipped `ed7afcf` / `1e08a3d`**, hardened in **`897409c`**; lesson H1 number prefix **shipped `caaaa96` 2026-05-24**; lesson plugin blocks CSS Phase 1 **shipped `d37665b` 2026-05-25** (title filter + scoped plugin CSS, not template override). ViewModel contract **signed off 2026-05-22** (§4.7). **Do not add LearnDash template overrides without explicit scoped plan.**
 
 ## Custom ATMO Plugins
 
@@ -300,9 +300,9 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix complete** (through `caaaa96`, 2026-05-24); **order-received layer shipped** (`f9a7b95`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **variable PDP bottom CTA deferred** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration.
+**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix + lesson plugin blocks CSS Phase 1 complete** (through `d37665b`, 2026-05-25); **order-received layer shipped** (`f9a7b95`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **variable PDP bottom CTA deferred** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration.
 
-Use `BACKLOG.md` §0 as the active next-work list: paused static routes (`/trainer/`, `/terms/`, `/privacy/`) after content sign-off, or optional PDP/LMS polish. Do not expand shell CSS without a functional gap.
+Use `BACKLOG.md` §0 as the active next-work list: paused static routes (`/trainer/`, `/terms/`, `/privacy/`) after content sign-off. Optional later: plugin global enqueue tightening (R3). Do not expand shell CSS without a functional gap.
 
 **Do not bypass without explicit scope:**
 

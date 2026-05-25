@@ -1,6 +1,6 @@
 # LMS Adapter Spec v0
 
-> **Status:** route live (adapter MVP) · **account course hub v1 done (`81c3a7d`)** · **hub visual Phase 1 done (`b1d21b5`)** · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **updated 2026-05-25**
+> **Status:** route live (adapter MVP) · **account course hub v1 done (`81c3a7d`)** · **hub visual Phase 1 done (`b1d21b5`)** · **lesson plugin blocks CSS Phase 1 done (`d37665b`)** · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **updated 2026-05-25**
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
@@ -10,7 +10,7 @@
 
 Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo backends so enrolled courses, progress, and access can ship without LearnDash HTML coupling or premature `atmo-lms-lite` dependency.
 
-**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**; dashboard «Следующий шаг» CTA wiring **shipped (`648e562` 2026-05-22)**; account-shelled enrolled course hub v1 **shipped (`81c3a7d` 2026-05-23)**; hub visual Phase 1 **shipped (`b1d21b5` 2026-05-25)**; LD lesson chrome v1/v2 **shipped (`ed7afcf`, `1e08a3d`, hardened `897409c`)**; lesson H1 number prefix **shipped (`caaaa96` 2026-05-24)** via child lesson chrome title filter — no LD template overrides.
+**Gate:** adapter-backed enrolled list **shipped (`a352081` 2026-05-22)**; dashboard «Следующий шаг» CTA wiring **shipped (`648e562` 2026-05-22)**; account-shelled enrolled course hub v1 **shipped (`81c3a7d` 2026-05-23)**; hub visual Phase 1 **shipped (`b1d21b5` 2026-05-25)**; LD lesson chrome v1/v2 **shipped (`ed7afcf`, `1e08a3d`, hardened `897409c`)**; lesson H1 number prefix **shipped (`caaaa96` 2026-05-24)** via child lesson chrome title filter; lesson plugin blocks CSS Phase 1 **shipped (`d37665b` 2026-05-25)** via scoped `atmo-lesson.css` — no LD template overrides.
 
 ---
 
@@ -488,11 +488,23 @@ Before any enrolled UI or route implementation:
 
 **Rollback:** `git revert b1d21b5` — hub v1 (`81c3a7d`) remains functional; **no permalink flush**.
 
+### 11.0f Lesson plugin blocks CSS Phase 1 shipped (`d37665b` 2026-05-25)
+
+| Item | Status |
+|------|--------|
+| Scope | CSS-only — plugin/content blocks inside LD lesson body; lesson chrome unchanged |
+| File | `assets/css/atmo-lesson.css` only |
+| Blocks | Diary `#ldtd`; reflection `.atmo-rf-wrap`; photos `.ldtd-photos-block`; compare `.ldtd-compare-block` |
+| Not shipped | Plugin PHP; global enqueue tightening; `atmo-lms-lite`; LD template overrides |
+| Local QA | **PASS** — r4t5 / course 3616 / desktop + mobile — `CHANGES.md` |
+
+**Rollback:** `git revert d37665b` — lesson chrome commits remain; **no permalink flush**.
+
 ---
 
 ## 11. Woo `my-courses` endpoint plan (audit 2026-05-22)
 
-> **Note:** §11.1–11.8 below is the **historical implementation plan** (pre-ship audit + phased rollout). Shipped state: §11.0–§11.0d · current routes: §2.
+> **Note:** §11.1–11.8 below is the **historical implementation plan** (pre-ship audit + phased rollout). Shipped state: §11.0–§11.0f · current routes: §2.
 
 Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-account.css`. **No PHP shipped in audit commit.**
 
@@ -636,4 +648,4 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 ---
 
-*Spec v0 — 2026-05-22–25. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, account course hub v1, LD lesson chrome v1/v2, lesson H1 prefix (`caaaa96`), zero-enrollment QA, and `atmo-lms-lite` bridge decision shipped/recorded. Active next work lives in `BACKLOG.md` §0; `atmo-lms-lite` API/cutover contract waits until product-ready.*
+*Spec v0 — 2026-05-22–25. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, account course hub v1, hub visual Phase 1, LD lesson chrome v1/v2, lesson H1 prefix (`caaaa96`), lesson plugin blocks CSS Phase 1 (`d37665b`), zero-enrollment QA, and `atmo-lms-lite` bridge decision shipped/recorded. Active next work lives in `BACKLOG.md` §0; `atmo-lms-lite` API/cutover contract waits until product-ready.*

@@ -123,7 +123,7 @@ npx http-server . -p 3333 --cors -c-1
 - `LessonProgress` / `LessonData`
 - `AccessData`
 
-Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **hub visual Phase 1 shipped `b1d21b5`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`; **lesson H1 number prefix shipped `caaaa96`**. **Variable PDP bottom CTA deferred 2026-05-24** — not mandatory. Open: lesson diary/content polish; explicit `atmo-lms-lite` API/cutover contract when product-ready — `BACKLOG.md` §0–§2.
+Adapter interface signed off 2026-05-22. **Enrolled list MVP shipped `a352081`**; **dashboard CTA wiring shipped `648e562`**; **account hub v1 shipped `81c3a7d`**; **hub visual Phase 1 shipped `b1d21b5`**; **lesson plugin blocks CSS Phase 1 shipped `d37665b`**; **lesson chrome v1/v2 shipped `ed7afcf` / `1e08a3d`**; stabilization shipped `897409c`; **lesson H1 number prefix shipped `caaaa96`**. **Variable PDP bottom CTA deferred 2026-05-24** — not mandatory. Open: paused static routes; explicit `atmo-lms-lite` API/cutover contract when product-ready — `BACKLOG.md` §0–§2.
 
 ## WordPress Local
 
@@ -203,7 +203,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - **«Программы»** → `/courses/` in header/footer only (removed from account sidebar in `ecfd8f5`)
   - **Скрыты из меню, доступны по прямому URL:** `/my-account/downloads/`, `/my-account/edit-address/` (+ `billing`/`shipping`), `/my-account/payment-methods/`
   - **Адреса (`edit-address`):** index cards показывают сохранённый meta; billing edit subset — **Checkout Field Editor** `wc_fields_billing` + Woo phone hidden (**config decision 2026-05-24**, not child-theme bug) — do not add theme billing field filters unless explicitly scoped
-  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP** · **`648e562` dashboard CTA wiring** · **`81c3a7d` account hub v1** · **`b1d21b5` hub visual Phase 1** · **`dc1e2be` dashboard dev pill removal** · **`ed7afcf` lesson chrome v1** · **`1e08a3d` lesson chrome v2** · **`897409c` lesson hardening** · **`caaaa96` lesson H1 number prefix**
+  - Commits: `353346c` auth · `3122f4f` shell · `d4ee689` menu · `3704226` orders · `d1748dc` settings · `3135ddb` hidden endpoints · `fcca2e5` mobile orders actions · `534b241` dashboard shell · `2da518f` view-order access-type meta · **`ecfd8f5` my-courses endpoint shell** · **`a352081` LMS adapter MVP** · **`648e562` dashboard CTA wiring** · **`81c3a7d` account hub v1** · **`b1d21b5` hub visual Phase 1** · **`d37665b` lesson plugin blocks CSS Phase 1** · **`dc1e2be` dashboard dev pill removal** · **`ed7afcf` lesson chrome v1** · **`1e08a3d` lesson chrome v2** · **`897409c` lesson hardening** · **`caaaa96` lesson H1 number prefix**
   - **`/my-account/my-courses/` (`a352081`):** adapter-backed enrolled list; empty state when `[]`; fixture #3801 QA PASS — `CHANGES.md`
   - **`/my-account/my-courses/?course_id={id}` (`81c3a7d`, `b1d21b5`):** account hub v1 + visual Phase 1 — enrolled overview + lesson outline; denial when no access — `CHANGES.md`
   - **Local QA fixtures:** **r4t5 / #3801** = enrolled path · **691 / `atmo-qa-empty`** = zero-enrollment path — empty-state QA PASS 2026-05-22 — `CHANGES.md`
@@ -213,8 +213,8 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - **Caveats:** не редиректить Woo endpoints без аудита; `/my-account/add-payment-method/` audited 2026-05-22 (read-only PASS; Stripe card/BLIK absent on Local — env, not theme); Woo default dashboard copy hidden by CSS when `.atmo-dash` present
   - **Open tasks:** `BACKLOG.md`
   - Rollback: см. `CHANGES.md` по commit; menu PHP: `git revert d4ee689`
-- ✅ LearnDash lesson chrome v1/v2 + H1 prefix — `inc/atmo-lesson.php` · `assets/css/atmo-lesson.css` · **`ed7afcf`**, **`1e08a3d`**, hardening **`897409c`**, prefix **`caaaa96`**
-  - CSS scoped to `body.single-sfwd-lessons`: content card, nav row, mark-complete violet pill, back link.
+- ✅ LearnDash lesson chrome v1/v2 + H1 prefix + plugin blocks CSS Phase 1 — `inc/atmo-lesson.php` · `assets/css/atmo-lesson.css` · **`ed7afcf`**, **`1e08a3d`**, hardening **`897409c`**, prefix **`caaaa96`**, plugin blocks **`d37665b`**
+  - CSS scoped to `body.single-sfwd-lessons`: content card, nav row, mark-complete violet pill, back link; diary/reflection/photos/compare plugin blocks token-aligned.
   - Filter `learndash_template_progression_step_back_to_course_url` → account hub.
   - Filter `the_title` → **`Урок N · {title}`** on Kadence entry H1 only (hub outline order; logged-in only).
   - No LD template overrides; `kadence-child/learndash/` not created.
@@ -238,7 +238,7 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Prototype coverage** — paused static `/trainer/` + `/terms/` + `/privacy/` (content not approved); course hub/lesson visual polish.
+1. **Prototype coverage** — paused static `/trainer/` + `/terms/` + `/privacy/` (content not approved).
 2. **Optional polish / product-scoped** — full PDP hero redesign (cosmetic), homepage Social testimonials when CMS/source exists.
 3. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24).
 4. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist.

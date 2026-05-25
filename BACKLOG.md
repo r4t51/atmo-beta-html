@@ -84,6 +84,13 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - No LD template overrides; no `atmo-lms-lite` integration
 - QA PASS — Codex WP-CLI simulation + logged-out HTTP — see `CHANGES.md`
 
+### Lesson plugin blocks CSS Phase 1 (2026-05-25)
+
+- Plugin/content blocks inside LD lessons — child theme **`d37665b`**
+- **`assets/css/atmo-lesson.css`** only — diary `#ldtd`, reflection `.atmo-rf-wrap`, photos `.ldtd-photos-block`, compare `.ldtd-compare-block`; scoped `body.single-sfwd-lessons`
+- No PHP/plugin/DB changes; lesson chrome unchanged; plugin global enqueue (R3) **not** tightened
+- Owner QA PASS — r4t5 / course 3616 / desktop + mobile — see `CHANGES.md`
+
 ### `atmo-lms-lite` bridge decision (2026-05-24)
 
 - Future LearnDash replacement; active on Local but **defer runtime integration** — empty enrollment/access tables; no theme-facing front-end API/UI; stay LearnDash-backed ViewModels until stable read API + cutover readiness — see `CHANGES.md`
@@ -115,9 +122,8 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 | Priority | Item | Notes |
 |----------|------|-------|
 | P1 | **Static missing routes (paused)** | Footer links `/trainer/`, `/terms/`, `/privacy/` — **content not approved**; routes still 404 (branded `404.php` shell). WP pages + templates deferred until copy sign-off. |
-| P2 | **Lesson diary/content polish** | `lesson.html` chrome shipped; diary/reflection plugin blocks still need scoped visual pass if product wants it. |
 
-Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping).
+Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping), plugin global enqueue tightening (`atmo-reflection-forms.css` / `ldtd.css` — separate plugin-side task), legacy lesson post inline HTML cleanup.
 
 ---
 
@@ -156,7 +162,7 @@ Deferred / product decision: homepage Social testimonials, full PDP hero redesig
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
 
-**Next LMS work only when product-scoped:** explicit `atmo-lms-lite` API/cutover contract or lesson diary/content polish. Do not treat LearnDash template overrides as the default path.
+**Next LMS work only when product-scoped:** explicit `atmo-lms-lite` API/cutover contract; optional plugin enqueue tightening or lesson post content cleanup. Do not treat LearnDash template overrides as the default path.
 
 ### Current routes (reference)
 
@@ -165,7 +171,7 @@ Deferred / product decision: homepage Social testimonials, full PDP hero redesig
 | `/courses/` | LearnDash **public CPT archive** — nav **«Программы»** (header/footer); **18** cards; not enrolled-only |
 | `/my-account/my-courses/` | Enrolled list — adapter `get_enrolled_courses()` — `a352081` |
 | `/my-account/my-courses/?course_id={id}` | **Account hub v1 + visual Phase 1** — enrolled overview + lesson outline — `81c3a7d` · hero/continue/progress/outline current — `b1d21b5` |
-| `/lessons/{slug}/` | LearnDash lesson body — **«Продолжить»** from hub/list lands here |
+| `/lessons/{slug}/` | LearnDash lesson body — **«Продолжить»** from hub/list lands here; ATMO lesson chrome + plugin block CSS Phase 1 (`d37665b`) |
 
 Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_page()` only · `atmo-lms-lite` active on Local (future replacement; **bridge only** — no theme UI dependency; Local tables empty).
 
