@@ -196,6 +196,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - Course card CTA targets account hub (`/my-account/my-courses/?course_id=...`), not direct `/lessons/`.
   - Owner browser QA PASS for #3801 at 1440×900 and 390×844 (2026-05-25).
   - **`/payment-failed/`** → static page **#3807** + `page-payment-failed.php` + `atmo-payment-failed.css` (`c9ac2b1`, 2026-05-24).
+- ✅ WP 404 — `404.php` + `atmo-404.css` (`64f2aa8`); `is_404()` enqueue; QA PASS 2026-05-25 — `CHANGES.md`.
 - ✅ Woo My Account — passes 1–5 + mobile orders fix: `assets/css/atmo-account.css`, `inc/atmo-account.php` (menu filter in `functions.php`).
   - CSS только на `is_account_page()`; `/courses/`, `/profile/`, `/reset-password/` (LearnDash) **не** enqueued.
   - **Меню (5 пунктов):** Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
@@ -237,7 +238,7 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Prototype coverage** — static `/trainer/` + `/terms/` + `/privacy/`, WP 404, course hub/lesson visual polish.
+1. **Prototype coverage** — paused static `/trainer/` + `/terms/` + `/privacy/` (content not approved); course hub/lesson visual polish.
 2. **Optional polish / product-scoped** — full PDP hero redesign (cosmetic), homepage Social testimonials when CMS/source exists.
 3. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24).
 4. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist.

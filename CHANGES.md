@@ -4,7 +4,19 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+
+---
+
+## 2026-05-25 — Branded WP 404 page `64f2aa8`
+
+- **Child theme commit:** `64f2aa8` — `Add branded 404 page`
+- **Files:** `404.php` (new), `assets/css/atmo-404.css` (new), `functions.php` (`is_404()` enqueue only)
+- **Scope:** port visible copy from prototype `404.html`; ATMO header/footer via `get_header()` / `get_footer()`; CTAs **«В каталог курсов»** → `/каталог/` · **«Мой кабинет»** → `/my-account/`; no blob/orb/gradient backgrounds; no `vw` font sizing or negative letter-spacing in new CSS
+- **QA PASS** (Cursor + Codex, read-only) — missing URL returns HTTP **404**; `.atmo-notfound` + `atmo-404.css` load; Russian copy/CTAs render desktop **1440×900** + mobile **390×844**; no horizontal overflow
+- **Regression:** `/`, `/каталог/`, `/payment-failed/` unaffected (no `atmo-404` leak)
+- **Paused / not in scope:** `/trainer/`, `/terms/`, `/privacy/` remain unimplemented pending approved content — still HTTP 404, now use branded `404.php` shell
+- **No docs/WP Admin/DB changes in code task**
 
 ---
 

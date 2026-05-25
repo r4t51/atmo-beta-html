@@ -20,6 +20,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Order received | ✅ `inc/atmo-confirmation.php` + `atmo-confirmation.css` (`f9a7b95`); owner browser QA PASS #3801 / user 679 — `CHANGES.md` 2026-05-25 |
 | Account | ✅ passes 1–5 + dashboard + view-order meta (detail below) |
 | Preview mu-plugin | ✅ **keep for now** — opt-in only (`?atmo_preview_shell=1`) |
+| WP 404 | ✅ `404.php` + `atmo-404.css` (`64f2aa8`); QA PASS 2026-05-25 — `CHANGES.md` |
 
 **By design / not built:** dashboard course list/progress widgets (CTAs only — `648e562`); payment-token live QA.
 
@@ -106,8 +107,7 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 
 | Priority | Item | Notes |
 |----------|------|-------|
-| P1 | **Static missing routes** | Footer links `/trainer/`, `/terms/`, `/privacy/` currently 404; WP pages/content decision + child templates/CSS needed. |
-| P2 | **404 page** | `404.html` not ported; add child `404.php` + scoped CSS when brand consistency pass starts. |
+| P1 | **Static missing routes (paused)** | Footer links `/trainer/`, `/terms/`, `/privacy/` — **content not approved**; routes still 404 (branded `404.php` shell). WP pages + templates deferred until copy sign-off. |
 | P2 | **Course hub visual port** | `product-enrolled.html` visual layer remains partial; hub v1 functionally live on `/my-account/my-courses/?course_id=`. |
 | P2 | **Lesson diary/content polish** | `lesson.html` chrome shipped; diary/reflection plugin blocks still need scoped visual pass if product wants it. |
 
@@ -218,14 +218,14 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-## 6a. Static pages / legal / error pages — open
+## 6a. Static pages / legal — open (404 closed)
 
 | Item | Notes |
 |------|-------|
-| `/trainer/` | Footer link exists; Local route currently 404. Needs WP page/content + `trainer.html` port (`page-trainer.php`/CSS or block template). |
-| `/terms/` | Footer link exists; Local route currently 404. Needs WP page/content + shared legal template/CSS. |
-| `/privacy/` | Footer link exists; Local route currently 404. Needs WP page/content + shared legal template/CSS. |
-| WP 404 | Prototype `404.html` not ported; no child `404.php` yet. |
+| `/trainer/` | Footer link exists; Local route **404** (branded `404.php`). **Paused** — needs approved content + WP page + `trainer.html` port. |
+| `/terms/` | Footer link exists; Local route **404** (branded `404.php`). **Paused** — needs approved content + shared legal template/CSS. |
+| `/privacy/` | Footer link exists; Local route **404** (branded `404.php`). **Paused** — needs approved content + shared legal template/CSS. |
+| ~~WP 404~~ | ✅ Done **`64f2aa8`** — `404.php` + `atmo-404.css`; see `CHANGES.md` 2026-05-25 |
 
 ---
 
