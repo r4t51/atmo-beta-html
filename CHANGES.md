@@ -4,9 +4,16 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-24 updated):** ATMO homepage `front-page.php` shipped (`075179f`). Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`); **catalog card display titles shipped** (`4993bd9`, 2026-05-21); **variable PDP bottom CTA deferred by design** (discovery 2026-05-24); **billing edit field subset closed as config decision** (discovery 2026-05-24). **Current open items:** homepage Social section (deferred) · explicit `atmo-lms-lite` API/cutover contract · optional full PDP hero redesign — `BACKLOG.md`.
+> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA still open); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
 
-> **Supersession (2026-05-24):** Account course hub v1 shipped (`81c3a7d`); LD lesson chrome v1+v2 shipped (`ed7afcf`, `1e08a3d`); lesson H1 number prefix shipped (`caaaa96`); **account fixture polish closed** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration, stay LearnDash-backed until stable read API + cutover; **static `/payment-failed/` page shipped** (WP page **3807** + child template/CSS); **catalog taxonomy-aware goal chip URLs shipped** (`7b163be`); **catalog card display titles shipped** (`4993bd9`, 2026-05-21); **variable PDP bottom CTA deferred by design** (discovery 2026-05-24); **billing edit field subset closed as config decision** (discovery 2026-05-24). Older entries mentioning «post-MVP lesson/course hub port» or **«К программе» → LD course URL** reflect pre-hub state. **Current open items:** explicit `atmo-lms-lite` API/cutover contract when product-ready · optional full PDP hero redesign (cosmetic) — `BACKLOG.md` §2 / §5.
+---
+
+## 2026-05-25 — Docs hygiene: prototype coverage source-of-truth sync
+
+- **Scope:** docs-only cleanup; no child theme/runtime/Admin/DB/plugin changes
+- **Updated active docs:** `BACKLOG.md`, `MILESTONE_SHELL_ACCOUNT_LMS.md`, `ONBOARDING.md`, `WP_DEPENDENCY_MAP.md`, `LMS_ADAPTER_SPEC.md`, `docs/snippets/README.md`, `docs/snippets/snippet-05-thank-you-redirect.md`
+- **Cleanup:** collapsed duplicate supersession header in this file; moved active next-work pointer to `BACKLOG.md` §0; marked order-received owner browser QA as open; added static route gaps (`/trainer/`, `/terms/`, `/privacy/`, WP 404); updated Snippet #5 guidance after `f9a7b95`
+- **No code commit / runtime change in this entry**
 
 ---
 

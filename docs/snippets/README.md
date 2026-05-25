@@ -50,7 +50,7 @@ Machine-readable index: [`_manifest.json`](_manifest.json).
 - **Status:** `active = 0`
 - **Hook:** `template_redirect` on order-received
 - **Target:** broken URL `http://atmoredesign.local.local/courses`
-- **Action:** keep off until a separate thank-you / post-checkout spec exists (`CHANGES.md` → 2026-05-21)
+- **Action:** keep off. Canonical Woo `order-received` UI now lives in child theme (`f9a7b95`); redirect is obsolete and unsafe unless a new payment-return spec explicitly replaces it.
 
 ### #9 / #10 / #12 — PDP output
 

@@ -2,8 +2,8 @@
 
 Карта зависимостей для переноса HTML-прототипа на Local WordPress.
 
-Дата: 2026-05-22  
-Статус: child theme active; **shell/wiring + account/LMS MVP complete (2026-05-22)** — see `MILESTONE_SHELL_ACCOUNT_LMS.md`; preview mu-plugin keep-for-now.
+Дата: 2026-05-25
+Статус: child theme active; **shell/wiring + account/LMS MVP complete**; prototype coverage pass active — see `MILESTONE_SHELL_ACCOUNT_LMS.md`; preview mu-plugin keep-for-now.
 
 ## Executive Summary
 
@@ -34,7 +34,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 |---|---|
 | Parent theme | `wp-content/themes/kadence/` |
 | Child theme | `wp-content/themes/kadence-child/` |
-| Child files | `style.css`, `functions.php`, `assets/css/atmo-base.css`, `assets/css/atmo-header.css`, `assets/js/atmo-header.js`, `inc/atmo-header.php`, `assets/css/atmo-footer.css`, `inc/atmo-footer.php`, `assets/css/atmo-catalog.css`, `inc/atmo-catalog.php`, `woocommerce/content-product.php`, `assets/css/atmo-product.css`, `inc/atmo-product.php`, `woocommerce/content-single-product.php`, `assets/css/atmo-cart.css`, `inc/atmo-cart.php`, `assets/css/atmo-checkout.css`, `assets/css/atmo-confirmation.css`, `inc/atmo-confirmation.php`, `assets/css/atmo-account.css`, `inc/atmo-account.php` |
+| Child files | `functions.php`, `style.css`; page templates `front-page.php`, `page-payment-failed.php`; Woo overrides `woocommerce/content-product.php`, `woocommerce/content-single-product.php`; includes `inc/atmo-*.php` (header/footer/catalog/product/cart/account/lesson/confirmation); assets `assets/css/atmo-*.css`, `assets/js/atmo-*.js` |
 | Header ID | `#masthead` (Kadence, скрыт CSS `body.atmo-header-active`) |
 | Footer ID | `#colophon` (Kadence, скрыт CSS `body.atmo-footer-active`) |
 
@@ -117,7 +117,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 | Cart URL | `/cart-2/`, нестандартный slug; shell `atmo-cart.css` + `atmo-catalog.css` (cross-sells); cart-fixture QA PASS 2026-05-22 (1× variation **3628**) |
 | Checkout | `/checkout/` — **200** + full form when cart has items; empty cart may redirect to `/cart-2/` (Woo default; not re-tested 2026-05-22). Shell `atmo-checkout.css` (excludes order-received). Cart-fixture QA PASS 2026-05-22 — `#payment` / gateways visible; theme does not hide payment UI |
 | Payment failed | `/payment-failed/` → **200** static page (WP **#3807**, slug `payment-failed`; child commit `c9ac2b1`); shell `atmo-payment-failed.css`; separate from Woo `order-received` failed flow (`atmo-confirmation.css`) |
-| Order received | `/checkout/order-received/` → `inc/atmo-confirmation.php` (PHP layer, `f9a7b95`) + `atmo-confirmation.css` only; excludes `atmo-checkout.css`; layer renders on valid key + `completed` when full order DOM available (logged-in owner) |
+| Order received | `/checkout/order-received/` → `inc/atmo-confirmation.php` (PHP layer, `f9a7b95`) + `atmo-confirmation.css` only; excludes `atmo-checkout.css`; layer renders on valid key + `completed` when full order DOM available (logged-in owner). Owner browser visual QA still open; server-side #3801 simulation PASS |
 | HPOS | таблицы созданы, custom order storage отключён |
 | Orders storage | legacy `wp_posts` / `wp_postmeta` |
 | Bridge | LearnDash WooCommerce bridge продаёт курсы через WC |
@@ -299,7 +299,9 @@ Rollback для single product: удалить `woocommerce/content-single-produ
 
 ## Next Steps
 
-**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix complete** (through `caaaa96`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **variable PDP bottom CTA deferred** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration. **Next:** explicit `atmo-lms-lite` API/cutover contract when product-ready — see `BACKLOG.md`. Do not expand shell CSS without a functional gap.
+**Shell + Account/LMS MVP + account hub v1 + lesson chrome v1/v2 + lesson H1 prefix complete** (through `caaaa96`, 2026-05-24); **order-received layer shipped** (`f9a7b95`, 2026-05-24); **account fixture polish closed** (`dc1e2be` + discovery 2026-05-24); **variable PDP bottom CTA deferred** (discovery 2026-05-24); **`atmo-lms-lite` bridge decision** — defer runtime integration.
+
+Use `BACKLOG.md` §0 as the active next-work list: close order-received owner browser QA, then choose checkout steps or missing static routes before optional PDP/LMS polish. Do not expand shell CSS without a functional gap.
 
 **Do not bypass without explicit scope:**
 

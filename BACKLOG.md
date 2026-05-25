@@ -1,14 +1,14 @@
 # ATMO.BY — project backlog
 
 > Short, practical backlog — **source of truth for open tasks** + compact reference (not a second changelog).
-> **Milestone:** `MILESTONE_SHELL_ACCOUNT_LMS.md` (baseline 2026-05-22 · updated 2026-05-24 account fixture polish closed).
+> **Milestone:** `MILESTONE_SHELL_ACCOUNT_LMS.md` (baseline 2026-05-22 · updated 2026-05-25 order-received layer + prototype coverage).
 > History/rollback: `CHANGES.md` · Child theme: `kadence-child` · Prototypes: this repo.
 
 ---
 
 ## Done — ATMO shell/wiring phase (re-QA 2026-05-22)
 
-Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Account fixture polish closed 2026-05-24** — no mandatory account theme work. **Variable PDP bottom CTA deferred 2026-05-24** — not a functional blocker. **Next:** explicit `atmo-lms-lite` API/cutover contract when product-ready — not more shell wiring unless a functional gap appears.
+Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `CHANGES.md`). **Account fixture polish closed 2026-05-24** — no mandatory account theme work. **Variable PDP bottom CTA deferred 2026-05-24** — not a functional blocker. **Prototype coverage audit 2026-05-24:** overall port is partial; use §0 for next work instead of drifting into isolated polish.
 
 | Area | Status |
 |------|--------|
@@ -17,7 +17,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | PDP | ✅ simple + variable #3614 |
 | Cart | ✅ `atmo-cart.css` + cross-sells · polish `3e4748f` (remove link, eyebrow, trust bullets, coupon centering) |
 | Checkout | ✅ `atmo-checkout.css`; gateways visible on Local (**BLIK** default, **Klarna**); cart-fixture QA PASS 2026-05-22 |
-| Order received | ✅ `atmo-confirmation.css` |
+| Order received | ✅ `inc/atmo-confirmation.php` + `atmo-confirmation.css` (`f9a7b95`); server-side owner simulation PASS; browser owner visual QA still open |
 | Account | ✅ passes 1–5 + dashboard + view-order meta (detail below) |
 | Preview mu-plugin | ✅ **keep for now** — opt-in only (`?atmo_preview_shell=1`) |
 
@@ -100,6 +100,23 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 ---
 
+## 0. Prototype coverage — current next work
+
+Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype. Treat this section as the active shortlist.
+
+| Priority | Item | Notes |
+|----------|------|-------|
+| P0 | **Order-received owner visual QA** | `f9a7b95` server-side PASS; browser QA for #3801 owner is **blocked until a valid owner session/cookies exists**. Re-run 1440×900 + 390×844 on `/checkout/order-received/3801/?key=wc_order_inQFcSUpkLmE4`; no payment/order actions. |
+| P1 | **Checkout steps bar** | Port shared `Корзина → Оформление → Готово` step header to `/checkout/`; do not change fields, gateways, or submit behavior. |
+| P1 | **Static missing routes** | Footer links `/trainer/`, `/terms/`, `/privacy/` currently 404; WP pages/content decision + child templates/CSS needed. |
+| P2 | **404 page** | `404.html` not ported; add child `404.php` + scoped CSS when brand consistency pass starts. |
+| P2 | **Course hub visual port** | `product-enrolled.html` visual layer remains partial; hub v1 functionally live on `/my-account/my-courses/?course_id=`. |
+| P2 | **Lesson diary/content polish** | `lesson.html` chrome shipped; diary/reflection plugin blocks still need scoped visual pass if product wants it. |
+
+Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover.
+
+---
+
 ## 1. Account / Woo — reference (fixture polish closed 2026-05-24)
 
 | Item | Notes |
@@ -135,7 +152,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
 
-**Next likely (optional / product-scoped):** homepage Social section (04 testimonials) · explicit `atmo-lms-lite` API/cutover contract · full PDP hero redesign (cosmetic only) — see §5.
+**Next LMS work only when product-scoped:** explicit `atmo-lms-lite` API/cutover contract, course hub visual port, or lesson diary/content polish. Do not treat LearnDash template overrides as the default path.
 
 ### Current routes (reference)
 
@@ -203,6 +220,17 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
+## 6a. Static pages / legal / error pages — open
+
+| Item | Notes |
+|------|-------|
+| `/trainer/` | Footer link exists; Local route currently 404. Needs WP page/content + `trainer.html` port (`page-trainer.php`/CSS or block template). |
+| `/terms/` | Footer link exists; Local route currently 404. Needs WP page/content + shared legal template/CSS. |
+| `/privacy/` | Footer link exists; Local route currently 404. Needs WP page/content + shared legal template/CSS. |
+| WP 404 | Prototype `404.html` not ported; no child `404.php` yet. |
+
+---
+
 ## 7. Docs / Process
 
 | Item | Notes |
@@ -213,4 +241,4 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-*Last synced: 2026-05-24 (billing edit field subset closed; variable PDP bottom CTA deferred; LMS bridge decision)*
+*Last synced: 2026-05-25 (prototype coverage audit, order-received layer `f9a7b95`, docs QA gap `c01fc03`)*

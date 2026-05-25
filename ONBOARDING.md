@@ -15,7 +15,7 @@
 ## Перед работой
 
 1. Читать этот файл.
-2. **Milestone (2026-05-22):** shell + account/LMS MVP complete — см. `MILESTONE_SHELL_ACCOUNT_LMS.md` (fixtures, closed surfaces, do-not-touch).
+2. **Milestone (2026-05-22, updated 2026-05-25):** shell + account/LMS MVP complete; prototype coverage pass active — см. `MILESTONE_SHELL_ACCOUNT_LMS.md` (fixtures, closed surfaces, do-not-touch).
 3. Читать `WP_DEPENDENCY_MAP.md`, если задача касается WordPress, WooCommerce, LMS, темы, плагинов или интеграции.
 4. Работать маленькими обратимыми шагами.
 5. Не удалять чужие изменения.
@@ -169,6 +169,9 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - Kadence `#colophon` скрыт CSS: `body.atmo-footer-active #colophon { display: none !important }`.
   - В preview-режиме child footer скрыт CSS: `body.atmo-preview-shell-enabled .atmo-site-footer { display: none !important }`.
 - Preview mu-plugin: **keep for now** as low-risk legacy comparison tool (`?atmo_preview_shell=1` only); remove later per `BACKLOG.md` / `CHANGES.md`.
+- ✅ Главная v1 — `front-page.php` + `assets/css/atmo-home.css`.
+  - Hero, featured product, paths shipped (`075179f`); CSS compliance cleanup (`214f6b6`).
+  - Section 04 Social/testimonials deferred — no hardcoded testimonials until CMS/product source exists.
 - ✅ Каталог — MVP карточки: `woocommerce/content-product.php` override + `inc/atmo-catalog.php` + `assets/css/atmo-catalog.css`.
   - `atmo_build_course_card()` ViewModel: id, title (`_atmo_display_title` → Woo name fallback, **`4993bd9`**), permalink, thumbnail, price_html, excerpt, on_sale, categories, `goal_slug`/`goal_label` from `pa_goal`.
   - Карточки `.atmo-product-card` внутри стандартной WC-разметки `ul.products li.product`.
@@ -187,7 +190,12 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - LearnDash / enrolled / access state НЕ включены.
   - CSS: `atmo-product.css` on `is_product()`; `atmo-catalog.css` on PDP for related cards only.
 - ✅ Корзина — shell: `assets/css/atmo-cart.css` (+ `atmo-catalog.css` для cross-sells); re-QA PASS 2026-05-22 — `CHANGES.md`.
-- ✅ Checkout — shell: `assets/css/atmo-checkout.css`; order-received → `atmo-confirmation.css`; cart-fixture QA PASS 2026-05-22 — BLIK/Klarna visible, payment UI not hidden — `CHANGES.md`. **`/payment-failed/`** → static page **#3807** + `atmo-payment-failed.css` (`c9ac2b1`, 2026-05-24).
+- ✅ Checkout — shell: `assets/css/atmo-checkout.css`; cart-fixture QA PASS 2026-05-22 — BLIK/Klarna visible, payment UI not hidden — `CHANGES.md`.
+- ✅ Order received — `inc/atmo-confirmation.php` + `assets/css/atmo-confirmation.css` (`f9a7b95`).
+  - Renders ATMO layer only for valid key + `completed` order when Woo full order flow is available.
+  - Course card CTA targets account hub (`/my-account/my-courses/?course_id=...`), not direct `/lessons/`.
+  - Server-side owner simulation PASS for #3801; logged-in browser visual QA is still open until owner session/cookies exist.
+  - **`/payment-failed/`** → static page **#3807** + `page-payment-failed.php` + `atmo-payment-failed.css` (`c9ac2b1`, 2026-05-24).
 - ✅ Woo My Account — passes 1–5 + mobile orders fix: `assets/css/atmo-account.css`, `inc/atmo-account.php` (menu filter in `functions.php`).
   - CSS только на `is_account_page()`; `/courses/`, `/profile/`, `/reset-password/` (LearnDash) **не** enqueued.
   - **Меню (5 пунктов):** Обзор → `dashboard` · **Мои курсы** → **`my-courses`** (real Woo endpoint) · Заказы → `orders` · Настройки → `edit-account` · Выйти → `customer-logout` — **`ecfd8f5`**
@@ -225,16 +233,16 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 ## Следующий безопасный шаг
 
-**Shell/wiring phase complete (2026-05-22):** header, footer, catalog, PDP, cart, checkout, order-received, account — re-QA PASS; preview mu-plugin keep-for-now decision documented. **Do not start more shell CSS** unless a functional gap is found.
+**Shell/wiring phase complete (2026-05-22):** header, footer, catalog, PDP, cart, checkout, account — re-QA PASS; preview mu-plugin keep-for-now decision documented. Prototype coverage pass is now active; use `BACKLOG.md` §0 for next work.
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Optional / product-scoped** — full PDP hero redesign (cosmetic)
-2. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24)
-3. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist
-4. **Account fixture polish** — **closed 2026-05-24** (see `CHANGES.md`); do not treat as next mandatory phase
-5. **Variable PDP bottom CTA (#3614)** — **deferred 2026-05-24**; Snippet 12 variable skip is intentional — do not re-enable without redesign
-6. **Billing edit field subset** — **closed / config decision 2026-05-24** — Checkout Field Editor controls billing fields; do not fix via child-theme filters
+1. **Close QA gap** — logged-in owner browser QA for order #3801 / `f9a7b95` order-received layer.
+2. **Prototype coverage** — checkout steps, static `/trainer/` + `/terms/` + `/privacy/`, WP 404, course hub/lesson visual polish.
+3. **Optional / product-scoped** — full PDP hero redesign (cosmetic), homepage Social testimonials when CMS/source exists.
+4. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24).
+5. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist.
+6. **Closed no-op items** — account fixture polish, variable PDP bottom CTA, billing edit field subset; do not revive without product scope.
 
 **Do not bypass without explicit scope:**
 

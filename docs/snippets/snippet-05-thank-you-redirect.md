@@ -1,6 +1,7 @@
 # Snippet 5: Thank You Redirect
 
 > Read-only export from Local `wp_snippets` — **2026-05-22**. Do not edit production DB from this file.
+> Current decision (2026-05-25): keep inactive. Canonical Woo `order-received` UI is handled by child theme commit `f9a7b95`; this redirect points to a broken host and should not be re-enabled.
 
 ## Metadata
 

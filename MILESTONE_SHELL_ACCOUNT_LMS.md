@@ -1,6 +1,6 @@
 # ATMO shell + account/LMS MVP — milestone snapshot
 
-> **Date:** 2026-05-22 baseline · **updated 2026-05-24** (account fixture polish closed)
+> **Date:** 2026-05-22 baseline · **updated 2026-05-25** (prototype coverage + order-received layer)
 > **Repos:** docs `beta html` · child theme `kadence-child` (Local)  
 > **Purpose:** concise closure record — what shipped, what fixtures exist, what stays out of scope.  
 > **Detail / rollback:** `CHANGES.md` · **open work:** `BACKLOG.md` · **adapter contract:** `LMS_ADAPTER_SPEC.md`
@@ -22,6 +22,8 @@
 
 **Update 2026-05-23 (LMS hub v1):** Account enrolled course hub at **`/my-account/my-courses/?course_id={id}`** — child theme **`81c3a7d`**; no new rewrite; lessons still on LD routes. Detail: `CHANGES.md` → *LMS account course hub v1*.
 
+**Update 2026-05-24–25 (prototype coverage):** Homepage v1 shipped (`075179f`, CSS compliance `214f6b6`), cart polish shipped (`3e4748f`), and order-received PHP confirmation layer shipped (`f9a7b95`). Server-side owner simulation PASS; real logged-in owner browser QA remains open until a valid #3801 owner session is available. Detail: `CHANGES.md` → *Order received confirmation layer `f9a7b95`*.
+
 ---
 
 ## 2. Closed surfaces
@@ -31,7 +33,8 @@
 | Header / footer | ATMO child chrome; Kadence `#masthead` / `#colophon` hidden by CSS |
 | Catalog + goal chips | MVP + **public polish complete 2026-05-23** (`6f4790b` + WP Admin content); card display titles **`4993bd9`** 2026-05-21; taxonomy-aware chip URLs **`7b163be`** 2026-05-24 — see `CHANGES.md` |
 | PDP | Simple + variable `#3614`; **hero price sync + Woo tabs 2026-05-23** (`4132f1f`, `106250d`); Snippet 12 skips variable PDP **by design** (deferred 2026-05-24) |
-| Cart / checkout / order-received | `atmo-cart.css`, `atmo-checkout.css`, `atmo-confirmation.css`; re-QA PASS |
+| Homepage | `front-page.php` + `atmo-home.css` (`075179f`, CSS cleanup `214f6b6`); Social/testimonials deferred |
+| Cart / checkout / order-received | Cart polish `3e4748f`; checkout shell `atmo-checkout.css`; order-received PHP layer `f9a7b95` + `atmo-confirmation.css` (owner visual QA still open) |
 | Payment failed | `/payment-failed/` → **200** static page (WP **#3807** + `page-payment-failed.php` / `atmo-payment-failed.css`, `c9ac2b1`); Woo order-specific failed UX stays on order-received |
 | Woo My Account | Auth, dashboard, orders, view-order, settings, hidden endpoints — shell/wiring done |
 | **`/my-account/my-courses/`** | Woo endpoint **`my-courses`** · adapter `get_enrolled_courses()` · empty + enrolled list · dashboard «Следующий шаг» wired |
@@ -135,10 +138,11 @@ Full contract: `LMS_ADAPTER_SPEC.md` §2–§5 · mapping: `WP_DEPENDENCY_MAP.md
 
 ## 7. Remaining backlog (summary)
 
-**Canonical open tasks:** `BACKLOG.md` §1–§5.
+**Canonical open tasks:** `BACKLOG.md` §0–§6a.
 
 - **Account fixture polish:** **closed 2026-05-24** — no mandatory account theme work; dev pill removed (`dc1e2be`); see `CHANGES.md`
 - **LMS polish:** lesson H1 number prefix **done `caaaa96`**; **`atmo-lms-lite` bridge decision** — defer runtime integration until stable read API + cutover
+- **Prototype coverage:** order-received owner visual QA, checkout steps, static `/trainer/` + legal routes, 404, course hub/lesson visual polish — see `BACKLOG.md` §0
 - **Optional polish:** PDP optional rows (full hero redesign cosmetic only)
 - **Closed / config:** billing edit field subset — Checkout Field Editor + Woo settings; not child-theme work (2026-05-24)
 - **Avoid unless explicit:** payments, saved cards, test orders; downloads/shipping blocks until real fixtures exist
@@ -152,9 +156,9 @@ Fixtures: **679/#3801** enrolled · **691** zero-enrollment · **#3800** pending
 
 **Option A — pause implementation:** treat shell + account/LMS MVP as a stable baseline; pick polish or fixtures only when needed.
 
-**Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first pick:
+**Option B — one scoped backlog item:** choose **one** row from `BACKLOG.md` with explicit scope before coding — recommended first picks:
 
-> Pick one scoped item from `BACKLOG.md`: explicit `atmo-lms-lite` API/cutover contract when product-ready, or optional full PDP hero redesign (cosmetic). Static `/payment-failed/` shipped (2026-05-24). Variable PDP bottom CTA **deferred by design** (2026-05-24) — not next mandatory work. Lesson-number prefix is done (`caaaa96`). Account fixture polish is closed — do not treat as next mandatory phase. Do not touch LearnDash templates without adapter-backed scope.
+> First close order-received owner browser QA when a valid #3801 owner session exists. Then pick checkout steps or static missing routes (`/trainer/`, `/terms/`, `/privacy/`, 404) before returning to optional PDP/LMS polish. `atmo-lms-lite` work waits for product-ready API/cutover scope.
 
 Do **not** resume generic shell CSS unless a functional gap is found.
 
@@ -173,4 +177,4 @@ Do **not** resume generic shell CSS unless a functional gap is found.
 
 ---
 
-*Snapshot v1.1 — baseline 2026-05-22 · hub v1 update 2026-05-23. Keep narrative history in `CHANGES.md`; open tasks in `BACKLOG.md`.*
+*Snapshot v1.2 — baseline 2026-05-22 · prototype coverage update 2026-05-25. Keep narrative history in `CHANGES.md`; open tasks in `BACKLOG.md`.*

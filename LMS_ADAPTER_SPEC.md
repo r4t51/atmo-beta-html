@@ -1,6 +1,6 @@
 # LMS Adapter Spec v0
 
-> **Status:** route live (adapter MVP) · **account course hub v1 done (`81c3a7d`)** · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **2026-05-22–23**
+> **Status:** route live (adapter MVP) · **account course hub v1 done (`81c3a7d`)** · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **updated 2026-05-25**
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
@@ -372,7 +372,7 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 | **Rewrite flush** | New endpoint 404 until permalinks flushed | One-time flush after registration commit; do not flush on every `init` |
 | **Fake `atmo-courses` menu** | ~~Label collision~~ | **Resolved `ecfd8f5`** — fake slug removed; **«Программы»** header/footer only |
 | **Code Snippets** | Logic in DB, not VCS | **Done:** `docs/snippets/` export — re-export when DB changes |
-| **Thank-you redirect** | Snippet #5 broken URL, inactive | Separate thank-you spec before any post-checkout redirect |
+| **Thank-you redirect** | Snippet #5 broken URL, inactive | Keep inactive. Canonical Woo `order-received` layer now lives in child theme (`f9a7b95`); no redirect needed |
 | **Product ↔ course map** | ~~Woo ID ≠ LD ID~~ | **Discovered:** `_related_course` + variation-first resolver — `CHANGES.md` 2026-05-22 |
 | **Access expiry** | ~~LD `expire_access` off~~ | **Decided:** adapter computes from LD `starts_at` + Woo duration label — `CHANGES.md` 2026-05-22 |
 | **Lesson URLs** | Continue CTAs land on LD lesson URLs | **Current:** `/lessons/` keeps LD template with ATMO chrome CSS/filters (`ed7afcf`, `1e08a3d`, `897409c`); entry H1 **`Урок N · {title}`** via title filter (`caaaa96`); no child template override |
@@ -623,4 +623,4 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 ---
 
-*Spec v0 — 2026-05-22–24. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, account course hub v1, LD lesson chrome v1/v2, lesson H1 prefix (`caaaa96`), zero-enrollment QA, and `atmo-lms-lite` bridge decision shipped/recorded; next: optional catalog/PDP polish · explicit `atmo-lms-lite` API/cutover contract when product-ready.*
+*Spec v0 — 2026-05-22–25. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, account course hub v1, LD lesson chrome v1/v2, lesson H1 prefix (`caaaa96`), zero-enrollment QA, and `atmo-lms-lite` bridge decision shipped/recorded. Active next work lives in `BACKLOG.md` §0; `atmo-lms-lite` API/cutover contract waits until product-ready.*
