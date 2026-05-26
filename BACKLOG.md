@@ -4,6 +4,8 @@
 > **Milestone:** `MILESTONE_SHELL_ACCOUNT_LMS.md` (baseline 2026-05-22 · updated 2026-05-25 order-received layer + prototype coverage).
 > History/rollback: `CHANGES.md` · Child theme: `kadence-child` · Prototypes: this repo.
 
+> **2026-05-26 safety reset:** VPS staging/deploy work is paused after production was restored from an OVH snapshot. Treat server-side changes after the snapshot as untrusted until re-audited. See `STAGING_POSTMORTEM_2026-05-26.md`.
+
 ---
 
 ## Done — ATMO shell/wiring phase (re-QA 2026-05-22)
@@ -150,6 +152,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 ## 0. Prototype coverage — current next work
 
 Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype. Treat this section as the active shortlist.
+
+**Operational blocker before any staging/deploy continuation:** complete a fresh read-only staging audit from the post-snapshot state. Current verified staging fingerprint must be `/var/www/staging` + `https://staging.atmo.by` + `DB_NAME=atmo_staging`. Do not continue deploy/runtime edits until the safety gate in `DEPLOY_CHECKLIST.md` is passed.
 
 | Priority | Item | Notes |
 |----------|------|-------|

@@ -6,6 +6,28 @@
 
 > **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **legacy `/catalog/` redirect shipped (`a0ec00b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; **LearnDash CSS dequeue on non-LD routes shipped (`9d8c49e`)**; **LearnDash JS dequeue on non-LD routes shipped (`e12bdba`)**; **UI polish batch shipped (`9d33b8a`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
 
+> **Production/staging incident note (2026-05-26):** VPS production was restored from an OVH snapshot after a staging workflow/theme-admin incident caused a production critical error. Server-side runtime changes after the snapshot are not trusted as current state. See `STAGING_POSTMORTEM_2026-05-26.md`; staging is back to pre-staging until re-audited.
+
+---
+
+## 2026-05-26 — VPS staging workflow paused after production restore
+
+- **Scope:** documentation / incident record only; no code changes in child theme; no server writes from this docs update.
+- **Event:** During VPS staging work, production showed the new ATMO shell and then hit a WordPress critical error after theme switching in WP Admin.
+- **Recovery:** Production was restored from an OVH snapshot taken around 10:00. This restored service, but also invalidated any server-side changes made after the snapshot unless re-audited.
+- **Verified after restore:**
+  - prod nginx root: `/var/www/atmo`
+  - staging nginx root: `/var/www/staging`
+  - prod DB: `wordpress`
+  - staging DB: `atmo_staging`
+  - prod `siteurl/home`: `https://atmo.by`
+  - staging `siteurl/home`: `https://staging.atmo.by`
+  - prod/staging theme options: `stylesheet=kadence`, `template=kadence`
+  - agent SSH key not present after restore (`authorized_keys` empty)
+- **Likely contributing factor:** shell history showed real `wp search-replace` commands run in both directions during staging setup; staging was temporarily rewritten toward production URL, which could make browser/admin flows land on production.
+- **Current conclusion:** treat staging as **not deployed**; all post-snapshot staging runtime claims require fresh read-only audit before any new write.
+- **Safety update:** `STAGING_POSTMORTEM_2026-05-26.md` added; `DEPLOY_CHECKLIST.md`, `ONBOARDING.md`, and `BACKLOG.md` updated with safety gate / paused status.
+
 ---
 
 ## 2026-05-25 — LearnDash JS dequeue on non-LD routes `e12bdba`

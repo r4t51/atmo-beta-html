@@ -2,6 +2,8 @@
 
 Короткий вход в проект редизайна ATMO.BY.
 
+> **Safety reset (2026-05-26):** VPS staging/deploy work is paused after a production incident recovered by OVH snapshot restore. Before any server-side work, read `STAGING_POSTMORTEM_2026-05-26.md` and `DEPLOY_CHECKLIST.md` section 0. Server runtime claims after the snapshot are not trusted until re-audited.
+
 ## Где что лежит
 
 | Что | Путь / URL |

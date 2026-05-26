@@ -5,9 +5,37 @@
 **Purpose:** ordered runbook for staging/production parity with the current Local ATMO.BY redesign
 **Scope note:** deploying **`kadence-child` via git is necessary but not sufficient** — non-git runtime steps below must also be applied.
 
+> **PAUSED / superseded by incident note (2026-05-26):** an attempted VPS staging workflow ended in a production critical error and production was restored from an OVH snapshot. Treat all server-side actions after the snapshot as untrusted unless re-audited. Before using this checklist again, read `STAGING_POSTMORTEM_2026-05-26.md` and complete the safety gate in section 0 below.
+
 **References:** `CHANGES.md` · `BACKLOG.md` · `WP_DEPENDENCY_MAP.md` · `ONBOARDING.md` · `docs/snippets/` · handoff `C:\tmp\atmo-handoff\`
 
 ---
+
+## 0. Mandatory safety gate after 2026-05-26 incident
+
+- [ ] Confirm current work is staging, not production.
+- [ ] Print and review the staging fingerprint before any write:
+
+```bash
+cd /var/www/staging
+pwd
+wp option get siteurl --skip-themes --skip-plugins
+grep DB_NAME wp-config.php
+```
+
+Expected:
+
+```text
+/var/www/staging
+https://staging.atmo.by
+define( 'DB_NAME', 'atmo_staging' );
+```
+
+- [ ] Confirm production fingerprint separately if needed; production writes are forbidden unless explicitly scoped as production/emergency.
+- [ ] Do not use Cursor/agent write SSH access by default.
+- [ ] Do not run real `wp search-replace` before a reviewed `--dry-run --report-changed-only`.
+- [ ] Confirm WP Admin address bar before any admin change: staging must be `https://staging.atmo.by/wp-admin/`.
+- [ ] Do not activate parent `Kadence` directly. If using a child theme, activate `Kadence Child`; parent `Kadence` only needs to exist.
 
 ## 1. Preflight
 
