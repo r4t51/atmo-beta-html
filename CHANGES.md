@@ -31,6 +31,7 @@
 - **Follow-up read-only QA (2026-05-29):** guest `/my-account/my-courses/` gate **PASS** (Woo login form, no course leakage); LevelUp ID mapping confirmed — Woo product **2903**, LearnDash course **2905**, hub **`?course_id=2905`** works when LD enrollment is present.
 - **Woo `woo_order` stage2 QA PASS (2026-05-29):** manual completed order **#3910** for **r4t5**, product **«Живот и Тазовое дно - 60 дней»**, LD course **3616**. `/my-account/my-courses/` shows exactly one Живот card with **60 дней**, **2 мая 2026 → 1 июля 2026**; Woo grant wins over manual fallback; hub **`?course_id=3616`** + lesson return link PASS; order visible in account orders/view-order as **Выполнен**, **399zł**. No prod redirect/fatal; checkout loaded read-only, not submitted.
 - **PHPUnit Commit 3b (2026-05-29):** **`c2041d7`** — `test(lms): add adapter helper unit tests` (`kadence-child`); local PHPUnit 10 harness for pure adapter helpers, **19 tests / 31 assertions PASS** via `C:\xampp\php\php.exe composer.phar test`; no CI, no WP/Woo/LD integration tests.
+- **Local post-adapter regression PASS (2026-05-29):** `http://atmoredesign.local/` read-only sweep after `ec5982c` / `9bb70ed` / `c2041d7`: guest my-courses login gate; r4t5 / order **#3801** single Woo-enriched card + hub **3616** + lesson return link; `atmo-qa-empty` empty state; public `/courses/`, catalog, PDP `abdomen_pelvic`, cart shell; mobile 390px my-courses/hub no horizontal overflow. Checkout gateway UI not re-tested because cart was empty by instruction.
 
 ---
 

@@ -300,4 +300,4 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 ---
 
-*Last synced: 2026-05-25 (LearnDash JS dequeue `e12bdba`; LearnDash CSS dequeue `9d8c49e`; UI polish batch `9d33b8a`; plugin enqueue tightening; order-received QA PASS)*
+*Last synced: 2026-05-29 (LMS adapter extraction `ec5982c`; manual LD fallback `9bb70ed`; PHPUnit `c2041d7`; stage2 manual + Woo #3910 QA PASS; Local post-adapter regression PASS)*
