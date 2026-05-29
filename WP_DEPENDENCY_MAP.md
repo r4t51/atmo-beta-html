@@ -188,8 +188,8 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 
 | Plugin | Статус | Важное |
 |---|---|---|
-| `atmo-reflection-forms` | active | shortcode `[atmo_reflection]`, таблица `wp_atmo_reflection_entries`; CSS/JS **Local fix 2026-05-25** — only on logged-in `sfwd-lessons` with shortcode; **outside git** — deploy via handoff patch or copy fixed Local PHP; `.bak` rollback only (`CHANGES.md`) |
-| `learndash-training-diary` | active | shortcodes `[training_diary]`, `[ldtd_progress_photos]`, `[ldtd_progress_compare]`; `ldtd.css` **Local fix 2026-05-25** — only on logged-in lessons with matching shortcodes; `ldtd-progress-photos.js` shortcode-scoped; **outside git** — same deploy path as reflection plugin |
+| `atmo-reflection-forms` | active | shortcode `[atmo_reflection]`, таблица `wp_atmo_reflection_entries`; CSS/JS **Local fix 2026-05-25** — only on logged-in `sfwd-lessons` with shortcode; deploy via `docs/patches/plugin-enqueue/` patch or copy fixed Local PHP; `.bak` rollback only (`CHANGES.md`) |
+| `learndash-training-diary` | active | shortcodes `[training_diary]`, `[ldtd_progress_photos]`, `[ldtd_progress_compare]`; `ldtd.css` **Local fix 2026-05-25** — only on logged-in lessons with matching shortcodes; `ldtd-progress-photos.js` shortcode-scoped; deploy via `docs/patches/plugin-enqueue/` patch or copy fixed Local PHP |
 | `atmo-redesign-preview` | mu-plugin | temporary preview/integration layer |
 | `atmo-lms-lite` | active (in development) | future LMS replacement; **bridge only** on Local — empty tables; no theme UI dependency until explicit cutover |
 
@@ -231,7 +231,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 |---|---|---|
 | R1 | Зависимость от Kadence parent hooks/CSS | Средний |
 | R2 | Code Snippets не в VCS | Высокий |
-| R3 | ~~Plugin global asset bleed~~ — **fixed locally 2026-05-25** (`atmo-reflection-forms` + `ldtd.css` conditional enqueue); **residual: deploy risk** — outside git, apply `C:\tmp\atmo-handoff\plugin-enqueue-tightening-*.patch` or tracked plugin repo | Низкий (deploy) |
+| R3 | ~~Plugin global asset bleed~~ — **fixed locally 2026-05-25** (`atmo-reflection-forms` + `ldtd.css` conditional enqueue); **residual: deploy risk** — apply `docs/patches/plugin-enqueue/plugin-enqueue-tightening-*.patch` or use tracked plugin repo | Низкий (deploy) |
 | R3b | ~~LearnDash CSS site-wide bleed~~ — **fixed child theme `9d8c49e` 2026-05-25** — conditional dequeue on non-LD routes; **`learndash-admin-bar`** kept when logged in; **residual:** handle re-audit after LearnDash/Kadence updates | Низкий |
 | R3c | ~~LearnDash JS site-wide bleed~~ — **fixed child theme `e12bdba` 2026-05-25** — conditional dequeue of 5-script bundle on non-LD routes; LD routes preserve JS; separate from CSS **`9d8c49e`** and outside-git plugin enqueue; **residual:** handle re-audit; LD shortcodes/widgets on non-LD pages would need exception | Низкий |
 | R4 | нестандартный cart URL `/cart-2/` | Средний |

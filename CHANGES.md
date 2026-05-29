@@ -156,8 +156,9 @@
   - **`atmo-reflection-forms`** — CSS/JS only when user logged in + `is_singular('sfwd-lessons')` + post has `[atmo_reflection]`
   - **`learndash-training-diary`** — `ldtd.css` only when user logged in + `is_singular('sfwd-lessons')` + post has one of `[training_diary]`, `[ldtd_progress_photos]`, `[ldtd_progress_compare]`
 - **Audit artifacts (handoff, not VCS):**
-  - **Deploy (canonical):** `C:\tmp\atmo-handoff\plugin-enqueue-tightening-atmo-reflection-forms.patch`, `C:\tmp\atmo-handoff\plugin-enqueue-tightening-learndash-training-diary.patch`
-  - **Rollback only (pre-change, do not deploy):** `C:\tmp\atmo-handoff\atmo-reflection-forms.php.bak`, `C:\tmp\atmo-handoff\learndash-training-diary.php.bak`
+- **Deploy (canonical):** `C:\tmp\atmo-handoff\plugin-enqueue-tightening-atmo-reflection-forms.patch`, `C:\tmp\atmo-handoff\plugin-enqueue-tightening-learndash-training-diary.patch`
+- **Rollback only (pre-change, do not deploy):** `C:\tmp\atmo-handoff\atmo-reflection-forms.php.bak`, `C:\tmp\atmo-handoff\learndash-training-diary.php.bak`
+- **Preserved in docs repo (2026-05-29):** patch copies live under `docs/patches/plugin-enqueue/` so the fix is recoverable from GitHub; `C:\tmp\atmo-handoff\` remains the original handoff location.
 - **Deployment:** fix is **not deploy-safe by git pull** — apply handoff patches (preferred) or copy the **already-fixed** Local plugin PHP files into the target environment; tracked plugin repo is the long-term preferred path; **`.bak` files are rollback/audit only — copying them would revert the fix**
 - **Technical:** PHP lint PASS on both changed plugin files (Local)
 - **Guest QA PASS:** `/`, `/каталог/` — no `atmo-reflection-forms.css/js`, no `ldtd.css`

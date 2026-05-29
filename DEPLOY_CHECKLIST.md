@@ -7,7 +7,7 @@
 
 > **PAUSED / superseded by incident note (2026-05-26):** an attempted VPS staging workflow ended in a production critical error and production was restored from an OVH snapshot. Treat all server-side actions after the snapshot as untrusted unless re-audited. Before using this checklist again, read `STAGING_POSTMORTEM_2026-05-26.md` and complete the safety gate in section 0 below.
 
-**References:** `CHANGES.md` · `BACKLOG.md` · `WP_DEPENDENCY_MAP.md` · `ONBOARDING.md` · `docs/snippets/` · handoff `C:\tmp\atmo-handoff\`
+**References:** `CHANGES.md` · `BACKLOG.md` · `WP_DEPENDENCY_MAP.md` · `ONBOARDING.md` · `docs/snippets/` · `docs/patches/plugin-enqueue/` · handoff `C:\tmp\atmo-handoff\`
 
 ---
 
@@ -75,8 +75,8 @@ Apply after (or in parallel with) child theme deploy. **Git pull alone does not 
 
 | Item | Required action | Source / reference | Risk if skipped | Verify |
 |------|-----------------|-------------------|-----------------|--------|
-| **Plugin enqueue — reflection** | Apply patch or copy fixed PHP into `wp-content/plugins/atmo-reflection-forms/` | `C:\tmp\atmo-handoff\plugin-enqueue-tightening-atmo-reflection-forms.patch` · `CHANGES.md` 2026-05-25 | Reflection CSS/JS loads site-wide on all pages | Guest `/`, `/каталог/`: no reflection assets; lesson with shortcode: assets present |
-| **Plugin enqueue — training diary** | Apply patch or copy fixed PHP into `wp-content/plugins/learndash-training-diary/` | `C:\tmp\atmo-handoff\plugin-enqueue-tightening-learndash-training-diary.patch` · `CHANGES.md` | `ldtd.css` loads site-wide | Guest non-LD routes: no `ldtd.css`; diary lesson: `#ldtd` + CSS |
+| **Plugin enqueue — reflection** | Apply patch or copy fixed PHP into `wp-content/plugins/atmo-reflection-forms/` | `docs/patches/plugin-enqueue/plugin-enqueue-tightening-atmo-reflection-forms.patch` · `CHANGES.md` 2026-05-25 | Reflection CSS/JS loads site-wide on all pages | Guest `/`, `/каталог/`: no reflection assets; lesson with shortcode: assets present |
+| **Plugin enqueue — training diary** | Apply patch or copy fixed PHP into `wp-content/plugins/learndash-training-diary/` | `docs/patches/plugin-enqueue/plugin-enqueue-tightening-learndash-training-diary.patch` · `CHANGES.md` | `ldtd.css` loads site-wide | Guest non-LD routes: no `ldtd.css`; diary lesson: `#ldtd` + CSS |
 | **Plugin `.bak` files** | **Do not deploy** — rollback/audit only | `atmo-reflection-forms.php.bak`, `learndash-training-diary.php.bak` in handoff | Reverts enqueue fix if copied to plugins | N/A |
 | **Code Snippets DB sync** | Import/sync active snippets from export; confirm Snippet **12** variable PDP skip and Snippet **#5** remains **inactive** | `docs/snippets/` · `_manifest.json` (exported 2026-05-22 — re-export if Local changed) · `WP_DEPENDENCY_MAP.md` | PDP pricing/bottom CTA/quiz meta diverges; broken thank-you redirect if #5 enabled | Snippet 12 active; #5 inactive; variable PDP: 1 hero `form.variations_form`, 0 duplicate bottom form |
 | **CookieYes RU banner** | Replicate plugin settings: default lang **ru**, banner + preference panel copy | `CHANGES.md` 2026-05-22 CookieYes QA · `wp_options` / `wp_cky_*` / uploads `cookieyes/` | English banner or wrong consent UX | RU notice bar; «Настроить» opens RU panel; no EN CookieYes strings |

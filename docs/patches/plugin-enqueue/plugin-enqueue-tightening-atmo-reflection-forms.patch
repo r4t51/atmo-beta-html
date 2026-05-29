@@ -1,0 +1,24 @@
+﻿diff --git "a/C:\\tmp\\atmo-handoff\\atmo-reflection-forms.php.bak" "b/D:\\Local Sites\\atmo_redesign\\app\\public\\wp-content\\plugins\\atmo-reflection-forms\\atmo-reflection-forms.php"
+index 67598ef..64ac70e 100644
+--- "a/C:\\tmp\\atmo-handoff\\atmo-reflection-forms.php.bak"
++++ "b/D:\\Local Sites\\atmo_redesign\\app\\public\\wp-content\\plugins\\atmo-reflection-forms\\atmo-reflection-forms.php"	
+@@ -16,6 +16,19 @@ define('ATMO_RF_DB_VERSION', '1.1.0');
+ add_action('wp_enqueue_scripts', 'atmo_rf_enqueue_assets');
+ 
+ function atmo_rf_enqueue_assets() {
++    if (!is_user_logged_in()) {
++        return;
++    }
++
++    if (!is_singular('sfwd-lessons')) {
++        return;
++    }
++
++    $post = get_post();
++    if (!$post || !has_shortcode($post->post_content, 'atmo_reflection')) {
++        return;
++    }
++
+     wp_enqueue_style(
+         'atmo-reflection-forms',
+         plugin_dir_url(__FILE__) . 'assets/atmo-reflection-forms.css',

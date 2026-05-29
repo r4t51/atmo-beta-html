@@ -1,0 +1,50 @@
+﻿diff --git "a/C:\\tmp\\atmo-handoff\\learndash-training-diary.php.bak" "b/D:\\Local Sites\\atmo_redesign\\app\\public\\wp-content\\plugins\\learndash-training-diary\\learndash-training-diary.php"
+index a3967c1..bd85241 100644
+--- "a/C:\\tmp\\atmo-handoff\\learndash-training-diary.php.bak"
++++ "b/D:\\Local Sites\\atmo_redesign\\app\\public\\wp-content\\plugins\\learndash-training-diary\\learndash-training-diary.php"	
+@@ -26,15 +26,38 @@ class LD_Training_Diary {
+         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
+     }
+ 
++    private function post_has_ldtd_shortcodes($post) {
++        if (!$post || !isset($post->post_content)) {
++            return false;
++        }
++
++        $content = $post->post_content;
++
++        return has_shortcode($content, 'training_diary')
++            || has_shortcode($content, 'ldtd_progress_photos')
++            || has_shortcode($content, 'ldtd_progress_compare');
++    }
++
+     public function enqueue_assets() {
+-        if ( is_user_logged_in() ) {
+-            wp_enqueue_style(
+-                'ldtd-styles',
+-                LDTD_PLUGIN_URL . 'assets/css/ldtd.css',
+-                [],
+-                '1.4.2'
+-            );
++        if (!is_user_logged_in()) {
++            return;
+         }
++
++        if (!is_singular('sfwd-lessons')) {
++            return;
++        }
++
++        $post = get_post();
++        if (!$this->post_has_ldtd_shortcodes($post)) {
++            return;
++        }
++
++        wp_enqueue_style(
++            'ldtd-styles',
++            LDTD_PLUGIN_URL . 'assets/css/ldtd.css',
++            [],
++            '1.4.2'
++        );
+     }
+ 
+     public function i18n() {

@@ -97,7 +97,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 - **Local runtime fix (outside git)** — `atmo-reflection-forms.php` + `learndash-training-diary.php` on Local only
 - Reflection CSS/JS and `ldtd.css` now load only on logged-in `sfwd-lessons` posts with matching shortcodes; `ldtd-progress-photos.js` unchanged (already shortcode-scoped)
-- Handoff patches under `C:\tmp\atmo-handoff\` — see `CHANGES.md`; **deploy:** apply patches or copy already-fixed Local plugin PHP files; **`.bak` = rollback only**; tracked plugin repo preferred long-term — not child-theme git pull
+- Preserved patches under `docs/patches/plugin-enqueue/` (mirrored from `C:\tmp\atmo-handoff\`) — see `CHANGES.md`; **deploy:** apply patches or copy already-fixed Local plugin PHP files; **`.bak` = rollback only**; tracked plugin repo preferred long-term — not child-theme git pull
 - Guest + owner QA PASS — r4t5 **9/9** routes — see `CHANGES.md`; R3 closed locally; **residual risk = deployment/documentation only**
 
 ### `atmo-lms-lite` bridge decision (2026-05-24)
