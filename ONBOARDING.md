@@ -9,7 +9,7 @@
 > - WP child theme canonical remote: `https://github.com/r4t51/atmo-kadence-child.git`
 > - Local docs/prototype path: `D:\!redesign ATMO_BY\beta html`
 > - Local child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`
-> - Do not treat `wp-atmo-child/kadence-atmo` as canonical theme code; it is an old prototype/theme archive candidate.
+> - Do not treat `wp-atmo-child/kadence-atmo` as canonical theme code; it is an archived prototype theme. See `wp-atmo-child/README.md`.
 
 ## Где что лежит
 
