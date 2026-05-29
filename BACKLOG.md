@@ -208,7 +208,7 @@ Deploy risk (outside git): plugin enqueue fix on Local only — apply handoff pa
 | ~~**Lesson-number prefix in title**~~ | ✅ Done **`caaaa96`** 2026-05-24 — «Урок N ·» on Kadence entry H1; hub outline order; logged-in only — see `CHANGES.md` |
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
-| **PHPUnit adapter unit tests (Commit 3b)** | **P2** — minimal `phpunit/phpunit` in `kadence-child` for pure helpers (`pick_winning_grant`, `parse_access_type`, etc.); no CI yet; see handoff discovery — **not started** |
+| ~~**PHPUnit adapter unit tests (Commit 3b)**~~ | ✅ Done **`c2041d7`** 2026-05-29 — minimal PHPUnit 10 harness in `kadence-child` for pure helpers (`pick_winning_grant`, `parse_access_type`, expiry/status helpers); **19 tests PASS**; no CI / no WP integration tests |
 
 **Next LMS work only when product-scoped:** explicit `atmo-lms-lite` API/cutover contract; optional plugin enqueue tightening or lesson post content cleanup. Do not treat LearnDash template overrides as the default path.
 

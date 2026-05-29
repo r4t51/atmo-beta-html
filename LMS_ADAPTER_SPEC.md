@@ -684,4 +684,4 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 ---
 
-*Spec v0 — 2026-05-22–29. Adapter MVP, extraction (`ec5982c`), manual entitlement fallback (`9bb70ed`), stage2 entitlement QA, guest gate QA, hub/lesson chrome, and `atmo-lms-lite` bridge decision shipped/recorded. Follow-ups: Woo fixture QA, LD meta verification for specific test users, optional PHPUnit (Commit 3b). `atmo-lms-lite` API/cutover waits until product-ready.*
+*Spec v0 — 2026-05-22–29. Adapter MVP, extraction (`ec5982c`), manual entitlement fallback (`9bb70ed`), adapter helper PHPUnit (`c2041d7`), stage2 entitlement QA, guest gate QA, hub/lesson chrome, and `atmo-lms-lite` bridge decision shipped/recorded. Follow-ups: Woo fixture QA, LD meta verification for specific test users, optional CI/WP integration tests later. `atmo-lms-lite` API/cutover waits until product-ready.*

@@ -29,7 +29,8 @@
   - Lesson «Вернуться к программе» → hub URL `?course_id=3616` loads (not denial).
   - No PHP fatal / Redis fatal; no redirect to production `atmo.by`.
 - **Follow-up read-only QA (2026-05-29):** guest `/my-account/my-courses/` gate **PASS** (Woo login form, no course leakage); LevelUp ID mapping confirmed — Woo product **2903**, LearnDash course **2905**, hub **`?course_id=2905`** works when LD enrollment is present.
-- **Follow-up QA (open):** Woo enriched path fixture **679 / #3801** is absent/not visible on stage2; `woo_order` path needs operator-created/restored completed order before read-only QA. Optional PHPUnit adapter unit tests (Commit 3b — not in this docs pass).
+- **Follow-up QA (open):** Woo enriched path fixture **679 / #3801** is absent/not visible on stage2; `woo_order` path needs operator-created/restored completed order before read-only QA.
+- **PHPUnit Commit 3b (2026-05-29):** **`c2041d7`** — `test(lms): add adapter helper unit tests` (`kadence-child`); local PHPUnit 10 harness for pure adapter helpers, **19 tests / 31 assertions PASS** via `C:\xampp\php\php.exe composer.phar test`; no CI, no WP/Woo/LD integration tests.
 
 ---
 
