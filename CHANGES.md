@@ -4,9 +4,32 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-25):** ATMO homepage v1 shipped (`075179f`, CSS cleanup `214f6b6`); account course hub v1 shipped (`81c3a7d`); **account course hub visual Phase 1 shipped (`b1d21b5`)**; **lesson plugin blocks CSS Phase 1 shipped (`d37665b`)**; **legacy `/catalog/` redirect shipped (`a0ec00b`)**; **plugin asset enqueue tightening fixed locally (outside git, 2026-05-25)**; **LearnDash CSS dequeue on non-LD routes shipped (`9d8c49e`)**; **LearnDash JS dequeue on non-LD routes shipped (`e12bdba`)**; **UI polish batch shipped (`9d33b8a`)**; LD lesson chrome v1/v2 + H1 prefix shipped (`ed7afcf`, `1e08a3d`, `897409c`, `caaaa96`); order-received confirmation layer shipped (`f9a7b95`, owner browser QA PASS 2026-05-25); checkout progress steps shipped (`1203858`); branded WP 404 shipped (`64f2aa8`); static `/payment-failed/` shipped (`c9ac2b1`); catalog polish shipped (`4993bd9`, `6f4790b`, `7b163be`); account fixture polish, billing field subset, variable PDP bottom CTA closed/deferred by decision. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-29):** LMS adapter extraction shipped (`ec5982c`); manual LearnDash entitlement fallback shipped (`9bb70ed`); stage2 entitlement QA PASS 2026-05-29 (manual LD course **3616**). Also: ATMO homepage v1 (`075179f`, `214f6b6`); account course hub v1 (`81c3a7d`, visual `b1d21b5`); lesson plugin blocks CSS Phase 1 (`d37665b`); legacy `/catalog/` redirect (`a0ec00b`); LD CSS/JS dequeue (`9d8c49e`, `e12bdba`); UI polish (`9d33b8a`); LD lesson chrome + H1 prefix; order-received (`f9a7b95`); checkout steps (`1203858`); WP 404 (`64f2aa8`); payment-failed (`c9ac2b1`); catalog polish. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
 
 > **Production/staging incident note (2026-05-26):** VPS production was restored from an OVH snapshot after a staging workflow/theme-admin incident caused a production critical error. Server-side runtime changes after the snapshot are not trusted as current state. See `STAGING_POSTMORTEM_2026-05-26.md`; staging is back to pre-staging until re-audited.
+
+---
+
+## 2026-05-29 — LMS adapter extraction + manual entitlement fallback (`ec5982c`, `9bb70ed`)
+
+- **Scope:** child theme `kadence-child` only; docs record in this repo. **Not** a production deploy claim; stage2 theme zip QA only.
+- **Child theme commits (GitHub `r4t51/atmo-kadence-child`):**
+  - **`ec5982c`** — `refactor(lms): extract adapter`
+    - New **`inc/atmo-lms-adapter.php`** — read-only Woo + LearnDash ViewModels (no hooks, no HTML).
+    - **`inc/atmo-account.php`** — LMS adapter logic removed; UI helpers (`atmo_lms_get_enrollment_status_label`, `atmo_lms_format_display_date`) remain in account.
+    - **`functions.php`** — requires adapter **before** account, lesson, confirmation.
+    - **Behavior:** no intentional runtime change; move/split only. PHP lint PASS (Local PHP 8.2).
+  - **`9bb70ed`** — `feat(lms): include manual LearnDash enrollments`
+    - **`atmo_get_enrolled_courses()`** — completed Woo grants first; then manual LD course IDs from `learndash_get_user_courses_from_meta` not already in Woo map (Woo wins per course).
+    - Manual rows: **`grant_source=learndash_manual`**, **`access_type_label`** «Доступ открыт», **`expires_at`** null → UI «Срок не указан»; **no** fake `source_order_id` / order metadata.
+    - Hub gate uses same enrolled list — manual LD enrollment unlocks **`/my-account/my-courses/?course_id=`** when course is in adapter output.
+- **Stage2 read-only QA PASS (2026-05-29):** user **r4t5**; manual LD path course **3616** («Живот и Тазовое дно»):
+  - `/my-account/my-courses/` — **1** card; «Доступ открыт», «Срок не указан»; no order ID in UI.
+  - Hub **`?course_id=3616`** — title + **14**-lesson outline.
+  - Lesson «Вернуться к программе» → hub URL `?course_id=3616` loads (not denial).
+  - No PHP fatal / Redis fatal; no redirect to production `atmo.by`.
+- **Residual (data, not Commit 2 blocker):** **`?course_id=2905`** (LevelUp) still **«Программа недоступна»** — course not in adapter list / LD meta for **r4t5** on stage2; direct lesson URL can still work. Bulk admin grant ≠ automatic appearance in `learndash_get_user_courses_from_meta` for every course.
+- **Follow-up QA (open):** Woo enriched path fixture **679 / #3801** on stage2; guest login gate on `/my-account/my-courses/`; optional PHPUnit adapter unit tests (Commit 3b — not in this docs pass).
 
 ---
 

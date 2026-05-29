@@ -104,12 +104,14 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 - Future LearnDash replacement; active on Local but **defer runtime integration** — empty enrollment/access tables; no theme-facing front-end API/UI; stay LearnDash-backed ViewModels until stable read API + cutover readiness — see `CHANGES.md`
 
-### LMS adapter entitlement fallback (2026-05-29)
+### LMS adapter entitlement fallback (2026-05-29) — **Done / Shipped**
 
-- **Decision:** "Мои курсы" should be entitlement-first. Manual/admin LearnDash course access must surface in `/my-account/my-courses/` and account hub, even without a Woo completed order. Woo order context enriches cards/hubs with duration, expiry, source order, and renewal metadata; it is not the sole visibility gate.
-- **Stage2 evidence:** manual LD access for `r4t5` opens direct course/lesson pages, but current adapter still shows empty my-courses and hub denial. This is an adapter data-contract gap, not a child-theme activation regression.
-- **Implementation target:** after adapter extraction, add LearnDash entitlement fallback rows with `grant_source=learndash_manual`, generic access copy («Доступ открыт» / «Срок не указан»), no fake order metadata, and hub access when LD enrollment exists.
-- **QA target:** manual LD grant → my-courses card → account hub → lesson; Woo completed-order fixture remains separate for enriched paid-access metadata.
+- **Shipped:** child theme **`ec5982c`** (adapter → `inc/atmo-lms-adapter.php`) + **`9bb70ed`** (manual LD fallback, Woo-first merge, `grant_source=learndash_manual`).
+- **Stage2 QA PASS (2026-05-29):** **r4t5**, course **3616** — my-courses card («Доступ открыт», «Срок не указан»), hub + 14 lessons, lesson return link to hub; no fatal/prod redirect.
+- **Follow-up (open):**
+  - Woo completed-order fixture QA for enriched **`woo_order`** path (e.g. user/order **679 / #3801** on stage2 if fixture restored).
+  - Guest **`/my-account/my-courses/`** login gate check if needed.
+  - Verify LD meta enrollment for test users when expecting specific courses (e.g. **2905** — lesson may open while hub denied if not in `learndash_get_user_courses_from_meta`).
 
 ### Static payment-failed page (2026-05-24)
 
@@ -206,6 +208,7 @@ Deploy risk (outside git): plugin enqueue fix on Local only — apply handoff pa
 | ~~**Lesson-number prefix in title**~~ | ✅ Done **`caaaa96`** 2026-05-24 — «Урок N ·» on Kadence entry H1; hub outline order; logged-in only — see `CHANGES.md` |
 | ~~Pending-order rows on my-courses~~ | ✅ Closed 2026-05-23 — #3800 is ghost (0 items); excluded by design; no UI change; keep #3800 for cancel/expired shell QA |
 | **`atmo-lms-lite` runtime integration** | **Deferred / bridge only** — future replacement; Local tables empty; no current theme UI dependency; next step = explicit API/cutover contract when product-ready — not blocking redesign |
+| **PHPUnit adapter unit tests (Commit 3b)** | **P2** — minimal `phpunit/phpunit` in `kadence-child` for pure helpers (`pick_winning_grant`, `parse_access_type`, etc.); no CI yet; see handoff discovery — **not started** |
 
 **Next LMS work only when product-scoped:** explicit `atmo-lms-lite` API/cutover contract; optional plugin enqueue tightening or lesson post content cleanup. Do not treat LearnDash template overrides as the default path.
 

@@ -1,10 +1,10 @@
 # LMS Adapter Spec v0
 
-> **Status:** route live (adapter MVP) · **account course hub v1 done (`81c3a7d`)** · **hub visual Phase 1 done (`b1d21b5`)** · **lesson plugin blocks CSS Phase 1 done (`d37665b`)** · **ViewModel sign-off done** · **endpoint shell done (`ecfd8f5`)** · **adapter MVP done (`a352081`)** · **dashboard wiring done (`648e562`)** · **zero-enrollment QA done (691 / `atmo-qa-empty`)** · **updated 2026-05-25**
+> **Status:** route live (adapter MVP) · **adapter extracted (`ec5982c`)** · **manual LD entitlement fallback (`9bb70ed`)** · **stage2 entitlement QA PASS 2026-05-29** · account course hub v1 (`81c3a7d`) · hub visual Phase 1 (`b1d21b5`) · lesson plugin blocks CSS Phase 1 (`d37665b`) · endpoint shell (`ecfd8f5`) · adapter MVP (`a352081`) · dashboard wiring (`648e562`) · zero-enrollment QA (691) · **updated 2026-05-29**
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
-> **Decision update (2026-05-29):** "Мои курсы" must be entitlement-first. Any active backend course access (LearnDash manual/admin enrollment today, Woo-backed LearnDash bridge, future `atmo-lms-lite` entitlement) should produce an `EnrolledCourse`. WooCommerce order data enriches cards/hubs with purchase/access metadata; it must not be the only gate for showing an accessible course. Stage2 dry-run proved manual LD access opens course/lesson pages but current adapter still shows empty my-courses and hub denial — fix as adapter contract work, not one-off UI polish.
+> **Decision update (2026-05-29):** "Мои курсы" is **entitlement-first**. Woo order data enriches cards/hubs; it is not the sole visibility gate. **Shipped:** `ec5982c` (adapter in **`inc/atmo-lms-adapter.php`**) + `9bb70ed` (manual LD fallback, `grant_source=learndash_manual`). **Stage2 QA PASS 2026-05-29:** user **r4t5**, course **3616** — my-courses card, hub, lesson return link. **Residual:** a course must appear in **`learndash_get_user_courses_from_meta`** (and pass publish/enrollment checks) to enter the adapter list; direct lesson/admin access alone does not count. Example: LevelUp **`2905`** — lesson may open directly while hub stays denied when not in LD meta for that user.
 
 ---
 
@@ -55,6 +55,7 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 
 ### In scope (adapter layer)
 
+- **Implementation (child theme):** `inc/atmo-lms-adapter.php` — loaded from `functions.php` before account/lesson modules (`ec5982c` extraction).
 - PHP service(s) that read enrollment, progress, access, and lesson navigation from backend(s).
 - Normalized **ViewModels** (arrays/DTOs) returned to theme templates.
 - Read-only pairing of Woo **order context** with LMS enrollment where needed for display (purchase/access enrichment, not the only entitlement gate).
@@ -403,6 +404,9 @@ Before any enrolled UI or route implementation:
 - [x] **Access expiry semantics** — LD access start + Woo duration label (`CHANGES.md` 2026-05-22).
 - [x] **No LearnDash HTML in ATMO UI** — ViewModels only (§3, §4.7 #8).
 - [x] **Account course hub v1** — query URL on existing endpoint — **`81c3a7d` 2026-05-23** (§11.0d).
+- [x] **Adapter extraction** — dedicated `inc/atmo-lms-adapter.php` — **`ec5982c` 2026-05-29** (§11.0e).
+- [x] **Manual LD entitlement fallback** — Woo-first merge + `learndash_manual` rows — **`9bb70ed` 2026-05-29** (§11.0f).
+- [x] **Stage2 entitlement QA** — manual LD course **3616** card + hub + return link — **2026-05-29** (§11.0f).
 
 **After sign-off:** endpoint shell **shipped** (`ecfd8f5`); adapter MVP **shipped** (`a352081`); dashboard CTA wiring **shipped** (`648e562`); account course hub v1 **shipped** (`81c3a7d`); lesson chrome v1/v2 **shipped** (`ed7afcf`, `1e08a3d`, `897409c`); zero-enrollment empty-state QA **done** (fixture **691**); theme consumes ViewModels and scoped filters/CSS — no LD template overrides.
 
@@ -464,6 +468,31 @@ Before any enrolled UI or route implementation:
 | `/courses/` public archive | **QA PASS** — 18 programs unchanged — `CHANGES.md` |
 
 **Rollback:** delete user **691** via WP Admin or SQL; no orders/enrollments to clean.
+
+### 11.0e Adapter extraction shipped (`ec5982c` 2026-05-29)
+
+| Item | Status |
+|------|--------|
+| `inc/atmo-lms-adapter.php` | **Live** — read-only adapter; no hooks/HTML |
+| `inc/atmo-account.php` | **Slimmed** — display helpers only |
+| `functions.php` require order | **Adapter before account/lesson/confirmation** |
+| Runtime behavior | **Unchanged** — refactor/split only |
+| PHP lint | **PASS** — Local |
+
+**Rollback:** `git revert ec5982c` — restores inline adapter in account (if reverting without `9bb70ed`).
+
+### 11.0f Manual LD entitlement fallback shipped (`9bb70ed` 2026-05-29)
+
+| Item | Status |
+|------|--------|
+| `atmo_get_enrolled_courses()` merge order | **Woo grants first**, then manual LD IDs not in Woo map |
+| `grant_source` | **`woo_order`** \| **`learndash_manual`** on `EnrolledCourse` |
+| Manual row copy | «Доступ открыт» / «Срок не указан»; no fake order fields |
+| Hub gate | **Same enrolled list** — manual courses get `?course_id=` hub |
+| Stage2 QA | **PASS** — **r4t5** / course **3616** (card, hub, lesson return) |
+| Residual | Course must be in **`learndash_get_user_courses_from_meta`** — e.g. **2905** hub denied when absent from meta |
+
+**Rollback:** `git revert 9bb70ed` after `ec5982c` — Woo-only enrolled list returns.
 
 ### 11.0d Account course hub v1 shipped (`81c3a7d` 2026-05-23)
 
@@ -654,4 +683,4 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 ---
 
-*Spec v0 — 2026-05-22–25. Route, mapping, expiry, ViewModel contract, endpoint shell, adapter MVP, dashboard CTA wiring, account course hub v1, hub visual Phase 1, LD lesson chrome v1/v2, lesson H1 prefix (`caaaa96`), lesson plugin blocks CSS Phase 1 (`d37665b`), zero-enrollment QA, and `atmo-lms-lite` bridge decision shipped/recorded. Active next work lives in `BACKLOG.md` §0; `atmo-lms-lite` API/cutover contract waits until product-ready.*
+*Spec v0 — 2026-05-22–29. Adapter MVP, extraction (`ec5982c`), manual entitlement fallback (`9bb70ed`), stage2 entitlement QA, hub/lesson chrome, and `atmo-lms-lite` bridge decision shipped/recorded. Follow-ups: Woo fixture QA, guest gate, LD meta verification, optional PHPUnit (Commit 3b). `atmo-lms-lite` API/cutover waits until product-ready.*
