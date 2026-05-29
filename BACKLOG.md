@@ -110,8 +110,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - **Stage2 QA PASS (2026-05-29):** **r4t5**, course **3616** — my-courses card («Доступ открыт», «Срок не указан»), hub + 14 lessons, lesson return link to hub; no fatal/prod redirect.
 - **Follow-up (open):**
   - Woo completed-order fixture QA for enriched **`woo_order`** path (e.g. user/order **679 / #3801** on stage2 if fixture restored).
-  - Guest **`/my-account/my-courses/`** login gate check if needed.
-  - Verify LD meta enrollment for test users when expecting specific courses (e.g. **2905** — lesson may open while hub denied if not in `learndash_get_user_courses_from_meta`).
+  - ~~Guest **`/my-account/my-courses/`** login gate check~~ — **PASS 2026-05-29** (Woo login form; no enrolled course content leaked).
+  - Verify LD meta enrollment for test users when expecting specific courses; LevelUp mapping confirmed **2903 product → 2905 LD course**, and hub works when **2905** is in `learndash_get_user_courses_from_meta`.
 
 ### Static payment-failed page (2026-05-24)
 

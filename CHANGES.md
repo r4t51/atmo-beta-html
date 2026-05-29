@@ -28,8 +28,8 @@
   - Hub **`?course_id=3616`** — title + **14**-lesson outline.
   - Lesson «Вернуться к программе» → hub URL `?course_id=3616` loads (not denial).
   - No PHP fatal / Redis fatal; no redirect to production `atmo.by`.
-- **Residual (data, not Commit 2 blocker):** **`?course_id=2905`** (LevelUp) still **«Программа недоступна»** — course not in adapter list / LD meta for **r4t5** on stage2; direct lesson URL can still work. Bulk admin grant ≠ automatic appearance in `learndash_get_user_courses_from_meta` for every course.
-- **Follow-up QA (open):** Woo enriched path fixture **679 / #3801** on stage2; guest login gate on `/my-account/my-courses/`; optional PHPUnit adapter unit tests (Commit 3b — not in this docs pass).
+- **Follow-up read-only QA (2026-05-29):** guest `/my-account/my-courses/` gate **PASS** (Woo login form, no course leakage); LevelUp ID mapping confirmed — Woo product **2903**, LearnDash course **2905**, hub **`?course_id=2905`** works when LD enrollment is present.
+- **Follow-up QA (open):** Woo enriched path fixture **679 / #3801** is absent/not visible on stage2; `woo_order` path needs operator-created/restored completed order before read-only QA. Optional PHPUnit adapter unit tests (Commit 3b — not in this docs pass).
 
 ---
 

@@ -4,7 +4,7 @@
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
-> **Decision update (2026-05-29):** "Мои курсы" is **entitlement-first**. Woo order data enriches cards/hubs; it is not the sole visibility gate. **Shipped:** `ec5982c` (adapter in **`inc/atmo-lms-adapter.php`**) + `9bb70ed` (manual LD fallback, `grant_source=learndash_manual`). **Stage2 QA PASS 2026-05-29:** user **r4t5**, course **3616** — my-courses card, hub, lesson return link. **Residual:** a course must appear in **`learndash_get_user_courses_from_meta`** (and pass publish/enrollment checks) to enter the adapter list; direct lesson/admin access alone does not count. Example: LevelUp **`2905`** — lesson may open directly while hub stays denied when not in LD meta for that user.
+> **Decision update (2026-05-29):** "Мои курсы" is **entitlement-first**. Woo order data enriches cards/hubs; it is not the sole visibility gate. **Shipped:** `ec5982c` (adapter in **`inc/atmo-lms-adapter.php`**) + `9bb70ed` (manual LD fallback, `grant_source=learndash_manual`). **Stage2 QA PASS 2026-05-29:** user **r4t5**, course **3616** — my-courses card, hub, lesson return link; guest gate PASS; LevelUp mapping confirmed (**2903** product → **2905** LD course) and hub works when enrolled. **Residual:** Woo enriched `woo_order` path needs a completed-order fixture on stage2 before read-only QA.
 
 ---
 
@@ -489,8 +489,9 @@ Before any enrolled UI or route implementation:
 | `grant_source` | **`woo_order`** \| **`learndash_manual`** on `EnrolledCourse` |
 | Manual row copy | «Доступ открыт» / «Срок не указан»; no fake order fields |
 | Hub gate | **Same enrolled list** — manual courses get `?course_id=` hub |
-| Stage2 QA | **PASS** — **r4t5** / course **3616** (card, hub, lesson return) |
-| Residual | Course must be in **`learndash_get_user_courses_from_meta`** — e.g. **2905** hub denied when absent from meta |
+| Stage2 QA | **PASS** — **r4t5** / course **3616** (card, hub, lesson return); guest gate PASS |
+| LevelUp mapping | **2903** Woo product → **2905** LD course; hub works when **2905** is enrolled |
+| Residual | Woo enriched `woo_order` path pending completed-order fixture on stage2 |
 
 **Rollback:** `git revert 9bb70ed` after `ec5982c` — Woo-only enrolled list returns.
 
@@ -683,4 +684,4 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 ---
 
-*Spec v0 — 2026-05-22–29. Adapter MVP, extraction (`ec5982c`), manual entitlement fallback (`9bb70ed`), stage2 entitlement QA, hub/lesson chrome, and `atmo-lms-lite` bridge decision shipped/recorded. Follow-ups: Woo fixture QA, guest gate, LD meta verification, optional PHPUnit (Commit 3b). `atmo-lms-lite` API/cutover waits until product-ready.*
+*Spec v0 — 2026-05-22–29. Adapter MVP, extraction (`ec5982c`), manual entitlement fallback (`9bb70ed`), stage2 entitlement QA, guest gate QA, hub/lesson chrome, and `atmo-lms-lite` bridge decision shipped/recorded. Follow-ups: Woo fixture QA, LD meta verification for specific test users, optional PHPUnit (Commit 3b). `atmo-lms-lite` API/cutover waits until product-ready.*
