@@ -4,6 +4,13 @@
 
 > **Safety reset (2026-05-26):** VPS staging/deploy work is paused after a production incident recovered by OVH snapshot restore. Before any server-side work, read `STAGING_POSTMORTEM_2026-05-26.md` and `DEPLOY_CHECKLIST.md` section 0. Server runtime claims after the snapshot are not trusted until re-audited.
 
+> **Canonical repositories (2026-05-29):**
+> - Docs/prototype canonical remote: `https://github.com/r4t51/atmo-beta-html.git`
+> - WP child theme canonical remote: `https://github.com/r4t51/atmo-kadence-child.git`
+> - Local docs/prototype path: `D:\!redesign ATMO_BY\beta html`
+> - Local child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`
+> - Do not treat `wp-atmo-child/kadence-atmo` as canonical theme code; it is an old prototype/theme archive candidate.
+
 ## Где что лежит
 
 | Что | Путь / URL |
