@@ -4,6 +4,8 @@
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
+> **Decision update (2026-05-29):** "Мои курсы" must be entitlement-first. Any active backend course access (LearnDash manual/admin enrollment today, Woo-backed LearnDash bridge, future `atmo-lms-lite` entitlement) should produce an `EnrolledCourse`. WooCommerce order data enriches cards/hubs with purchase/access metadata; it must not be the only gate for showing an accessible course. Stage2 dry-run proved manual LD access opens course/lesson pages but current adapter still shows empty my-courses and hub denial — fix as adapter contract work, not one-off UI polish.
+
 ---
 
 ## 1. Purpose
@@ -55,7 +57,8 @@ Define a stable **adapter interface** between ATMO child-theme UI and LMS/Woo ba
 
 - PHP service(s) that read enrollment, progress, access, and lesson navigation from backend(s).
 - Normalized **ViewModels** (arrays/DTOs) returned to theme templates.
-- Read-only pairing of Woo **order context** with LMS enrollment where needed for display (not SoT).
+- Read-only pairing of Woo **order context** with LMS enrollment where needed for display (purchase/access enrichment, not the only entitlement gate).
+- Entitlement fallback rows for backend access without Woo order context (e.g. manual LearnDash course access).
 
 ### UI layer rules
 
@@ -113,15 +116,16 @@ Per-user enrollment + progress for one course. **Canonical access/expiry fields 
 | `completed_steps` | optional | int \| null | Lessons complete; **null** when progress unknown |
 | `total_steps` | optional | int \| null | Total lessons; **null** when progress unknown |
 | `starts_at` | optional | string \| null | ISO8601 — access window start (see §5 expiry) |
-| `order_completed_at` | optional | string \| null | ISO8601 — granting completed order (fallback start + traceability) |
-| `access_type_label` | optional | string \| null | e.g. «60 дней», «Бессрочно» — from winning order line / variation |
+| `order_completed_at` | optional | string \| null | ISO8601 — granting completed order when present (traceability/enrichment) |
+| `access_type_label` | optional | string \| null | e.g. «60 дней», «Бессрочно», «Доступ открыт» — from winning order line / variation when present; generic fallback for manual/backend grants |
 | `access_duration_days` | optional | int \| null | Parsed days; **null** = lifetime |
 | `expires_at` | optional | string \| null | ISO8601 end of finite access; **null** = lifetime — **canonical for list UI** |
 | `source_order_id` | optional | int \| null | Woo order that granted the winning access window (support / view-order link) |
 | `source_order_item_id` | optional | int \| null | Granting line item ID |
 | `source` | required | enum | `learndash` \| `atmo-lms-lite` — which backend answered |
+| `grant_source` | optional | enum | `woo_order` \| `learndash_manual` \| `atmo_lms_lite` \| `unknown` — why this row is visible in "Мои курсы" |
 
-**SoT (today):** enrollment = LearnDash + bridge; access window = §5 (LD user meta + Woo duration); progress = LD user progress APIs/meta when present (fixture user **679** has enrollment but **no** progress meta — nulls are expected).
+**SoT (today):** entitlement = LearnDash course access first (manual/admin enrollment and Woo bridge both count); access window = §5 when Woo duration/order context exists, otherwise unknown/lifetime display fallback; progress = LD user progress APIs/meta when present (fixture user **679** has enrollment but **no** progress meta — nulls are expected).
 
 **Status semantics (MVP UI):**
 
@@ -257,12 +261,12 @@ Contract accepted for MVP **`/my-account/my-courses/`**. Specific answers:
 | `CourseCard` (catalog) | Woo product (`atmo_build_course_card`) | — | Optional lite course link |
 | `CourseCard` (LMS) | LearnDash `sfwd-courses` | Goal from product attribute if linked | Lite courses module |
 | `EnrollmentState` | LearnDash user course access + progress APIs | — | Lite enrollment + access-rules |
-| `EnrolledCourse` | Compose LMS + optional order context | `OrderAccessContext` | Same interface, different driver |
+| `EnrolledCourse` | Compose backend entitlement + optional order context | `OrderAccessContext` | Same interface, different driver |
 | `LessonRef` / `LessonProgress` | LearnDash lessons + user progress | — | Lite lessons module |
 | `AccessData` | LD enrollment + adapter-computed expiry (§5) | Woo non-completed order state | Lite access-gate |
 | `OrderAccessContext` | WooCommerce order + line item meta (#15, `тип-доступа`) | — | Lite guest-orders / reconciler |
 
-**Enrollment source of truth (today):** LearnDash + LearnDash WooCommerce bridge — confirmed Code Snippets audit (`CHANGES.md` 2026-05-22). Snippet **#5** inactive. **`atmo-lms-lite`** access tables **empty on Local** — not SoT for MVP.
+**Enrollment source of truth (today):** LearnDash course access, including both manual/admin enrollment and LearnDash WooCommerce bridge. Woo orders supply access labels, duration, traceability, and renewal product context; they are enrichment, not the sole visibility gate. Snippet **#5** inactive. **`atmo-lms-lite`** access tables **empty on Local** — not SoT for MVP.
 
 ### Product ↔ course mapping (discovered 2026-05-22)
 
@@ -343,6 +347,8 @@ Minimum first ship once route + adapter are approved (maps to `courses.html` def
 2. **Enrolled list** — one or more `EnrolledCourse` rows/cards: title, status, `access_type_label` / `expires_at` when finite; **`progress_percent` only when non-null**.
 3. **Continue / next lesson CTA** — render **only** when adapter returns non-null `next_lesson` + safe `cta_url`; otherwise hub link or «Открыть программу» when `status === active`.
 4. **Expired / pending** — distinct copy and disabled lesson links when `status` is `expired` or `pending`; **`product_permalink`** for renewal; surface order hint when `OrderAccessContext` exists.
+
+**Manual/backend grant fallback (decided 2026-05-29):** if the user has LearnDash course access but no Woo completed-order context, still render an `EnrolledCourse` row and allow the account hub. Use generic copy such as «Доступ открыт» / «Срок не указан», `grant_source=learndash_manual`, `source_order_id=null`, and `expires_at=null` unless backend expiry data exists. Do not show purchase/order metadata that is not known.
 
 **Shipped beyond list MVP:** account course hub v1 at **`?course_id=`** — title, status, access meta, honest progress, lesson outline, continue CTA to LD lesson (`81c3a7d`).
 

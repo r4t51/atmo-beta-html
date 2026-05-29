@@ -104,6 +104,13 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 - Future LearnDash replacement; active on Local but **defer runtime integration** — empty enrollment/access tables; no theme-facing front-end API/UI; stay LearnDash-backed ViewModels until stable read API + cutover readiness — see `CHANGES.md`
 
+### LMS adapter entitlement fallback (2026-05-29)
+
+- **Decision:** "Мои курсы" should be entitlement-first. Manual/admin LearnDash course access must surface in `/my-account/my-courses/` and account hub, even without a Woo completed order. Woo order context enriches cards/hubs with duration, expiry, source order, and renewal metadata; it is not the sole visibility gate.
+- **Stage2 evidence:** manual LD access for `r4t5` opens direct course/lesson pages, but current adapter still shows empty my-courses and hub denial. This is an adapter data-contract gap, not a child-theme activation regression.
+- **Implementation target:** after adapter extraction, add LearnDash entitlement fallback rows with `grant_source=learndash_manual`, generic access copy («Доступ открыт» / «Срок не указан»), no fake order metadata, and hub access when LD enrollment exists.
+- **QA target:** manual LD grant → my-courses card → account hub → lesson; Woo completed-order fixture remains separate for enriched paid-access metadata.
+
 ### Static payment-failed page (2026-05-24)
 
 - **`/payment-failed/`** — static landing page (WP page ID **3807**, slug `payment-failed`) + child theme template/CSS (`c9ac2b1`)
