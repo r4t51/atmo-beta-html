@@ -4,7 +4,7 @@
 > **Scope:** ViewModel contract + adapter boundaries + endpoint plan; phase 1 shell + phase 2 adapter MVP shipped in child theme.  
 > **Related:** `BACKLOG.md` §2 · `WP_DEPENDENCY_MAP.md` LMS Map · prototypes `courses.html`, `account.html`, `product-enrolled.html`, `lesson.html`
 
-> **Decision update (2026-05-29):** "Мои курсы" is **entitlement-first**. Woo order data enriches cards/hubs; it is not the sole visibility gate. **Shipped:** `ec5982c` (adapter in **`inc/atmo-lms-adapter.php`**) + `9bb70ed` (manual LD fallback, `grant_source=learndash_manual`). **Stage2 QA PASS 2026-05-29:** user **r4t5**, course **3616** — my-courses card, hub, lesson return link; guest gate PASS; LevelUp mapping confirmed (**2903** product → **2905** LD course) and hub works when enrolled. **Residual:** Woo enriched `woo_order` path needs a completed-order fixture on stage2 before read-only QA.
+> **Decision update (2026-05-29):** "Мои курсы" is **entitlement-first**. Woo order data enriches cards/hubs; it is not the sole visibility gate. **Shipped:** `ec5982c` (adapter in **`inc/atmo-lms-adapter.php`**) + `9bb70ed` (manual LD fallback, `grant_source=learndash_manual`). **Stage2 QA PASS 2026-05-29:** user **r4t5**, course **3616** — manual card/hub/lesson return; guest gate; Woo `woo_order` path via order **#3910** with 60-day finite access; LevelUp mapping confirmed (**2903** product → **2905** LD course) and hub works when enrolled.
 
 ---
 
@@ -489,9 +489,9 @@ Before any enrolled UI or route implementation:
 | `grant_source` | **`woo_order`** \| **`learndash_manual`** on `EnrolledCourse` |
 | Manual row copy | «Доступ открыт» / «Срок не указан»; no fake order fields |
 | Hub gate | **Same enrolled list** — manual courses get `?course_id=` hub |
-| Stage2 QA | **PASS** — **r4t5** / course **3616** (card, hub, lesson return); guest gate PASS |
+| Stage2 QA | **PASS** — manual path, guest gate, and Woo `woo_order` path **#3910** for **3616** |
 | LevelUp mapping | **2903** Woo product → **2905** LD course; hub works when **2905** is enrolled |
-| Residual | Woo enriched `woo_order` path pending completed-order fixture on stage2 |
+| Woo merge proof | **#3910** wins over manual fallback — single Живот card, **60 дней**, **2 мая 2026 → 1 июля 2026** |
 
 **Rollback:** `git revert 9bb70ed` after `ec5982c` — Woo-only enrolled list returns.
 
@@ -684,4 +684,4 @@ Read-only audit of `kadence-child/inc/atmo-account.php`, `functions.php`, `atmo-
 
 ---
 
-*Spec v0 — 2026-05-22–29. Adapter MVP, extraction (`ec5982c`), manual entitlement fallback (`9bb70ed`), adapter helper PHPUnit (`c2041d7`), stage2 entitlement QA, guest gate QA, hub/lesson chrome, and `atmo-lms-lite` bridge decision shipped/recorded. Follow-ups: Woo fixture QA, LD meta verification for specific test users, optional CI/WP integration tests later. `atmo-lms-lite` API/cutover waits until product-ready.*
+*Spec v0 — 2026-05-22–29. Adapter MVP, extraction (`ec5982c`), manual entitlement fallback (`9bb70ed`), adapter helper PHPUnit (`c2041d7`), stage2 manual + Woo entitlement QA, guest gate QA, hub/lesson chrome, and `atmo-lms-lite` bridge decision shipped/recorded. Follow-ups: LD meta verification for specific test users, optional CI/WP integration tests later. `atmo-lms-lite` API/cutover waits until product-ready.*

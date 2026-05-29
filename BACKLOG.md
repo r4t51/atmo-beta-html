@@ -108,8 +108,8 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 - **Shipped:** child theme **`ec5982c`** (adapter → `inc/atmo-lms-adapter.php`) + **`9bb70ed`** (manual LD fallback, Woo-first merge, `grant_source=learndash_manual`).
 - **Stage2 QA PASS (2026-05-29):** **r4t5**, course **3616** — my-courses card («Доступ открыт», «Срок не указан»), hub + 14 lessons, lesson return link to hub; no fatal/prod redirect.
+- **Woo `woo_order` QA PASS (2026-05-29):** stage2 order **#3910** (`r4t5`, «Живот и Тазовое дно - 60 дней», 399zł, completed) — single Woo-enriched card, **60 дней**, finite dates, hub + lesson return link.
 - **Follow-up (open):**
-  - Woo completed-order fixture QA for enriched **`woo_order`** path (e.g. user/order **679 / #3801** on stage2 if fixture restored).
   - ~~Guest **`/my-account/my-courses/`** login gate check~~ — **PASS 2026-05-29** (Woo login form; no enrolled course content leaked).
   - Verify LD meta enrollment for test users when expecting specific courses; LevelUp mapping confirmed **2903 product → 2905 LD course**, and hub works when **2905** is in `learndash_get_user_courses_from_meta`.
 
