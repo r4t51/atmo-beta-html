@@ -62,7 +62,7 @@ define( 'DB_NAME', 'atmo_staging' );
 | Area | Key commits (floor) | Notes |
 |------|---------------------|-------|
 | **Shell / homepage / header / footer** | shell wiring, `075179f`, `214f6b6`, `be90ec5`, `9d33b8a` | ATMO chrome; homepage `front-page.php`; nav «Программы» → `/courses/` |
-| **Catalog / PDP / cart / checkout / order-received / payment-failed / 404** | `4993bd9`…`9d33b8a`, `4132f1f`, `106250d`, `3e4748f`, `1203858`, `f9a7b95`, `c9ac2b1`, `64f2aa8` | Shop `/каталог/`; cart `/cart-2/`; theme template for payment-failed **requires WP page** (§3) |
+| **Catalog / PDP / cart / checkout / order-received / payment-failed / 404** | `4993bd9`…`9d33b8a`, `4132f1f`, `106250d`, `3e4748f`, `1203858`, `f9a7b95`, `c9ac2b1`, `35806f0`, `64f2aa8` | Shop `/каталог/`; cart `/cart-2/`; `/payment-failed/` **code-owned** by child theme (`inc/atmo-static-routes.php`) — **no WP page required** |
 | **Account / my-courses / hub / lesson chrome / plugin block CSS** | `353346c`…`dc1e2be`, `ecfd8f5`, `a352081`, `81c3a7d`, `b1d21b5`, `ed7afcf`…`caaaa96`, `d37665b` | Hub `?course_id=`; no `kadence-child/learndash/` overrides |
 | **Redirect `/catalog/` → `/каталог/`** | `a0ec00b` | 301; query string preserved |
 | **LD CSS/JS dequeues (non-LD routes)** | `9d8c49e`, `e12bdba` | 10 CSS + 5 JS handles; LD archive/course/lesson unchanged |
@@ -80,7 +80,7 @@ Apply after (or in parallel with) child theme deploy. **Git pull alone does not 
 | **Plugin `.bak` files** | **Do not deploy** — rollback/audit only | `atmo-reflection-forms.php.bak`, `learndash-training-diary.php.bak` in handoff | Reverts enqueue fix if copied to plugins | N/A |
 | **Code Snippets DB sync** | Import/sync active snippets from export; confirm Snippet **12** variable PDP skip and Snippet **#5** remains **inactive** | `docs/snippets/` · `_manifest.json` (exported 2026-05-22 — re-export if Local changed) · `WP_DEPENDENCY_MAP.md` | PDP pricing/bottom CTA/quiz meta diverges; broken thank-you redirect if #5 enabled | Snippet 12 active; #5 inactive; variable PDP: 1 hero `form.variations_form`, 0 duplicate bottom form |
 | **CookieYes RU banner** | Replicate plugin settings: default lang **ru**, banner + preference panel copy | `CHANGES.md` 2026-05-22 CookieYes QA · `wp_options` / `wp_cky_*` / uploads `cookieyes/` | English banner or wrong consent UX | RU notice bar; «Настроить» opens RU panel; no EN CookieYes strings |
-| **WP page `/payment-failed/`** | Publish page slug **`payment-failed`**, empty content (template owns markup); not in nav | Local ref **#3807** · `c9ac2b1` · `CHANGES.md` | `/payment-failed/` 404 despite theme template | GET `/payment-failed/` → **200** + static failure copy |
+| **WP page `/payment-failed/`** | **Not required** — virtual route in child theme (`inc/atmo-static-routes.php`); optional legacy page **#3807** still compatible | `35806f0` · `CHANGES.md` 2026-05-30 | `/payment-failed/` 404 if theme deploy missing static-routes module | GET `/payment-failed/` → **200** + «Не удалось провести платёж.» · `atmo-payment-failed.css` only |
 | **`pa_goal` term `energy`** | Set display title **Энергия** (was typo on Local) | `CHANGES.md` 2026-05-23 catalog content | Wrong goal chip label on catalog cards | Catalog chip/filter shows «Энергия» |
 | **Product «Интенсив. Осанка, Шея, Лицо»** | Remove Misc category; assign **Тренировки** | `CHANGES.md` 2026-05-23 | Wrong catalog categorization | Product categories match Local intent |
 | **Product «ФИТНЕС СЕЗОН 3 – Форма и Осанка»** | Set marketing short description per Local | `CHANGES.md` 2026-05-23 | Card/PDP copy mismatch | Short description visible on catalog/PDP |
@@ -106,7 +106,7 @@ Mark each row after deploy. Use read-only checks unless explicitly scoped.
 | PDP variable **#3614** (or equivalent) | Hero price sync on variation change · **one** hero `form.variations_form` · Snippet 12 bottom CTA absent on variable (by design) |
 | `/cart-2/` | **200** · `atmo-cart.css` scope · no LD/plugin bleed |
 | `/checkout/` | With cart fixture if available: form visible · progress steps · **`#place_order` not clicked** |
-| `/payment-failed/` | **200** static page · not checkout CSS |
+| `/payment-failed/` | **200** code-owned route · `atmo-payment-failed.css` only (not checkout/confirmation CSS) |
 | `/courses/` | **200** · LD archive · LD CSS/JS **preserved** |
 
 ### 4.2 Logged-in owner / enrolled customer
@@ -139,7 +139,7 @@ Mark each row after deploy. Use read-only checks unless explicitly scoped.
 | **CookieYes** | Restore from DB backup or plugin settings export |
 | **Code Snippets** | Restore from DB backup or re-import prior export |
 | **WP content** (pages, products, LD URLs, meta) | Restore from DB backup or re-run content migration |
-| **`/payment-failed/` page** | Unpublish/delete page; optional theme revert of `c9ac2b1` files |
+| **`/payment-failed/` route** | Revert `inc/atmo-static-routes.php` + related `functions.php` hooks; optional unpublish legacy page **#3807** |
 
 ---
 

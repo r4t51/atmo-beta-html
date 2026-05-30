@@ -205,7 +205,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
   - Renders ATMO layer only for valid key + `completed` order when Woo full order flow is available.
   - Course card CTA targets account hub (`/my-account/my-courses/?course_id=...`), not direct `/lessons/`.
   - Owner browser QA PASS for #3801 at 1440×900 and 390×844 (2026-05-25).
-  - **`/payment-failed/`** → static page **#3807** + `page-payment-failed.php` + `atmo-payment-failed.css` (`c9ac2b1`, 2026-05-24).
+  - **`/payment-failed/`** → code-owned virtual route (`inc/atmo-static-routes.php`) + `page-payment-failed.php` + `atmo-payment-failed.css` (`c9ac2b1`, `35806f0`; no WP page required after 2026-05-30).
 - ✅ WP 404 — `404.php` + `atmo-404.css` (`64f2aa8`); `is_404()` enqueue; QA PASS 2026-05-25 — `CHANGES.md`.
 - ✅ Woo My Account — passes 1–5 + mobile orders fix: `assets/css/atmo-account.css`, `inc/atmo-account.php` (menu filter in `functions.php`).
   - CSS только на `is_account_page()`; `/courses/`, `/profile/`, `/reset-password/` (LearnDash) **не** enqueued.

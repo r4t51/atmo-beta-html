@@ -116,7 +116,7 @@ Preview mu-plugin стабилизирован: `atmo-preview-fonts` и `atmo-pr
 |---|---|
 | Cart URL | `/cart-2/`, нестандартный slug; shell `atmo-cart.css` + `atmo-catalog.css` (cross-sells); cart-fixture QA PASS 2026-05-22 (1× variation **3628**) |
 | Checkout | `/checkout/` — **200** + full form when cart has items; empty cart may redirect to `/cart-2/` (Woo default; not re-tested 2026-05-22). Shell `atmo-checkout.css` + progress steps `1203858` (`inc/atmo-checkout.php`, excludes order-received). Cart-fixture QA PASS 2026-05-22 + steps QA 2026-05-25 — `#payment` / gateways visible; `#place_order` not clicked |
-| Payment failed | `/payment-failed/` → **200** static page (WP **#3807**, slug `payment-failed`; child commit `c9ac2b1`); shell `atmo-payment-failed.css`; separate from Woo `order-received` failed flow (`atmo-confirmation.css`) |
+| Payment failed | `/payment-failed/` → **200** code-owned child route (`inc/atmo-static-routes.php`, `page-payment-failed.php`, `c9ac2b1`, `35806f0`); **no WP page migration required**; legacy page **#3807** optional; shell `atmo-payment-failed.css` only; separate from Woo `order-received` failed flow (`atmo-confirmation.css`) |
 | WP 404 | Missing URLs → HTTP **404**; branded `404.php` + `atmo-404.css` (`64f2aa8`); enqueue on `is_404()` only — see `CHANGES.md` 2026-05-25 |
 | Order received | `/checkout/order-received/` → `inc/atmo-confirmation.php` (PHP layer, `f9a7b95`) + `atmo-confirmation.css` only; excludes `atmo-checkout.css`; layer renders on valid key + `completed` when full order DOM available (logged-in owner). Owner browser QA PASS for #3801 on 2026-05-25 |
 | HPOS | таблицы созданы, custom order storage отключён |

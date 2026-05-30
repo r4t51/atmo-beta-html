@@ -10,6 +10,19 @@
 
 ---
 
+## 2026-05-30 — Code-owned `/payment-failed/` virtual route (`35806f0`)
+
+- **Scope:** child theme commit `35806f0` — `inc/atmo-static-routes.php` (new); `functions.php` (require + enqueue uses `atmo_is_payment_failed_route()`); `page-payment-failed.php` (comment only).
+- **Problem fixed:** theme template/CSS existed (`c9ac2b1`) but Stage2/prod returned **404** without a manually created WP page — not portable for theme-only deploy.
+- **Architecture:** request-path detection on `payment-failed` (no `add_rewrite_rule`, **no rewrite flush**); `template_redirect` clears 404 + `status_header(200)`; `template_include` loads `page-payment-failed.php`.
+- **Compatibility:** existing WP page slug `payment-failed` (Local **#3807**) still works; behavior unchanged when page exists.
+- **Asset scope:** `atmo-payment-failed.css` + `body.page-payment-failed` for virtual and real page; **not** `atmo-checkout.css` / `atmo-confirmation.css`; branded `404.php` unchanged for other URLs.
+- **Deploy:** child theme deploy only — **do not** require WP Admin page creation; optional unpublish legacy page later.
+- **Verify:** GET `/payment-failed/` → **200** + failure copy; random 404 URL still branded 404; `/checkout/order-received/999/` not hijacked.
+- **Docs:** `DEPLOY_CHECKLIST.md`, `WP_DEPENDENCY_MAP.md`, `BACKLOG.md`, `ONBOARDING.md` updated.
+
+---
+
 ## 2026-05-29 — LMS adapter extraction + manual entitlement fallback (`ec5982c`, `9bb70ed`)
 
 - **Scope:** child theme `kadence-child` only; docs record in this repo. **Not** a production deploy claim; stage2 theme zip QA only.

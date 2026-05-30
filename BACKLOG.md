@@ -113,11 +113,12 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
   - ~~Guest **`/my-account/my-courses/`** login gate check~~ — **PASS 2026-05-29** (Woo login form; no enrolled course content leaked).
   - Verify LD meta enrollment for test users when expecting specific courses; LevelUp mapping confirmed **2903 product → 2905 LD course**, and hub works when **2905** is in `learndash_get_user_courses_from_meta`.
 
-### Static payment-failed page (2026-05-24)
+### Payment-failed route (2026-05-24 template · 2026-05-30 code-owned)
 
-- **`/payment-failed/`** — static landing page (WP page ID **3807**, slug `payment-failed`) + child theme template/CSS (`c9ac2b1`)
+- **`/payment-failed/`** — child theme virtual route (`inc/atmo-static-routes.php`) + `page-payment-failed.php` / `atmo-payment-failed.css` (`c9ac2b1` + `35806f0`)
+- **No WP page required** for deploy; legacy Local page **#3807** optional/compatible
 - Generic failure UX only; Woo order-specific failed flow stays on `/checkout/order-received/{id}/?key=...` (`atmo-confirmation.css`)
-- QA PASS — see `CHANGES.md`
+- QA PASS Local — see `CHANGES.md` 2026-05-30
 
 ### Catalog taxonomy-aware goal chips (2026-05-24)
 
