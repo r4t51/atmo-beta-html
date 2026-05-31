@@ -4,7 +4,7 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-29):** LMS adapter extraction shipped (`ec5982c`); manual LearnDash entitlement fallback shipped (`9bb70ed`); adapter helper PHPUnit shipped (`c2041d7`); stage2 entitlement QA PASS 2026-05-29 (manual LD course **3616**). Also: ATMO homepage v1 (`075179f`, `214f6b6`); account course hub v1 (`81c3a7d`, visual `b1d21b5`); lesson plugin blocks CSS Phase 1 (`d37665b`); legacy `/catalog/` redirect (`a0ec00b`); LD CSS/JS dequeue (`9d8c49e`, `e12bdba`); UI polish (`9d33b8a`); LD lesson chrome + H1 prefix; order-received (`f9a7b95`); checkout steps (`1203858`); WP 404 (`64f2aa8`); payment-failed (`c9ac2b1`); catalog polish. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-05-29):** LMS adapter extraction shipped (`ec5982c`); manual LearnDash entitlement fallback shipped (`9bb70ed`); adapter helper PHPUnit shipped (`c2041d7`); stage2 entitlement QA PASS 2026-05-29 (manual LD course **3616**). Also: ATMO homepage v1 (`075179f`, `214f6b6`); account course hub v1 (`81c3a7d`, visual `b1d21b5`); lesson plugin blocks CSS Phase 1 (`d37665b`); legacy `/catalog/` redirect (`a0ec00b`); LD CSS/JS dequeue (`9d8c49e`, `e12bdba`); UI polish (`9d33b8a`); LD lesson chrome + H1 prefix; order-received (`f9a7b95`); checkout steps (`1203858`); WP 404 (`64f2aa8`); payment-failed template (`c9ac2b1`) + code-owned route (`35806f0`); catalog polish. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
 
 > **Production/staging incident note (2026-05-26):** VPS production was restored from an OVH snapshot after a staging workflow/theme-admin incident caused a production critical error. Server-side runtime changes after the snapshot are not trusted as current state. See `STAGING_POSTMORTEM_2026-05-26.md`; staging is back to pre-staging until re-audited.
 
@@ -13,12 +13,15 @@
 ## 2026-05-30 — Code-owned `/payment-failed/` virtual route (`35806f0`)
 
 - **Scope:** child theme commit `35806f0` — `inc/atmo-static-routes.php` (new); `functions.php` (require + enqueue uses `atmo_is_payment_failed_route()`); `page-payment-failed.php` (comment only).
+- **Version marker:** child theme commit `9b6ac19` bumps theme header to **0.1.1** and uses `ATMO_CHILD_VERSION` for the required child stylesheet enqueue.
 - **Problem fixed:** theme template/CSS existed (`c9ac2b1`) but Stage2/prod returned **404** without a manually created WP page — not portable for theme-only deploy.
 - **Architecture:** request-path detection on `payment-failed` (no `add_rewrite_rule`, **no rewrite flush**); `template_redirect` clears 404 + `status_header(200)`; `template_include` loads `page-payment-failed.php`.
 - **Compatibility:** existing WP page slug `payment-failed` (Local **#3807**) still works; behavior unchanged when page exists.
 - **Asset scope:** `atmo-payment-failed.css` + `body.page-payment-failed` for virtual and real page; **not** `atmo-checkout.css` / `atmo-confirmation.css`; branded `404.php` unchanged for other URLs.
 - **Deploy:** child theme deploy only — **do not** require WP Admin page creation; optional unpublish legacy page later.
 - **Verify:** GET `/payment-failed/` → **200** + failure copy; random 404 URL still branded 404; `/checkout/order-received/999/` not hijacked.
+- **Stage2 smoke PASS (2026-05-31):** uploaded `kadence-child-0.1.1-stage2-payment-route.zip`; `style.css` shows **Version 0.1.1**; `/payment-failed/` renders ATMO failure design with `body.page-payment-failed`; `atmo-payment-failed.css` present; `atmo-checkout.css` / `atmo-confirmation.css` absent; random 404 remains branded 404.
+- **Stage2 warning:** invalid `/checkout/order-received/999/` redirects to `https://staging.atmo.by/courses`; not a payment-failed regression, but track as URL hygiene / Woo invalid-order redirect follow-up before RC.
 - **Docs:** `DEPLOY_CHECKLIST.md`, `WP_DEPENDENCY_MAP.md`, `BACKLOG.md`, `ONBOARDING.md` updated.
 
 ---

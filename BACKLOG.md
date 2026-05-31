@@ -118,7 +118,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - **`/payment-failed/`** — child theme virtual route (`inc/atmo-static-routes.php`) + `page-payment-failed.php` / `atmo-payment-failed.css` (`c9ac2b1` + `35806f0`)
 - **No WP page required** for deploy; legacy Local page **#3807** optional/compatible
 - Generic failure UX only; Woo order-specific failed flow stays on `/checkout/order-received/{id}/?key=...` (`atmo-confirmation.css`)
-- QA PASS Local — see `CHANGES.md` 2026-05-30
+- QA PASS Local + Stage2 child **0.1.1** — see `CHANGES.md` 2026-05-30/31
 
 ### Catalog taxonomy-aware goal chips (2026-05-24)
 
@@ -167,6 +167,8 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 
 | Priority | Item | Notes |
 |----------|------|-------|
+| P1 | **Stage2 checkout payment methods** | PRE-RC audit: checkout with cart loads, but no payment methods/gateways are available on stage2. Enable sandbox/test BLIK/Klarna or documented test gateways; do not submit real payment. |
+| P1 | **Stage2 invalid order-received URL hygiene** | Stage2 smoke after child **0.1.1**: `/checkout/order-received/999/` is not hijacked by payment-failed, but redirects to `https://staging.atmo.by/courses`. Investigate Woo/snippet invalid-order redirect before RC; avoid touching VPS staging/prod. |
 | P1 | **Static missing routes (paused)** | Footer links `/trainer/`, `/terms/`, `/privacy/` — **content not approved**; routes still 404 (branded `404.php` shell). WP pages + templates deferred until copy sign-off. |
 
 Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping), legacy lesson post inline HTML cleanup.
