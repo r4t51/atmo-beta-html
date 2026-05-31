@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-05-31 — Stage2 plugin enqueue fixes applied
+
+- **Scope:** Stage2 runtime/plugin PHP via SFTP; no child-theme code change.
+- **Files:** `atmo-reflection-forms/atmo-reflection-forms.php` and `learndash-training-diary/learndash-training-diary.php` updated from fixed Local copies; backups were taken by operator before upload.
+- **Reference patches:** `docs/patches/plugin-enqueue/plugin-enqueue-tightening-atmo-reflection-forms.patch` and `docs/patches/plugin-enqueue/plugin-enqueue-tightening-learndash-training-diary.patch`.
+- **Re-QA PASS:** logged-in negative routes `/`, `/courses/`, PDP, `/cart-2/`, `/checkout/`, `/payment-failed/`, `/my-account/`, and account hub `?course_id=3616` load **no** reflection assets and **no** `ldtd.css`.
+- **Lesson scoping PASS:** reflection lesson loads reflection assets only; photos lesson loads `ldtd.css` + `ldtd-progress-photos.js` only; diary lesson loads `ldtd.css`; plan lesson loads no plugin assets; compare lesson loads reflection + `ldtd.css` as expected.
+- **Residual:** guest negative matrix not repeated after SFTP upload; expected clean because guards return early for guests. Optional spot-check only.
+
+---
+
 ## 2026-05-31 — Stage2 Snippet #5 thank-you redirect disabled
 
 - **Scope:** Stage2 runtime/WP Admin state only; no child-theme code change.

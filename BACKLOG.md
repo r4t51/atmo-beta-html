@@ -171,11 +171,13 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 
 Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping), legacy lesson post inline HTML cleanup.
 
-Deploy risk (outside git): plugin enqueue fix on Local only — apply handoff patches or copy already-fixed Local plugin PHP files; tracked plugin repo preferred long-term (`.bak` = rollback only) — `CHANGES.md` 2026-05-25.
+Deploy risk (outside git): plugin enqueue fix is now **applied on Stage2** (2026-05-31) from fixed Local PHP / `docs/patches/plugin-enqueue/`; tracked plugin repo still preferred long-term (`.bak` = rollback only). Production/VPS runtime still requires separate safety-gated deploy/re-audit.
 
 Closed PRE-RC gate (2026-05-31): Stage2 checkout payment methods + CSS polish — Stripe test-only (`pk_test`, no `pk_live`), card/BLIK/Klarna visible, child **0.1.2** re-QA PASS; saved-token UI noise accepted as low residual.
 
 Closed PRE-RC hygiene (2026-05-31): Stage2 Snippet **#5 Thank You Redirect** disabled; invalid `/checkout/order-received/{id}/` no longer leaves `stage2.atmo.by`; keep snippet disabled unless a new valid-order redirect spec exists.
+
+Closed PRE-RC runtime (2026-05-31): Stage2 plugin enqueue patches applied; logged-in negative route matrix clean; lesson-level reflection/diary/photos/compare scoping PASS.
 
 ---
 
