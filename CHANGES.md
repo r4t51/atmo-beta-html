@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-05-31 — Stage2 Snippet #5 thank-you redirect disabled
+
+- **Scope:** Stage2 runtime/WP Admin state only; no child-theme code change.
+- **Problem fixed:** active Code Snippets **#5 «Thank You Redirect»** redirected any `/checkout/order-received/{id}/` request to **`https://staging.atmo.by/courses`**.
+- **Operator action:** Snippet #5 deactivated on Stage2; it now shows **«Неактивна»** / **«Save and Activate»** in Code Snippets.
+- **Re-QA PASS:** `/checkout/order-received/999/`, `/checkout/order-received/999/?key=invalid`, and `/checkout/order-received/` stay on **`stage2.atmo.by`**; generic invalid Woo thank-you shell is acceptable for these fake URLs.
+- **Regression guards:** `/payment-failed/` still renders ATMO failure UX; checkout still has card/BLIK/Klarna in Stripe test mode (`pk_test`, no `pk_live`); no order submitted.
+- **Rule:** keep Snippet #5 disabled on Stage2/prod unless a new post-purchase redirect spec is written and verified with valid order keys.
+
+---
+
 ## 2026-05-31 — Stage2 checkout payment UI test-gateway polish (`7b72d76`)
 
 - **Scope:** child theme commit `7b72d76` — CSS-only `assets/css/atmo-checkout.css`; theme version bumped to **0.1.2**.
