@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-05-31 — Stage2 checkout payment UI test-gateway polish (`7b72d76`)
+
+- **Scope:** child theme commit `7b72d76` — CSS-only `assets/css/atmo-checkout.css`; theme version bumped to **0.1.2**.
+- **Stage2 Stripe safety:** checkout has **test-only** Stripe after operator setup — `pk_test` present, `pk_live` absent; no order submit.
+- **Gateway UI:** card/default, BLIK, Klarna visible; payment label/radio alignment fixed; `.payment_box` indent restored; Stripe `.testmode-info` styled; BLIK input uses ATMO field tokens; saved-payment row tightened.
+- **Stage2 re-QA PASS (2026-05-31):** `style.css` shows **Version 0.1.2**; `atmo-checkout.css` deployed with new cache-bust; desktop and 390px mobile have no horizontal overflow; `/payment-failed/` and branded 404 regression guards PASS.
+- **Residual low item:** saved-token/new-payment sub UI in card gateway remains a little noisy on mobile; accepted for PRE-RC unless product asks to hide saved methods on staging.
+
+---
+
 ## 2026-05-30 — Code-owned `/payment-failed/` virtual route (`35806f0`)
 
 - **Scope:** child theme commit `35806f0` — `inc/atmo-static-routes.php` (new); `functions.php` (require + enqueue uses `atmo_is_payment_failed_route()`); `page-payment-failed.php` (comment only).
