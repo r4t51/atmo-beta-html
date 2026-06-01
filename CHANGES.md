@@ -10,6 +10,15 @@
 
 ---
 
+## 2026-06-01 — Legal pages `/terms/` + `/privacy/` (Stage2 import, Local)
+
+- **Scope:** child theme portable routes only; Stage2 read-only via REST export; no WP Admin writes on Stage2.
+- **Source:** Stage2 WP pages `regulamin-sklepu-internetowego` and `polityka-prywatnosci` (Polish legal). Prototype `/terms/` `/privacy/` URLs on Stage2 are 404; footer targets use those slugs locally.
+- **Implementation:** `inc/atmo-legal.php`, `inc/legal/*-body.html`, `page-legal.php`, `atmo-static-routes.php` (terms/privacy virtual routes), `assets/css/atmo-legal.css`.
+- **Note:** Prototype `terms.html` / `privacy.html` are Russian layout references; deployed copy matches Stage2 Polish text for legal accuracy.
+
+---
+
 ## 2026-06-01 — Catalog prototype parity + full prototype coverage audit (`a8e81e5`)
 
 - **Scope:** child theme catalog implementation + docs coverage gate; no production/VPS work.

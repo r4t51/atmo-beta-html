@@ -169,7 +169,7 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 
 | Priority | Item | Notes |
 |----------|------|-------|
-| P1 | **Static missing routes (paused)** | Footer links `/trainer/`, `/terms/`, `/privacy/` — **content not approved**; routes still 404 (branded `404.php` shell). WP pages + templates deferred until copy sign-off. |
+| P1 | **Static missing routes (paused)** | Footer link `/trainer/` — **content not approved**; route still 404 (branded `404.php` shell). `/terms/` + `/privacy/` implemented 2026-06-01 as code-owned routes with Stage2 Polish legal export (`regulamin-sklepu-internetowego`, `polityka-prywatnosci`). |
 | P1 | **PDP prototype parity** | `product.html` is only partial; full hero/enrolled-state decisions still open. |
 | P1 | **Auth/reset password prototype parity** | `reset-password.html` is missing; `auth.html` is only partial through Woo forms. |
 | P1 | **Public `/courses/` IA / skin** | Prototype `courses.html` maps closer to account "Мои курсы"; live `/courses/` is LearnDash public archive. Needs explicit product/design decision. |
@@ -297,8 +297,8 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 | Item | Notes |
 |------|-------|
 | `/trainer/` | Footer link exists; Local route **404** (branded `404.php`). **Paused** — needs approved content + WP page + `trainer.html` port. |
-| `/terms/` | Footer link exists; Local route **404** (branded `404.php`). **Paused** — needs approved content + shared legal template/CSS. |
-| `/privacy/` | Footer link exists; Local route **404** (branded `404.php`). **Paused** — needs approved content + shared legal template/CSS. |
+| `/terms/` | **Implemented** — code-owned route `/terms/` + `page-legal.php` / `atmo-legal.css`; copy from Stage2 `regulamin-sklepu-internetowego` (Polish). Russian `terms.html` is layout reference only. |
+| `/privacy/` | **Implemented** — code-owned route `/privacy/`; copy from Stage2 `polityka-prywatnosci` (Polish). Optional RU localization later. |
 | ~~WP 404~~ | ✅ Done **`64f2aa8`** — `404.php` + `atmo-404.css`; see `CHANGES.md` 2026-05-25 |
 
 ---
