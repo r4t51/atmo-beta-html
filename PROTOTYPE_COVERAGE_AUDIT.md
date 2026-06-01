@@ -31,8 +31,8 @@ This file maps every HTML prototype screen to the current WordPress/theme implem
 | `account.html` | `/my-account/` dashboard via `inc/atmo-account.php` + `atmo-account.css` | `partial` | Account shell and dashboard shipped. | Dashboard intentionally does not include full course/progress widgets. |
 | `orders.html` | `/my-account/orders/` and `/my-account/view-order/{id}/` | `partial` | Orders and view-order styling shipped; order fixtures QA'd. | Needs fresh visual parity pass if this slice is reopened. |
 | `profile.html` | `/my-account/edit-account/` and related account settings | `partial` | Woo settings styling shipped. | LearnDash `/profile/` remains separate/default; account CSS does not skin it. |
-| `auth.html` | Logged-out `/my-account/` Woo auth form | `partial` | Auth shell shipped. | Uses Woo forms, not a standalone `/auth/` route. |
-| `reset-password.html` | Woo lost-password / reset-password flow | `missing` | No child route/template/skin. | Add ATMO auth/reset slice. |
+| `auth.html` | Logged-out `/my-account/` Woo auth form | `implemented` | Auth shell v2 (`inc/atmo-auth-shell.php`, `atmo-account.css`, `atmo-auth-shell.js`): tabs, hero copy, visual quote, form cards. | No standalone `/auth/` route (Woo canonical). No social OAuth buttons from prototype. |
+| `reset-password.html` | `/my-account/lost-password/` + Woo `action=rp` reset form | `partial` | Lost-password + reset shells styled; password toggle + strength meter JS on reset form when token present. | Valid reset token not QA'd locally (no email send); strength meter is UX-only, not enforced server-side. |
 | `courses.html` | Account "Мои курсы" / enrolled programs experience | `partial` | `/my-account/my-courses/` + hub shipped and QA'd. | Public `/courses/` is LearnDash archive and remains a different screen; IA needs explicit decision. |
 | `lesson.html` | `/lessons/{slug}/` LearnDash lesson chrome | `partial` | ATMO lesson chrome, H1 prefix, plugin block CSS shipped. | No LearnDash template override; core LD markup still underneath. |
 | `course-complete.html` | Course completion / certificate moment | `missing` | No child completion route/template. | Design LearnDash completion hook/template or defer explicitly. |
@@ -51,8 +51,9 @@ RC status: **NOT_READY**
 
 Reasons:
 
-- Required prototype screens remain `partial`: homepage, PDP, cart, checkout, order confirmation, account/orders/profile/auth, courses/my-courses, lesson.
-- Required prototype screens remain `missing`: reset password, course completion.
+- Required prototype screens remain `partial`: homepage, PDP, cart, checkout, order confirmation, account/orders/profile, courses/my-courses, lesson, reset password.
+- Required prototype screens remain `missing`: course completion.
+- `reset-password.html` partial — shell styled; full reset flow needs tokenized URL QA when mail available.
 - `/terms/` and `/privacy/` implemented with Stage2-sourced Polish legal copy on prototype layout (2026-06-01).
 - `/catalog/` and `/courses/` IA still needs plain-user wording and possibly navigation refinement: catalog is shop/purchase; my courses/account is owned access; public `/courses/` is LearnDash archive.
 

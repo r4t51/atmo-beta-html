@@ -18,6 +18,15 @@
 
 ---
 
+## 2026-06-01 — Auth + reset-password shell parity (Local)
+
+- **Scope:** child theme logged-out Woo account only; no form submits, no email/user creation.
+- **Implementation:** `inc/atmo-auth-shell.php`, `assets/js/atmo-auth-shell.js`, auth shell CSS in `atmo-account.css`.
+- **Surfaces:** `/my-account/` (login/register tabs + hero + quote panel), `/my-account/lost-password/` (request link), reset form when `action=rp` query present.
+- **Deferred:** prototype Google/Apple social login (not in Woo); verified reset flow QA without mail token.
+
+---
+
 ## 2026-06-01 — Legal pages `/terms/` + `/privacy/` (Stage2 import, Local)
 
 - **Scope:** child theme portable routes only; Stage2 read-only via REST export; no WP Admin writes on Stage2.

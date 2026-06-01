@@ -170,7 +170,7 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 | Priority | Item | Notes |
 |----------|------|-------|
 | P1 | **PDP prototype parity** | `product.html` is only partial; full hero/enrolled-state decisions still open. |
-| P1 | **Auth/reset password prototype parity** | `reset-password.html` is missing; `auth.html` is only partial through Woo forms. |
+| P1 | **Auth/reset password prototype parity** | **Done (Local 2026-06-01):** auth shell on logged-out `/my-account/` + lost-password; reset form shell when `action=rp`. Residual: OAuth/social buttons deferred; reset URL QA needs mail/token. |
 | P1 | **Public `/courses/` IA / skin** | Prototype `courses.html` maps closer to account "Мои курсы"; live `/courses/` is LearnDash public archive. Needs explicit product/design decision. |
 | P2 | **Course completion flow** | `course-complete.html` missing; decide LD completion hook/template or defer. |
 
