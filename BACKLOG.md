@@ -163,11 +163,17 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 
 Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype. Treat this section as the active shortlist.
 
+**Latest coverage gate (2026-06-01):** see `PROTOTYPE_COVERAGE_AUDIT.md`. Current redesign status is **NOT_READY for release candidate**. Catalog prototype parity is now implemented locally in child theme commit `a8e81e5`, but multiple prototype screens remain partial, missing, or blocked by content.
+
 **Operational blocker before any staging/deploy continuation:** complete a fresh read-only staging audit from the post-snapshot state. Current verified staging fingerprint must be `/var/www/staging` + `https://staging.atmo.by` + `DB_NAME=atmo_staging`. Do not continue deploy/runtime edits until the safety gate in `DEPLOY_CHECKLIST.md` is passed.
 
 | Priority | Item | Notes |
 |----------|------|-------|
 | P1 | **Static missing routes (paused)** | Footer links `/trainer/`, `/terms/`, `/privacy/` — **content not approved**; routes still 404 (branded `404.php` shell). WP pages + templates deferred until copy sign-off. |
+| P1 | **PDP prototype parity** | `product.html` is only partial; full hero/enrolled-state decisions still open. |
+| P1 | **Auth/reset password prototype parity** | `reset-password.html` is missing; `auth.html` is only partial through Woo forms. |
+| P1 | **Public `/courses/` IA / skin** | Prototype `courses.html` maps closer to account "Мои курсы"; live `/courses/` is LearnDash public archive. Needs explicit product/design decision. |
+| P2 | **Course completion flow** | `course-complete.html` missing; decide LD completion hook/template or defer. |
 
 Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping), legacy lesson post inline HTML cleanup.
 

@@ -10,6 +10,18 @@
 
 ---
 
+## 2026-06-01 — Catalog prototype parity + full prototype coverage audit (`a8e81e5`)
+
+- **Scope:** child theme catalog implementation + docs coverage gate; no production/VPS work.
+- **Child theme commit:** `a8e81e5` — `feat(catalog): match prototype archive layout`.
+- **Catalog parity:** `/каталог/` now follows `catalog.html` more closely: breadcrumb + hero count, filter chips/count band, prototype-style card visual area, data-driven badge/meta/price/arrow, hidden sort toolbar.
+- **Count behavior:** filtered first-load URLs such as `/каталог/?filter_goal=energy` use deterministic baseline count; no transient/prior unfiltered visit dependency.
+- **Verification:** PHP lint PASS for changed PHP files; `git diff --check` PASS; Local browser QA PASS for desktop and mobile catalog.
+- **Coverage gate:** added `PROTOTYPE_COVERAGE_AUDIT.md` with all prototype HTML screens mapped to WP/theme status.
+- **Release readiness:** **NOT_READY**. Catalog is implemented, but several screens remain `partial`, `missing`, or `blocked-by-content` (`reset-password`, `course-complete`, `/trainer/`, `/terms/`, `/privacy/`, PDP/auth/courses/homepage slices).
+
+---
+
 ## 2026-05-31 — Stage2 plugin enqueue fixes applied
 
 - **Scope:** Stage2 runtime/plugin PHP via SFTP; no child-theme code change.

@@ -40,6 +40,12 @@ npx http-server . -p 3333 --cors -c-1
 
 Не использовать `npx serve`: он может редиректить clean URLs и срезать query params у `lesson.html?course=...&step=...`.
 
+### Coverage gate
+
+Before calling the redesign a release candidate, read `PROTOTYPE_COVERAGE_AUDIT.md`.
+
+Current status as of 2026-06-01: **NOT_READY**. `catalog.html` is implemented in child theme commit `a8e81e5`, but multiple prototype screens are still partial, missing, or blocked by content.
+
 ### Source of truth HTML
 
 | Файл | Назначение |
