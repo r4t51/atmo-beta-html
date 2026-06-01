@@ -10,6 +10,14 @@
 
 ---
 
+## 2026-06-01 — Trainer page removed from redesign scope
+
+- **Scope:** docs/prototype only; no child-theme runtime change.
+- **Decision:** `/trainer/` is no longer a required page for this redesign. Removed `trainer.html` from the prototype repo and removed it as a release blocker from `PROTOTYPE_COVERAGE_AUDIT.md` / `BACKLOG.md`.
+- **Rule:** do not implement `/trainer/` unless product scope changes explicitly.
+
+---
+
 ## 2026-06-01 — Legal pages `/terms/` + `/privacy/` (Stage2 import, Local)
 
 - **Scope:** child theme portable routes only; Stage2 read-only via REST export; no WP Admin writes on Stage2.
@@ -27,7 +35,7 @@
 - **Count behavior:** filtered first-load URLs such as `/каталог/?filter_goal=energy` use deterministic baseline count; no transient/prior unfiltered visit dependency.
 - **Verification:** PHP lint PASS for changed PHP files; `git diff --check` PASS; Local browser QA PASS for desktop and mobile catalog.
 - **Coverage gate:** added `PROTOTYPE_COVERAGE_AUDIT.md` with all prototype HTML screens mapped to WP/theme status.
-- **Release readiness:** **NOT_READY**. Catalog is implemented, but several screens remain `partial`, `missing`, or `blocked-by-content` (`reset-password`, `course-complete`, `/trainer/`, `/terms/`, `/privacy/`, PDP/auth/courses/homepage slices).
+- **Release readiness:** **NOT_READY**. Catalog is implemented, but several screens remain `partial` or `missing` (`reset-password`, `course-complete`, PDP/auth/courses/homepage slices). `/terms/` and `/privacy/` were closed later on 2026-06-01; `/trainer/` was removed from scope.
 
 ---
 

@@ -56,7 +56,6 @@ Current status as of 2026-06-01: **NOT_READY**. `catalog.html` is implemented in
 | `product-enrolled.html` | Купленный курс |
 | `lesson.html` | Урок LMS, режимы через query params |
 | `course-complete.html` | Завершение курса |
-| `trainer.html` | Страница тренера |
 | `cart.html` | Корзина |
 | `checkout.html` | Оформление |
 | `order-confirmation.html` | Подтверждение заказа |
@@ -254,8 +253,8 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 
 **Pick next work from `BACKLOG.md` by scope:**
 
-1. **Prototype coverage** — paused static `/trainer/` + `/terms/` + `/privacy/` (content not approved).
-2. **Optional polish / product-scoped** — full PDP hero redesign (cosmetic), homepage Social testimonials when CMS/source exists.
+1. **Prototype coverage** — use `PROTOTYPE_COVERAGE_AUDIT.md`; `/trainer/` is removed from scope, `/terms/` + `/privacy/` are Polish legal routes.
+2. **Optional polish / product-scoped** — PDP enrolled-state decision, auth/reset password, `/courses/` IA, homepage Social testimonials when CMS/source exists.
 3. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24).
 4. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist.
 5. **Closed no-op items** — account fixture polish, variable PDP bottom CTA, billing edit field subset; do not revive without product scope.

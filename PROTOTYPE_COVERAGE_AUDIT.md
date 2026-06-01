@@ -1,6 +1,6 @@
 # ATMO prototype coverage audit
 
-Last updated: 2026-06-01 (legal routes)
+Last updated: 2026-06-01 (trainer removed from scope)
 Scope: redesign only, Local + Stage2 validation where noted
 Current RC status: **NOT_READY**
 
@@ -37,10 +37,13 @@ This file maps every HTML prototype screen to the current WordPress/theme implem
 | `lesson.html` | `/lessons/{slug}/` LearnDash lesson chrome | `partial` | ATMO lesson chrome, H1 prefix, plugin block CSS shipped. | No LearnDash template override; core LD markup still underneath. |
 | `course-complete.html` | Course completion / certificate moment | `missing` | No child completion route/template. | Design LearnDash completion hook/template or defer explicitly. |
 | `404.html` | WP 404 via `404.php` + `atmo-404.css` | `implemented` | Branded 404 QA passed. | None for current scope. |
-| `trainer.html` | `/trainer/` | `blocked-by-content` | Currently branded 404. | Requires approved trainer copy/content before page/template. |
 | `terms.html` | `/terms/` | `implemented` | Code-owned route + `page-legal.php` + `atmo-legal.css`; body from Stage2 `regulamin-sklepu-internetowego` (Polish legal, read-only export). | Prototype `terms.html` is Russian reference layout; live copy is Stage2 Polish regulamin, not Russian prototype text. Footer slug `/terms/` maps to portable theme route. |
 | `privacy.html` | `/privacy/` | `implemented` | Code-owned route + shared legal template; body from Stage2 `polityka-prywatnosci` (Polish, read-only export). | Prototype `privacy.html` is Russian reference; live copy is Stage2 Polish policy. Optional later: Russian localization sign-off. |
 | `_tmp_all.html`, `_tmp_energy.html`, `_tmp_p1.html`, `_tmp_p2.html` | None | `temporary-reference` | Generated prototype/reference outputs. | Do not port directly. |
+
+Removed from scope:
+
+- `trainer.html` / `/trainer/` removed on 2026-06-01 by product decision. Do not treat it as a missing or blocked release screen.
 
 ## Release Readiness
 
@@ -50,15 +53,13 @@ Reasons:
 
 - Required prototype screens remain `partial`: homepage, PDP, cart, checkout, order confirmation, account/orders/profile/auth, courses/my-courses, lesson.
 - Required prototype screens remain `missing`: reset password, course completion.
-- Static/legal page `/trainer/` remains `blocked-by-content`.
 - `/terms/` and `/privacy/` implemented with Stage2-sourced Polish legal copy on prototype layout (2026-06-01).
 - `/catalog/` and `/courses/` IA still needs plain-user wording and possibly navigation refinement: catalog is shop/purchase; my courses/account is owned access; public `/courses/` is LearnDash archive.
 
 ## Recommended Design Slices
 
-1. Static routes `/trainer/`, `/terms/`, `/privacy/` after copy/legal sign-off.
-2. PDP parity, including clear decision for `product-enrolled.html`.
-3. Auth/reset password flow (`auth.html`, `reset-password.html`).
-4. Public `/courses/` archive IA/skin decision versus Woo catalog.
-5. Course completion flow (`course-complete.html`).
-6. Homepage deferred blocks.
+1. PDP parity, including clear decision for `product-enrolled.html`.
+2. Auth/reset password flow (`auth.html`, `reset-password.html`).
+3. Public `/courses/` archive IA/skin decision versus Woo catalog.
+4. Course completion flow (`course-complete.html`).
+5. Homepage deferred blocks.
