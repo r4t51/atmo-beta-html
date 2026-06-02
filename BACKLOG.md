@@ -18,7 +18,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Catalog + goal chips | ✅ MVP + server-side `filter_goal` |
 | PDP | ✅ simple + variable #3614; marketing `product.html` parity audit PASS_LOCAL (2026-06-02); enrolled access panel on PDP for logged-in owners (2026-06-02) — hub remains canonical |
 | Cart | ✅ `atmo-cart.css` + cross-sells · polish `3e4748f`; `cart.html` parity audit PASS_LOCAL (2026-06-02) |
-| Checkout | ✅ `atmo-checkout.css` + progress steps `1203858` (`inc/atmo-checkout.php`); gateways visible on Local (**BLIK** default, **Klarna**); cart-fixture QA PASS 2026-05-22 + steps QA 2026-05-25 |
+| Checkout | ✅ `atmo-checkout.css` + progress steps `1203858` (`inc/atmo-checkout.php`); `checkout.html` parity audit PASS_LOCAL (2026-06-02) — Local **BLIK** + **Klarna**; card UI Stage2 test (`7b72d76`); cart-fixture QA 2026-05-22 + 2026-06-02 read-only |
 | Order received | ✅ `inc/atmo-confirmation.php` + `atmo-confirmation.css` (`f9a7b95` + receipt card 2026-06-02); owner browser QA PASS #3801 / user 679 — `CHANGES.md` 2026-05-25, 2026-06-02 |
 | Account | ✅ passes 1–5 + dashboard + view-order meta + orders pass 3b (detail below) |
 | Preview mu-plugin | ✅ **keep for now** — opt-in only (`?atmo_preview_shell=1`) |

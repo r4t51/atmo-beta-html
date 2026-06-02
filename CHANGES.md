@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-06-02 — Checkout prototype parity audit (Local)
+
+- **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff; existing checkout layer sufficient).
+- **Prototype:** `checkout.html` — billing + order summary + payment + legal + confirm CTA.
+- **Live:** `inc/atmo-checkout.php` (steps) + `atmo-checkout.css` (shell pass 1 + Stage2 gateway polish `7b72d76`).
+- **Browser QA:** filled cart fixture **3628** (session **679** / r4t5); `/checkout/` steps, billing, order review, BLIK+Klarna, terms, `#place_order` visible; mobile 390 `scrollWidth=390`; empty guest curl **302** → `/cart-2/`; `/cart-2/` regression; **no** order submit.
+- **Deferred:** prototype inline card fields; Local card gateway radio (Stage2 has card/BLIK/Klarna); payment block inside summary card vs Woo markup; prototype-only secure-note decorative copy.
+
+---
+
 ## 2026-06-02 — Cart prototype parity audit (Local)
 
 - **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff; existing cart layer sufficient).
