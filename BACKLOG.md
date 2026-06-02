@@ -32,7 +32,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - Logged-in account shell / nav / menu IA (`3122f4f`, `d4ee689`, pass 2a)
 - Static dashboard shell — next step, courses CTA, profile, last order (`534b241`, pass 2b); dashboard adapter CTA wiring (`648e562`, phase 3)
 - Orders list + view-order shell CSS (pass 3); mobile orders actions fix (`fcca2e5`); orders.html parity pass 3b (2026-06-02): «Состав» column, empty shell, view-order payment rows — `CHANGES.md`
-- Settings form (pass 4); hidden endpoints (pass 5)
+- Settings form (pass 4); profile.html pass 4b (2026-06-02): settings cards, page title, password strength UX — `CHANGES.md`; hidden endpoints (pass 5)
 - add-payment-method read-only audit (2026-05-22)
 - Completed view-order fixture QA — #3801 (2026-05-22): line item shell, qty/total, customer details, order-again **visibility** verified (not clicked)
 - View-order access-type meta pill — `тип-доступа` (`2da518f`, 2026-05-22): structured **Тип доступа: 60 дней** on #3801; Woo-skipped meta only; duplicate guard

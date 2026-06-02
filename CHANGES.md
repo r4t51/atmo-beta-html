@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-02 — Account profile settings prototype parity (Local)
+
+- **Verdict:** PASS_LOCAL — audit + Option B (Woo hooks + CSS + read-only JS; no template override).
+- **Child theme:** `inc/atmo-account.php` — `atmo_init_account_profile_prototype()`: page title «Настройки профиля», settings section cards (личные данные incl. email + смена пароля), email hint, display-name copy; `assets/css/atmo-account.css` pass 4b — card shell, hide `.entry-title` on edit-account, ink save button, password strength/toggle styling; `assets/js/atmo-account-settings.js` + `functions.php` enqueue — strength meter + confirm hint only (no submit).
+- **Fixture:** user **679** / `r4t5` — read-only QA on `/my-account/edit-account/`; no form submit / no meta mutation.
+- **Browser QA:** `/my-account/edit-account/` desktop 1440 + mobile 390 (no overflow, full-width save); regression `/my-account/`, `/my-account/orders/`, `/my-account/my-courses/` mobile — PASS.
+- **Deferred:** prototype notification toggles + danger zone (no backing meta); separate E-mail section card; per-section save buttons (Woo single `save_account_details`).
+- **Ephemeral QA (self-deleted):** `wp-content/atmo-qa-account-login-once.php`.
+
+---
+
 ## 2026-06-02 — Account orders prototype parity (Local)
 
 - **Verdict:** PASS_LOCAL — audit + Option B (Woo hooks + CSS; no template override).
