@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-02 — Checkout payment-in-summary micro-parity (Local)
+
+- **Verdict:** PASS_LOCAL — **Option B** (scoped wrapper hook + CSS; no DOM/JS payment move).
+- **Prototype:** `checkout.html` — payment + totals inside right `.order-card`; `.pay-section` + `.order-footer` hierarchy.
+- **Finding:** Woo already renders `#payment` inside `#order_review` — DOM move **not required** (would risk Stripe/UPE).
+- **Child theme:** `inc/atmo-checkout.php` — `atmo_checkout_summary_open/close` on `woocommerce_checkout_before_order_review_heading` / `after_order_review`; `assets/css/atmo-checkout.css` — `.atmo-checkout-summary` unified card, sticky ≥920px, terms divider, float reset on children.
+- **Browser QA:** guest fixture **3628**; desktop side-by-side + `wrapperContainsPayment`; mobile 390 `scrollWidth=390`, `#payment` + `#place_order` visible; empty `/checkout/` → **302** `/cart-2/`; **no** order submit.
+- **Deferred:** demo card form; card radio on Local; prototype secure-note emoji; order-confirmation invalid-order shell (next slice).
+
+---
+
 ## 2026-06-02 — Cart funnel micro-parity (Local)
 
 - **Verdict:** PASS_LOCAL — **Option B** (hooks + CSS; coupon visual deferred).
