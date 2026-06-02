@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-06-02 — Cart prototype parity audit (Local)
+
+- **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff; existing cart layer sufficient).
+- **Prototype:** `cart.html` — eyebrow count, line items, sticky summary, promo, trust, empty state.
+- **Live:** `inc/atmo-cart.php` + `atmo-cart.css` (prior polish `3e4748f`).
+- **Browser QA:** empty `/cart-2/`; filled fixture PDP `abdomen_pelvic` → **60 дней** → add to cart (**3628**); cart eyebrow/remove/trust/coupon/checkout link; `/checkout/` read-only load; no checkout submit.
+- **Deferred:** prototype empty dual CTA; summary title «К оплате»; cart-line access toggles; bundle discount demo.
+
+---
+
 ## 2026-06-02 — PDP marketing prototype parity audit (Local)
 
 - **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff; existing MVP sufficient).
