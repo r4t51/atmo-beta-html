@@ -10,6 +10,18 @@
 
 ---
 
+## 2026-06-02 — Product enrolled state on PDP (Local)
+
+- **Verdict:** PASS_LOCAL — audit + Option B (adapter panel on Woo PDP; hub remains canonical for full `product-enrolled.html` experience).
+- **Decision:** Prototype `product-enrolled.html` maps to account hub for hero/continue/outline; PDP shows non-destructive enrolled panel when user has active/completed/expired grant for related LD course.
+- **Child theme:** `inc/atmo-product.php` — `atmo_pdp_resolve_related_course_ids()` (parent + variations + known map), `atmo_pdp_get_enrolled_context()`, `atmo_render_pdp_enrolled_panel()`, body classes `atmo-pdp-has-access`; `woocommerce/content-single-product.php` — panel before buy box; `assets/css/atmo-product.css` — `.atmo-pdp-enrolled` card/progress/CTAs.
+- **Fixtures:** guest + **679**/`r4t5` on `/product/abdomen_pelvic/` (course **3616**); **691**/`atmo-qa-empty` no panel; hub regression `?course_id=3616`.
+- **Browser QA:** guest PDP purchase UI only; 679 panel + price/ATC visible; 691 no panel; mobile 390 — PASS.
+- **Deferred:** PDP coral hero replacement; sticky progress strip; inline lesson outline; marketing video/tick-list from prototype.
+- **Ephemeral QA (self-deleted):** `wp-content/atmo-qa-account-login-once.php`.
+
+---
+
 ## 2026-06-02 — Account profile settings prototype parity (Local)
 
 - **Verdict:** PASS_LOCAL — audit + Option B (Woo hooks + CSS + read-only JS; no template override).

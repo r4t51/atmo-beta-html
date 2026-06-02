@@ -16,7 +16,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 |------|--------|
 | Header / footer | ✅ ATMO child chrome + nav active state polish `9d33b8a` (PDP/category/tag → Каталог; CPT archive → Программы); footer col 1 label «Обучение» |
 | Catalog + goal chips | ✅ MVP + server-side `filter_goal` |
-| PDP | ✅ simple + variable #3614 |
+| PDP | ✅ simple + variable #3614; enrolled access panel on PDP for logged-in owners (2026-06-02) — hub remains canonical |
 | Cart | ✅ `atmo-cart.css` + cross-sells · polish `3e4748f` (remove link, eyebrow, trust bullets, coupon centering) |
 | Checkout | ✅ `atmo-checkout.css` + progress steps `1203858` (`inc/atmo-checkout.php`); gateways visible on Local (**BLIK** default, **Klarna**); cart-fixture QA PASS 2026-05-22 + steps QA 2026-05-25 |
 | Order received | ✅ `inc/atmo-confirmation.php` + `atmo-confirmation.css` (`f9a7b95` + receipt card 2026-06-02); owner browser QA PASS #3801 / user 679 — `CHANGES.md` 2026-05-25, 2026-06-02 |
