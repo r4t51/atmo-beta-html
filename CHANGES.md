@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-02 — Cart funnel micro-parity (Local)
+
+- **Verdict:** PASS_LOCAL — **Option B** (hooks + CSS; coupon visual deferred).
+- **Prototype:** `cart.html` — empty icon + dual CTA; summary H2 «К оплате».
+- **Child theme:** `inc/atmo-cart.php` — `atmo_cart_render_empty_shell()`, `atmo_cart_totals_heading_gettext()`, `atmo_cart_body_class`; `assets/css/atmo-cart.css` — `.atmo-cart-empty` shell; hide default Woo empty/return-to-shop when `atmo-cart-is-empty`.
+- **CTAs:** primary → `/каталог/`; secondary → `/my-account/` (per prototype «В кабинет»).
+- **Browser QA:** empty `/cart-2/`; filled fixture **3628**; `/checkout/` read-only; mobile 390; **no** checkout submit.
+- **Deferred:** coupon row inside summary card (Woo markup — form actions column).
+
+---
+
 ## 2026-06-02 — Account dashboard prototype parity audit (Local)
 
 - **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff).
