@@ -22,7 +22,7 @@ This file maps every HTML prototype screen to the current WordPress/theme implem
 |---|---|---|---|---|
 | `index.html` | `/` via `front-page.php` + `atmo-home.css` | `partial` | Homepage v1 shipped; child theme has front-page layer. | Social/testimonials block still deferred; not full marketing parity. |
 | `catalog.html` | `/каталог/` Woo shop archive via `inc/atmo-catalog.php`, `woocommerce/content-product.php`, `atmo-catalog.css` | `implemented` | Local QA 2026-06-01; child commit `a8e81e5`. | Pagination remains because real Woo archive has more products than one static prototype view. |
-| `product.html` | `/product/{slug}/` via `woocommerce/content-single-product.php` + `atmo-product.css` | `partial` | PDP MVP + price sync + tabs shipped. | Full prototype hero parity still open; variable PDP bottom CTA intentionally deferred. |
+| `product.html` | `/product/{slug}/` via `woocommerce/content-single-product.php` + `atmo-product.css` | `partial` | **Marketing parity audit PASS_LOCAL (2026-06-02):** hero grid/cover, breadcrumb, eyebrow/title/meta/lead, buy box (price + Klarna note + WVS access swatches + ATC + trust), stats grid, `[course_info_card]` block, Woo tabs, related «Если эта не подходит»; variation hero price sync (`4132f1f`); enrolled panel regression non-destructive (2026-06-02). QA: guest curl + **691** no-access + **679** owner + LevelUp **2903** + mobile 390. | Prototype-only: gift CTA/note; separate «Что это даёт» who-grid + native FAQ `<details>` (live copy in description/tabs); variable PDP bottom CTA (Snippet 12) deferred by design; minor eyebrow tick vs `with-tick`. |
 | `product-enrolled.html` | Post-purchase/enrolled product or course access state | `partial` | **Dual surface (2026-06-02):** canonical hub `/my-account/my-courses/?course_id={id}` (full continue/progress/outline); logged-in PDP access panel on related Woo products (`inc/atmo-product.php`, `atmo-product.css`) — message, progress, continue/hub/review CTAs; purchase UI kept. | Prototype coral hero + sticky progress + lesson outline + video/tick-list not on PDP (hub-only); per-course accent; Теория/Практика grouping; drip locks. |
 | `cart.html` | `/cart-2/` via `inc/atmo-cart.php` + `atmo-cart.css` | `partial` | Cart fixture QA passed earlier. | Non-standard slug remains; minor visual deltas against static prototype. |
 | `checkout.html` | `/checkout/` via `inc/atmo-checkout.php` + `atmo-checkout.css` | `partial` | Stage2 Stripe test UI PASS; checkout shell implemented. | Not pixel-perfect; empty-cart redirect is expected Woo behavior. |
@@ -59,7 +59,7 @@ Reasons:
 
 ## Recommended Design Slices
 
-1. PDP marketing parity (`product.html` residual); enrolled full-page hero/outline remains hub-first.
+1. PDP marketing residual only (`product.html`: gift CTA, who-grid/FAQ layout split, variable bottom CTA); enrolled full-page hero/outline remains hub-first.
 2. Auth/reset password flow (`auth.html`, `reset-password.html`).
 3. ~~Public `/courses/` archive IA/skin~~ — Local skin shipped; enrolled list parity remains on `/my-account/my-courses/`.
 4. Course completion flow (`course-complete.html`).

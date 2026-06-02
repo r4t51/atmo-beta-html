@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-02 — PDP marketing prototype parity audit (Local)
+
+- **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff; existing MVP sufficient).
+- **Prototype:** `product.html` — marketing hero, buy box, stats, who/FAQ sections, related grid.
+- **Live:** `content-single-product.php` + `atmo_build_product_page()` + `atmo-product.css` + `atmo-pdp-variation-price.js` already match core IA (commits `4132f1f`, `106250d`, enrolled panel 2026-06-02).
+- **Browser QA (read-only):** guest curl `/product/abdomen_pelvic/` — no `.atmo-pdp-enrolled`, hero/buy/ATC present; **691** logged-in no-access — no panel, variations + ATC; **679** owner — panel + price/ATC; `/product/levelup_your_strenght/` HTTP 200; mobile 390 `scrollWidth=390`; `/cart-2/` HTTP 200; no add-to-cart/checkout mutations.
+- **Residual (documented):** prototype gift button; who-grid + FAQ as separate sections; variable description-tab bottom CTA deferred.
+- **Ephemeral QA (self-deleted):** `wp-content/atmo-qa-account-login-once.php`.
+
+---
+
 ## 2026-06-02 — Product enrolled state on PDP (Local)
 
 - **Verdict:** PASS_LOCAL — audit + Option B (adapter panel on Woo PDP; hub remains canonical for full `product-enrolled.html` experience).
