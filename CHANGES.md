@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-06-02 — Lesson prototype parity audit (Local)
+
+- **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff).
+- **Prototype:** `lesson.html` — narrow wrap, crumb, content card, nav row, complete CTA, diary/reflection blocks.
+- **Live:** `inc/atmo-lesson.php` + `atmo-lesson.css` (chrome `1e08a3d`, H1 prefix `caaaa96`, plugin blocks `d37665b`).
+- **Browser QA:** user **679** / course **3616** — `/lessons/план-программы/` (Урок 1, no-prev, hub back); `/lessons/01-2/` (Урок 5, `#ldtd` diary tabs); mobile 390 `scrollWidth=390`; hub `?course_id=3616`; **no** mark-complete or diary save.
+- **Deferred:** prototype video mock; consolidate remaining direct LD reads in lesson hooks (low priority; outline uses adapter).
+
+---
+
 ## 2026-06-02 — Homepage prototype parity audit (Local)
 
 - **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff; Hero/Featured/Paths sufficient).

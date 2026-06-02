@@ -1,6 +1,6 @@
 # ATMO prototype coverage audit
 
-Last updated: 2026-06-01 (trainer removed from scope)
+Last updated: 2026-06-02 (lesson parity audit)
 Scope: redesign only, Local + Stage2 validation where noted
 Current RC status: **NOT_READY**
 
@@ -34,7 +34,7 @@ This file maps every HTML prototype screen to the current WordPress/theme implem
 | `auth.html` | Logged-out `/my-account/` Woo auth form | `implemented` | Auth shell v2 (`inc/atmo-auth-shell.php`, `atmo-account.css`, `atmo-auth-shell.js`): tabs, hero copy, visual quote, form cards. | No standalone `/auth/` route (Woo canonical). No social OAuth buttons from prototype. |
 | `reset-password.html` | `/my-account/lost-password/` + Woo `action=rp` reset form | `partial` | Lost-password + reset shells styled; password toggle + strength meter JS on reset form when token present. | Valid reset token not QA'd locally (no email send); strength meter is UX-only, not enforced server-side. |
 | `courses.html` | Account "Мои курсы" (prototype) + public programs browse | `partial` | `/my-account/my-courses/` + hub shipped; public `/courses/` skinned as «Программы» (`inc/atmo-courses.php`, `atmo-courses.css`) with IA copy vs Каталог/Мои курсы. | Prototype `courses.html` is aspirational enrolled UI (demo off); no fake progress on public archive. List/grid toggle and account-sidebar layout not ported to LD archive. |
-| `lesson.html` | `/lessons/{slug}/` LearnDash lesson chrome | `partial` | ATMO lesson chrome, H1 prefix, plugin block CSS shipped. | No LearnDash template override; core LD markup still underneath. |
+| `lesson.html` | `/lessons/{slug}/` LearnDash lesson chrome | `partial` | **Parity audit PASS_LOCAL (2026-06-02):** content card (`.ld-layout__content`), H1 «Урок N ·», breadcrumbs, hub back link `?course_id=3616`, mark-complete + prev/next; diary `#ldtd` on `/lessons/01-2/`; first lesson `atmo-lesson--no-prev`. QA user **679** course **3616**; no progress submit. | No LD template override; prototype mock video/crumb layout differs; guest lesson **302**; adapter follow-up for direct `learndash_*` in `atmo-lesson.php` (outline prefix already uses `atmo_lms_*`). |
 | `course-complete.html` | Course completion celebration (account hub) | `partial` | Option B shipped: `/my-account/my-courses/?course_id={id}` → `atmo_render_course_hub_completed` when `status=completed`. Review CTA → Woo `#reviews` (LD **3616** → `/product/abdomen_pelvic/#reviews`). QA fixture: **atmo-qa-completed** (ID **692**). | No inline review form; «Что дальше» = catalog CTA only (no product card grid); stats use real lessons/steps/days not prototype weeks/hours. |
 | `404.html` | WP 404 via `404.php` + `atmo-404.css` | `implemented` | Branded 404 QA passed. | None for current scope. |
 | `terms.html` | `/terms/` | `implemented` | Code-owned route + `page-legal.php` + `atmo-legal.css`; body from Stage2 `regulamin-sklepu-internetowego` (Polish legal, read-only export). | Prototype `terms.html` is Russian reference layout; live copy is Stage2 Polish regulamin, not Russian prototype text. Footer slug `/terms/` maps to portable theme route. |

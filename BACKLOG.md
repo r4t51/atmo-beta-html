@@ -87,6 +87,10 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 - No LD template overrides; no `atmo-lms-lite` integration
 - QA PASS — Codex WP-CLI simulation + logged-out HTTP — see `CHANGES.md`
 
+### Lesson prototype parity audit (2026-06-02)
+
+- **`lesson.html` audit PASS_LOCAL** — Option A; child diff 0; browser QA course **3616** (`/lessons/план-программы/`, `/lessons/01-2/` + diary); hub return link; mobile 390 OK; no mark-complete/diary submit
+
 ### Lesson plugin blocks CSS Phase 1 (2026-05-25)
 
 - Plugin/content blocks inside LD lessons — child theme **`d37665b`**
