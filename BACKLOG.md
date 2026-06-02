@@ -175,7 +175,7 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 | Priority | Item | Notes |
 |----------|------|-------|
 | P1 | **PDP prototype parity** | `product.html` is only partial; full hero/enrolled-state decisions still open. |
-| P1 | **Auth/reset password prototype parity** | **Done (Local 2026-06-01):** auth shell on logged-out `/my-account/` + lost-password; reset form shell when `action=rp`. Residual: OAuth/social buttons deferred; reset URL QA needs mail/token. |
+| P1 | **Auth/reset password prototype parity** | **PASS_LOCAL audit (2026-06-02):** lost + reset shells; valid token QA via disposable Local users (WC cookie flow); strength/toggle/match UX. Residual: OAuth deferred; prototype success screen; mail E2E; logged-in lost-password without shell. |
 | ~~P1 Public `/courses/` IA / skin~~ | ✅ Local 2026-06-01 — Option 1: keep LD archive, ATMO head + card skin + IA copy (`inc/atmo-courses.php`, `atmo-courses.css`). Prototype enrolled list remains `/my-account/my-courses/`. |
 | ~~P2 Course completion flow~~ | ✅ Local 2026-06-01 — Option B hub celebration (`atmo_render_course_hub_completed`, `atmo-account.css`); review → Woo `#reviews`; fixture **atmo-qa-completed** / course **3616**. Residual: product-card «Что дальше» grid deferred. |
 

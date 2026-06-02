@@ -1,6 +1,6 @@
 # ATMO prototype coverage audit
 
-Last updated: 2026-06-02 (lesson parity audit)
+Last updated: 2026-06-02 (reset-password parity audit)
 Scope: redesign only, Local + Stage2 validation where noted
 Current RC status: **NOT_READY**
 
@@ -32,7 +32,7 @@ This file maps every HTML prototype screen to the current WordPress/theme implem
 | `orders.html` | `/my-account/orders/` and `/my-account/view-order/{id}/` | `partial` | Pass 3b (2026-06-02): «Состав» column + access meta, RU headers, «Подробнее →», status dots, ATMO empty shell (691), view-order payment/email card; owner QA #3801 / 679. | Prototype modal detail vs separate view-order page; Woo status labels (e.g. «Выполнен» not «Оплачен»); no in-page modal. |
 | `profile.html` | `/my-account/edit-account/` and related account settings | `partial` | Pass 4b (2026-06-02): «Настройки профиля» title, settings cards (личные данные + пароль), email hint, password strength UX, ink save CTA; owner QA user **679**; single Woo save form preserved. | No separate E-mail card (merged with personal); no notification toggles or delete-account zone (no user meta); per-section save CTAs deferred; LearnDash `/profile/` not skinned. |
 | `auth.html` | Logged-out `/my-account/` Woo auth form | `implemented` | Auth shell v2 (`inc/atmo-auth-shell.php`, `atmo-account.css`, `atmo-auth-shell.js`): tabs, hero copy, visual quote, form cards. | No standalone `/auth/` route (Woo canonical). No social OAuth buttons from prototype. |
-| `reset-password.html` | `/my-account/lost-password/` + Woo `action=rp` reset form | `partial` | Lost-password + reset shells styled; password toggle + strength meter JS on reset form when token present. | Valid reset token not QA'd locally (no email send); strength meter is UX-only, not enforced server-side. |
+| `reset-password.html` | `/my-account/lost-password/` + Woo reset cookie flow (`show-reset-form` + `key`/`login` → cookie → form) | `partial` | **Parity audit PASS_LOCAL (2026-06-02):** lost request + reset shells (`inc/atmo-auth-shell.php`, `atmo-account.css`, `atmo-auth-shell.js`); H1 «Новый *пароль*», lead, quote panel; pw toggle + strength + match hints on `#password_1`/`#password_2`; invalid token → `woocommerce-error`; auth regression logged-out `/my-account/`. QA: disposable users **693–695** (activation key only; **679/691** untouched; **no** form submit). | Prototype demo success screen not ported (Woo post-submit redirect/message); submit label «Сохранить» vs «Сохранить пароль»; prototype has no auth tabs (live shares shell); JS strength UX-only (WP/Woo enforce); logged-in users still reach lost-password without shell; E2E mail + real submit deferred. |
 | `courses.html` | Account "Мои курсы" (prototype) + public programs browse | `partial` | `/my-account/my-courses/` + hub shipped; public `/courses/` skinned as «Программы» (`inc/atmo-courses.php`, `atmo-courses.css`) with IA copy vs Каталог/Мои курсы. | Prototype `courses.html` is aspirational enrolled UI (demo off); no fake progress on public archive. List/grid toggle and account-sidebar layout not ported to LD archive. |
 | `lesson.html` | `/lessons/{slug}/` LearnDash lesson chrome | `partial` | **Parity audit PASS_LOCAL (2026-06-02):** content card (`.ld-layout__content`), H1 «Урок N ·», breadcrumbs, hub back link `?course_id=3616`, mark-complete + prev/next; diary `#ldtd` on `/lessons/01-2/`; first lesson `atmo-lesson--no-prev`. QA user **679** course **3616**; no progress submit. | No LD template override; prototype mock video/crumb layout differs; guest lesson **302**; adapter follow-up for direct `learndash_*` in `atmo-lesson.php` (outline prefix already uses `atmo_lms_*`). |
 | `course-complete.html` | Course completion celebration (account hub) | `partial` | Option B shipped: `/my-account/my-courses/?course_id={id}` → `atmo_render_course_hub_completed` when `status=completed`. Review CTA → Woo `#reviews` (LD **3616** → `/product/abdomen_pelvic/#reviews`). QA fixture: **atmo-qa-completed** (ID **692**). | No inline review form; «Что дальше» = catalog CTA only (no product card grid); stats use real lessons/steps/days not prototype weeks/hours. |
@@ -53,7 +53,7 @@ Reasons:
 
 - Required prototype screens remain `partial`: homepage, PDP, cart, checkout, order confirmation, account/orders/profile, courses/my-courses, lesson, reset password.
 - `course-complete.html` remains `partial` (celebration hub shipped; no product-card «Что дальше» grid).
-- `reset-password.html` partial — shell styled; full reset flow needs tokenized URL QA when mail available.
+- `reset-password.html` partial — shells + tokenized reset form QA PASS_LOCAL (2026-06-02); residual: prototype success UI, mail E2E, logged-in lost-password shell.
 - `/terms/` and `/privacy/` implemented with Stage2-sourced Polish legal copy on prototype layout (2026-06-01).
 - Public `/courses/` IA copy shipped (2026-06-01): catalog = purchase; my-courses = owned access; programs archive = browse structure before purchase.
 

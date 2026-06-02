@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-06-02 — Reset-password prototype parity audit (Local)
+
+- **Verdict:** PASS_LOCAL — audit + **Option C** (valid token QA with disposable user; no child theme diff).
+- **Prototype:** `reset-password.html` — auth shell, new+confirm password, strength bar, match hint, pw toggle; demo success state (not ported).
+- **Live:** `inc/atmo-auth-shell.php`, `atmo-account.css`, `atmo-auth-shell.js` (2026-06-01 shell v2).
+- **Token QA:** one-shot `atmo-qa-reset-token-once.php` created disposable users **693–695** (`get_password_reset_key` only); browser + curl cookie flow → `atmo-auth-shell-page--reset`, `#password_1`/`#password_2`; **679/691** untouched; **no** reset form submit.
+- **Deferred:** prototype post-save success UI; real-mail E2E; polish submit CTA copy; logged-in lost-password shell hide.
+
+---
+
 ## 2026-06-02 — Lesson prototype parity audit (Local)
 
 - **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff).
