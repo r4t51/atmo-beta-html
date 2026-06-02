@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-06-02 — Homepage prototype parity audit (Local)
+
+- **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff; Hero/Featured/Paths sufficient).
+- **Prototype:** `index.html` + `parts/hero.jsx`, `featured.jsx`, `paths.jsx`, `social.jsx` (Social not ported).
+- **Live:** `front-page.php` + `atmo-home.css` (commits `075179f`, `214f6b6`).
+- **Browser QA:** `/` sections hero/featured/paths; mobile 390 `scrollWidth=390`; `/каталог/` + `/courses/` CTA targets HTTP 200; no fake testimonials added.
+- **Content-blocked (Option D slice):** Section 04 Social — prototype demo quotes/names; needs owner-approved copy or CMS.
+
+---
+
 ## 2026-06-02 — Checkout prototype parity audit (Local)
 
 - **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff; existing checkout layer sufficient).
