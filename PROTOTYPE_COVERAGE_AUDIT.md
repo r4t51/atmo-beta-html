@@ -33,7 +33,7 @@ This file maps every HTML prototype screen to the current WordPress/theme implem
 | `profile.html` | `/my-account/edit-account/` and related account settings | `partial` | Woo settings styling shipped. | LearnDash `/profile/` remains separate/default; account CSS does not skin it. |
 | `auth.html` | Logged-out `/my-account/` Woo auth form | `implemented` | Auth shell v2 (`inc/atmo-auth-shell.php`, `atmo-account.css`, `atmo-auth-shell.js`): tabs, hero copy, visual quote, form cards. | No standalone `/auth/` route (Woo canonical). No social OAuth buttons from prototype. |
 | `reset-password.html` | `/my-account/lost-password/` + Woo `action=rp` reset form | `partial` | Lost-password + reset shells styled; password toggle + strength meter JS on reset form when token present. | Valid reset token not QA'd locally (no email send); strength meter is UX-only, not enforced server-side. |
-| `courses.html` | Account "Мои курсы" / enrolled programs experience | `partial` | `/my-account/my-courses/` + hub shipped and QA'd. | Public `/courses/` is LearnDash archive and remains a different screen; IA needs explicit decision. |
+| `courses.html` | Account "Мои курсы" (prototype) + public programs browse | `partial` | `/my-account/my-courses/` + hub shipped; public `/courses/` skinned as «Программы» (`inc/atmo-courses.php`, `atmo-courses.css`) with IA copy vs Каталог/Мои курсы. | Prototype `courses.html` is aspirational enrolled UI (demo off); no fake progress on public archive. List/grid toggle and account-sidebar layout not ported to LD archive. |
 | `lesson.html` | `/lessons/{slug}/` LearnDash lesson chrome | `partial` | ATMO lesson chrome, H1 prefix, plugin block CSS shipped. | No LearnDash template override; core LD markup still underneath. |
 | `course-complete.html` | Course completion / certificate moment | `missing` | No child completion route/template. | Design LearnDash completion hook/template or defer explicitly. |
 | `404.html` | WP 404 via `404.php` + `atmo-404.css` | `implemented` | Branded 404 QA passed. | None for current scope. |
@@ -55,12 +55,12 @@ Reasons:
 - Required prototype screens remain `missing`: course completion.
 - `reset-password.html` partial — shell styled; full reset flow needs tokenized URL QA when mail available.
 - `/terms/` and `/privacy/` implemented with Stage2-sourced Polish legal copy on prototype layout (2026-06-01).
-- `/catalog/` and `/courses/` IA still needs plain-user wording and possibly navigation refinement: catalog is shop/purchase; my courses/account is owned access; public `/courses/` is LearnDash archive.
+- Public `/courses/` IA copy shipped (2026-06-01): catalog = purchase; my-courses = owned access; programs archive = browse structure before purchase.
 
 ## Recommended Design Slices
 
 1. PDP parity, including clear decision for `product-enrolled.html`.
 2. Auth/reset password flow (`auth.html`, `reset-password.html`).
-3. Public `/courses/` archive IA/skin decision versus Woo catalog.
+3. ~~Public `/courses/` archive IA/skin~~ — Local skin shipped; enrolled list parity remains on `/my-account/my-courses/`.
 4. Course completion flow (`course-complete.html`).
 5. Homepage deferred blocks.

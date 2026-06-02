@@ -10,6 +10,15 @@
 
 ---
 
+## 2026-06-01 — Public `/courses/` programs archive skin (Local)
+
+- **Scope:** child theme only; LearnDash routes preserved; no enrollment/order changes.
+- **IA:** `/courses/` = public «Программы» browse; `/каталог/` = purchase; `/my-account/my-courses/` = owned access.
+- **Implementation:** `inc/atmo-courses.php`, `assets/css/atmo-courses.css`, enqueue in `functions.php`.
+- **Notes:** Kadence read-more footer removed on archive; no fake progress; `courses.html` enrolled demo remains account-side.
+
+---
+
 ## 2026-06-01 — Trainer page removed from redesign scope
 
 - **Scope:** docs/prototype only; no child-theme runtime change.

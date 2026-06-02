@@ -171,7 +171,7 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 |----------|------|-------|
 | P1 | **PDP prototype parity** | `product.html` is only partial; full hero/enrolled-state decisions still open. |
 | P1 | **Auth/reset password prototype parity** | **Done (Local 2026-06-01):** auth shell on logged-out `/my-account/` + lost-password; reset form shell when `action=rp`. Residual: OAuth/social buttons deferred; reset URL QA needs mail/token. |
-| P1 | **Public `/courses/` IA / skin** | Prototype `courses.html` maps closer to account "Мои курсы"; live `/courses/` is LearnDash public archive. Needs explicit product/design decision. |
+| ~~P1 Public `/courses/` IA / skin~~ | ✅ Local 2026-06-01 — Option 1: keep LD archive, ATMO head + card skin + IA copy (`inc/atmo-courses.php`, `atmo-courses.css`). Prototype enrolled list remains `/my-account/my-courses/`. |
 | P2 | **Course completion flow** | `course-complete.html` missing; decide LD completion hook/template or defer. |
 
 Removed from scope: `/trainer/` / `trainer.html` (2026-06-01 product decision).
