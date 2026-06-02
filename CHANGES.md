@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-06-02 — PDP marketing residual micro-parity (Local)
+
+- **Verdict:** PASS_LOCAL — **Option A** (CSS-only pass 3; no template/PHP change).
+- **Prototype:** `product.html` residual layout polish without new marketing claims.
+- **Child theme:** `assets/css/atmo-product.css` — eyebrow tick line; trust list dots (no ✓); hide Kadence `.product-title.product-above`; CMS `.app-*` description styling; `<details>` FAQ styling when in content; hide `#tab-description form.cart` (Snippet 12 duplicate on simple products).
+- **QA:** guest `abdomen_pelvic` (1 cart form, WVS); `levelup_your_strenght` (tab duplicate cart hidden); owner **679** enrolled + buy; mobile 390.
+- **Deferred:** gift CTA; «Что это даёт» who-grid; invented FAQ block.
+
+---
+
 ## 2026-06-02 — Auth/reset residual micro-parity (Local)
 
 - **Verdict:** PASS_LOCAL — **Option B** (scoped hooks in `inc/atmo-account.php` + CSS; no template override).
