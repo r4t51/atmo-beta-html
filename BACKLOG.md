@@ -176,7 +176,7 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 |----------|------|-------|
 | P1 | **Account dashboard prototype parity** | **PASS_LOCAL audit (2026-06-02):** `/my-account/` dash shell + adapter continue + Woo last order; fixtures **679**/**691**. Residual: diary/trainer dashboard widgets need real data source (deferred). |
 | P1 | **PDP prototype parity** | `product.html` is only partial; full hero/enrolled-state decisions still open. |
-| P1 | **Auth/reset password prototype parity** | **PASS_LOCAL audit (2026-06-02):** lost + reset shells; valid token QA via disposable Local users (WC cookie flow); strength/toggle/match UX. Residual: OAuth deferred; prototype success screen; mail E2E; logged-in lost-password without shell. |
+| P1 | **Auth/reset password prototype parity** | **PASS_LOCAL (2026-06-02 micro-parity):** shells + residual hooks/CSS (`inc/atmo-account.php`: «Сохранить пароль», logged-in lost-password → dashboard; `atmo-account.css`: reset tabs hidden, notice cards, match hints). Deferred: OAuth; prototype post-reset success screen; mail E2E. |
 | ~~P1 Public `/courses/` IA / skin~~ | ✅ Local 2026-06-01 — Option 1: keep LD archive, ATMO head + card skin + IA copy (`inc/atmo-courses.php`, `atmo-courses.css`). Prototype enrolled list remains `/my-account/my-courses/`. |
 | ~~P2 Course completion flow~~ | ✅ Local 2026-06-01 — Option B hub celebration (`atmo_render_course_hub_completed`, `atmo-account.css`); review → Woo `#reviews`; fixture **atmo-qa-completed** / course **3616**. Residual: product-card «Что дальше» grid deferred. |
 

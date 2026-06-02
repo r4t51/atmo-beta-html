@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-02 — Auth/reset residual micro-parity (Local)
+
+- **Verdict:** PASS_LOCAL — **Option B** (scoped hooks in `inc/atmo-account.php` + CSS; no template override).
+- **Prototype:** `auth.html` + `reset-password.html` — card shell, reset H1, «Сохранить пароль», no tabs on reset, notice styling.
+- **Child theme:** `inc/atmo-account.php` — gettext «Save» → «Сохранить пароль» on reset form; `template_redirect` logged-in `/lost-password/` → `/my-account/`.
+- **CSS:** `atmo-account.css` pass 3 — hide tabs on `--reset`/`--sent`; Woo message/info/error cards; match hints via `::after` (no ✓/✗); mobile overflow clip.
+- **Browser QA:** logged-out `/my-account/` + `/lost-password/` shells; logged-in **679** lost-password redirect + dashboard OK; mobile 390 `scrollWidth=390`.
+- **Deferred:** prototype demo success screen; real mail/submit E2E; OAuth.
+
+---
+
 ## 2026-06-02 — Order-confirmation micro-parity (Local)
 
 - **Verdict:** PASS_LOCAL — **Option B** (hooks + CSS; no template override).
