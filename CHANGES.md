@@ -10,6 +10,18 @@
 
 ---
 
+## 2026-06-02 — Order-confirmation micro-parity (Local)
+
+- **Verdict:** PASS_LOCAL — **Option B** (hooks + CSS; no template override).
+- **Prototype:** `order-confirmation.html` — hero, courses, «Платёж» receipt, «Что дальше», CTAs; honest unavailable state (no fake success).
+- **Child theme:** `inc/atmo-confirmation.php` — view-state router (`success|unavailable|processing|gate`), `atmo_confirmation_render_unavailable_shell()`, `atmo_confirmation_render_processing_shell()`, `the_content` prepend for invalid ID; renamed success renderer `atmo_render_confirmation_success_layer()`.
+- **CSS:** `atmo-confirmation.css` — body classes `--success|--unavailable|--processing`, hide Woo dupes/misleading success, neutral hero mark, layer padding.
+- **Invalid QA:** `/checkout/order-received/999/` — «Не удалось открыть заказ», no totals, CTAs кабинет/каталог, stays Local.
+- **Owner QA:** **#3801** + key + user **679** — «Платёж» receipt, «Живот и Тазовое дно» + «Открыть курс» → `course_id=3616`; mobile 390; `/payment-failed/` regression OK.
+- **Deferred:** PDF «Скачать чек» (demo-only).
+
+---
+
 ## 2026-06-02 — Checkout payment-in-summary micro-parity (Local)
 
 - **Verdict:** PASS_LOCAL — **Option B** (scoped wrapper hook + CSS; no DOM/JS payment move).

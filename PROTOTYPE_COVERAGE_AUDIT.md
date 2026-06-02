@@ -1,6 +1,6 @@
 # ATMO prototype coverage audit
 
-Last updated: 2026-06-02 (checkout payment-in-summary micro-parity)
+Last updated: 2026-06-02 (order-confirmation micro-parity)
 Scope: redesign only, Local + Stage2 validation where noted
 Current RC status: **NOT_READY**
 
@@ -26,7 +26,7 @@ This file maps every HTML prototype screen to the current WordPress/theme implem
 | `product-enrolled.html` | Post-purchase/enrolled product or course access state | `partial` | **Dual surface (2026-06-02):** canonical hub `/my-account/my-courses/?course_id={id}` (full continue/progress/outline); logged-in PDP access panel on related Woo products (`inc/atmo-product.php`, `atmo-product.css`) — message, progress, continue/hub/review CTAs; purchase UI kept. | Prototype coral hero + sticky progress + lesson outline + video/tick-list not on PDP (hub-only); per-course accent; Теория/Практика grouping; drip locks. |
 | `cart.html` | `/cart-2/` via `inc/atmo-cart.php` + `atmo-cart.css` | `partial` | **Micro-parity PASS_LOCAL (2026-06-02):** empty shell (icon, «Корзина пуста», dual CTA → `/каталог/` + `/my-account/`); totals H2 «К оплате» via gettext; prior grid/line items/trust/cross-sells. QA: empty + filled **3628**; checkout read-only. | Slug `/cart-2/`; coupon in cart form actions not summary sidebar (deferred — no DOM move); no qty stepper (courses); no prototype bundle discount row. |
 | `checkout.html` | `/checkout/` via `inc/atmo-checkout.php` + `atmo-checkout.css` | `partial` | **Payment-in-summary micro-parity PASS_LOCAL (2026-06-02):** `.atmo-checkout-summary` wrapper (heading + `#order_review` + `#payment` — Woo DOM unchanged); unified order card + sticky sidebar ≥920px; terms footer divider; steps/coupon/billing/payment shell/«Подтвердить заказ»; empty cart → `/cart-2/`; mobile 390. QA: guest fixture **3628**; no `#place_order`. | Not pixel-perfect; prototype demo card form/UPE not ported; **Local** no card radio (BLIK/Klarna — card on Stage2); Polish terms inline; saved-payment checkbox noise; no fake secure-note emoji. |
-| `order-confirmation.html` | `/checkout/order-received/{id}/` via `inc/atmo-confirmation.php` + `atmo-confirmation.css` | `partial` | Layer + «Платёж» receipt card (real totals) on valid key + `completed`; owner QA #3801 2026-06-02. | No PDF «Скачать чек» (prototype demo-only); invalid/missing order → generic Woo shell; guest without key sees login/verify gate. |
+| `order-confirmation.html` | `/checkout/order-received/{id}/` via `inc/atmo-confirmation.php` + `atmo-confirmation.css` | `partial` | **Micro-parity PASS_LOCAL (2026-06-02):** success layer (hero, courses, «Платёж» receipt, «Что дальше», CTAs); branded **unavailable** shell `/order-received/999/` (no fake totals); **processing** shell for valid key + non-completed; owner QA **#3801** key + user **679** — course CTA `course_id=3616`. | No PDF «Скачать чек» (demo-only); guest without key → Woo login/verify gate (unchanged); success «Что дальше» icons pre-existing. |
 | `payment-failed.html` | `/payment-failed/` via virtual route + `page-payment-failed.php` | `implemented` | Code-owned route `35806f0`; Stage2 smoke PASS. | Generic failure page by design. |
 | `account.html` | `/my-account/` dashboard via `inc/atmo-account.php` + `atmo-account.css` | `partial` | **Parity audit PASS_LOCAL (2026-06-02):** Kadence account nav IA (Обзор/Мои курсы/Заказы/Настройки/Выйти); `.atmo-dash` greeting+date; next-step hero from adapter (`Продолжить` for **679**); courses panel; profile + last-order (real Woo for **679**, empty copy for **691**). QA read-only; my-courses + orders regression. | Prototype-only: diary progress + trainer-reply widgets (localStorage demo); program rows/stats/streak/circle hero; nav SVG icons; no fake widgets on live by design. |
 | `orders.html` | `/my-account/orders/` and `/my-account/view-order/{id}/` | `partial` | Pass 3b (2026-06-02): «Состав» column + access meta, RU headers, «Подробнее →», status dots, ATMO empty shell (691), view-order payment/email card; owner QA #3801 / 679. | Prototype modal detail vs separate view-order page; Woo status labels (e.g. «Выполнен» not «Оплачен»); no in-page modal. |
@@ -60,7 +60,7 @@ Reasons:
 ## Recommended Design Slices
 
 1. PDP marketing residual only (`product.html`: gift CTA, who-grid/FAQ layout split, variable bottom CTA); enrolled full-page hero/outline remains hub-first.
-2. Order-confirmation funnel micro-parity (invalid order shell, receipt polish) — checkout payment-in-summary CSS **shipped** 2026-06-02.
+2. ~~Order-confirmation funnel micro-parity~~ — invalid/processing shells + receipt polish **shipped** 2026-06-02; PDF чек deferred.
 3. Auth/reset residual (`reset-password.html`: logged-in shell, submit copy, post-submit notice styling).
 4. ~~Cart micro-parity~~ — empty dual CTA + «К оплате» shipped 2026-06-02; coupon-in-summary deferred.
 5. Homepage deferred blocks (Social content-blocked).

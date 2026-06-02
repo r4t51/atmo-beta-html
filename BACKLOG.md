@@ -20,7 +20,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | PDP | ✅ simple + variable #3614; marketing `product.html` parity audit PASS_LOCAL (2026-06-02); enrolled access panel on PDP for logged-in owners (2026-06-02) — hub remains canonical |
 | Cart | ✅ `atmo-cart.css` + cross-sells · polish `3e4748f`; audit PASS_LOCAL (2026-06-02); **micro-parity** empty dual CTA + «К оплате» (2026-06-02) — coupon-in-summary deferred |
 | Checkout | ✅ `atmo-checkout.css` pass 2 + `.atmo-checkout-summary` wrapper (`inc/atmo-checkout.php` 2026-06-02); payment-in-summary micro-parity PASS_LOCAL — unified card + sticky sidebar; steps `1203858`; Local **BLIK** + **Klarna**; card UI Stage2; QA fixture **3628** read-only |
-| Order received | ✅ `inc/atmo-confirmation.php` + `atmo-confirmation.css` (`f9a7b95` + receipt card 2026-06-02); owner browser QA PASS #3801 / user 679 — `CHANGES.md` 2026-05-25, 2026-06-02 |
+| Order received | ✅ `inc/atmo-confirmation.php` pass 2 + `atmo-confirmation.css` (2026-06-02): success layer + unavailable/processing shells; invalid `/order-received/999/` branded; owner QA **#3801** / **679** |
 | Account | ✅ passes 1–5 + dashboard + view-order meta + orders pass 3b (detail below) |
 | Preview mu-plugin | ✅ **keep for now** — opt-in only (`?atmo_preview_shell=1`) |
 | WP 404 | ✅ `404.php` + `atmo-404.css` (`64f2aa8`); QA PASS 2026-05-25 — `CHANGES.md` |
