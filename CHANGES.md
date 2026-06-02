@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-01 — Course completion prototype (`course-complete.html`) — discovery only
+
+- **Verdict:** NEEDS_REVIEW — implementation deferred until Local completion fixture exists.
+- **Prototype:** full-page celebration in account context (hero, stats, review card, next programs, CTAs «В кабинет» / «Мои курсы»); prototype review is inline demo — live should use Woo product review form (`#reviews`).
+- **Live integration point:** `/my-account/my-courses/?course_id={id}` hub (`inc/atmo-account.php`) when `atmo_lms_resolve_enrollment_status` → `completed`; not a dedicated LD template override.
+- **Mapping:** LD **3616** ↔ Woo variation **3628** / product **3614**; LD **2905** ↔ Woo product **2903** (`_related_course`).
+- **Review policy:** any active course access qualifies for review CTA, including manual LearnDash enrollment without Woo order; canonical destination remains the related Woo product review form (`#reviews`), not a second LMS review system.
+- **Fixture gap:** user **r4t5** enrolled in **3616**, status active, no completed lessons observed in browser.
+
+---
+
 ## 2026-06-01 — Public `/courses/` programs archive skin (Local)
 
 - **Scope:** child theme only; LearnDash routes preserved; no enrollment/order changes.
