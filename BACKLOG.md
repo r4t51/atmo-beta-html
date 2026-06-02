@@ -174,6 +174,7 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 
 | Priority | Item | Notes |
 |----------|------|-------|
+| P1 | **Account dashboard prototype parity** | **PASS_LOCAL audit (2026-06-02):** `/my-account/` dash shell + adapter continue + Woo last order; fixtures **679**/**691**. Residual: diary/trainer dashboard widgets need real data source (deferred). |
 | P1 | **PDP prototype parity** | `product.html` is only partial; full hero/enrolled-state decisions still open. |
 | P1 | **Auth/reset password prototype parity** | **PASS_LOCAL audit (2026-06-02):** lost + reset shells; valid token QA via disposable Local users (WC cookie flow); strength/toggle/match UX. Residual: OAuth deferred; prototype success screen; mail E2E; logged-in lost-password without shell. |
 | ~~P1 Public `/courses/` IA / skin~~ | ✅ Local 2026-06-01 — Option 1: keep LD archive, ATMO head + card skin + IA copy (`inc/atmo-courses.php`, `atmo-courses.css`). Prototype enrolled list remains `/my-account/my-courses/`. |

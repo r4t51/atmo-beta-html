@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-06-02 — Account dashboard prototype parity audit (Local)
+
+- **Verdict:** PASS_LOCAL — audit + **Option A** (no child theme diff).
+- **Prototype:** `account.html` — sidebar nav, greeting, today/next-step, courses panel, profile, last order, diary/trainer demo widgets.
+- **Live:** `atmo_render_account_dashboard_shell()` + `atmo-account.css` (menu IA, `.atmo-dash` grid).
+- **Browser QA:** **679** — continue «Живот и Тазовое дно», last order panel; **691** — empty enroll/order copy; `/my-account/my-courses/`, `/orders/` regression; mobile 390 `scrollWidth=390`; **no** mutations.
+- **Deferred (Option C):** dashboard diary/trainer panels until real LMS/diary API (no localStorage fake).
+
+---
+
 ## 2026-06-02 — Reset-password prototype parity audit (Local)
 
 - **Verdict:** PASS_LOCAL — audit + **Option C** (valid token QA with disposable user; no child theme diff).
