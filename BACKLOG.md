@@ -19,7 +19,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | PDP | ✅ simple + variable #3614 |
 | Cart | ✅ `atmo-cart.css` + cross-sells · polish `3e4748f` (remove link, eyebrow, trust bullets, coupon centering) |
 | Checkout | ✅ `atmo-checkout.css` + progress steps `1203858` (`inc/atmo-checkout.php`); gateways visible on Local (**BLIK** default, **Klarna**); cart-fixture QA PASS 2026-05-22 + steps QA 2026-05-25 |
-| Order received | ✅ `inc/atmo-confirmation.php` + `atmo-confirmation.css` (`f9a7b95`); owner browser QA PASS #3801 / user 679 — `CHANGES.md` 2026-05-25 |
+| Order received | ✅ `inc/atmo-confirmation.php` + `atmo-confirmation.css` (`f9a7b95` + receipt card 2026-06-02); owner browser QA PASS #3801 / user 679 — `CHANGES.md` 2026-05-25, 2026-06-02 |
 | Account | ✅ passes 1–5 + dashboard + view-order meta (detail below) |
 | Preview mu-plugin | ✅ **keep for now** — opt-in only (`?atmo_preview_shell=1`) |
 | WP 404 | ✅ `404.php` + `atmo-404.css` (`64f2aa8`); QA PASS 2026-05-25 — `CHANGES.md` |

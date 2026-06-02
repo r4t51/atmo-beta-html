@@ -10,6 +10,19 @@
 
 ---
 
+## 2026-06-02 — Order confirmation receipt card parity (Local)
+
+- **Verdict:** PASS_LOCAL — audit + Option B improvement; no Woo template override.
+- **Child theme:** `inc/atmo-confirmation.php` — `atmo_confirmation_render_receipt_card()` («Платёж»: method, subtotal, discount, total, date from order); `assets/css/atmo-confirmation.css` — receipt rows + hide duplicate Woo overview/details/customer blocks when `.atmo-confirmation-layer` present.
+- **Fixture:** order **#3801** (`completed`), key `wc_order_inQFcSUpkLmE4`, owner **679** / `atmo-admin` / display `r4t5`; variation **3628** → LD **3616**; receipt **399zł**, method **Кредитная/дебетовая карта**, date **22 мая 2026, 11:46**.
+- **Target URL:** `/checkout/order-received/3801/?key=wc_order_inQFcSUpkLmE4`
+- **Browser QA (owner session, desktop + mobile 390):** layer, steps, hero, courses CTA → hub `?course_id=3616`, receipt card, «Что дальше», account/catalog CTAs; no horizontal overflow; invalid `/checkout/order-received/999/` — no layer.
+- **Regression (read-only):** `/my-account/orders/`, `/view-order/3801/` (access pill intact), `/checkout/order-received/999/` — PASS.
+- **Not implemented:** «Скачать чек» button (prototype demo disabled); card last-four masking (Woo title only).
+- **Ephemeral QA (self-deleted):** `wp-content/atmo-qa-order-read-once.php`, `atmo-qa-order-login-once.php` (Local-only owner session bootstrap for QA).
+
+---
+
 ## 2026-06-01 — Course completion celebration — Option B (Local)
 
 - **Verdict:** PASS_LOCAL (disposable fixture + browser QA).
