@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-02 — Account orders prototype parity (Local)
+
+- **Verdict:** PASS_LOCAL — audit + Option B (Woo hooks + CSS; no template override).
+- **Child theme:** `inc/atmo-account.php` — orders columns IA (Заказ/Дата/Состав/Сумма/Статус), line-item access meta in list, total without «for N items», action label «Подробнее →», ATMO empty shell, view-order payment/email summary; `assets/css/atmo-account.css` — empty shell, composition column, status badge dots, mobile hide «Состав», view-order summary card.
+- **Fixtures:** **679** / `r4t5` — orders **#3801** (completed, «Живот…», **60 дней**, **399zł**) + **#3800** (pending, cancel visible, not clicked); **691** / `atmo-qa-empty` — zero orders empty state.
+- **Browser QA:** `/my-account/orders/` desktop + mobile 390 (679); `/my-account/view-order/3801/` — access pill + «Платёж» region; `/my-account/orders/` empty (691); `/my-account/my-courses/` regression (691 empty); order-again / cancel / order-again not clicked.
+- **Deferred:** prototype in-page modal (live uses view-order URL); demo multi-order density; map all Woo statuses to prototype «Оплачен» copy.
+- **Ephemeral QA (self-deleted):** `wp-content/atmo-qa-account-login-once.php`.
+
+---
+
 ## 2026-06-02 — Order confirmation receipt card parity (Local)
 
 - **Verdict:** PASS_LOCAL — audit + Option B improvement; no Woo template override.
