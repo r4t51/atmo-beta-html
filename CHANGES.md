@@ -10,14 +10,13 @@
 
 ---
 
-## 2026-06-01 — Course completion prototype (`course-complete.html`) — discovery only
+## 2026-06-01 — Course completion celebration — Option B (Local)
 
-- **Verdict:** NEEDS_REVIEW — implementation deferred until Local completion fixture exists.
-- **Prototype:** full-page celebration in account context (hero, stats, review card, next programs, CTAs «В кабинет» / «Мои курсы»); prototype review is inline demo — live should use Woo product review form (`#reviews`).
-- **Live integration point:** `/my-account/my-courses/?course_id={id}` hub (`inc/atmo-account.php`) when `atmo_lms_resolve_enrollment_status` → `completed`; not a dedicated LD template override.
-- **Mapping:** LD **3616** ↔ Woo variation **3628** / product **3614**; LD **2905** ↔ Woo product **2903** (`_related_course`).
-- **Review policy:** any active course access qualifies for review CTA, including manual LearnDash enrollment without Woo order; canonical destination remains the related Woo product review form (`#reviews`), not a second LMS review system.
-- **Fixture gap:** user **r4t5** enrolled in **3616**, status active, no completed lessons observed in browser.
+- **Verdict:** PASS_LOCAL (disposable fixture + browser QA).
+- **Implementation:** `atmo_render_course_hub_completed()` in `inc/atmo-account.php`; branch in `atmo_render_course_hub()`; styles `atmo-account.css`; review helpers in `inc/atmo-lms-adapter.php`.
+- **Review CTA:** «Оставить отзыв о программе» → `http://atmoredesign.local/product/abdomen_pelvic/#reviews` (course **3616** / product **3614**).
+- **Fixture (Local DB only):** user **atmo-qa-completed** (ID **692**), LD **3616** completed via `learndash_user_course_complete_all_steps()`. User **679** (`atmo-admin`) course **3616** not completed.
+- **Not implemented:** inline review form; standalone route; product-card grid in «Что дальше».
 
 ---
 
