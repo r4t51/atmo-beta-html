@@ -44,7 +44,7 @@ npx http-server . -p 3333 --cors -c-1
 
 Before calling the redesign a release candidate, read `PROTOTYPE_COVERAGE_AUDIT.md`.
 
-Current status as of 2026-06-03: **NOT_READY**. `catalog.html` is implemented; homepage Social now renders real approved Woo reviews (`db25c75`) but needs reviewer/product diversity follow-up; PDP FAQ/who copy is owner-approved in `PDP_CONTENT_APPROVALS.md` but not implemented yet. Multiple prototype screens remain partial.
+Current status as of 2026-06-03: **NOT_READY**. `catalog.html` is implemented; homepage Social now renders real approved Woo reviews with reviewer/product diversity (`db25c75`, `b6e4566`); PDP FAQ/who copy is owner-approved in `PDP_CONTENT_APPROVALS.md` but not implemented yet. Multiple prototype screens remain partial.
 
 ### Source of truth HTML
 
@@ -185,7 +185,7 @@ body.atmo-preview-shell-enabled .atmo-nav-drawer { display: none !important; }
 - Preview mu-plugin: **keep for now** as low-risk legacy comparison tool (`?atmo_preview_shell=1` only); remove later per `BACKLOG.md` / `CHANGES.md`.
 - ✅ Главная v1 — `front-page.php` + `assets/css/atmo-home.css`.
   - Hero, featured product, paths shipped (`075179f`); CSS compliance cleanup (`214f6b6`).
-  - Social section shipped from real approved Woo reviews (`db25c75`) — no hardcoded testimonials, no avatars, no fake counts; follow-up: diversify selection by reviewer and product/course.
+  - Social section shipped from real approved Woo reviews (`db25c75`, diversity `b6e4566`) — no hardcoded testimonials, no avatars, no fake counts; newest-first selection with max one reviewer and max one product/course.
 - ✅ Каталог — MVP карточки: `woocommerce/content-product.php` override + `inc/atmo-catalog.php` + `assets/css/atmo-catalog.css`.
   - `atmo_build_course_card()` ViewModel: id, title (`_atmo_display_title` → Woo name fallback, **`4993bd9`**), permalink, thumbnail, price_html, excerpt, on_sale, categories, `goal_slug`/`goal_label` from `pa_goal`.
   - Карточки `.atmo-product-card` внутри стандартной WC-разметки `ul.products li.product`.
@@ -254,7 +254,7 @@ Rollback Woo My Account: см. `CHANGES.md` — per-commit `git revert` для `
 **Pick next work from `BACKLOG.md` by scope:**
 
 1. **Prototype coverage** — use `PROTOTYPE_COVERAGE_AUDIT.md`; `/trainer/` is removed from scope, `/terms/` + `/privacy/` are Polish legal routes.
-2. **Optional polish / product-scoped** — PDP FAQ/who implementation from `PDP_CONTENT_APPROVALS.md`, gift purchase contract, auth/reset password E2E, `/courses/` IA refinements, homepage Social diversity filter.
+2. **Optional polish / product-scoped** — PDP FAQ/who implementation from `PDP_CONTENT_APPROVALS.md`, gift purchase contract, auth/reset password E2E, `/courses/` IA refinements.
 3. **LMS / product (later)** — explicit `atmo-lms-lite` API/cutover contract when product-ready (`atmo-lms-lite` bridge decision: defer runtime integration — see `CHANGES.md` 2026-05-24).
 4. **Avoid unless explicit** — payment tokens, saved cards, test orders, address save flows; downloads/shipping UI until real fixtures exist.
 5. **Closed no-op items** — account fixture polish, variable PDP bottom CTA, billing edit field subset; do not revive without product scope.

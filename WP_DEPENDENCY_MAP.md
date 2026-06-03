@@ -62,10 +62,10 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - #3614 access-tier hero price sync shipped 2026-05-23 (`4132f1f`); variable bottom CTA **deferred / product decision** 2026-05-24 — do not add second variation form (`BACKLOG.md` §5).
   - LearnDash / enrolled / access state не включены.
 
-- ✅ Homepage Social (`db25c75`): `inc/atmo-home-social.php` renders real approved WooCommerce product reviews on `front-page.php`.
+- ✅ Homepage Social (`db25c75`, diversity `b6e4566`): `inc/atmo-home-social.php` renders real approved WooCommerce product reviews on `front-page.php`.
   - Source: approved Woo reviews only; no hardcoded testimonials, avatars, fake counts, or fake fallbacks.
   - UI: excerpt + native `<details>` full review expansion; section hides when no eligible reviews.
-  - Pending owner follow-up: select newest-first but max one review per reviewer and max one per product/course.
+  - Selection: newest-first with max one selected review per reviewer and max one per product/course.
 
 - PDP FAQ/who content source (2026-06-03): `PDP_CONTENT_APPROVALS.md`.
   - This is the canonical approved decision sheet for 18 redesign products.
