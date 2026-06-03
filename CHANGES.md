@@ -10,6 +10,15 @@
 
 ---
 
+## 2026-06-03 — PDP seam polish + CMS cleanup sheet (Local, no WP Admin)
+
+- **Verdict:** PASS_LOCAL — child **`05fc665`** CSS seam between `.atmo-pdp-extra` and Woo tabs; diagnostic short-info override for `testmyself`; operator checklist in docs (no DB edits).
+- **Child theme:** `assets/css/atmo-product.css` (quieter tabs, FAQ→tabs border, hide duplicate «Описание» panel H2, description max-width); `inc/atmo-pdp-content.php` + `inc/atmo-product.php` (`atmo_pdp_apply_short_description_html` for diagnostic kind).
+- **Docs:** `PDP_CMS_CLEANUP_CHECKLIST.md` — wave-1 slugs + global 18-slug operator pass (NOT DONE until WP Admin).
+- **Policy:** no global tab/content hiding; `video_plan` short info unchanged (service Instagram flow); registry copy untouched.
+
+---
+
 ## 2026-06-03 — PDP content approvals + docs hygiene
 
 - **Verdict:** DOCS_CANONICAL — raw PDP FAQ drafts were reviewed by owner for **18/18** redesign products.
