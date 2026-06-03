@@ -16,7 +16,16 @@
 - **Canonical source:** `PDP_CONTENT_APPROVALS.md` — compact owner-approved decision sheet for PDP who/FAQ implementation.
 - **Policy locked:** no bundle discount; no gift FAQ until gift entitlement contract is implemented; avoid medical/treatment/rehab guarantees; `video_plan` is a normal sellable individual service/product, **not** LMS enrollment.
 - **Content decisions:** approved duration/equipment/prerequisite corrections for all products; global duration rule: when a source conflict includes **2 months**, use **2 months** unless product-specific owner correction says otherwise.
-- **Not implemented yet:** PDP FAQ/who blocks in child theme/WP content.
+- **Implementation:** pilot **`b7e5556`** (3 SKU); wave 2 **`dde8dcf`** extends registry in `inc/atmo-pdp-content.php` to **18/18** approved slugs (Local).
+
+---
+
+## 2026-06-03 — PDP who/FAQ wave 2 (Local, 18/18)
+
+- **Verdict:** PASS_LOCAL — remaining **15** slugs added to `atmo_pdp_get_approved_content_registry()` (pilot baseline **`b7e5556`**, wave 2 **`dde8dcf`**).
+- **Child theme file:** `inc/atmo-pdp-content.php` only (no CSS/architecture change).
+- **Policy:** no gift FAQ, no bundle discount, conservative medical/service copy per `PDP_CONTENT_APPROVALS.md`.
+- **QA:** Local `/product/cardio_1st_grade/`, `/facial_support/`, `/kurs-vse-o-beremennosti/`, `/video_plan/` — theme who+FAQ present; no gift/bundle in `.atmo-pdp-extra`; mobile 390 overflow 0 on `facial_support` + `video_plan`.
 
 ---
 
