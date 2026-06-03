@@ -1,7 +1,7 @@
 # ATMO.BY — Deploy checklist (staging / production)
 
-**Date:** 2026-05-25
-**Local baseline:** child theme **`e12bdba`** · docs **`0ffdfcd`**
+**Date:** 2026-06-03
+**Local baseline:** paused checklist; child theme has moved past **`db25c75`** locally, but no production release candidate is declared
 **Purpose:** ordered runbook for staging/production parity with the current Local ATMO.BY redesign
 **Scope note:** deploying **`kadence-child` via git is necessary but not sufficient** — non-git runtime steps below must also be applied.
 
@@ -52,7 +52,7 @@ define( 'DB_NAME', 'atmo_staging' );
 
 ### 2.1 Deploy steps
 
-- [ ] Deploy **`kadence-child`** at or after commit **`e12bdba`** (`Dequeue LearnDash JS off non-LD routes`).
+- [ ] Deploy **`kadence-child`** at the explicitly selected release commit. Minimum local redesign floor is now past **`db25c75`** (`Homepage Social real Woo reviews`), but production release is **not** declared by this checklist.
 - [ ] Activate **Kadence Child** with **Kadence** as parent.
 - [ ] Confirm `functions.php` loads without PHP fatal (front page + one account page).
 - [ ] **Docs repo** (`beta html`) is **reference only** — do not deploy to runtime; use for rollback notes and snippet exports.
@@ -61,7 +61,7 @@ define( 'DB_NAME', 'atmo_staging' );
 
 | Area | Key commits (floor) | Notes |
 |------|---------------------|-------|
-| **Shell / homepage / header / footer** | shell wiring, `075179f`, `214f6b6`, `be90ec5`, `9d33b8a` | ATMO chrome; homepage `front-page.php`; nav «Программы» → `/courses/` |
+| **Shell / homepage / header / footer** | shell wiring, `075179f`, `214f6b6`, `be90ec5`, `9d33b8a`, `db25c75` | ATMO chrome; homepage `front-page.php`; real Woo review Social; nav «Программы» → `/courses/` |
 | **Catalog / PDP / cart / checkout / order-received / payment-failed / 404** | `4993bd9`…`9d33b8a`, `4132f1f`, `106250d`, `3e4748f`, `1203858`, `f9a7b95`, `c9ac2b1`, `35806f0`, `64f2aa8` | Shop `/каталог/`; cart `/cart-2/`; `/payment-failed/` **code-owned** by child theme (`inc/atmo-static-routes.php`) — **no WP page required** |
 | **Account / my-courses / hub / lesson chrome / plugin block CSS** | `353346c`…`dc1e2be`, `ecfd8f5`, `a352081`, `81c3a7d`, `b1d21b5`, `ed7afcf`…`caaaa96`, `d37665b` | Hub `?course_id=`; no `kadence-child/learndash/` overrides |
 | **Redirect `/catalog/` → `/каталог/`** | `a0ec00b` | 301; query string preserved |
@@ -125,7 +125,8 @@ Mark each row after deploy. Use read-only checks unless explicitly scoped.
 
 | Route | Expected |
 |-------|----------|
-| `/trainer/`, `/terms/`, `/privacy/` | **Not complete** until content approval · branded **404** acceptable |
+| `/trainer/` | Removed from scope by product decision; branded 404 acceptable |
+| `/terms/`, `/privacy/` | Implemented as code-owned routes with Stage2-sourced Polish legal copy; verify 200 + correct content before deploy sign-off |
 | Payment / order / submit / upload / delete | **Do not perform** in smoke unless explicitly scoped |
 
 ---

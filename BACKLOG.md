@@ -15,10 +15,10 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Area | Status |
 |------|--------|
 | Header / footer | ✅ ATMO child chrome + nav active state polish `9d33b8a` (PDP/category/tag → Каталог; CPT archive → Программы); footer col 1 label «Обучение» |
-| Homepage | ⚠️ partial — residual non-Social (2026-06-03): closing ink CTA, gallery thumb fallback, price range polish, mobile spacing; Hero/Featured/Paths PASS 2026-06-02; **Social content-blocked** |
+| Homepage | ⚠️ partial — Hero/Featured/Paths + closing CTA/thumb/price polish PASS; real Woo review Social shipped `db25c75`; **open:** Social diversity filter (one reviewer + one product/course max) |
 | Catalog + goal chips | ✅ MVP + server-side `filter_goal` |
 | PDP | ✅ simple + variable #3614; marketing micro-parity pass 3 CSS (2026-06-02); enrolled panel on PDP (2026-06-02) — hub remains canonical |
-| Cart | ✅ `atmo-cart.css` + cross-sells; empty dual CTA + «К оплате» (2026-06-02); **coupon-in-summary** promo in totals card (2026-06-03) — bundle discount row deferred |
+| Cart | ✅ `atmo-cart.css` + cross-sells; empty dual CTA + «К оплате» (2026-06-02); **coupon-in-summary** promo in totals card (2026-06-03); bundle discount removed by product policy |
 | Checkout | ✅ `atmo-checkout.css` pass 2 + `.atmo-checkout-summary` wrapper (`inc/atmo-checkout.php` 2026-06-02); payment-in-summary micro-parity PASS_LOCAL — unified card + sticky sidebar; steps `1203858`; Local **BLIK** + **Klarna**; card UI Stage2; QA fixture **3628** read-only |
 | Order received | ✅ `inc/atmo-confirmation.php` pass 2 + `atmo-confirmation.css` (2026-06-02): success layer + unavailable/processing shells; invalid `/order-received/999/` branded; owner QA **#3801** / **679** |
 | Account | ✅ passes 1–5 + dashboard + view-order meta + orders pass 3b (detail below) |
@@ -175,14 +175,15 @@ Coverage audit (2026-05-24) reset the roadmap around the original HTML prototype
 | Priority | Item | Notes |
 |----------|------|-------|
 | P1 | **Account dashboard prototype parity** | **PASS_LOCAL audit (2026-06-02):** `/my-account/` dash shell + adapter continue + Woo last order; fixtures **679**/**691**. Residual: diary/trainer dashboard widgets need real data source (deferred). |
-| P1 | **PDP prototype parity** | **PASS_LOCAL micro-parity (2026-06-02):** CSS pass 3 only. Deferred: gift CTA, who-grid owner copy. |
+| P1 | **PDP FAQ/who implementation** | Owner approvals captured in `PDP_CONTENT_APPROVALS.md` for **18/18** products. Implement as a separate child-theme/WP content slice; do not publish gift FAQ until gift contract exists. |
+| P1 | **Homepage Social diversity filter** | `db25c75` shipped real reviews. Owner follow-up: still newest-first, but max one selected review per reviewer and max one per product/course. Cursor prompt exists in `C:\tmp\atmo-handoff\next-cursor-prompt.md`. |
 | P1 | **Auth/reset password prototype parity** | **PASS_LOCAL (2026-06-02 micro-parity):** shells + residual hooks/CSS (`inc/atmo-account.php`: «Сохранить пароль», logged-in lost-password → dashboard; `atmo-account.css`: reset tabs hidden, notice cards, match hints). Deferred: OAuth; prototype post-reset success screen; mail E2E. |
 | ~~P1 Public `/courses/` IA / skin~~ | ✅ Local 2026-06-01 — Option 1: keep LD archive, ATMO head + card skin + IA copy (`inc/atmo-courses.php`, `atmo-courses.css`). Prototype enrolled list remains `/my-account/my-courses/`. |
 | ~~P2 Course completion flow~~ | ✅ Local 2026-06-01 — Option B hub celebration (`atmo_render_course_hub_completed`, `atmo-account.css`); review → Woo `#reviews`; fixture **atmo-qa-completed** / course **3616**. Residual: product-card «Что дальше» grid deferred. |
 
 Removed from scope: `/trainer/` / `trainer.html` (2026-06-01 product decision).
 
-Deferred / product decision: homepage Social testimonials, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping), legacy lesson post inline HTML cleanup.
+Deferred / product decision: gift purchase contract, full PDP hero redesign, variable PDP bottom CTA, `atmo-lms-lite` runtime cutover, course hub marketing extras (body/video/tick-list, per-course accent, Теория/Практика grouping), legacy lesson post inline HTML cleanup.
 
 Deploy risk (outside git): plugin enqueue fix is now **applied on Stage2** (2026-05-31) from fixed Local PHP / `docs/patches/plugin-enqueue/`; tracked plugin repo still preferred long-term (`.bak` = rollback only). Production/VPS runtime still requires separate safety-gated deploy/re-audit.
 
@@ -293,7 +294,7 @@ Runtime: LearnDash `sfwd-lms` + Woo bridge · `atmo-account.css` on `is_account_
 
 | Item | Notes |
 |------|-------|
-| **Section 04 Social** — testimonials | Deferred 2026-05-24 — no hardcoded copy; needs real CMS-driven testimonials or product decision |
+| ~~**Section 04 Social** — testimonials~~ | ✅ `db25c75` — real approved Woo reviews; no hardcoded testimonials. Follow-up: diversity filter for reviewer/product uniqueness. |
 | Hero product card — real image | Product 3614 has no WP featured image set; shows `.atmo-ph` placeholder; add image via WP Admin Media when ready |
 | Variable product price range on hero/featured | 3614 shows «399 zł – 799 zł» (WC variable); acceptable; can display min price only with `$p->get_variation_price('min')` if product decision |
 

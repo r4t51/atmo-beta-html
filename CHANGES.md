@@ -4,9 +4,29 @@
 > Child theme path: `D:\Local Sites\atmo_redesign\app\public\wp-content\themes\kadence-child`  
 > **Open tasks:** `BACKLOG.md` (active backlog; older entries here may be superseded)
 
-> **Supersession (2026-05-29):** LMS adapter extraction shipped (`ec5982c`); manual LearnDash entitlement fallback shipped (`9bb70ed`); adapter helper PHPUnit shipped (`c2041d7`); stage2 entitlement QA PASS 2026-05-29 (manual LD course **3616**). Also: ATMO homepage v1 (`075179f`, `214f6b6`); account course hub v1 (`81c3a7d`, visual `b1d21b5`); lesson plugin blocks CSS Phase 1 (`d37665b`); legacy `/catalog/` redirect (`a0ec00b`); LD CSS/JS dequeue (`9d8c49e`, `e12bdba`); UI polish (`9d33b8a`); LD lesson chrome + H1 prefix; order-received (`f9a7b95`); checkout steps (`1203858`); WP 404 (`64f2aa8`); payment-failed template (`c9ac2b1`) + code-owned route (`35806f0`); catalog polish. Older dated entries may reflect pre-hub/pre-confirmation states. **Current open items:** `BACKLOG.md` §0.
+> **Supersession (2026-06-03):** LMS adapter extraction shipped (`ec5982c`); manual LearnDash entitlement fallback shipped (`9bb70ed`); adapter helper PHPUnit shipped (`c2041d7`); stage2 entitlement QA PASS 2026-05-29 (manual LD course **3616** + Woo order **#3910**). Also: ATMO homepage v1 (`075179f`, `214f6b6`) + real Woo review Social (`db25c75`, dedupe follow-up pending); account course hub v1 (`81c3a7d`, visual `b1d21b5`); lesson plugin blocks CSS Phase 1 (`d37665b`); legacy `/catalog/` redirect (`a0ec00b`); LD CSS/JS dequeue (`9d8c49e`, `e12bdba`); UI polish (`9d33b8a`); LD lesson chrome + H1 prefix; order-received (`f9a7b95`); checkout steps (`1203858`); WP 404 (`64f2aa8`); payment-failed template (`c9ac2b1`) + code-owned route (`35806f0`); catalog/cart/checkout/PDP polish. Older dated entries may reflect pre-hub/pre-confirmation/pre-Social states. **Current open items:** `BACKLOG.md` §0.
 
 > **Production/staging incident note (2026-05-26):** VPS production was restored from an OVH snapshot after a staging workflow/theme-admin incident caused a production critical error. Server-side runtime changes after the snapshot are not trusted as current state. See `STAGING_POSTMORTEM_2026-05-26.md`; staging is back to pre-staging until re-audited.
+
+---
+
+## 2026-06-03 — PDP content approvals + docs hygiene
+
+- **Verdict:** DOCS_CANONICAL — raw PDP FAQ drafts were reviewed by owner for **18/18** redesign products.
+- **Canonical source:** `PDP_CONTENT_APPROVALS.md` — compact owner-approved decision sheet for PDP who/FAQ implementation.
+- **Policy locked:** no bundle discount; no gift FAQ until gift entitlement contract is implemented; avoid medical/treatment/rehab guarantees; `video_plan` is a normal sellable individual service/product, **not** LMS enrollment.
+- **Content decisions:** approved duration/equipment/prerequisite corrections for all products; global duration rule: when a source conflict includes **2 months**, use **2 months** unless product-specific owner correction says otherwise.
+- **Not implemented yet:** PDP FAQ/who blocks in child theme/WP content.
+
+---
+
+## 2026-06-03 — Homepage Social real Woo reviews (Local)
+
+- **Verdict:** PASS_LOCAL — child theme **`db25c75`** renders homepage Social from real approved WooCommerce reviews.
+- **Child theme:** `inc/atmo-home-social.php`, `front-page.php`, `functions.php`, `assets/css/atmo-home.css`.
+- **Policy:** no avatars; no fake testimonials; no fake counts; excerpt + native `<details>` expansion; emails never displayed; section hides when no eligible reviews.
+- **QA:** PHP lint PASS; Local homepage desktop/mobile checked by Cursor; initial data showed three newest reviews from the same author/date, which is valid source data.
+- **Follow-up pending:** owner requested newest-first diversity filter — max one selected review per reviewer and max one per product/course.
 
 ---
 

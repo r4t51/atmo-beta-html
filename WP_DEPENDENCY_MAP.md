@@ -2,12 +2,12 @@
 
 Карта зависимостей для переноса HTML-прототипа на Local WordPress.
 
-Дата: 2026-05-25
-Статус: child theme active; **shell/wiring + account/LMS MVP complete**; prototype coverage pass active — see `MILESTONE_SHELL_ACCOUNT_LMS.md`; preview mu-plugin keep-for-now.
+Дата: 2026-06-03
+Статус: child theme active; **shell/wiring + account/LMS MVP complete**; prototype coverage pass active — see `PROTOTYPE_COVERAGE_AUDIT.md`; preview mu-plugin keep-for-now.
 
 ## Executive Summary
 
-Рабочий сайт сейчас держится на Kadence + WooCommerce + LearnDash. Активна `ATMO Kadence Child 0.1.0`, parent — Kadence 1.4.5. Child theme снижает риск потери изменений при обновлении parent, но Kadence updates всё равно нужно тестировать отдельно.
+Рабочий сайт сейчас держится на Kadence + WooCommerce + LearnDash. Активна `ATMO Kadence Child` (Local 0.1.1+; exact target version must be verified before deploy), parent — Kadence 1.4.5. Child theme снижает риск потери изменений при обновлении parent, но Kadence updates всё равно нужно тестировать отдельно.
 
 Kadence не содержит WooCommerce или LearnDash template overrides, поэтому перенос можно вести инкрементально через child theme без миграции чужих theme templates.
 
@@ -20,7 +20,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 | WordPress | Local by Flywheel, `http://atmoredesign.local/` |
 | PHP | 8.2.29; доступна 8.4.10 |
 | Theme | Kadence 1.4.5 parent |
-| Child theme | `ATMO Kadence Child 0.1.0`, active |
+| Child theme | `ATMO Kadence Child` 0.1.1+ locally; verify target version before deploy |
 | WooCommerce | 10.7.0 |
 | LearnDash | `sfwd-lms` 5.0.5, active current LMS |
 | Future LMS | `atmo-lms-lite`, **active** on Local, in development (LearnDash still primary for course/lesson UI) |
@@ -34,7 +34,7 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
 |---|---|
 | Parent theme | `wp-content/themes/kadence/` |
 | Child theme | `wp-content/themes/kadence-child/` |
-| Child files | `functions.php`, `style.css`; page templates `front-page.php`, `page-payment-failed.php`, `404.php`; Woo overrides `woocommerce/content-product.php`, `woocommerce/content-single-product.php`; includes `inc/atmo-*.php` (header/footer/catalog/product/cart/account/lesson/confirmation); assets `assets/css/atmo-*.css`, `assets/js/atmo-*.js` |
+| Child files | `functions.php`, `style.css`; page templates `front-page.php`, `page-payment-failed.php`, `404.php`; Woo overrides `woocommerce/content-product.php`, `woocommerce/content-single-product.php`; includes `inc/atmo-*.php` (header/footer/catalog/product/home-social/cart/account/lesson/confirmation/static-routes); assets `assets/css/atmo-*.css`, `assets/js/atmo-*.js` |
 | Header ID | `#masthead` (Kadence, скрыт CSS `body.atmo-header-active`) |
 | Footer ID | `#colophon` (Kadence, скрыт CSS `body.atmo-footer-active`) |
 
@@ -61,6 +61,17 @@ Kadence не содержит WooCommerce или LearnDash template overrides, �
   - Re-QA PASS 2026-05-22 (`CHANGES.md`): simple + variable (#3614) + recovery spot-check; asset scope confirmed — `atmo-product.css` + `atmo-catalog.css` (related) only; no account/cart/checkout/filter JS on PDP.
   - #3614 access-tier hero price sync shipped 2026-05-23 (`4132f1f`); variable bottom CTA **deferred / product decision** 2026-05-24 — do not add second variation form (`BACKLOG.md` §5).
   - LearnDash / enrolled / access state не включены.
+
+- ✅ Homepage Social (`db25c75`): `inc/atmo-home-social.php` renders real approved WooCommerce product reviews on `front-page.php`.
+  - Source: approved Woo reviews only; no hardcoded testimonials, avatars, fake counts, or fake fallbacks.
+  - UI: excerpt + native `<details>` full review expansion; section hides when no eligible reviews.
+  - Pending owner follow-up: select newest-first but max one review per reviewer and max one per product/course.
+
+- PDP FAQ/who content source (2026-06-03): `PDP_CONTENT_APPROVALS.md`.
+  - This is the canonical approved decision sheet for 18 redesign products.
+  - Do not publish gift FAQ until gift entitlement contract exists.
+  - Do not add bundle discount; product policy removed it.
+  - `video_plan` is a normal sellable individual service/product, not LMS enrollment.
 
 - ✅ Woo My Account (`assets/css/atmo-account.css`, `inc/atmo-account.php`):
   - CSS на `is_account_page()` only; LearnDash `/courses/`, `/profile/`, `/reset-password/` not enqueued.
@@ -252,7 +263,7 @@ Endpoint shell **shipped `ecfd8f5`**; adapter MVP **shipped `a352081` 2026-05-22
 
 ## Выполнено
 
-1. Создан и активирован `ATMO Kadence Child 0.1.0`.
+1. Создан и активирован `ATMO Kadence Child`; exact target version must be verified before deploy.
 2. Добавлен `assets/css/atmo-base.css` с `--atmo-*` tokens.
 3. Подключены Fraunces, DM Sans, Space Mono.
 4. ✅ ATMO header заменён: `inc/atmo-header.php` + `assets/css/atmo-header.css` + `assets/js/atmo-header.js`.
