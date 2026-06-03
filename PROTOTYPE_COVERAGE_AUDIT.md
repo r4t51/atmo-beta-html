@@ -1,6 +1,6 @@
 # ATMO prototype coverage audit
 
-Last updated: 2026-06-02 (PDP marketing residual micro-parity)
+Last updated: 2026-06-03 (Homepage residual without Social)
 Scope: redesign only, Local + Stage2 validation where noted
 Current RC status: **NOT_READY**
 
@@ -20,7 +20,7 @@ This file maps every HTML prototype screen to the current WordPress/theme implem
 
 | Prototype file / screen | Intended WP URL/template | Status | Evidence | Gap / next action |
 |---|---|---|---|---|
-| `index.html` | `/` via `front-page.php` + `atmo-home.css` | `partial` | **Marketing parity audit PASS_LOCAL (2026-06-02):** Hero (eyebrow, H1, lead, stats, featured product card #3614), Featured (#atmo-featured), Paths (#atmo-paths ×3 → real PDPs); header CTAs `/каталог/` + `/courses/`; mobile 390 no overflow. QA read-only Local. | Section 04 Social (`parts/social.jsx`) **not shipped** — demo testimonials/before-after need owner/CMS sign-off; hero/featured images `.atmo-ph` where no WP thumbnail (#3614); variable price range on hero/featured; no closing ink CTA strip from prototype. |
+| `index.html` | `/` via `front-page.php` + `atmo-home.css` | `partial` | **Residual PASS_LOCAL (2026-06-03):** closing ink CTA → `#atmo-featured`; gallery fallback thumbs; variable price `.atmo-home-price` + SR-text clip; mobile overflow/spacing. Prior (2026-06-02): Hero/Featured/Paths #3614. Social **not shipped**. | Section 04 Social (`parts/social.jsx`) **content-blocked** — testimonials/before-after; `.atmo-ph` only where no WP featured/gallery image. |
 | `catalog.html` | `/каталог/` Woo shop archive via `inc/atmo-catalog.php`, `woocommerce/content-product.php`, `atmo-catalog.css` | `implemented` | Local QA 2026-06-01; child commit `a8e81e5`. | Pagination remains because real Woo archive has more products than one static prototype view. |
 | `product.html` | `/product/{slug}/` via `woocommerce/content-single-product.php` + `atmo-product.css` | `partial` | **Micro-parity PASS_LOCAL (2026-06-02):** pass 3 CSS — prototype eyebrow tick line, trust marks without symbols, hide Kadence duplicate breadcrumb + Snippet 12 duplicate `#tab-description form.cart`, description `.app-*` polish, FAQ `<details>` styling when present in CMS, mobile overflow/ATC width. Prior: hero/buy/WVS/stats/related/enrolled panel. QA: guest **abdomen_pelvic** + **levelup_your_strenght**; owner **679** enrolled panel + buy preserved; mobile 390. | Gift CTA/note (product decision); separate «Что это даёт» who-grid (needs owner copy); standalone FAQ block if not in CMS; variable bottom CTA in tab hidden via CSS only (Snippet 12). |
 | `product-enrolled.html` | Post-purchase/enrolled product or course access state | `partial` | **Dual surface (2026-06-02):** canonical hub `/my-account/my-courses/?course_id={id}` (full continue/progress/outline); logged-in PDP access panel on related Woo products (`inc/atmo-product.php`, `atmo-product.css`) — message, progress, continue/hub/review CTAs; purchase UI kept. | Prototype coral hero + sticky progress + lesson outline + video/tick-list not on PDP (hub-only); per-course accent; Теория/Практика grouping; drip locks. |
@@ -63,4 +63,4 @@ Reasons:
 2. ~~Order-confirmation funnel micro-parity~~ — invalid/processing shells + receipt polish **shipped** 2026-06-02; PDF чек deferred.
 3. ~~Auth/reset residual~~ — submit copy, logged-in redirect, reset tabs/notice polish shipped 2026-06-02; prototype success UI + mail E2E deferred.
 4. ~~Cart micro-parity~~ — empty dual CTA + «К оплате» shipped 2026-06-02; coupon-in-summary deferred.
-5. Homepage deferred blocks (Social content-blocked).
+5. ~~Homepage residual (non-Social)~~ — closing CTA + price/thumb polish shipped 2026-06-03; Social remains content-blocked.

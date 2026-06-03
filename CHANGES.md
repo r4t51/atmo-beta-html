@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-03 — Homepage residual without Social (Local)
+
+- **Verdict:** PASS_LOCAL — safe non-content gaps only; Social not implemented.
+- **Prototype:** `index.html` closing ink strip from `parts/social.jsx` (testimonials block excluded).
+- **Child theme:** `front-page.php` — `atmo_home_product_image_id()` (featured + first gallery image); `atmo-home-closing` section → `#atmo-featured`; price wrapper `.atmo-home-price` / `--range` for variable products.
+- **CSS:** `atmo-home.css` — closing strip, SR-text clip on Woo price labels, mobile overflow/spacing (390-safe patterns).
+- **QA:** Local `/` desktop + mobile 390; links catalog/courses/PDP; `git diff --check` PASS; PHP lint skipped (no `php` in PATH).
+- **Deferred:** Social section; products still without any WP image keep `.atmo-ph`.
+
+---
+
 ## 2026-06-02 — PDP marketing residual micro-parity (Local)
 
 - **Verdict:** PASS_LOCAL — **Option A** (CSS-only pass 3; no template/PHP change).
