@@ -18,7 +18,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Homepage | ⚠️ partial — residual non-Social (2026-06-03): closing ink CTA, gallery thumb fallback, price range polish, mobile spacing; Hero/Featured/Paths PASS 2026-06-02; **Social content-blocked** |
 | Catalog + goal chips | ✅ MVP + server-side `filter_goal` |
 | PDP | ✅ simple + variable #3614; marketing micro-parity pass 3 CSS (2026-06-02); enrolled panel on PDP (2026-06-02) — hub remains canonical |
-| Cart | ✅ `atmo-cart.css` + cross-sells · polish `3e4748f`; audit PASS_LOCAL (2026-06-02); **micro-parity** empty dual CTA + «К оплате» (2026-06-02) — coupon-in-summary deferred |
+| Cart | ✅ `atmo-cart.css` + cross-sells; empty dual CTA + «К оплате» (2026-06-02); **coupon-in-summary** promo in totals card (2026-06-03) — bundle discount row deferred |
 | Checkout | ✅ `atmo-checkout.css` pass 2 + `.atmo-checkout-summary` wrapper (`inc/atmo-checkout.php` 2026-06-02); payment-in-summary micro-parity PASS_LOCAL — unified card + sticky sidebar; steps `1203858`; Local **BLIK** + **Klarna**; card UI Stage2; QA fixture **3628** read-only |
 | Order received | ✅ `inc/atmo-confirmation.php` pass 2 + `atmo-confirmation.css` (2026-06-02): success layer + unavailable/processing shells; invalid `/order-received/999/` branded; owner QA **#3801** / **679** |
 | Account | ✅ passes 1–5 + dashboard + view-order meta + orders pass 3b (detail below) |

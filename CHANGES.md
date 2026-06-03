@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-03 — Cart coupon-in-summary micro-parity (Local)
+
+- **Verdict:** PASS_LOCAL — **Option B** (hook + CSS; no cart template override, no JS DOM move).
+- **Feasibility:** Woo coupon in `form.cart` actions column; DOM move unsafe (C). Summary placement via `woocommerce_cart_totals_before_order_total` + dedicated `POST` form + hide default `.actions .coupon`.
+- **Prototype:** `cart.html` `.promo` inside summary before total.
+- **Child theme:** `inc/atmo-cart.php` — `atmo_cart_render_summary_coupon_row()`; `assets/css/atmo-cart.css` — `.atmo-cart-promo-row`, hide actions coupon when cart filled.
+- **QA:** fixture variation **3628**; promo visible under «К оплате»; remove item → empty shell; mobile 390 no overflow; **no** checkout submit / fake coupon.
+- **Note:** 2× `coupon_code` in DOM (hidden Woo + visible summary); only submitted form’s field posts — semantics safe.
+
+---
+
 ## 2026-06-03 — Homepage residual without Social (Local)
 
 - **Verdict:** PASS_LOCAL — safe non-content gaps only; Social not implemented.
