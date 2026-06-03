@@ -29,6 +29,14 @@
 
 ---
 
+## 2026-06-03 — PDP hero trust by product kind (Local)
+
+- **Verdict:** PASS_LOCAL — child **`35a6fc9`** replaces hardcoded PDP trust copy with product-kind lines.
+- **Policy:** default `course`; `testmyself` = diagnostic; `video_plan` = individual service/video. No Woo `_atmo_*` DB/meta changes in this slice.
+- **QA:** Local `/product/video_plan/`, `/product/testmyself/`, `/product/abdomen_pelvic/`, `/product/levelup_your_strenght/` — expected trust lines, no old global copy, PHP lint OK, PHPUnit **19/19**.
+
+---
+
 ## 2026-06-03 — Homepage Social real Woo reviews (Local)
 
 - **Verdict:** PASS_LOCAL — child theme **`db25c75`** renders homepage Social from real approved WooCommerce reviews; **`b6e4566`** adds newest-first diversity selection.
