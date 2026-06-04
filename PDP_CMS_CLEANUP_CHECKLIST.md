@@ -1,6 +1,6 @@
 # PDP CMS cleanup checklist (operator / WP Admin later)
 
-**Status:** NOT DONE — documentation only. Theme who/FAQ registry is canonical on PDP; this sheet guides **manual** Woo product description edits in WP Admin.
+**Status:** Wave 1 **DONE** (Local, 2026-06-03, Cursor/WP Admin). **Follow-up 2026-06-03:** `facial_support` short-info (excerpt) → ~3 months copy; `testmyself` — Snippet **#12** skip for slug (bottom CTA removed from `#tab-description`). Global 18-slug pass still **NOT DONE**.
 
 **Date:** 2026-06-03  
 **Canonical content:** `PDP_CONTENT_APPROVALS.md` + `inc/atmo-pdp-content.php` (18 slugs)  
@@ -24,12 +24,12 @@
 
 | Slug | Action (operator/WP Admin later) | Status |
 |------|----------------------------------|--------|
-| `abdomen_pelvic` | Remove legacy block «Кому идеально подойдет…» / duplicate who grid from **Описание** tab. Keep principles, inventory (`app-card`, lists) if still useful. | NOT DONE |
-| `facial_support` | Review tab copy: 180 days vs **3-month** access in registry; soften «омоложение» / salon superlatives; align with cautious FAQ. Remove duplicate «Кому подходит» if present. | NOT DONE |
-| `fastform_pha` | Fix typo **PHAT → PHA**; remove/soften «сжигать жир», «эффект печки»; remove duplicate who block + bottom duplicate CTA if present. | NOT DONE |
-| `slim_stomach` | Soften «исчезает…» and similar absolutes; remove duplicate who semantics vs theme «Кому подойдёт». | NOT DONE |
-| `testmyself` | Make tab **diagnostic**, not full program: remove course-like hype, misleading CTA, program-length promises. Short description: theme now shows diagnostic card — align tab body with FAQ. | NOT DONE |
-| `video_plan` | **Local:** tab description empty — **OK**. Maintain service process only in short info + theme FAQ; do not add LMS/course enrollment copy. | OK (Local) |
+| `abdomen_pelvic` | Remove legacy block «Кому идеально подойдет…» / duplicate who grid from **Описание** tab. Keep principles, inventory (`app-card`, lists) if still useful. | DONE 2026-06-03 |
+| `facial_support` | Review tab copy: 180 days vs **3-month** access in registry; soften «омоложение» / salon superlatives; align with cautious FAQ. Remove duplicate «Кому подходит» if present. **Follow-up:** excerpt short-info (was `[course_info_card days="180"]`). | DONE 2026-06-03 + follow-up |
+| `fastform_pha` | Fix typo **PHAT → PHA**; remove/soften «сжигать жир», «эффект печки»; remove duplicate who block + bottom duplicate CTA if present. | DONE 2026-06-03 |
+| `slim_stomach` | Soften «исчезает…» and similar absolutes; remove duplicate who semantics vs theme «Кому подойдёт». | DONE 2026-06-03 |
+| `testmyself` | Make tab **diagnostic**, not full program: remove course-like hype, misleading CTA, program-length promises. Short description: theme now shows diagnostic card — align tab body with FAQ. **Follow-up:** Snippet #12 skip `testmyself` (no `.app-bottom-checkout` in tab). | DONE 2026-06-03 + follow-up |
+| `video_plan` | **Local:** tab description empty on PDP — **OK**. Post content in DB unchanged (verify only). | OK (Local, verified) |
 
 ---
 
