@@ -45,6 +45,7 @@ define( 'DB_NAME', 'atmo_staging' );
 - [ ] Confirm core routes exist and respond (may 404/redirect until content wired): `/`, `/каталог/`, `/courses/`, `/my-account/`, `/cart-2/`, `/checkout/`.
 - [ ] **No live payment, order placement, file upload, delete, or checkout submit** during smoke unless explicitly scoped and approved.
 - [ ] Operator has access to: child theme git, handoff patches, WP Admin, snippet import/export, CookieYes settings.
+- [ ] **Local-only PDP DB (2026-06-04):** wave 2a Woo tab `post_content` + `_atmo_*` `wp_postmeta` edits are **not in git**. Before stage2 RC, migrate or re-apply per `PDP_CMS_CLEANUP_CHECKLIST.md` / `CHANGES.md` 2026-06-04 and re-check hero pills + `/каталог/` cards (handoff JSON under `C:\tmp\atmo-handoff\`).
 
 ---
 

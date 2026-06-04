@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-04 — PDP CMS cleanup wave 2a + `_atmo_*` meta pass (Local DB/WP Admin only)
+
+- **Verdict:** PASS_LOCAL — **no child theme commit**; changes are Local `post_content` (5 slugs) + `wp_postmeta` (10 products, 12 fields).
+- **CMS wave 2a (tab «Описание»):** `kurs-vse-o-beremennosti` (duplicate «Кому подходит»), `functional_medball` (injury claims), `athleticbody` (rehab quotes), `express_minibands` (fat-burn hype), `levelup_your_strenght` (`[student_review]` blocks). `fs3` tab unchanged; duration fixed via meta.
+- **`_atmo_*` meta:** see `PDP_CMS_CLEANUP_CHECKLIST.md` — 12 updates (e.g. `fs3` 8 нед→4 нед, `functional_medball`/`athleticbody`/`pilates_medball`/`express_minibands` durations, `cardio_1st_grade`, `levelup_neuropower`, `fastform20`, `slim_stomach`, `levelup_your_strenght` sessions/week).
+- **Artifacts:** `C:\tmp\atmo-handoff\pdp-cms-before-wave2a\`, `pdp-cms-after-wave2a\`, `pdp-wave2a-apply-report.json`, `pdp-wave2a-verify.json`, `pdp-atmo-meta-before-update.json`, `pdp-atmo-meta-after-update.json`, `pdp-atmo-meta-verify-frontend.json`.
+- **QA:** PDP hero pills 10/10 PASS; catalog cards on Local redesign archive **`/каталог/`** (not `/shop/`) — `fs3`, `functional_medball`, `express_minibands` snippets verified.
+- **Remaining / owner-decision:** `facial_support`, `testmyself`, `video_plan`; `kurs-vse-o-beremennosti` `9 мес` kept. **stage2/prod:** not updated by these Local passes — see `BACKLOG.md` stage2 transfer item.
+
+---
+
 ## 2026-06-03 — PDP seam polish + CMS cleanup sheet (Local, no WP Admin)
 
 - **Verdict:** PASS_LOCAL — child **`05fc665`** CSS seam between `.atmo-pdp-extra` and Woo tabs; diagnostic short-info override for `testmyself`; operator checklist in docs (no DB edits).
