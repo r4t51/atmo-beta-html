@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-06-04 — Stage2 PDP CMS/meta transfer Wave 2a+2b
+
+- **Verdict:** PASS_STAGE2 — **not production**. Operator applied Stage2 DB scripts manually in phpMyAdmin for `vidrukbatmostage`; Cursor/Codex did not execute DB writes.
+- **Wave 2a:** transferred Local PDP CMS cleanup for 5 `post_content` slugs + targeted 12 `_atmo_*` meta rows. SQL post-check: CMS stale flags all `0`; final meta SELECT returned 12 expected rows.
+- **Wave 2b:** completed full PDP hero meta parity for 10 products × 4 keys (`_atmo_duration`, `_atmo_sessions_per_week`, `_atmo_session_length`, `_atmo_level`). Operator read-only count check: **40** rows; mismatch query: **0** rows.
+- **Frontend QA:** Stage2 child theme **0.1.3**; PDP hero pills **10/10 PASS**; `/каталог/` card meta PASS (`fs3`, `functional_medball`, `express_minibands`, `levelup_your_strenght`); CMS stale fragments remain absent; `/`, `/courses/`, `/cart-2/`, `/checkout/`, `/payment-failed/` no fatal/prod redirect.
+- **Artifacts:** `C:\tmp\atmo-handoff\stage2-pdp-transfer-update-DRAFT.sql`, `stage2-pdp-meta-wave2b-DRAFT.sql`, `stage2-pdp-db-preflight\apply-results.html`, `stage2-pdp-db-preflight\wave2b-apply-results.html`, `stage2-post-wave2b-smoke.json`.
+- **Residual:** Woo sort dropdown still visible on `/каталог/` per current Stage2 smoke; treat as UI polish follow-up, not DB transfer failure.
+
+---
+
 ## 2026-06-04 — PDP CMS cleanup wave 2a + `_atmo_*` meta pass (Local DB/WP Admin only)
 
 - **Verdict:** PASS_LOCAL — **no child theme commit**; changes are Local `post_content` (5 slugs) + `wp_postmeta` (10 products, 12 fields).
