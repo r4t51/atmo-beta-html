@@ -10,6 +10,15 @@
 
 ---
 
+## 2026-06-04 — Stage2 child 0.1.4 catalog toolbar smoke
+
+- **Verdict:** PASS_STAGE2 — child theme **0.1.4** installed from `kadence-child-stage2-0.1.4-wp.zip`; Stage2 remains `stage2.atmo.by` with no prod/staging redirect and no PHP/Redis fatal.
+- **Catalog toolbar:** `/каталог/` no longer renders Kadence/Woo shop toolbar in DOM (`.kadence-shop-top-row`, `form.woocommerce-ordering`, `select.orderby` absent); ATMO filters/cards remain visible; mobile 390 no horizontal overflow.
+- **Regression:** PDP `levelup_your_strenght` pills still show `8 нед`, `3× в неделю`, `35 мин`, `Любой`; `/`, `/courses/`, `/cart-2/`, `/checkout/`, `/payment-failed/` pass read-only smoke.
+- **Child theme:** `e33f43a` (`0.1.4`) is pushed to `atmo-kadence-child`; Stage2 update was theme-only, no DB writes.
+
+---
+
 ## 2026-06-04 — Stage2 PDP CMS/meta transfer Wave 2a+2b
 
 - **Verdict:** PASS_STAGE2 — **not production**. Operator applied Stage2 DB scripts manually in phpMyAdmin for `vidrukbatmostage`; Cursor/Codex did not execute DB writes.
