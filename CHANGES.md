@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-06-04 — Stage2 filled cart / checkout smoke
+
+- **Verdict:** PASS_STAGE2 — read-only filled cart + checkout QA on Stage2 child **0.1.4** under logged-in `r4t5`; no code/DB changes and no payment/order submit.
+- **Fixture:** 1× **«Живот и Тазовое дно - 60 дней»**, **399 zł** (variation 3628 by intended fixture; cart HTML confirmed title/price).
+- **Checkout:** cart + checkout shell PASS desktop/mobile 390; order review total **399 zł**; `#payment` and `#place_order` visible but **not clicked**.
+- **Payment safety:** Stripe test mode visible (`pk_test_` present), **no `pk_live_`** in checkout HTML; card, BLIK, Klarna visible.
+- **Residual:** cart left filled for operator; order-received/thank-you requires a controlled test order window if scoped later.
+
+---
+
 ## 2026-06-04 — Stage2 child 0.1.4 catalog toolbar smoke
 
 - **Verdict:** PASS_STAGE2 — child theme **0.1.4** installed from `kadence-child-stage2-0.1.4-wp.zip`; Stage2 remains `stage2.atmo.by` with no prod/staging redirect and no PHP/Redis fatal.
