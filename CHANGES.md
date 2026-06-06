@@ -10,6 +10,15 @@
 
 ---
 
+## 2026-06-06 — Stage2 child 0.1.5 variable PDP bottom CTA guard
+
+- **Verdict:** PASS_STAGE2 — child theme **0.1.5** installed from `kadence-child-stage2-0.1.5-wp.zip`; Stage2 remains `stage2.atmo.by` with no prod/staging redirect and no PHP/Redis fatal.
+- **Child theme:** `cc7fa45` adds variable-PDP defense-in-depth for Snippet 12/CMS bottom CTA residual: DOM-based stripper + CSS fallback; simple PDP bottom CTA remains intact.
+- **Variable PDP QA:** `/product/abdomen_pelvic/` has exactly **1** hero `form.variations_form`, **0** `.app-bottom-checkout` in DOM/visible output, mobile 390 no overflow; price sync still maps **60 дней → 399zł / #3628** and **Бессрочно → 799zł / #3629**.
+- **Regression:** `/product/levelup_your_strenght/` keeps visible simple bottom CTA and hero pills (`8 нед`, `3× в неделю`, `35 мин`, `Любой`); `/каталог/`, `/cart-2/`, `/checkout/`, `/payment-failed/` smoke PASS.
+
+---
+
 ## 2026-06-04 — Stage2 filled cart / checkout smoke
 
 - **Verdict:** PASS_STAGE2 — read-only filled cart + checkout QA on Stage2 child **0.1.4** under logged-in `r4t5`; no code/DB changes and no payment/order submit.
