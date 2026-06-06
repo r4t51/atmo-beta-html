@@ -1,6 +1,6 @@
 # ATMO prototype coverage audit
 
-Last updated: 2026-06-03 (Social reviews + PDP content approvals)
+Last updated: 2026-06-06 (Stage2 homepage 0.1.6 smoke)
 Scope: redesign only, Local + Stage2 validation where noted
 Current RC status: **NOT_READY**
 
@@ -20,7 +20,7 @@ This file maps every HTML prototype screen to the current WordPress/theme implem
 
 | Prototype file / screen | Intended WP URL/template | Status | Evidence | Gap / next action |
 |---|---|---|---|---|
-| `index.html` | `/` via `front-page.php` + `atmo-home.css` | `partial` | **Social PASS_LOCAL (2026-06-03):** real approved Woo reviews via `inc/atmo-home-social.php` (`db25c75` + diversity `b6e4566`), no avatars/fake testimonials, excerpt + expand, newest-first with max one reviewer and one product/course. Prior residual: closing ink CTA, gallery fallback thumbs, price range polish, mobile spacing. | `.atmo-ph` remains only where no WP featured/gallery image; overall homepage still partial until final visual regression/RC gate. |
+| `index.html` | `/` via `front-page.php` + `atmo-home.css` | `partial` | **Stage2 smoke PASS (2026-06-06):** child 0.1.6 / `860cb2b` active; hero 3 stats + YouTube pill; real approved Woo reviews via `inc/atmo-home-social.php` (`db25c75` + diversity `b6e4566`), no avatars/fake testimonials, excerpt + expand, newest-first with max one reviewer and one product/course; Social→Closing spacing fixed. | Social before/after transformation row remains content-blocked; rich hero card body/summary still deferred; overall homepage still partial until final visual regression/RC gate. |
 | `catalog.html` | `/каталог/` Woo shop archive via `inc/atmo-catalog.php`, `woocommerce/content-product.php`, `atmo-catalog.css` | `implemented` | Local QA 2026-06-01; child commit `a8e81e5`. | Pagination remains because real Woo archive has more products than one static prototype view. |
 | `product.html` | `/product/{slug}/` via `woocommerce/content-single-product.php` + `atmo-product.css` | `partial` | **Micro-parity PASS_LOCAL (2026-06-02):** pass 3 CSS. **PDP who/FAQ PASS_LOCAL (2026-06-03):** theme registry `inc/atmo-pdp-content.php` — **18/18** approved slugs (`b7e5556` pilot + `dde8dcf` wave 2). **Hero trust PASS_LOCAL:** `35a6fc9` kind-aware copy for course / diagnostic / service. **Seam polish PASS_LOCAL:** child `05fc665` FAQ→tabs CSS + diagnostic short-info (`testmyself`); operator CMS dedupe sheet `PDP_CMS_CLEANUP_CHECKLIST.md` (not executed). | Gift CTA/FAQ still blocked; prototype «Не подходит» column not implemented; Woo `_atmo_*` meta + legacy tab description dedupe need operator/CMS pass; variable bottom CTA hidden via CSS (Snippet 12). |
 | `product-enrolled.html` | Post-purchase/enrolled product or course access state | `partial` | **Dual surface (2026-06-02):** canonical hub `/my-account/my-courses/?course_id={id}` (full continue/progress/outline); logged-in PDP access panel on related Woo products (`inc/atmo-product.php`, `atmo-product.css`) — message, progress, continue/hub/review CTAs; purchase UI kept. | Prototype coral hero + sticky progress + lesson outline + video/tick-list not on PDP (hub-only); per-course accent; Теория/Практика grouping; drip locks. |
@@ -63,4 +63,4 @@ Reasons:
 2. ~~Order-confirmation funnel micro-parity~~ — invalid/processing shells + receipt polish **shipped** 2026-06-02; PDF чек deferred.
 3. ~~Auth/reset residual~~ — submit copy, logged-in redirect, reset tabs/notice polish shipped 2026-06-02; prototype success UI + mail E2E deferred.
 4. ~~Cart micro-parity~~ — empty dual CTA + «К оплате» shipped 2026-06-02; coupon-in-summary deferred.
-5. ~~Homepage residual / Social~~ — closing CTA + price/thumb polish shipped 2026-06-03; real Woo review Social shipped `db25c75`; diversity filter shipped `b6e4566`.
+5. ~~Homepage residual / Social~~ — closing CTA + price/thumb polish shipped 2026-06-03; real Woo review Social shipped `db25c75`; diversity filter shipped `b6e4566`; Stage2 homepage 0.1.6 smoke PASS 2026-06-06 (`860cb2b`).

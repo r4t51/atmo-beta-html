@@ -10,6 +10,15 @@
 
 ---
 
+## 2026-06-06 — Stage2 child 0.1.6 homepage residual smoke
+
+- **Verdict:** PASS_STAGE2_HOME_0.1.6 — child theme **0.1.6** installed from `kadence-child-stage2-0.1.6-wp.zip`; Stage2 remains `stage2.atmo.by` with no prod/staging redirect and no PHP/Redis fatal.
+- **Child theme:** `860cb2b` closes safe homepage residual parity: 3 hero stats + separate YouTube audience pill, Snippet 10 price/euro-hint polish, range `from` styling, placeholder `фото ·` labels, Social→Closing spacing.
+- **Homepage QA:** `style.css?ver=0.1.6` and `atmo-home.css` loaded; hero/featured/paths/social/closing present; Social renders 3 real Woo reviews with unique reviewer + unique product/course; no fake avatars/testimonials; regression `/каталог/`, `/product/abdomen_pelvic/`, `/cart-2/` PASS.
+- **Residual:** this is a Stage2 smoke, not final visual RC. Social before/after row remains content-blocked; rich hero card body remains deferred until approved product fields.
+
+---
+
 ## 2026-06-06 — Stage2 child 0.1.5 variable PDP bottom CTA guard
 
 - **Verdict:** PASS_STAGE2 — child theme **0.1.5** installed from `kadence-child-stage2-0.1.5-wp.zip`; Stage2 remains `stage2.atmo.by` with no prod/staging redirect and no PHP/Redis fatal.

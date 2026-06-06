@@ -15,7 +15,7 @@ Child theme wiring/shell complete for public Woo flows; read-only QA PASS (see `
 | Area | Status |
 |------|--------|
 | Header / footer | ✅ ATMO child chrome + nav active state polish `9d33b8a` (PDP/category/tag → Каталог; CPT archive → Программы); footer col 1 label «Обучение» |
-| Homepage | ⚠️ partial — Hero/Featured/Paths + closing CTA/thumb/price polish PASS; real Woo review Social shipped `db25c75`; diversity filter shipped `b6e4566` |
+| Homepage | ⚠️ partial — Hero/Featured/Paths + closing CTA/thumb/price polish PASS; real Woo review Social shipped `db25c75`; diversity filter shipped `b6e4566`; Stage2 0.1.6 homepage smoke PASS (`860cb2b`) |
 | Catalog + goal chips | ✅ MVP + server-side `filter_goal` |
 | PDP | ✅ simple + variable #3614; marketing micro-parity pass 3 CSS (2026-06-02); enrolled panel on PDP (2026-06-02) — hub remains canonical |
 | Cart | ✅ `atmo-cart.css` + cross-sells; empty dual CTA + «К оплате» (2026-06-02); **coupon-in-summary** promo in totals card (2026-06-03); bundle discount removed by product policy |
